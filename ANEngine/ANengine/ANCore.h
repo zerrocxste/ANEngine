@@ -6,9 +6,10 @@ public:
 	ANCore();
 	~ANCore();
 
-	ANWindow* GetWindow();
-
+	bool Run();
 private:
 	ANWindow* m_pANWindow;
+
+	ANWindow* GetWindow();
 };
 

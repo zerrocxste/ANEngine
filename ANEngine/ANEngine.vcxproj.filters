@@ -16,9 +16,6 @@
     <Filter Include="ANEngine">
       <UniqueIdentifier>{2d50b8f3-9b1c-48c5-8bae-745b84b45a23}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\ANAllocator">
-      <UniqueIdentifier>{f4065ecf-a63d-4619-9249-7a31ec5fae49}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ANEngine\ANMath">
       <UniqueIdentifier>{9cdb5c0f-744b-470d-8aee-240c8998a49e}</UniqueIdentifier>
     </Filter>
@@ -37,6 +34,9 @@
     <Filter Include="ANEngine\Interfaces\ANError">
       <UniqueIdentifier>{7f1714c1-c84a-440a-b15a-18e753e5b1f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ANEngine\ANMemory">
+      <UniqueIdentifier>{b6145d4a-c681-42b9-868b-0f45bd9b22e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ANEngine.cpp">
@@ -44,9 +44,6 @@
     </ClCompile>
     <ClCompile Include="ANengine\ANCore.cpp">
       <Filter>ANEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="ANengine\ANAllocator\ANAllocator.cpp">
-      <Filter>ANEngine\ANAllocator</Filter>
     </ClCompile>
     <ClCompile Include="ANengine\ANMath\ANVec2\ANVec2.cpp">
       <Filter>ANEngine\ANMath\ANVec2</Filter>
@@ -60,6 +57,9 @@
     <ClCompile Include="ANengine\Interfaces\ANError\ANError.cpp">
       <Filter>ANEngine\Interfaces\ANError</Filter>
     </ClCompile>
+    <ClCompile Include="ANengine\ANMemory\ANMemory.cpp">
+      <Filter>ANEngine\ANMemory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ANengine\ANCore.h">
@@ -67,9 +67,6 @@
     </ClInclude>
     <ClInclude Include="ANengine\ANEngine.h">
       <Filter>ANEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="ANengine\ANAllocator\ANAllocator.h">
-      <Filter>ANEngine\ANAllocator</Filter>
     </ClInclude>
     <ClInclude Include="ANengine\ANMath\ANVec2\ANVec2.h">
       <Filter>ANEngine\ANMath\ANVec2</Filter>
@@ -82,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="ANengine\Interfaces\ANError\ANError.h">
       <Filter>ANEngine\Interfaces\ANError</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\ANMemory\ANMemory.h">
+      <Filter>ANEngine\ANMemory</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

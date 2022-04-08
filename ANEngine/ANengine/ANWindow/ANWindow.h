@@ -6,6 +6,7 @@ struct ANWindowData
 	bool m_bHasWindowFrame;
 	anvec2 m_vWindowPosition;
 	anvec2 m_vWindowSize;
+	WNDCLASS m_WndCls;
 };
 
 class ANWindow : public IANError
@@ -15,15 +16,16 @@ public:
 	~ANWindow();
 
 	bool MakeWindow();
+	void RunWindow();
 
 	void WindowShow();
-
 	void WindowHide();
-
 private:
 	HWND m_hWnd;
 	ANWindowData m_WindowData;
-	
 	ANWindowData* GetWindow();
+
+	bool CreateWindowClass(ANWindowData* wd);
+	bool CreateNewWindow(ANWindowData* wd);
 };
 

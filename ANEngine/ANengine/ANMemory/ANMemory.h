@@ -1,10 +1,10 @@
 #pragma once
 
-class ANAllocator : public IANError
+class ANMemory : public IANError
 {
 public:
-	ANAllocator();
-	~ANAllocator();
+	ANMemory();
+	~ANMemory();
 
 	void* AllocateMemory(std::size_t Size);
 	void* AllocateMemoryOfBlocks(std::size_t BlocksCount, std::size_t BlockSize);
@@ -13,7 +13,7 @@ public:
 
 	std::size_t GetAllocatedMemory();
 
-	static ANAllocator* ANAllocatorInstance();
+	static ANMemory* ANAllocatorInstance();
 private:
 	std::size_t m_GlobalAllocatedMemory;
 };

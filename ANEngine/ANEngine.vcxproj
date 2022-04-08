@@ -142,19 +142,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ANEngine.cpp" />
-    <ClCompile Include="ANengine\ANAllocator\ANAllocator.cpp" />
     <ClCompile Include="ANengine\ANCore.cpp" />
     <ClCompile Include="ANengine\ANMath\ANVec2\ANVec2.cpp" />
     <ClCompile Include="ANengine\ANMath\ANVec3\ANVec3.cpp" />
+    <ClCompile Include="ANengine\ANMemory\ANMemory.cpp" />
     <ClCompile Include="ANengine\ANWindow\ANWindow.cpp" />
     <ClCompile Include="ANengine\Interfaces\ANError\ANError.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ANengine\ANAllocator\ANAllocator.h" />
     <ClInclude Include="ANengine\ANCore.h" />
     <ClInclude Include="ANengine\ANEngine.h" />
     <ClInclude Include="ANengine\ANMath\ANVec2\ANVec2.h" />
     <ClInclude Include="ANengine\ANMath\ANVec3\ANVec3.h" />
+    <ClInclude Include="ANengine\ANMemory\ANMemory.h" />
     <ClInclude Include="ANengine\ANWindow\ANWindow.h" />
     <ClInclude Include="ANengine\Interfaces\ANError\ANError.h" />
   </ItemGroup>

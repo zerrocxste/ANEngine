@@ -1,18 +1,18 @@
 #include "../ANEngine.h"
 
-ANAllocator::ANAllocator() : 
+ANMemory::ANMemory() :
 	IANError(), 
 	m_GlobalAllocatedMemory(0)
 {
 
 }
 
-ANAllocator::~ANAllocator()
+ANMemory::~ANMemory()
 {
 
 }
 
-void* ANAllocator::AllocateMemory(std::size_t Size)
+void* ANMemory::AllocateMemory(std::size_t Size)
 {
 	auto ret = std::malloc(Size);
 
@@ -29,7 +29,7 @@ void* ANAllocator::AllocateMemory(std::size_t Size)
 	return ret;
 }
 
-void* ANAllocator::AllocateMemoryOfBlocks(std::size_t BlocksCount, std::size_t BlockSize)
+void* ANMemory::AllocateMemoryOfBlocks(std::size_t BlocksCount, std::size_t BlockSize)
 {
 	auto GlobalSize = BlockSize * BlocksCount;
 
@@ -48,7 +48,7 @@ void* ANAllocator::AllocateMemoryOfBlocks(std::size_t BlocksCount, std::size_t B
 	return ret;
 }
 
-bool ANAllocator::FreeMemory(void* Ptr)
+bool ANMemory::FreeMemory(void* Ptr)
 {
 	if (!Ptr)
 		return false;
@@ -60,14 +60,14 @@ bool ANAllocator::FreeMemory(void* Ptr)
 	return true;
 }
 
-std::size_t ANAllocator::GetAllocatedMemory()
+std::size_t ANMemory::GetAllocatedMemory()
 {
 	this->m_GlobalAllocatedMemory;
 }
 
-ANAllocator* ANAllocator::ANAllocatorInstance()
+ANMemory* ANMemory::ANAllocatorInstance()
 {
-	static auto pAllocator = new ANAllocator();
+	static auto pAllocator = new ANMemory();
 	return pAllocator;
 }
 

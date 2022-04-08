@@ -4,7 +4,9 @@
 
 int main()
 {
-    ANCore* pCtx = new ANCore;
+	ANCore* pCtx = new ANCore();
+
+	pCtx->Run();
 
 	while (1)
 	{
