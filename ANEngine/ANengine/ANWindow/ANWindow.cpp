@@ -7,6 +7,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
+	case WM_KEYDOWN:
+		ANCore::GetInstance()->GetInput()->SetStateKey(wParam, true);
+		break;
+	case WM_KEYUP:
+		ANCore::GetInstance()->GetInput()->SetStateKey(wParam, false);
+		break;
 	default:
 		break;
 	}
@@ -23,6 +29,8 @@ ANWindow::ANWindow(const char* szWindowTitle, anvec2 vPosition, anvec2 vSize, bo
 	pwd->m_bHasWindowFrame = bHasWindowFrame;
 	pwd->m_vWindowPosition = vPosition;
 	pwd->m_vWindowSize = vSize;
+
+	memset(&this->m_WindowMSG, 0, sizeof(MSG));
 }
 
 ANWindow::~ANWindow()
@@ -77,19 +85,16 @@ bool ANWindow::MakeWindow()
 
 void ANWindow::RunWindow()
 {
-	MSG msg;
-	memset(&msg, 0, sizeof(MSG));
-
-	while (msg.message != WM_QUIT)
+	while (this->m_WindowMSG.message != WM_QUIT)
 	{
-		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
+		if (PeekMessage(&this->m_WindowMSG, 0, 0, 0, PM_REMOVE))
 		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
+			TranslateMessage(&this->m_WindowMSG);
+			DispatchMessage(&this->m_WindowMSG);
 			continue;
 		}
 
-		
+
 
 	}
 }
@@ -99,9 +104,19 @@ void ANWindow::WindowShow()
 	ShowWindow(this->m_hWnd, SW_SHOWNORMAL);
 }
 
+void ANWindow::WindowMinimize()
+{
+	ShowWindow(this->m_hWnd, SW_MINIMIZE);
+}
+
 void ANWindow::WindowHide()
 {
 	ShowWindow(this->m_hWnd, SW_HIDE);
+}
+
+HWND ANWindow::GetHWND()
+{
+	return this->m_hWnd;
 }
 
 ANWindowData* ANWindow::GetWindow()

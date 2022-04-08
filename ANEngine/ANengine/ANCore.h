@@ -1,15 +1,26 @@
 #pragma once
 
+struct ANInterfaces
+{
+	ANWindow* m_pANWindow;
+	ANInput* m_pANInput;
+	ANRenderer* m_ANRenderer;
+};
+
 class ANCore
 {
 public:
 	ANCore();
 	~ANCore();
 
-	bool Run();
-private:
-	ANWindow* m_pANWindow;
-
 	ANWindow* GetWindow();
+	ANInput* GetInput();
+	ANRenderer* GetRenderer();
+
+	bool Run();
+
+	static ANCore* GetInstance();
+private:
+	ANInterfaces m_Interfaces;
 };
 

@@ -19,9 +19,13 @@ public:
 	void RunWindow();
 
 	void WindowShow();
+	void WindowMinimize();
 	void WindowHide();
+
+	HWND GetHWND();
 private:
 	HWND m_hWnd;
+	MSG m_WindowMSG;
 	ANWindowData m_WindowData;
 	ANWindowData* GetWindow();
 

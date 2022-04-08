@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <assert.h>
 
 #include "Interfaces/ANError/ANError.h"
 
@@ -12,8 +13,9 @@
 #include "ANMath/ANVec2/ANVec2.h"
 #include "ANMath/ANVec3/ANVec3.h"
 
+#include "Renderer/ANRenderer.h"
+#include "ANInput/ANInput.h"
 #include "ANWindow/ANWindow.h"
-
 #include "ANCore.h"
 
 

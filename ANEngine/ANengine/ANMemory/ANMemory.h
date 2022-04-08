@@ -9,11 +9,13 @@ public:
 	void* AllocateMemory(std::size_t Size);
 	void* AllocateMemoryOfBlocks(std::size_t BlocksCount, std::size_t BlockSize);
 
+
+
 	bool FreeMemory(void* Ptr);
 
-	std::size_t GetAllocatedMemory();
+	std::size_t GetTotalAllocatedMemory();
 
-	static ANMemory* ANAllocatorInstance();
+	static ANMemory* GetInstance();
 private:
-	std::size_t m_GlobalAllocatedMemory;
+	std::size_t m_TotalAllocatedMemory;
 };

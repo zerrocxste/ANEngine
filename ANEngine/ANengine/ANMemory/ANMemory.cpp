@@ -2,7 +2,7 @@
 
 ANMemory::ANMemory() :
 	IANError(), 
-	m_GlobalAllocatedMemory(0)
+	m_TotalAllocatedMemory(0)
 {
 
 }
@@ -24,7 +24,7 @@ void* ANMemory::AllocateMemory(std::size_t Size)
 
 	std::memset(ret, 0, Size);
 
-	this->m_GlobalAllocatedMemory += Size;
+	this->m_TotalAllocatedMemory += Size;
 
 	return ret;
 }
@@ -43,7 +43,7 @@ void* ANMemory::AllocateMemoryOfBlocks(std::size_t BlocksCount, std::size_t Bloc
 
 	std::memset(ret, 0, GlobalSize);
 
-	this->m_GlobalAllocatedMemory += GlobalSize;
+	this->m_TotalAllocatedMemory += GlobalSize;
 
 	return ret;
 }
@@ -55,17 +55,17 @@ bool ANMemory::FreeMemory(void* Ptr)
 
 	std::free(Ptr);
 
-	this->m_GlobalAllocatedMemory -= _msize(Ptr);
+	this->m_TotalAllocatedMemory -= _msize(Ptr);
 
 	return true;
 }
 
-std::size_t ANMemory::GetAllocatedMemory()
+std::size_t ANMemory::GetTotalAllocatedMemory()
 {
-	this->m_GlobalAllocatedMemory;
+	this->m_TotalAllocatedMemory;
 }
 
-ANMemory* ANMemory::ANAllocatorInstance()
+ANMemory* ANMemory::GetInstance()
 {
 	static auto pAllocator = new ANMemory();
 	return pAllocator;

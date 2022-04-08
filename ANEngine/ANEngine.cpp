@@ -4,12 +4,7 @@
 
 int main()
 {
-	ANCore* pCtx = new ANCore();
+	auto pCtx = ANCore::GetInstance();
 
 	pCtx->Run();
-
-	while (1)
-	{
-		Sleep(1);
-	}
 }
