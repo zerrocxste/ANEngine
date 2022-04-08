@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ANEngine">
+      <UniqueIdentifier>{2d50b8f3-9b1c-48c5-8bae-745b84b45a23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\ANAllocator">
+      <UniqueIdentifier>{f4065ecf-a63d-4619-9249-7a31ec5fae49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\ANMath">
+      <UniqueIdentifier>{9cdb5c0f-744b-470d-8aee-240c8998a49e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\ANMath\ANVec2">
+      <UniqueIdentifier>{6df63cbd-dc18-4e01-8b8b-026743b716e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\ANMath\ANVec3">
+      <UniqueIdentifier>{d78775c0-fe8b-431a-9e86-2a95700faab9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\ANWindow">
+      <UniqueIdentifier>{c60f5315-7750-49be-a473-6b2d12bda785}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces">
+      <UniqueIdentifier>{1fe229af-3c00-4c5a-817b-656fbf5cfd3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\ANError">
+      <UniqueIdentifier>{7f1714c1-c84a-440a-b15a-18e753e5b1f9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ANEngine.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\ANCore.cpp">
+      <Filter>ANEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\ANAllocator\ANAllocator.cpp">
+      <Filter>ANEngine\ANAllocator</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\ANMath\ANVec2\ANVec2.cpp">
+      <Filter>ANEngine\ANMath\ANVec2</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\ANMath\ANVec3\ANVec3.cpp">
+      <Filter>ANEngine\ANMath\ANVec3</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\ANWindow\ANWindow.cpp">
+      <Filter>ANEngine\ANWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\Interfaces\ANError\ANError.cpp">
+      <Filter>ANEngine\Interfaces\ANError</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ANengine\ANCore.h">
+      <Filter>ANEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\ANEngine.h">
+      <Filter>ANEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\ANAllocator\ANAllocator.h">
+      <Filter>ANEngine\ANAllocator</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\ANMath\ANVec2\ANVec2.h">
+      <Filter>ANEngine\ANMath\ANVec2</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\ANMath\ANVec3\ANVec3.h">
+      <Filter>ANEngine\ANMath\ANVec3</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\ANWindow\ANWindow.h">
+      <Filter>ANEngine\ANWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Interfaces\ANError\ANError.h">
+      <Filter>ANEngine\Interfaces\ANError</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
