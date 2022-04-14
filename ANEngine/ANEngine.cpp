@@ -4,7 +4,7 @@
 
 int main()
 {
-	auto pCtx = ANCore::CreateEngine();
+	auto pCtx = ANCore::GetInstance();
 
 	pCtx->Run();
 }

@@ -6,28 +6,16 @@ public:
 	ANMemory();
 	~ANMemory();
 
-	void* ResourceAllocate(std::size_t Size);
-	void* ResourcAllocateeOfBlocks(std::size_t BlocksCount, std::size_t BlockSize);
-	bool FreeResource(void* Ptr);
+	void* AllocateMemory(std::size_t Size);
+	void* AllocateMemoryOfBlocks(std::size_t BlocksCount, std::size_t BlockSize);
 
-	template<class T, class... A> T* Allocate(A&&... Arg)
-	{
-		this->m_WorkingSetAllocatedMemory += sizeof(T);
-		return new T(Arg...);
-	}
 
-	template<class T> void Delete(T* P)
-	{
-		this->m_WorkingSetAllocatedMemory -= sizeof(T);
-		delete P;
-	}
+
+	bool FreeMemory(void* Ptr);
 
 	std::size_t GetTotalAllocatedMemory();
-	std::size_t GetWorkingSetAllocatedMemory();
-	std::size_t GetResourceAllocatedMemory();
 
 	static ANMemory* GetInstance();
 private:
-	std::size_t m_WorkingSetAllocatedMemory;
-	std::size_t m_ResourceAllocatedMemory;
+	std::size_t m_TotalAllocatedMemory;
 };

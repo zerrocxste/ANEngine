@@ -1,6 +1,6 @@
 ﻿#include "includes.h"
 
-extern "C" __declspec(dllexport) bool __stdcall InitializeRenderer(HINSTANCE hInstance, HWND hWnd, void* pInformationOut)
+extern "C" __declspec(dllexport) bool __stdcall InitializeRenderer(HINSTANCE hInstance, HWND hWnd)
 {
     return true;
 }

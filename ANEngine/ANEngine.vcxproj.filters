@@ -40,26 +40,17 @@
     <Filter Include="ANEngine\ANInput">
       <UniqueIdentifier>{626dff36-b535-4722-84f3-306b990ce5c8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\ANGame">
-      <UniqueIdentifier>{4e89e370-4f0a-4cc8-9936-db63927728d6}</UniqueIdentifier>
+    <Filter Include="ANEngine\Renderer">
+      <UniqueIdentifier>{e283516d-88f3-4547-8860-a9dd3909abf4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\ANMath\ANRect">
-      <UniqueIdentifier>{a6eb50eb-dd01-46e6-91c7-b47c1d2592af}</UniqueIdentifier>
+    <Filter Include="ANEngine\Renderer\OpenGL">
+      <UniqueIdentifier>{8a743019-d8a9-47f4-9f0c-42ce75476a41}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\ANMath\ANColor">
-      <UniqueIdentifier>{9b406b57-2101-457b-b280-34aad57b2f6b}</UniqueIdentifier>
+    <Filter Include="ANEngine\Renderer\Direct2D">
+      <UniqueIdentifier>{5c14f6d4-adb2-49a1-9258-e1c4c4b3b5c0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\ANRenderer">
-      <UniqueIdentifier>{bad8343e-0695-455c-b199-bab591ff6b31}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ANEngine\ResourcesManager">
-      <UniqueIdentifier>{88d910e8-fce2-476c-8125-82183cdb54be}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ANEngine\ResourcesManager\ANResourceManager">
-      <UniqueIdentifier>{a6830256-e819-46bb-b833-6cb03f931c9c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ANEngine\ResourcesManager\ANUniqueResource">
-      <UniqueIdentifier>{875c400d-9856-4c03-9d9a-13a6b31cc93f}</UniqueIdentifier>
+    <Filter Include="ANEngine\Renderer\Direct3D9">
+      <UniqueIdentifier>{c4cbcc6e-cf07-4458-ad7e-9e8fb3cc0ea7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -87,23 +78,8 @@
     <ClCompile Include="ANengine\ANInput\ANInput.cpp">
       <Filter>ANEngine\ANInput</Filter>
     </ClCompile>
-    <ClCompile Include="ANengine\ANGame\ANGame.cpp">
-      <Filter>ANEngine\ANGame</Filter>
-    </ClCompile>
-    <ClCompile Include="ANengine\ANMath\ANRect\ANRect.cpp">
-      <Filter>ANEngine\ANMath\ANRect</Filter>
-    </ClCompile>
-    <ClCompile Include="ANengine\ANMath\ANColor\ANColor.cpp">
-      <Filter>ANEngine\ANMath\ANColor</Filter>
-    </ClCompile>
-    <ClCompile Include="ANengine\ANRenderer\ANRenderer.cpp">
-      <Filter>ANEngine\ANRenderer</Filter>
-    </ClCompile>
-    <ClCompile Include="ANengine\ResourcesManager\ANResourceManager\ANResourceManager.cpp">
-      <Filter>ANEngine\ResourcesManager\ANResourceManager</Filter>
-    </ClCompile>
-    <ClCompile Include="ANengine\ResourcesManager\ANUniqueResource\ANUniqueResource.cpp">
-      <Filter>ANEngine\ResourcesManager\ANUniqueResource</Filter>
+    <ClCompile Include="ANengine\Renderer\ANRenderer.cpp">
+      <Filter>ANEngine\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -131,26 +107,8 @@
     <ClInclude Include="ANengine\ANInput\ANInput.h">
       <Filter>ANEngine\ANInput</Filter>
     </ClInclude>
-    <ClInclude Include="ANengine\ANGame\ANGame.h">
-      <Filter>ANEngine\ANGame</Filter>
-    </ClInclude>
-    <ClInclude Include="ANengine\ANTypes.h">
-      <Filter>ANEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="ANengine\ANMath\ANRect\ANRect.h">
-      <Filter>ANEngine\ANMath\ANRect</Filter>
-    </ClInclude>
-    <ClInclude Include="ANengine\ANMath\ANColor\ANColor.h">
-      <Filter>ANEngine\ANMath\ANColor</Filter>
-    </ClInclude>
-    <ClInclude Include="ANengine\ANRenderer\ANRenderer.h">
-      <Filter>ANEngine\ANRenderer</Filter>
-    </ClInclude>
-    <ClInclude Include="ANengine\ResourcesManager\ANResourceManager\ANResourceManager.h">
-      <Filter>ANEngine\ResourcesManager\ANResourceManager</Filter>
-    </ClInclude>
-    <ClInclude Include="ANengine\ResourcesManager\ANUniqueResource\ANUniqueResource.h">
-      <Filter>ANEngine\ResourcesManager\ANUniqueResource</Filter>
+    <ClInclude Include="ANengine\Renderer\ANRenderer.h">
+      <Filter>ANEngine\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
