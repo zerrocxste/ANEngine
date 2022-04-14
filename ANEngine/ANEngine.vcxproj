@@ -143,24 +143,35 @@
   <ItemGroup>
     <ClCompile Include="ANEngine.cpp" />
     <ClCompile Include="ANengine\ANCore.cpp" />
+    <ClCompile Include="ANengine\ANGame\ANGame.cpp" />
     <ClCompile Include="ANengine\ANInput\ANInput.cpp" />
+    <ClCompile Include="ANengine\ANMath\ANColor\ANColor.cpp" />
+    <ClCompile Include="ANengine\ANMath\ANRect\ANRect.cpp" />
     <ClCompile Include="ANengine\ANMath\ANVec2\ANVec2.cpp" />
     <ClCompile Include="ANengine\ANMath\ANVec3\ANVec3.cpp" />
     <ClCompile Include="ANengine\ANMemory\ANMemory.cpp" />
+    <ClCompile Include="ANengine\ANRenderer\ANRenderer.cpp" />
     <ClCompile Include="ANengine\ANWindow\ANWindow.cpp" />
     <ClCompile Include="ANengine\Interfaces\ANError\ANError.cpp" />
-    <ClCompile Include="ANengine\Renderer\ANRenderer.cpp" />
+    <ClCompile Include="ANengine\ResourcesManager\ANResourceManager\ANResourceManager.cpp" />
+    <ClCompile Include="ANengine\ResourcesManager\ANUniqueResource\ANUniqueResource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ANengine\ANCore.h" />
     <ClInclude Include="ANengine\ANEngine.h" />
+    <ClInclude Include="ANengine\ANGame\ANGame.h" />
     <ClInclude Include="ANengine\ANInput\ANInput.h" />
+    <ClInclude Include="ANengine\ANMath\ANColor\ANColor.h" />
+    <ClInclude Include="ANengine\ANMath\ANRect\ANRect.h" />
     <ClInclude Include="ANengine\ANMath\ANVec2\ANVec2.h" />
     <ClInclude Include="ANengine\ANMath\ANVec3\ANVec3.h" />
     <ClInclude Include="ANengine\ANMemory\ANMemory.h" />
+    <ClInclude Include="ANengine\ANRenderer\ANRenderer.h" />
+    <ClInclude Include="ANengine\ANTypes.h" />
     <ClInclude Include="ANengine\ANWindow\ANWindow.h" />
     <ClInclude Include="ANengine\Interfaces\ANError\ANError.h" />
-    <ClInclude Include="ANengine\Renderer\ANRenderer.h" />
+    <ClInclude Include="ANengine\ResourcesManager\ANResourceManager\ANResourceManager.h" />
+    <ClInclude Include="ANengine\ResourcesManager\ANUniqueResource\ANUniqueResource.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

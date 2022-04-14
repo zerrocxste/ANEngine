@@ -11,7 +11,7 @@ public:
 
 	anVec2 operator+(anVec2 o);
 	void operator+=(anVec2 o);
-	
+
 	float x, y;
 private:
 

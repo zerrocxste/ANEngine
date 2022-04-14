@@ -2,9 +2,11 @@
 
 ANCore::ANCore()
 {
-	m_Interfaces.m_pANWindow = new ANWindow("Game", anvec2(100.f, 100.f), anvec2(300.f, 300.f), true);
-	m_Interfaces.m_pANInput = new ANInput();
-	m_Interfaces.m_ANRenderer = new ANRenderer(RenderTypes::D3D9);
+	m_EngineComponents.m_pANWindow = ANMemory::GetInstance()->Allocate<ANWindow>(this, "Game", anVec2(100.f, 100.f), anVec2(900.f, 500.f), true);
+	m_EngineComponents.m_pANInput = ANMemory::GetInstance()->Allocate<ANInput>(this);
+	m_EngineComponents.m_ANRenderer = ANMemory::GetInstance()->Allocate<ANRenderer>(this, RenderTypes::D2D);
+	m_EngineComponents.m_pANGame = ANMemory::GetInstance()->Allocate<ANGame>(this);
+	m_EngineComponents.m_pANResourceManager = ANMemory::GetInstance()->Allocate<ANResourceManager>();
 }
 
 ANCore::~ANCore()
@@ -14,20 +16,32 @@ ANCore::~ANCore()
 
 ANWindow* ANCore::GetWindow()
 {
-	assert(this->m_Interfaces.m_pANWindow != nullptr);
-	return this->m_Interfaces.m_pANWindow;
+	assert(this->m_EngineComponents.m_pANWindow != nullptr);
+	return this->m_EngineComponents.m_pANWindow;
 }
 
 ANInput* ANCore::GetInput()
 {
-	assert(this->m_Interfaces.m_pANInput != nullptr);
-	return this->m_Interfaces.m_pANInput;
+	assert(this->m_EngineComponents.m_pANInput != nullptr);
+	return this->m_EngineComponents.m_pANInput;
 }
 
 ANRenderer* ANCore::GetRenderer()
 {
-	assert(this->m_Interfaces.m_ANRenderer != nullptr);
-	return this->m_Interfaces.m_ANRenderer;
+	assert(this->m_EngineComponents.m_ANRenderer != nullptr);
+	return this->m_EngineComponents.m_ANRenderer;
+}
+
+ANGame* ANCore::GetGame()
+{
+	assert(this->m_EngineComponents.m_pANGame != nullptr);
+	return this->m_EngineComponents.m_pANGame;
+}
+
+ANResourceManager* ANCore::GetResourceManager()
+{
+	assert(this->m_EngineComponents.m_pANResourceManager != nullptr);
+	return this->m_EngineComponents.m_pANResourceManager;
 }
 
 bool ANCore::Run()
@@ -47,15 +61,66 @@ bool ANCore::Run()
 		MessageBox(0, r->What(), "Error", MB_ICONERROR | MB_OK);
 		return false;
 	}
+	
+	ANFontID fontStolzLight;
+	
+	if (!r->CreateFontFromFile("StolzLight.ttf", 72.f, &fontStolzLight))
+	{
+		MessageBox(0, "Error loading font", "Error", MB_ICONERROR | MB_OK);
+		return false;
+	}
+
+	ANImageID imageKrolik;
+
+	ANUniqueResource resImageKrolik;
+
+	auto rm = GetResourceManager();
+
+	if (!rm->ReadBinFile("Krolik.png", &resImageKrolik))
+	{
+		MessageBox(0, "Error loading image", "Error", MB_ICONERROR | MB_OK);
+		return false;
+	}
+
+	if (!r->CreateImageFromResource(&resImageKrolik, &imageKrolik))
+	{
+		MessageBox(0, "Error create image", "Error", MB_ICONERROR | MB_OK);
+		return false;
+	}
+
+	resImageKrolik.Free();
 
 	w->WindowShow();
 
-	w->RunWindow();
+	while (w->ProcessWindow())
+	{
+		if (!w->IsAllowRender())
+			continue;
+
+		r->BeginFrame();
+
+		auto ScreenSize = r->GetScreenSize();
+
+		r->DrawImage(imageKrolik, anVec2(0.f, 0.f), anVec2(ScreenSize.x / 2.f, ScreenSize.y / 2.f), 0.5f);
+		r->DrawImage(imageKrolik, anVec2(ScreenSize.x / 2.f, 0.f), anVec2(ScreenSize.x / 2.f, ScreenSize.y / 2.f), 0.5f);
+		r->DrawImage(imageKrolik, anVec2(0.f, ScreenSize.y / 2.f), anVec2(ScreenSize.x / 2.f, ScreenSize.y / 2.f), 0.5f);
+		r->DrawImage(imageKrolik, anVec2(ScreenSize.x / 2.f, ScreenSize.y / 2.f), anVec2(ScreenSize.x / 2.f, ScreenSize.y / 2.f), 0.5f);
+
+		r->TextDraw(u8"Тестовый текст, Hello!", anVec2(50.f, 50.f), anColor::Green(), fontStolzLight);
+
+		auto Size = anVec2(50.f, 50.f);
+		r->DrawRectangle(anVec2(50.f, 200.f), Size, anColor::Green());
+		r->DrawFilledRectangle(anVec2(50.f, 300.f), Size, anColor::Red(), 30.f);
+		r->DrawCircle(anVec2(50.f, 400.f), anColor::Blue(), 50.f);
+		r->DrawFilledCircle(anVec2(50.f, 500.f), anColor::Magenta(), 50.f);
+
+		r->EndFrame();
+	}
 
 	return true;
 }
 
-ANCore* ANCore::GetInstance()
+ANCore* ANCore::CreateEngine()
 {
 	static auto Ptr = new ANCore();
 	return Ptr;

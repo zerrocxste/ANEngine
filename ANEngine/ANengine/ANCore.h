@@ -1,10 +1,12 @@
 #pragma once
 
-struct ANInterfaces
+struct ANComponents
 {
 	ANWindow* m_pANWindow;
 	ANInput* m_pANInput;
 	ANRenderer* m_ANRenderer;
+	ANGame* m_pANGame;
+	ANResourceManager* m_pANResourceManager;
 };
 
 class ANCore
@@ -16,11 +18,13 @@ public:
 	ANWindow* GetWindow();
 	ANInput* GetInput();
 	ANRenderer* GetRenderer();
+	ANGame* GetGame();
+	ANResourceManager* GetResourceManager();
 
 	bool Run();
 
-	static ANCore* GetInstance();
+	static ANCore* CreateEngine();
 private:
-	ANInterfaces m_Interfaces;
+	ANComponents m_EngineComponents;
 };
 
