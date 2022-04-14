@@ -6,7 +6,6 @@ struct ANWindowData
 	bool m_bHasWindowFrame;
 	anVec2 m_vWindowPosition;
 	anVec2 m_vWindowSize;
-	WNDCLASS m_WndCls;
 };
 
 class ANWindow : public IANError
@@ -20,13 +19,14 @@ public:
 	bool ProcessWindow();
 	bool IsAllowRender();
 
-	bool RunWindow();
-
 	void WindowShow();
 	void WindowMinimize();
 	void WindowHide();
 
 	HWND GetHWND();
+
+	static bool bWindowClassIsCreated;
+	static WNDCLASS WndClass;
 
 private:
 	ANCore* m_pCore;
@@ -38,10 +38,8 @@ private:
 
 	bool m_bAllowRender;
 
-	bool CreateWindowClass(ANWindowData* wd);
+	bool CreateWindowClass();
 	bool CreateNewWindow(ANWindowData* wd);
-
-	ANImageID InitImages(const char* pszPath);
 
 	friend LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 };

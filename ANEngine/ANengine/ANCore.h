@@ -12,8 +12,14 @@ struct ANComponents
 class ANCore
 {
 public:
-	ANCore();
+	ANCore(RenderTypes RenderType,
+		const char* pszWindowName,
+		anVec2 vWindowPosition,
+		anVec2 vWindowSize,
+		bool bHasWindowFrame);
 	~ANCore();
+
+	bool Initialize();
 
 	ANWindow* GetWindow();
 	ANInput* GetInput();
@@ -22,8 +28,6 @@ public:
 	ANResourceManager* GetResourceManager();
 
 	bool Run();
-
-	static ANCore* CreateEngine();
 private:
 	ANComponents m_EngineComponents;
 };

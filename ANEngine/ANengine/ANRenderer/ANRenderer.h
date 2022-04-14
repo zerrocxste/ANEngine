@@ -30,6 +30,8 @@ public:
 private:
 	ANCore* m_pCore;
 
+	HWND hWnd;
+
 	ANRendererFuncionsTable* m_pANRendererFuncionsTable;
 
 	RenderTypes m_RenderType;
@@ -42,12 +44,3 @@ private:
 
 	const char* RenderTypeToStr(RenderTypes RenderType);
 };
-
-/*TEST*/
-struct D2DOutInformation
-{
-	ID2D1Factory* m_pFactory;
-	ID2D1HwndRenderTarget* m_pRenderTarget;
-};
-
-extern D2DOutInformation* g_pD2DOutInformation;

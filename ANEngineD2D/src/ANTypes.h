@@ -3,7 +3,7 @@
 typedef void* ANImageID;
 typedef void* ANFontID;
 
-using fRenderInitialize = bool(__stdcall*)(HINSTANCE hInstance, HWND hWnd, void* pInformationOut);
+using fRenderInitialize = bool(__stdcall*)(HINSTANCE hInstance, HWND hWnd, void* pReversed);
 using fGetRendererFunctionTable = void* (__stdcall*)();
 
 enum RenderTypes
@@ -24,16 +24,16 @@ enum RGBA
 
 struct ANRendererFuncionsTable
 {
-	bool(__stdcall* BeginFrame)();
-	bool(__stdcall* EndFrame)();
-	bool(__stdcall* ResetScene)(WPARAM wParam, LPARAM lParam);
-	bool(__stdcall* GetScreenSize)(anVec2* pAnvec2Out);
-	bool(__stdcall* CreateImageFromMemory)(void* pImageSrc, std::uint32_t iImageSize, ANImageID* pImageIDPtr);
-	bool(__stdcall* DrawImage)(ANImageID pImageID, anRect Pos, float Opacity);
-	bool(__stdcall* DrawRectangle)(anRect Pos, anColor Color, float Rounding);
-	bool(__stdcall* DrawFilledRectangle)(anRect Pos, anColor Color, float Rounding);
-	bool(__stdcall* DrawCircle)(anVec2 Pos, anColor Color, float Radius);
-	bool(__stdcall* DrawFilledCircle)(anVec2 Pos, anColor Color, float Radius);
+	bool(__stdcall* BeginFrame)(HWND hWnd);
+	bool(__stdcall* EndFrame)(HWND hWnd);
+	bool(__stdcall* ResetScene)(HWND hWnd, WPARAM wParam, LPARAM lParam);
+	bool(__stdcall* GetScreenSize)(HWND hWnd, anVec2* pAnvec2Out);
+	bool(__stdcall* CreateImageFromMemory)(HWND hWnd, void* pImageSrc, std::uint32_t iImageSize, ANImageID* pImageIDPtr);
+	bool(__stdcall* DrawImage)(HWND hWnd, ANImageID pImageID, anRect Pos, float Opacity);
+	bool(__stdcall* DrawRectangle)(HWND hWnd, anRect Pos, anColor Color, float Rounding);
+	bool(__stdcall* DrawFilledRectangle)(HWND hWnd, anRect Pos, anColor Color, float Rounding);
+	bool(__stdcall* DrawCircle)(HWND hWnd, anVec2 Pos, anColor Color, float Radius);
+	bool(__stdcall* DrawFilledCircle)(HWND hWnd, anVec2 Pos, anColor Color, float Radius);
 	bool(__stdcall* CreateFontFromFile)(const char* pszPath, float FontSize, ANFontID* pFontID);
-	bool(__stdcall* TextDraw)(const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont);
+	bool(__stdcall* TextDraw)(HWND hWnd, const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont);
 };

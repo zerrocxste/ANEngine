@@ -1,7 +1,5 @@
 #include "../ANEngine.h"
 
-D2DOutInformation* g_pD2DOutInformation;
-
 ANRenderer::ANRenderer(ANCore* pCore, RenderTypes RenderType) :
 	IANError(),
 	m_pCore(pCore),
@@ -30,6 +28,8 @@ bool ANRenderer::Initalize(HWND hWnd)
 
 	if (!InvokeInitFunctionTable())
 		return false;
+
+	this->m_hWnd = this->m_pCore->GetWindow()->GetHWND();
 
 	return true;
 }
@@ -68,9 +68,9 @@ bool ANRenderer::InvokeInitRender()
 		return false;
 	}
 
-	auto RenderInitStatus = pfInitializeRenderer(GetModuleHandle(nullptr), this->m_hWnd, &g_pD2DOutInformation);
+	auto RenderInitStatus = pfInitializeRenderer(GetModuleHandle(nullptr), this->m_hWnd, nullptr);
 
-	if (!RenderInitStatus || !g_pD2DOutInformation)
+	if (!RenderInitStatus)
 	{
 		this->SetError("%s() -> Initialize render failure", __FUNCTION__);
 		return false;
@@ -111,24 +111,24 @@ const char* ANRenderer::RenderTypeToStr(RenderTypes RenderType)
 
 bool ANRenderer::BeginFrame()
 {
-	return this->m_pANRendererFuncionsTable->BeginFrame();
+	return this->m_pANRendererFuncionsTable->BeginFrame(this->m_hWnd);
 }
 
 bool ANRenderer::EndFrame()
 {
-	return this->m_pANRendererFuncionsTable->EndFrame();
+	return this->m_pANRendererFuncionsTable->EndFrame(this->m_hWnd);
 }
 
 bool ANRenderer::ResetScene(WPARAM wParam, LPARAM lParam)
 {
-	return this->m_pANRendererFuncionsTable->ResetScene(wParam, lParam);
+	return this->m_pANRendererFuncionsTable->ResetScene(this->m_hWnd, wParam, lParam);
 }
 
 anVec2 ANRenderer::GetScreenSize()
 {
 	anVec2 ScreenSize;
 
-	this->m_pANRendererFuncionsTable->GetScreenSize(&ScreenSize);
+	this->m_pANRendererFuncionsTable->GetScreenSize(this->m_hWnd, &ScreenSize);
 
 	return ScreenSize;
 }
@@ -140,7 +140,7 @@ anRect ANRenderer::InfiniteRect()
 
 bool ANRenderer::CreateImageFromMemory(void* pImageSrc, std::uint32_t iImageSize, ANImageID* pImageIDPtr)
 {
-	return this->m_pANRendererFuncionsTable->CreateImageFromMemory(pImageSrc, iImageSize, pImageIDPtr);
+	return this->m_pANRendererFuncionsTable->CreateImageFromMemory(this->m_hWnd, pImageSrc, iImageSize, pImageIDPtr);
 }
 
 bool ANRenderer::CreateImageFromResource(ANUniqueResource* pResource, ANImageID* pImageIDPtr)
@@ -148,47 +148,47 @@ bool ANRenderer::CreateImageFromResource(ANUniqueResource* pResource, ANImageID*
 	if (!pResource->ResourceIsDone())
 		return false;
 
-	return this->m_pANRendererFuncionsTable->CreateImageFromMemory(pResource->GetResourceLocation(), pResource->GetResourceSize(), pImageIDPtr);
+	return this->m_pANRendererFuncionsTable->CreateImageFromMemory(this->m_hWnd, pResource->GetResourceLocation(), pResource->GetResourceSize(), pImageIDPtr);
 }
 
 bool ANRenderer::DrawImage(ANImageID pImageID, anRect Pos, float Opacity)
 {
-	return this->m_pANRendererFuncionsTable->DrawImage(pImageID, Pos, Opacity);
+	return this->m_pANRendererFuncionsTable->DrawImage(this->m_hWnd, pImageID, Pos, Opacity);
 }
 
 bool ANRenderer::DrawRectangle(anRect Pos, anColor Color, float Rounding)
 {
-	return this->m_pANRendererFuncionsTable->DrawRectangle(Pos, Color, Rounding);
+	return this->m_pANRendererFuncionsTable->DrawRectangle(this->m_hWnd, Pos, Color, Rounding);
 }
 
 bool ANRenderer::DrawFilledRectangle(anRect Pos, anColor Color, float Rounding)
 {
-	return this->m_pANRendererFuncionsTable->DrawFilledRectangle(Pos, Color, Rounding);
+	return this->m_pANRendererFuncionsTable->DrawFilledRectangle(this->m_hWnd, Pos, Color, Rounding);
 }
 
 bool ANRenderer::DrawImage(ANImageID pImageID, anVec2 Pos, anVec2 Size, float Opacity)
 {
-	return this->m_pANRendererFuncionsTable->DrawImage(pImageID, anRect(Pos, Pos + Size), Opacity);
+	return this->m_pANRendererFuncionsTable->DrawImage(this->m_hWnd, pImageID, anRect(Pos, Pos + Size), Opacity);
 }
 
 bool ANRenderer::DrawRectangle(anVec2 Pos, anVec2 Size, anColor Color, float Rounding)
 {
-	return this->m_pANRendererFuncionsTable->DrawRectangle(anRect(Pos, Pos + Size), Color, Rounding);
+	return this->m_pANRendererFuncionsTable->DrawRectangle(this->m_hWnd, anRect(Pos, Pos + Size), Color, Rounding);
 }
 
 bool ANRenderer::DrawFilledRectangle(anVec2 Pos, anVec2 Size, anColor Color, float Rounding)
 {
-	return this->m_pANRendererFuncionsTable->DrawFilledRectangle(anRect(Pos, Pos + Size), Color, Rounding);
+	return this->m_pANRendererFuncionsTable->DrawFilledRectangle(this->m_hWnd, anRect(Pos, Pos + Size), Color, Rounding);
 }
 
 bool ANRenderer::DrawCircle(anVec2 Pos, anColor Color, float Radius)
 {
-	return this->m_pANRendererFuncionsTable->DrawCircle(Pos, Color, Radius);
+	return this->m_pANRendererFuncionsTable->DrawCircle(this->m_hWnd, Pos, Color, Radius);
 }
 
 bool ANRenderer::DrawFilledCircle(anVec2 Pos, anColor Color, float Radius)
 {
-	return this->m_pANRendererFuncionsTable->DrawFilledCircle(Pos, Color, Radius);
+	return this->m_pANRendererFuncionsTable->DrawFilledCircle(this->m_hWnd, Pos, Color, Radius);
 }
 
 bool ANRenderer::CreateFontFromFile(const char* pszPath, float FontSize, ANFontID* pFontID)
@@ -198,5 +198,5 @@ bool ANRenderer::CreateFontFromFile(const char* pszPath, float FontSize, ANFontI
 
 bool ANRenderer::TextDraw(const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont)
 {
-	return this->m_pANRendererFuncionsTable->TextDraw(pszText, Pos, Color, pFont);
+	return this->m_pANRendererFuncionsTable->TextDraw(this->m_hWnd, pszText, Pos, Color, pFont);
 }

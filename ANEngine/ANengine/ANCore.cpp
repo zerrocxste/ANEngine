@@ -1,10 +1,15 @@
 #include "ANEngine.h"
 
-ANCore::ANCore()
+ANCore::ANCore(
+	RenderTypes RenderType, 
+	const char* pszWindowName,
+	anVec2 vWindowPosition, 
+	anVec2 vWindowSize, 
+	bool bHasWindowFrame)
 {
-	m_EngineComponents.m_pANWindow = ANMemory::GetInstance()->Allocate<ANWindow>(this, "Game", anVec2(100.f, 100.f), anVec2(900.f, 500.f), true);
+	m_EngineComponents.m_pANWindow = ANMemory::GetInstance()->Allocate<ANWindow>(this, pszWindowName, vWindowPosition, vWindowSize, bHasWindowFrame);
 	m_EngineComponents.m_pANInput = ANMemory::GetInstance()->Allocate<ANInput>(this);
-	m_EngineComponents.m_ANRenderer = ANMemory::GetInstance()->Allocate<ANRenderer>(this, RenderTypes::D2D);
+	m_EngineComponents.m_ANRenderer = ANMemory::GetInstance()->Allocate<ANRenderer>(this, RenderType);
 	m_EngineComponents.m_pANGame = ANMemory::GetInstance()->Allocate<ANGame>(this);
 	m_EngineComponents.m_pANResourceManager = ANMemory::GetInstance()->Allocate<ANResourceManager>();
 }
@@ -12,6 +17,11 @@ ANCore::ANCore()
 ANCore::~ANCore()
 {
 
+}
+
+bool ANCore::Initialize()
+{
+	
 }
 
 ANWindow* ANCore::GetWindow()
@@ -118,10 +128,4 @@ bool ANCore::Run()
 	}
 
 	return true;
-}
-
-ANCore* ANCore::CreateEngine()
-{
-	static auto Ptr = new ANCore();
-	return Ptr;
 }

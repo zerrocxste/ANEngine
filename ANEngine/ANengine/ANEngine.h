@@ -10,15 +10,6 @@
 #include <fstream>
 #include <direct.h>
 
-#include <d2d1.h>
-#pragma comment (lib, "d2d1.lib")
-
-//#include <dwrite.h>
-//#pragma comment (lib, "dwrite.lib")
-//
-//#include <wincodec.h>
-//#pragma comment (lib, "windowscodecs.lib")
-
 #include "Interfaces/ANError/ANError.h"
 
 #include "ANMemory/ANMemory.h"

@@ -2,35 +2,35 @@
 
 constexpr auto MODULE_DESC = "AlterNative engine (ANEngine) D2D Renderer module. Timestamp: " __DATE__;
 
-struct D2DOutInformation
+struct D2DInterfaces
 {
 	ID2D1Factory* m_pFactory;
-	ID2D1HwndRenderTarget* m_pRenderTarget;
 	IWICImagingFactory* m_pWICFactory;
 	IDWriteFactory* pDWriteFactory;
 };
-D2DOutInformation g_D2DOutInformation;
 
 struct D2DRenderInformation
 {
+	ID2D1HwndRenderTarget* m_pRenderTarget;
 	ID2D1SolidColorBrush* m_pColorBrush;
 };
-D2DRenderInformation g_RenderInformation;
 
+D2DInterfaces g_D2DInterfaces;
+std::map<HWND, D2DRenderInformation> g_mWindowContextRenderInformation;
 ANRendererFuncionsTable g_ANRendererFuncionsTable;
 
-extern "C" __declspec(dllexport) bool __stdcall BeginFrame();
-extern "C" __declspec(dllexport) bool __stdcall EndFrame();
-extern "C" __declspec(dllexport) bool __stdcall ResetScene(WPARAM wParam, LPARAM lParam);
-extern "C" __declspec(dllexport) bool __stdcall GetScreenSize(anVec2 * pAnvec2Out);
-extern "C" __declspec(dllexport) bool __stdcall CreateImageFromMemory(void* pImageSrc, std::uint32_t iImageSize, ANImageID * pImageIDPtr);
-extern "C" __declspec(dllexport) bool __stdcall DrawImage(ANImageID pImageID, anRect Pos, float Opacity);
-extern "C" __declspec(dllexport) bool __stdcall DrawRectangle(anRect Pos, anColor Color, float Rounding);
-extern "C" __declspec(dllexport) bool __stdcall DrawFilledRectangle(anRect Pos, anColor Color, float Rounding);
-extern "C" __declspec(dllexport) bool __stdcall DrawCircle(anVec2 Pos, anColor Color, float Radius);
-extern "C" __declspec(dllexport) bool __stdcall DrawFilledCircle(anVec2 Pos, anColor Color, float Radius);
+extern "C" __declspec(dllexport) bool __stdcall BeginFrame(HWND hWnd);
+extern "C" __declspec(dllexport) bool __stdcall EndFrame(HWND hWnd);
+extern "C" __declspec(dllexport) bool __stdcall ResetScene(HWND hWnd, WPARAM wParam, LPARAM lParam);
+extern "C" __declspec(dllexport) bool __stdcall GetScreenSize(HWND hWnd, anVec2 * pAnvec2Out);
+extern "C" __declspec(dllexport) bool __stdcall CreateImageFromMemory(HWND hWnd, void* pImageSrc, std::uint32_t iImageSize, ANImageID * pImageIDPtr);
+extern "C" __declspec(dllexport) bool __stdcall DrawImage(HWND hWnd, ANImageID pImageID, anRect Pos, float Opacity);
+extern "C" __declspec(dllexport) bool __stdcall DrawRectangle(HWND hWnd, anRect Pos, anColor Color, float Rounding);
+extern "C" __declspec(dllexport) bool __stdcall DrawFilledRectangle(HWND hWnd, anRect Pos, anColor Color, float Rounding);
+extern "C" __declspec(dllexport) bool __stdcall DrawCircle(HWND hWnd, anVec2 Pos, anColor Color, float Radius);
+extern "C" __declspec(dllexport) bool __stdcall DrawFilledCircle(HWND hWnd, anVec2 Pos, anColor Color, float Radius);
 extern "C" __declspec(dllexport) bool __stdcall CreateFontFromFile(const char* pszPath, float FontSize, ANFontID * pFontID);
-extern "C" __declspec(dllexport) bool __stdcall TextDraw(const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont);
+extern "C" __declspec(dllexport) bool __stdcall TextDraw(HWND hWnd, const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont);
 
 bool CreateBitmapFromMemory(ID2D1RenderTarget* pRenderTarget, IWICImagingFactory* pWICFactory, void* pSource, std::uint32_t iSourceSize, ID2D1Bitmap** pOutBitmap)
 {
@@ -73,30 +73,39 @@ bool CreateBitmapFromMemory(ID2D1RenderTarget* pRenderTarget, IWICImagingFactory
 
 bool CreateD2D1Factory()
 {
-	return SUCCEEDED(D2D1CreateFactory(D2D1_FACTORY_TYPE::D2D1_FACTORY_TYPE_SINGLE_THREADED, &g_D2DOutInformation.m_pFactory));
-}
+	if (g_D2DInterfaces.m_pFactory != nullptr)
+		return true;
 
-bool CreateRenderTarget(HWND hWnd)
-{
-	return SUCCEEDED(g_D2DOutInformation.m_pFactory->CreateHwndRenderTarget(
-		D2D1::RenderTargetProperties(),
-		D2D1::HwndRenderTargetProperties(hWnd, D2D1::SizeU()),
-		&g_D2DOutInformation.m_pRenderTarget));
+	return SUCCEEDED(D2D1CreateFactory(D2D1_FACTORY_TYPE::D2D1_FACTORY_TYPE_SINGLE_THREADED, &g_D2DInterfaces.m_pFactory));
 }
 
 bool CreateWICFactory()
 {
-	return SUCCEEDED(CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_IWICImagingFactory, (void**)&g_D2DOutInformation.m_pWICFactory));
+	if (g_D2DInterfaces.m_pWICFactory != nullptr)
+		return true;
+
+	return SUCCEEDED(CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_IWICImagingFactory, (void**)&g_D2DInterfaces.m_pWICFactory));
 }
 
 bool CreateDirectWriteFactory()
 {
-	return SUCCEEDED(DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(decltype(g_D2DOutInformation.pDWriteFactory)), (IUnknown**)&g_D2DOutInformation.pDWriteFactory));
+	if (g_D2DInterfaces.pDWriteFactory != nullptr)
+		return true;
+
+	return SUCCEEDED(DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(decltype(g_D2DInterfaces.pDWriteFactory)), (IUnknown**)&g_D2DInterfaces.pDWriteFactory));
 }
 
-bool CreateGlobalBrush()
+bool CreateRenderTarget(HWND hWnd)
 {
-	return SUCCEEDED(g_D2DOutInformation.m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black), &g_RenderInformation.m_pColorBrush));
+	return SUCCEEDED(g_D2DInterfaces.m_pFactory->CreateHwndRenderTarget(
+		D2D1::RenderTargetProperties(),
+		D2D1::HwndRenderTargetProperties(hWnd, D2D1::SizeU()),
+		&g_mWindowContextRenderInformation[hWnd].m_pRenderTarget));
+}
+
+bool CreateGlobalBrush(HWND hWnd)
+{
+	return SUCCEEDED(g_mWindowContextRenderInformation[hWnd].m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black), &g_mWindowContextRenderInformation[hWnd].m_pColorBrush));
 }
 
 bool CreateRendererFunctionsTable()
@@ -117,19 +126,16 @@ bool CreateRendererFunctionsTable()
 	return true;
 }
 
-void __forceinline SetBrushColor(anColor Color)
+void __forceinline SetBrushColor(HWND hWnd, anColor Color)
 {
-	g_RenderInformation.m_pColorBrush->SetColor(D2D1::ColorF(Color[RED], Color[GREEN], Color[BLUE], Color[ALPHA]));
+	g_mWindowContextRenderInformation[hWnd].m_pColorBrush->SetColor(D2D1::ColorF(Color[RED], Color[GREEN], Color[BLUE], Color[ALPHA]));
 }
 
-extern "C" __declspec(dllexport) bool __stdcall InitializeRenderer(HINSTANCE hInstance, HWND hWnd, void* pInformationOut)
+extern "C" __declspec(dllexport) bool __stdcall InitializeRenderer(HINSTANCE hInstance, HWND hWnd, void* pReversed)
 {
 	CoInitialize(nullptr);
 
 	if (!CreateD2D1Factory())
-		return false;
-
-	if (!CreateRenderTarget(hWnd))
 		return false;
 
 	if (!CreateWICFactory())
@@ -138,14 +144,14 @@ extern "C" __declspec(dllexport) bool __stdcall InitializeRenderer(HINSTANCE hIn
 	if (!CreateDirectWriteFactory())
 		return false;
 
-	if (!CreateGlobalBrush())
+	if (!CreateRenderTarget(hWnd))
+		return false;
+
+	if (!CreateGlobalBrush(hWnd))
 		return false;
 
 	if (!CreateRendererFunctionsTable())
 		return false;
-
-	if (pInformationOut)
-		*(void**)pInformationOut = &g_D2DOutInformation;
 
 	return true;
 }
@@ -155,47 +161,47 @@ extern "C" __declspec(dllexport) void* __stdcall GetRendererFunctionsTable()
 	return &g_ANRendererFuncionsTable;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall BeginFrame()
+extern "C" __declspec(dllexport) bool __stdcall BeginFrame(HWND hWnd)
 {
-	if (!g_D2DOutInformation.m_pRenderTarget)
+	if (!g_mWindowContextRenderInformation[hWnd].m_pRenderTarget)
 		return false;
 
-	g_D2DOutInformation.m_pRenderTarget->BeginDraw();
-	g_D2DOutInformation.m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
-	g_D2DOutInformation.m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
+	g_mWindowContextRenderInformation[hWnd].m_pRenderTarget->BeginDraw();
+	g_mWindowContextRenderInformation[hWnd].m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+	g_mWindowContextRenderInformation[hWnd].m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall EndFrame()
+extern "C" __declspec(dllexport) bool __stdcall EndFrame(HWND hWnd)
 {
-	if (!g_D2DOutInformation.m_pRenderTarget)
+	if (!g_mWindowContextRenderInformation[hWnd].m_pRenderTarget)
 		return false;
 
-	g_D2DOutInformation.m_pRenderTarget->EndDraw();
+	g_mWindowContextRenderInformation[hWnd].m_pRenderTarget->EndDraw();
 
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall ResetScene(WPARAM wParam, LPARAM lParam)
+extern "C" __declspec(dllexport) bool __stdcall ResetScene(HWND hWnd, WPARAM wParam, LPARAM lParam)
 {
-	if (!g_D2DOutInformation.m_pRenderTarget)
+	if (!g_mWindowContextRenderInformation[hWnd].m_pRenderTarget)
 		return false;
 
 	if (wParam == SIZE_MINIMIZED)
 		return false;
 
-	g_D2DOutInformation.m_pRenderTarget->Resize(D2D1::SizeU(LOWORD(lParam), HIWORD(lParam)));
+	g_mWindowContextRenderInformation[hWnd].m_pRenderTarget->Resize(D2D1::SizeU(LOWORD(lParam), HIWORD(lParam)));
 
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall GetScreenSize(anVec2 * pAnvec2Out)
+extern "C" __declspec(dllexport) bool __stdcall GetScreenSize(HWND hWnd, anVec2 * pAnvec2Out)
 {
-	if (!pAnvec2Out || !g_D2DOutInformation.m_pRenderTarget)
+	if (!pAnvec2Out || !g_mWindowContextRenderInformation[hWnd].m_pRenderTarget)
 		return false;
 
-	auto ScreenSize = g_D2DOutInformation.m_pRenderTarget->GetSize();
+	auto ScreenSize = g_mWindowContextRenderInformation[hWnd].m_pRenderTarget->GetSize();
 
 	pAnvec2Out->x = ScreenSize.width;
 	pAnvec2Out->y = ScreenSize.height;
@@ -203,14 +209,14 @@ extern "C" __declspec(dllexport) bool __stdcall GetScreenSize(anVec2 * pAnvec2Ou
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall CreateImageFromMemory(void* pImageSrc, std::uint32_t iImageSize, ANImageID * pImageIDPtr)
+extern "C" __declspec(dllexport) bool __stdcall CreateImageFromMemory(HWND hWnd, void* pImageSrc, std::uint32_t iImageSize, ANImageID * pImageIDPtr)
 {
-	if (!g_D2DOutInformation.m_pRenderTarget)
+	if (!g_mWindowContextRenderInformation[hWnd].m_pRenderTarget)
 		return false;
 
 	ID2D1Bitmap* pD2D1Bitmap = nullptr;
 
-	if (!CreateBitmapFromMemory(g_D2DOutInformation.m_pRenderTarget, g_D2DOutInformation.m_pWICFactory, pImageSrc, iImageSize, &pD2D1Bitmap))
+	if (!CreateBitmapFromMemory(g_mWindowContextRenderInformation[hWnd].m_pRenderTarget, g_D2DInterfaces.m_pWICFactory, pImageSrc, iImageSize, &pD2D1Bitmap))
 		return false;
 
 	*pImageIDPtr = (ANImageID)pD2D1Bitmap;
@@ -218,74 +224,74 @@ extern "C" __declspec(dllexport) bool __stdcall CreateImageFromMemory(void* pIma
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall DrawImage(ANImageID pImageID, anRect Pos, float Opacity)
+extern "C" __declspec(dllexport) bool __stdcall DrawImage(HWND hWnd, ANImageID pImageID, anRect Pos, float Opacity)
 {
-	if (!g_D2DOutInformation.m_pRenderTarget)
+	if (!g_mWindowContextRenderInformation[hWnd].m_pRenderTarget)
 		return false;
 
-	g_D2DOutInformation.m_pRenderTarget->DrawBitmap((ID2D1Bitmap*)pImageID, D2D1::RectF(Pos.first.x, Pos.first.y, Pos.second.x, Pos.second.y), Opacity);
+	g_mWindowContextRenderInformation[hWnd].m_pRenderTarget->DrawBitmap((ID2D1Bitmap*)pImageID, D2D1::RectF(Pos.first.x, Pos.first.y, Pos.second.x, Pos.second.y), Opacity);
 
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall DrawRectangle(anRect Pos, anColor Color, float Rounding)
+extern "C" __declspec(dllexport) bool __stdcall DrawRectangle(HWND hWnd, anRect Pos, anColor Color, float Rounding)
 {
-	if (!g_D2DOutInformation.m_pRenderTarget)
+	if (!g_mWindowContextRenderInformation[hWnd].m_pRenderTarget)
 		return false;
 
-	SetBrushColor(Color);
+	SetBrushColor(hWnd, Color);
 
 	auto Rect = D2D1::RectF(Pos.first.x, Pos.first.y, Pos.second.x, Pos.second.y);
 
 	if (Rounding > 0.f)
-		g_D2DOutInformation.m_pRenderTarget->DrawRectangle(Rect, g_RenderInformation.m_pColorBrush);
+		g_mWindowContextRenderInformation[hWnd].m_pRenderTarget->DrawRectangle(Rect, g_mWindowContextRenderInformation[hWnd].m_pColorBrush);
 	else
-		g_D2DOutInformation.m_pRenderTarget->DrawRoundedRectangle(D2D1::RoundedRect(Rect, Rounding, Rounding), g_RenderInformation.m_pColorBrush);
+		g_mWindowContextRenderInformation[hWnd].m_pRenderTarget->DrawRoundedRectangle(D2D1::RoundedRect(Rect, Rounding, Rounding), g_mWindowContextRenderInformation[hWnd].m_pColorBrush);
 
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall DrawFilledRectangle(anRect Pos, anColor Color, float Rounding)
+extern "C" __declspec(dllexport) bool __stdcall DrawFilledRectangle(HWND hWnd, anRect Pos, anColor Color, float Rounding)
 {
-	if (!g_D2DOutInformation.m_pRenderTarget)
+	if (!g_mWindowContextRenderInformation[hWnd].m_pRenderTarget)
 		return false;
 
-	SetBrushColor(Color);
+	SetBrushColor(hWnd, Color);
 
 	auto Rect = D2D1::RectF(Pos.first.x, Pos.first.y, Pos.second.x, Pos.second.y);
 
 	if (Rounding > 0.f)
-		g_D2DOutInformation.m_pRenderTarget->FillRectangle(Rect, g_RenderInformation.m_pColorBrush);
+		g_mWindowContextRenderInformation[hWnd].m_pRenderTarget->FillRectangle(Rect, g_mWindowContextRenderInformation[hWnd].m_pColorBrush);
 	else
-		g_D2DOutInformation.m_pRenderTarget->FillRoundedRectangle(D2D1::RoundedRect(Rect, Rounding, Rounding), g_RenderInformation.m_pColorBrush);
+		g_mWindowContextRenderInformation[hWnd].m_pRenderTarget->FillRoundedRectangle(D2D1::RoundedRect(Rect, Rounding, Rounding), g_mWindowContextRenderInformation[hWnd].m_pColorBrush);
 
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall DrawCircle(anVec2 Pos, anColor Color, float Radius)
+extern "C" __declspec(dllexport) bool __stdcall DrawCircle(HWND hWnd, anVec2 Pos, anColor Color, float Radius)
 {
-	if (!g_D2DOutInformation.m_pRenderTarget)
+	if (!g_mWindowContextRenderInformation[hWnd].m_pRenderTarget)
 		return false;
 
-	SetBrushColor(Color);
+	SetBrushColor(hWnd, Color);
 
 	Radius /= 2.f;
 
-	g_D2DOutInformation.m_pRenderTarget->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(Pos.x + Radius, Pos.y + Radius), Radius, Radius), g_RenderInformation.m_pColorBrush);
+	g_mWindowContextRenderInformation[hWnd].m_pRenderTarget->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(Pos.x + Radius, Pos.y + Radius), Radius, Radius), g_mWindowContextRenderInformation[hWnd].m_pColorBrush);
 
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall DrawFilledCircle(anVec2 Pos, anColor Color, float Radius)
+extern "C" __declspec(dllexport) bool __stdcall DrawFilledCircle(HWND hWnd, anVec2 Pos, anColor Color, float Radius)
 {
-	if (!g_D2DOutInformation.m_pRenderTarget)
+	if (!g_mWindowContextRenderInformation[hWnd].m_pRenderTarget)
 		return false;
 
-	SetBrushColor(Color);
+	SetBrushColor(hWnd, Color);
 
 	Radius /= 2.f;
 
-	g_D2DOutInformation.m_pRenderTarget->FillEllipse(D2D1::Ellipse(D2D1::Point2F(Pos.x + Radius, Pos.y + Radius), Radius, Radius), g_RenderInformation.m_pColorBrush);
+	g_mWindowContextRenderInformation[hWnd].m_pRenderTarget->FillEllipse(D2D1::Ellipse(D2D1::Point2F(Pos.x + Radius, Pos.y + Radius), Radius, Radius), g_mWindowContextRenderInformation[hWnd].m_pColorBrush);
 
 	return true;
 }
@@ -432,10 +438,10 @@ extern "C" __declspec(dllexport) bool __stdcall CreateFontFromFile(const char* p
 	if (!pFontLoader)
 		goto failed;
 
-	if (FAILED(g_D2DOutInformation.pDWriteFactory->RegisterFontCollectionLoader(pFontLoader)))
+	if (FAILED(g_D2DInterfaces.pDWriteFactory->RegisterFontCollectionLoader(pFontLoader)))
 		goto failed;
 
-	if (FAILED(g_D2DOutInformation.pDWriteFactory->CreateCustomFontCollection(pFontLoader, pwszPath, sizeof(void*), &pFontCollection)))
+	if (FAILED(g_D2DInterfaces.pDWriteFactory->CreateCustomFontCollection(pFontLoader, pwszPath, sizeof(void*), &pFontCollection)))
 		goto failed;
 
 	if (FAILED(pFontCollection->GetFontFamily(0, &pFontFamily)))
@@ -454,7 +460,7 @@ extern "C" __declspec(dllexport) bool __stdcall CreateFontFromFile(const char* p
 	if (FAILED(pFamilyNames->GetString(0, pwszLocalName, Length)))
 		goto failed;
 
-	if (FAILED(g_D2DOutInformation.pDWriteFactory->CreateTextFormat(pwszLocalName, pFontCollection, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, FontSize, L"", &pTextFormat)))
+	if (FAILED(g_D2DInterfaces.pDWriteFactory->CreateTextFormat(pwszLocalName, pFontCollection, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, FontSize, L"", &pTextFormat)))
 		goto failed;
 
 	*pFontID = pTextFormat;
@@ -472,7 +478,7 @@ failed:
 	return ret;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall TextDraw(const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont)
+extern "C" __declspec(dllexport) bool __stdcall TextDraw(HWND hWnd, const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont)
 {
 	auto StrLengthText = strlen(pszText) + 1;
 
@@ -487,9 +493,12 @@ extern "C" __declspec(dllexport) bool __stdcall TextDraw(const char* pszText, an
 		return false;
 	}
 
-	SetBrushColor(Color);
+	SetBrushColor(hWnd, Color);
 
-	g_D2DOutInformation.m_pRenderTarget->DrawTextA(pwszText, wcslen(pwszText), (IDWriteTextFormat*)pFont, D2D1::RectF(Pos.x, Pos.y, 3.402823466e+38F, 3.402823466e+38F), g_RenderInformation.m_pColorBrush);
+	g_mWindowContextRenderInformation[hWnd].m_pRenderTarget->DrawTextA(pwszText, wcslen(pwszText), 
+		(IDWriteTextFormat*)pFont,
+		D2D1::RectF(Pos.x, Pos.y, 3.402823466e+38F, 3.402823466e+38F), 
+		g_mWindowContextRenderInformation[hWnd].m_pColorBrush);
 
 	delete[] pwszText;
 
