@@ -25,7 +25,6 @@ public:
 
 	HWND GetHWND();
 
-	static bool bWindowClassIsCreated;
 	static WNDCLASS WndClass;
 
 private:

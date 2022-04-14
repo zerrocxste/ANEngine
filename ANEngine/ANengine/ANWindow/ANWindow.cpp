@@ -1,6 +1,5 @@
 #include "../ANEngine.h"
 
-bool ANWindow::bWindowClassIsCreated = false;
 WNDCLASS ANWindow::WndClass{};
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
@@ -66,12 +65,7 @@ bool ANWindow::CreateWindowClass()
 	ANWindow::WndClass.lpszMenuName = nullptr;
 	ANWindow::WndClass.cbWndExtra = 0;
 
-	auto ret = (bool)RegisterClass(&ANWindow::WndClass);
-
-	if (ret)
-		ANWindow::bWindowClassIsCreated = true;
-
-	return ret;
+	return (bool)RegisterClass(&ANWindow::WndClass);
 }
 
 bool ANWindow::CreateNewWindow(ANWindowData* pwd)
@@ -90,16 +84,9 @@ bool ANWindow::CreateNewWindow(ANWindowData* pwd)
 
 bool ANWindow::MakeWindow()
 {
-	auto pwd = GetWindow();
+	CreateWindowClass();
 
-	if (!ANWindow::bWindowClassIsCreated)
-	{
-		if (!CreateWindowClass())
-		{
-			this->SetError("%s() -> Failed create window class. GetLastError: %d", __FUNCTION__, GetLastError());
-			//return false;
-		}
-	}
+	auto pwd = GetWindow();
 
 	if (!CreateNewWindow(pwd))
 	{
