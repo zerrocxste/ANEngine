@@ -2,7 +2,8 @@
 
 ANMemory::ANMemory() :
 	IANError(), 
-	m_TotalAllocatedMemory(0)
+	m_WorkingSetAllocatedMemory(0),
+	m_ResourceAllocatedMemory(0)
 {
 
 }
@@ -12,7 +13,7 @@ ANMemory::~ANMemory()
 
 }
 
-void* ANMemory::AllocateMemory(std::size_t Size)
+void* ANMemory::ResourceAllocate(std::size_t Size)
 {
 	auto ret = std::malloc(Size);
 
@@ -24,12 +25,12 @@ void* ANMemory::AllocateMemory(std::size_t Size)
 
 	std::memset(ret, 0, Size);
 
-	this->m_TotalAllocatedMemory += Size;
+	this->m_ResourceAllocatedMemory += Size;
 
 	return ret;
 }
 
-void* ANMemory::AllocateMemoryOfBlocks(std::size_t BlocksCount, std::size_t BlockSize)
+void* ANMemory::ResourcAllocateeOfBlocks(std::size_t BlocksCount, std::size_t BlockSize)
 {
 	auto GlobalSize = BlockSize * BlocksCount;
 
@@ -43,26 +44,36 @@ void* ANMemory::AllocateMemoryOfBlocks(std::size_t BlocksCount, std::size_t Bloc
 
 	std::memset(ret, 0, GlobalSize);
 
-	this->m_TotalAllocatedMemory += GlobalSize;
+	this->m_ResourceAllocatedMemory += GlobalSize;
 
 	return ret;
 }
 
-bool ANMemory::FreeMemory(void* Ptr)
+bool ANMemory::FreeResource(void* Ptr)
 {
 	if (!Ptr)
 		return false;
 
-	std::free(Ptr);
+	this->m_ResourceAllocatedMemory -= _msize(Ptr);
 
-	this->m_TotalAllocatedMemory -= _msize(Ptr);
+	std::free(Ptr);
 
 	return true;
 }
 
 std::size_t ANMemory::GetTotalAllocatedMemory()
 {
-	this->m_TotalAllocatedMemory;
+	return this->m_WorkingSetAllocatedMemory + this->m_ResourceAllocatedMemory;
+}
+
+std::size_t ANMemory::GetWorkingSetAllocatedMemory()
+{
+	return this->m_WorkingSetAllocatedMemory;
+}
+
+std::size_t ANMemory::GetResourceAllocatedMemory()
+{
+	return this->m_ResourceAllocatedMemory;
 }
 
 ANMemory* ANMemory::GetInstance()

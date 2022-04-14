@@ -4,15 +4,57 @@
     <Filter Include="src">
       <UniqueIdentifier>{dce989bd-07ab-4494-8604-a3bd4d901fa4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\ANMath">
+      <UniqueIdentifier>{3500304a-3c94-4bd7-9826-1fe549de7d89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ANMath\ANVec2">
+      <UniqueIdentifier>{87128367-078f-4af4-8161-5d75ccdeb2fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ANMath\ANVec3">
+      <UniqueIdentifier>{a6b1d50a-cb07-4793-bd88-c481f32d8072}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ANMath\ANRect">
+      <UniqueIdentifier>{3a01d7e1-f1c1-4df5-b2a8-b0654232c824}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ANMath\ANColor">
+      <UniqueIdentifier>{07bb7543-cec2-445a-b8d8-19906a991658}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\ANMath\ANVec2\ANVec2.cpp">
+      <Filter>src\ANMath\ANVec2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ANMath\ANVec3\ANVec3.cpp">
+      <Filter>src\ANMath\ANVec3</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ANMath\ANRect\ANRect.cpp">
+      <Filter>src\ANMath\ANRect</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ANMath\ANColor\ANColor.cpp">
+      <Filter>src\ANMath\ANColor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\includes.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ANTypes.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ANMath\ANVec2\ANVec2.h">
+      <Filter>src\ANMath\ANVec2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ANMath\ANVec3\ANVec3.h">
+      <Filter>src\ANMath\ANVec3</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ANMath\ANRect\ANRect.h">
+      <Filter>src\ANMath\ANRect</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ANMath\ANColor\ANColor.h">
+      <Filter>src\ANMath\ANColor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

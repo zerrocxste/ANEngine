@@ -19,9 +19,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\ANMath\ANColor\ANColor.cpp" />
+    <ClCompile Include="src\ANMath\ANRect\ANRect.cpp" />
+    <ClCompile Include="src\ANMath\ANVec2\ANVec2.cpp" />
+    <ClCompile Include="src\ANMath\ANVec3\ANVec3.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ANMath\ANColor\ANColor.h" />
+    <ClInclude Include="src\ANMath\ANRect\ANRect.h" />
+    <ClInclude Include="src\ANMath\ANVec2\ANVec2.h" />
+    <ClInclude Include="src\ANMath\ANVec3\ANVec3.h" />
+    <ClInclude Include="src\ANTypes.h" />
     <ClInclude Include="src\includes.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
