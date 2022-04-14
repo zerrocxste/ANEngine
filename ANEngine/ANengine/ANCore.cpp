@@ -66,7 +66,7 @@ bool ANCore::Run()
 
 	auto r = GetRenderer();
 
-	if (!r->Initalize(w->GetHWND()))
+	if (!r->Initalize())
 	{
 		MessageBox(0, r->What(), "Error", MB_ICONERROR | MB_OK);
 		return false;

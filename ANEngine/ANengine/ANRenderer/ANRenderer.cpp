@@ -16,9 +16,9 @@ ANRenderer::~ANRenderer()
 
 }
 
-bool ANRenderer::Initalize(HWND hWnd)
+bool ANRenderer::Initalize()
 {
-	this->m_hWnd = hWnd;
+	this->m_hWnd = this->m_pCore->GetWindow()->GetHWND();
 
 	if (!LoadRendererModule())
 		return false;
@@ -28,8 +28,6 @@ bool ANRenderer::Initalize(HWND hWnd)
 
 	if (!InvokeInitFunctionTable())
 		return false;
-
-	this->m_hWnd = this->m_pCore->GetWindow()->GetHWND();
 
 	return true;
 }

@@ -6,7 +6,7 @@ public:
 	ANRenderer(ANCore* pCore, RenderTypes RenderType);
 	~ANRenderer();
 
-	bool Initalize(HWND hWnd);
+	bool Initalize();
 
 	bool BeginFrame();
 	bool EndFrame();
@@ -29,8 +29,6 @@ public:
 
 private:
 	ANCore* m_pCore;
-
-	HWND hWnd;
 
 	ANRendererFuncionsTable* m_pANRendererFuncionsTable;
 

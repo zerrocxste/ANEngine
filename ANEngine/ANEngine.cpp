@@ -17,6 +17,7 @@ void CreateEngineCount(int c, std::vector<HANDLE>& vContextes, void* ThreadFunc)
 {
 	for (auto i = 0; i < c; i++)
 	{
+		//Sleep(1000);
 		vContextes.push_back(CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)CreateEngine, (void*)i, 0, nullptr));
 	}
 }

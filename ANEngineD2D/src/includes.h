@@ -6,6 +6,7 @@
 #include <map>
 #include <assert.h>
 #include <fstream>
+#include <corecrt_io.h>
 
 #include <d2d1.h>
 #pragma comment (lib, "d2d1.lib")
