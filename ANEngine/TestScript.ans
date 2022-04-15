@@ -1,0 +1,16 @@
+use "menu.ans"
+
+func load_resource
+{
+	
+}
+
+func unload_resource
+{
+	
+}
+
+func entry
+{
+		
+}

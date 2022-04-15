@@ -92,6 +92,11 @@ bool ANRenderer::InvokeInitFunctionTable()
 	return true;
 }
 
+__int64 ANRenderer::GetTick()
+{
+	return GetTickCount64();
+}
+
 const char* ANRenderer::RenderTypeToStr(RenderTypes RenderType)
 {
 	switch (m_RenderType)
@@ -109,11 +114,24 @@ const char* ANRenderer::RenderTypeToStr(RenderTypes RenderType)
 
 bool ANRenderer::BeginFrame()
 {
+	this->m_CurrentTick = GetTick();
+
+	if (!this->m_FpsSecondTimer)
+		this->m_FpsSecondTimer = GetTick();
+
 	return this->m_pANRendererFuncionsTable->BeginFrame(this->m_hWnd);
 }
 
 bool ANRenderer::EndFrame()
 {
+	this->m_iCurrentFpsCounter++;
+
+	if (this->m_CurrentTick - this->m_FpsSecondTimer > 1000)
+	{
+		this->m_FpsSecondTimer = 0;
+		this->m_iFpsCounter = this->m_iCurrentFpsCounter;
+	}
+
 	return this->m_pANRendererFuncionsTable->EndFrame(this->m_hWnd);
 }
 
@@ -134,6 +152,11 @@ anVec2 ANRenderer::GetScreenSize()
 anRect ANRenderer::InfiniteRect()
 {
 	return anRect(-3.402823466e+38F, -3.402823466e+38F, 3.402823466e+38F, 3.402823466e+38F);
+}
+
+int ANRenderer::GetFramePerSecond()
+{
+	return this->m_iFpsCounter;
 }
 
 bool ANRenderer::CreateImageFromMemory(void* pImageSrc, std::uint32_t iImageSize, ANImageID* pImageIDPtr)

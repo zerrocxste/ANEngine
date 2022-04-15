@@ -61,6 +61,18 @@
     <Filter Include="ANEngine\ResourcesManager\ANUniqueResource">
       <UniqueIdentifier>{875c400d-9856-4c03-9d9a-13a6b31cc93f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ANEngine\Script">
+      <UniqueIdentifier>{962e21eb-c367-4c12-87b3-cf7c39b99a33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Script\ANScriptManager">
+      <UniqueIdentifier>{0f0f95e0-0cae-4573-853e-469fd8d4b0e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Script\ANScript">
+      <UniqueIdentifier>{b3c7ba9f-b8dd-472d-93fc-e51b29772db8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Script\ANScriptInterpreter">
+      <UniqueIdentifier>{db1ce9ea-247f-47eb-b8af-a12f2587a357}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ANEngine.cpp">
@@ -104,6 +116,15 @@
     </ClCompile>
     <ClCompile Include="ANengine\ResourcesManager\ANUniqueResource\ANUniqueResource.cpp">
       <Filter>ANEngine\ResourcesManager\ANUniqueResource</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\Script\ANScriptManager\ANScriptManager.cpp">
+      <Filter>ANEngine\Script\ANScriptManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\Script\ANScript\ANScript.cpp">
+      <Filter>ANEngine\Script\ANScript</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\Script\ANScriptInterpreter\ANScriptInterpreter.cpp">
+      <Filter>ANEngine\Script\ANScriptInterpreter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +172,15 @@
     </ClInclude>
     <ClInclude Include="ANengine\ResourcesManager\ANUniqueResource\ANUniqueResource.h">
       <Filter>ANEngine\ResourcesManager\ANUniqueResource</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Script\ANScriptManager\ANScriptManager.h">
+      <Filter>ANEngine\Script\ANScriptManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Script\ANScript\ANScript.h">
+      <Filter>ANEngine\Script\ANScript</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Script\ANScriptInterpreter\ANScriptInterpreter.h">
+      <Filter>ANEngine\Script\ANScriptInterpreter</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

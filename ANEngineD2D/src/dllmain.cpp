@@ -109,7 +109,28 @@ bool CreateRenderTarget(HWND hWnd)
 
 	auto& ri = GetWindowContextRenderInformation(hWnd);
 
-	return SUCCEEDED(g_D2DInterfaces.m_pFactory->CreateHwndRenderTarget(D2D1::RenderTargetProperties(), D2D1::HwndRenderTargetProperties(hWnd), &ri.m_pRenderTarget));
+	D2D1_RENDER_TARGET_PROPERTIES renderTargetProperties{};
+
+	renderTargetProperties.type = D2D1_RENDER_TARGET_TYPE_DEFAULT;
+
+	D2D1_PIXEL_FORMAT pixelFormat{};
+
+	pixelFormat.format = DXGI_FORMAT_UNKNOWN;
+	pixelFormat.alphaMode = D2D1_ALPHA_MODE_UNKNOWN;
+
+	renderTargetProperties.pixelFormat = pixelFormat;
+	renderTargetProperties.dpiX = 0.0;
+	renderTargetProperties.dpiY = 0.0;
+	renderTargetProperties.usage = D2D1_RENDER_TARGET_USAGE_NONE;
+	renderTargetProperties.minLevel = D2D1_FEATURE_LEVEL_DEFAULT;
+
+	D2D1_HWND_RENDER_TARGET_PROPERTIES hwndRenderTargetProperties{};
+
+	hwndRenderTargetProperties.hwnd = hWnd;
+	hwndRenderTargetProperties.pixelSize = D2D1::Size(static_cast<UINT32>(0), static_cast<UINT32>(0));
+	hwndRenderTargetProperties.presentOptions = D2D1_PRESENT_OPTIONS_NONE;
+
+	return SUCCEEDED(g_D2DInterfaces.m_pFactory->CreateHwndRenderTarget(renderTargetProperties, hwndRenderTargetProperties, &ri.m_pRenderTarget));
 }
 
 bool CreateGlobalBrush(HWND hWnd)
@@ -142,7 +163,7 @@ bool CreateRendererFunctionsTable()
 
 void __forceinline SetBrushColor(HWND hWnd, anColor Color)
 {
-	GetWindowContextRenderInformation(hWnd).m_pColorBrush->SetColor(D2D1::ColorF(Color[RED], Color[GREEN], Color[BLUE], Color[ALPHA]));
+	GetWindowContextRenderInformation(hWnd).m_pColorBrush->SetColor(D2D1::ColorF(Color[RED] / 255.f, Color[GREEN] / 255.f, Color[BLUE] / 255.f, Color[ALPHA] / 255.f));
 }
 
 bool Initialize(HWND hWnd)

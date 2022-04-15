@@ -27,9 +27,11 @@ class ANResourceManager;
 #include "ResourcesManager/ANUniqueResource/ANUniqueResource.h"
 #include "ResourcesManager/ANResourceManager/ANResourceManager.h"
 #include "ANRenderer/ANRenderer.h"
-#include "ANRenderer/ANRenderer.h"
 #include "ANInput/ANInput.h"
 #include "ANWindow/ANWindow.h"
+#include "Script/ANScriptInterpreter/ANScriptInterpreter.h"
+#include "Script/ANScript/ANScript.h"
+#include "Script/ANScriptManager/ANScriptManager.h"
 #include "ANGame/ANGame.h"
 
 #include "ANCore.h"

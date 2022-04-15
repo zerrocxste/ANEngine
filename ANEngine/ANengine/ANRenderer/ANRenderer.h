@@ -14,6 +14,8 @@ public:
 	anVec2 GetScreenSize();
 	anRect InfiniteRect();
 
+	int GetFramePerSecond();
+
 	bool CreateImageFromMemory(void* pImageSrc, std::uint32_t iImageSize, ANImageID* pImageIDPtr);
 	bool CreateImageFromResource(ANUniqueResource* pResource, ANImageID* pImageIDPtr);
 	bool DrawImage(ANImageID pImageID, anRect Pos, float Opacity = 1.f);
@@ -36,9 +38,16 @@ private:
 	HWND m_hWnd;
 	HMODULE m_RenderModule;
 
+	__int64 m_CurrentTick;
+	__int64 m_FpsSecondTimer;
+	int m_iCurrentFpsCounter;
+	int m_iFpsCounter;
+
 	bool LoadRendererModule();
 	bool InvokeInitRender();
 	bool InvokeInitFunctionTable();
+
+	__int64 GetTick();
 
 	const char* RenderTypeToStr(RenderTypes RenderType);
 };

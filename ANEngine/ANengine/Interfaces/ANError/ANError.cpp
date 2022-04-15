@@ -2,7 +2,7 @@
 
 IANError::IANError()
 {
-
+	*this->m_szWhat = '\0';
 }
 
 IANError::~IANError()

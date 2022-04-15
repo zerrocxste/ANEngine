@@ -155,6 +155,9 @@
     <ClCompile Include="ANengine\Interfaces\ANError\ANError.cpp" />
     <ClCompile Include="ANengine\ResourcesManager\ANResourceManager\ANResourceManager.cpp" />
     <ClCompile Include="ANengine\ResourcesManager\ANUniqueResource\ANUniqueResource.cpp" />
+    <ClCompile Include="ANengine\Script\ANScriptInterpreter\ANScriptInterpreter.cpp" />
+    <ClCompile Include="ANengine\Script\ANScriptManager\ANScriptManager.cpp" />
+    <ClCompile Include="ANengine\Script\ANScript\ANScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ANengine\ANCore.h" />
@@ -172,6 +175,9 @@
     <ClInclude Include="ANengine\Interfaces\ANError\ANError.h" />
     <ClInclude Include="ANengine\ResourcesManager\ANResourceManager\ANResourceManager.h" />
     <ClInclude Include="ANengine\ResourcesManager\ANUniqueResource\ANUniqueResource.h" />
+    <ClInclude Include="ANengine\Script\ANScriptInterpreter\ANScriptInterpreter.h" />
+    <ClInclude Include="ANengine\Script\ANScriptManager\ANScriptManager.h" />
+    <ClInclude Include="ANengine\Script\ANScript\ANScript.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

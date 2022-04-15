@@ -7,6 +7,8 @@ struct ANComponents
 	ANRenderer* m_ANRenderer;
 	ANGame* m_pANGame;
 	ANResourceManager* m_pANResourceManager;
+	ANScriptManager* m_pANScriptManager;
+	ANScriptInterpreter* m_pANScriptInterpreter;
 };
 
 class ANCore
@@ -16,7 +18,9 @@ public:
 		const char* pszWindowName,
 		anVec2 vWindowPosition,
 		anVec2 vWindowSize,
-		bool bHasWindowFrame);
+		bool bHasWindowFrame,
+		const char* pszPathMainScriptEntry);
+
 	~ANCore();
 
 	bool Initialize();
@@ -26,6 +30,8 @@ public:
 	ANRenderer* GetRenderer();
 	ANGame* GetGame();
 	ANResourceManager* GetResourceManager();
+	ANScriptManager* GetScriptManager();
+	ANScriptInterpreter* GetScriptInterpreter();
 
 	bool Run();
 private:

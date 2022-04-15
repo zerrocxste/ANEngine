@@ -6,7 +6,7 @@ std::vector<HANDLE> vContextes;
 
 void CreateEngine(void* Arg)
 {
-	auto pCtx = new ANCore(RenderTypes::D2D, "ANEngine", anVec2(100.f, 100.f), anVec2(500.f, 500.f), true);
+	auto pCtx = new ANCore(RenderTypes::D2D, "ANEngine", anVec2(100.f, 100.f), anVec2(500.f, 500.f), true, "TestScript.ans");
 
 	pCtx->Run();
 
@@ -17,7 +17,6 @@ void CreateEngineCount(int c, std::vector<HANDLE>& vContextes, void* ThreadFunc)
 {
 	for (auto i = 0; i < c; i++)
 	{
-		//Sleep(1000);
 		vContextes.push_back(CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)CreateEngine, (void*)i, 0, nullptr));
 	}
 }
@@ -32,7 +31,7 @@ void WaitThreadHandles(std::vector<HANDLE>& vContextes)
 
 int main()
 {
-	CreateEngineCount(5, vContextes, CreateEngine);
+	CreateEngineCount(1, vContextes, CreateEngine);
 
 	WaitThreadHandles(vContextes);
 }
