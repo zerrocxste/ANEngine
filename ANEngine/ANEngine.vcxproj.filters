@@ -40,9 +40,6 @@
     <Filter Include="ANEngine\ANInput">
       <UniqueIdentifier>{626dff36-b535-4722-84f3-306b990ce5c8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\ANGame">
-      <UniqueIdentifier>{4e89e370-4f0a-4cc8-9936-db63927728d6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ANEngine\ANMath\ANRect">
       <UniqueIdentifier>{a6eb50eb-dd01-46e6-91c7-b47c1d2592af}</UniqueIdentifier>
     </Filter>
@@ -70,8 +67,17 @@
     <Filter Include="ANEngine\Script\ANScript">
       <UniqueIdentifier>{b3c7ba9f-b8dd-472d-93fc-e51b29772db8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\Script\ANScriptInterpreter">
-      <UniqueIdentifier>{db1ce9ea-247f-47eb-b8af-a12f2587a357}</UniqueIdentifier>
+    <Filter Include="ANEngine\ANScene">
+      <UniqueIdentifier>{d2a7a479-cca5-4291-b91b-274596f6fee6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Game">
+      <UniqueIdentifier>{47c8c6f3-939c-429e-9949-0ca773d43f53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Game\ANGame">
+      <UniqueIdentifier>{f0f61718-026b-4f04-b8a7-7ecdf74d0f09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Script\ANScriptInterpriter">
+      <UniqueIdentifier>{da57c124-16c5-43d0-84fe-e620160be0b8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -99,9 +105,6 @@
     <ClCompile Include="ANengine\ANInput\ANInput.cpp">
       <Filter>ANEngine\ANInput</Filter>
     </ClCompile>
-    <ClCompile Include="ANengine\ANGame\ANGame.cpp">
-      <Filter>ANEngine\ANGame</Filter>
-    </ClCompile>
     <ClCompile Include="ANengine\ANMath\ANRect\ANRect.cpp">
       <Filter>ANEngine\ANMath\ANRect</Filter>
     </ClCompile>
@@ -123,8 +126,14 @@
     <ClCompile Include="ANengine\Script\ANScript\ANScript.cpp">
       <Filter>ANEngine\Script\ANScript</Filter>
     </ClCompile>
-    <ClCompile Include="ANengine\Script\ANScriptInterpreter\ANScriptInterpreter.cpp">
-      <Filter>ANEngine\Script\ANScriptInterpreter</Filter>
+    <ClCompile Include="ANengine\ANScene\ANScene.cpp">
+      <Filter>ANEngine\ANScene</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\Game\ANGame\ANGame.cpp">
+      <Filter>ANEngine\Game\ANGame</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\Script\ANScriptInterpriter\ANScriptInterpriter.cpp">
+      <Filter>ANEngine\Script\ANScriptInterpriter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,9 +161,6 @@
     <ClInclude Include="ANengine\ANInput\ANInput.h">
       <Filter>ANEngine\ANInput</Filter>
     </ClInclude>
-    <ClInclude Include="ANengine\ANGame\ANGame.h">
-      <Filter>ANEngine\ANGame</Filter>
-    </ClInclude>
     <ClInclude Include="ANengine\ANTypes.h">
       <Filter>ANEngine</Filter>
     </ClInclude>
@@ -179,8 +185,14 @@
     <ClInclude Include="ANengine\Script\ANScript\ANScript.h">
       <Filter>ANEngine\Script\ANScript</Filter>
     </ClInclude>
-    <ClInclude Include="ANengine\Script\ANScriptInterpreter\ANScriptInterpreter.h">
-      <Filter>ANEngine\Script\ANScriptInterpreter</Filter>
+    <ClInclude Include="ANengine\ANScene\ANScene.h">
+      <Filter>ANEngine\ANScene</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Game\ANGame\ANGame.h">
+      <Filter>ANEngine\Game\ANGame</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Script\ANScriptInterpriter\ANScriptInterpriter.h">
+      <Filter>ANEngine\Script\ANScriptInterpriter</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

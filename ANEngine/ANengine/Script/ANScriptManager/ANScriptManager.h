@@ -6,9 +6,12 @@ public:
 	ANScriptManager(ANCore* pCore, const char* pszMainScriptPath);
 	~ANScriptManager();
 
-	bool ProcessScripts();
+	bool InitScripts();
+
+	bool AddScript(char* pszScriptPath);
 private:
 	ANCore* m_pCore;
-	const char* m_pszMainScriptPath;
+	char* m_pszMainScriptPath;
 	std::map<const char*, ANScript*> m_mScripts;
+	ANScript* m_pCurrentScriptContext;
 };

@@ -3,15 +3,17 @@
 class ANScript : public IANError
 {
 public:
-	ANScript(ANCore* pCore, const char* pszScriptPath);
+	ANScript(ANCore* pCore, char* pszScriptPath);
 	~ANScript();
 
 	bool InitializeScript();
+
+	bool Run();
 private:
 	ANCore* m_pCore;
 
-	const char* m_pszScriptPath;
+	char m_szScriptPath[255];
 	ANUniqueResource m_ScriptResource;
 
-	bool FindFunc(ANUniqueResource* pScriptResource, const char* pszName, std::uint32_t* iLinePos);
+	char* GetScriptFile();
 };

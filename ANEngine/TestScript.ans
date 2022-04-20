@@ -1,8 +1,8 @@
-use "menu.ans"
+!use "Menu.ans"
 
 func load_resource
 {
-	
+	load_image("bg.png");
 }
 
 func unload_resource
@@ -12,5 +12,8 @@ func unload_resource
 
 func entry
 {
-		
+	loop
+	{
+		draw_image();
+	}
 }

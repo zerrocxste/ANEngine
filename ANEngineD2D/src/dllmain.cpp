@@ -23,6 +23,7 @@ CRITICAL_SECTION g_csInitializeRenderer;
 
 extern "C" __declspec(dllexport) bool __stdcall BeginFrame(HWND hWnd);
 extern "C" __declspec(dllexport) bool __stdcall EndFrame(HWND hWnd);
+extern "C" __declspec(dllexport) bool __stdcall ClearScene(HWND hWnd);
 extern "C" __declspec(dllexport) bool __stdcall ResetScene(HWND hWnd, WPARAM wParam, LPARAM lParam);
 extern "C" __declspec(dllexport) bool __stdcall GetScreenSize(HWND hWnd, anVec2 * pAnvec2Out);
 extern "C" __declspec(dllexport) bool __stdcall CreateImageFromMemory(HWND hWnd, void* pImageSrc, std::uint32_t iImageSize, ANImageID * pImageIDPtr);
@@ -109,15 +110,12 @@ bool CreateRenderTarget(HWND hWnd)
 
 	auto& ri = GetWindowContextRenderInformation(hWnd);
 
-	D2D1_RENDER_TARGET_PROPERTIES renderTargetProperties{};
-
-	renderTargetProperties.type = D2D1_RENDER_TARGET_TYPE_DEFAULT;
-
 	D2D1_PIXEL_FORMAT pixelFormat{};
-
 	pixelFormat.format = DXGI_FORMAT_UNKNOWN;
 	pixelFormat.alphaMode = D2D1_ALPHA_MODE_UNKNOWN;
 
+	D2D1_RENDER_TARGET_PROPERTIES renderTargetProperties{};
+	renderTargetProperties.type = D2D1_RENDER_TARGET_TYPE_DEFAULT;
 	renderTargetProperties.pixelFormat = pixelFormat;
 	renderTargetProperties.dpiX = 0.0;
 	renderTargetProperties.dpiY = 0.0;
@@ -125,10 +123,9 @@ bool CreateRenderTarget(HWND hWnd)
 	renderTargetProperties.minLevel = D2D1_FEATURE_LEVEL_DEFAULT;
 
 	D2D1_HWND_RENDER_TARGET_PROPERTIES hwndRenderTargetProperties{};
-
 	hwndRenderTargetProperties.hwnd = hWnd;
 	hwndRenderTargetProperties.pixelSize = D2D1::Size(static_cast<UINT32>(0), static_cast<UINT32>(0));
-	hwndRenderTargetProperties.presentOptions = D2D1_PRESENT_OPTIONS_NONE;
+	hwndRenderTargetProperties.presentOptions = D2D1_PRESENT_OPTIONS_IMMEDIATELY; //VERTYCAL SYNC
 
 	return SUCCEEDED(g_D2DInterfaces.m_pFactory->CreateHwndRenderTarget(renderTargetProperties, hwndRenderTargetProperties, &ri.m_pRenderTarget));
 }
@@ -147,6 +144,7 @@ bool CreateRendererFunctionsTable()
 {
 	g_ANRendererFuncionsTable.BeginFrame = BeginFrame;
 	g_ANRendererFuncionsTable.EndFrame = EndFrame;
+	g_ANRendererFuncionsTable.ClearScene = ClearScene;
 	g_ANRendererFuncionsTable.ResetScene = ResetScene;
 	g_ANRendererFuncionsTable.GetScreenSize = GetScreenSize;
 	g_ANRendererFuncionsTable.CreateImageFromMemory = CreateImageFromMemory;
@@ -216,7 +214,6 @@ extern "C" __declspec(dllexport) bool __stdcall BeginFrame(HWND hWnd)
 
 	ri.m_pRenderTarget->BeginDraw();
 	ri.m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
-	ri.m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 
 	return true;
 }
@@ -229,6 +226,18 @@ extern "C" __declspec(dllexport) bool __stdcall EndFrame(HWND hWnd)
 		return false;
 
 	ri.m_pRenderTarget->EndDraw();
+
+	return true;
+}
+
+extern "C" __declspec(dllexport) bool __stdcall ClearScene(HWND hWnd)
+{
+	auto& ri = GetWindowContextRenderInformation(hWnd);
+
+	if (!ri.m_pRenderTarget)
+		return false;
+
+	ri.m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 
 	return true;
 }

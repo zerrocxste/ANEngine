@@ -1,0 +1,14 @@
+func LOAD_RESOURCE
+{
+	
+}
+
+func UNLOAD_RESOURCE
+{
+	
+}
+
+func ENTRY
+{
+	
+}

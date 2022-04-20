@@ -26,6 +26,7 @@ struct ANRendererFuncionsTable
 {
 	bool(__stdcall* BeginFrame)(HWND hWnd);
 	bool(__stdcall* EndFrame)(HWND hWnd);
+	bool(__stdcall* ClearScene)(HWND hWnd);
 	bool(__stdcall* ResetScene)(HWND hWnd, WPARAM wParam, LPARAM lParam);
 	bool(__stdcall* GetScreenSize)(HWND hWnd, anVec2* pAnvec2Out);
 	bool(__stdcall* CreateImageFromMemory)(HWND hWnd, void* pImageSrc, std::uint32_t iImageSize, ANImageID* pImageIDPtr);

@@ -22,11 +22,23 @@ enum RGBA
 	RGBA_MAX_SIZE
 };
 
+struct ANComponents
+{
+	ANWindow* m_pANWindow;
+	ANInput* m_pANInput;
+	ANRenderer* m_ANRenderer;
+	ANGame* m_pANGame;
+	ANResourceManager* m_pANResourceManager;
+	ANScriptManager* m_pANScriptManager;
+	ANScriptInterpriter* m_pANScriptInterpriter;
+	ANScene* m_pANScene;
+};
 
 struct ANRendererFuncionsTable
 {
 	bool(__stdcall* BeginFrame)(HWND hWnd);
 	bool(__stdcall* EndFrame)(HWND hWnd);
+	bool(__stdcall* ClearScene)(HWND hWnd);
 	bool(__stdcall* ResetScene)(HWND hWnd, WPARAM wParam, LPARAM lParam);
 	bool(__stdcall* GetScreenSize)(HWND hWnd, anVec2* pAnvec2Out);
 	bool(__stdcall* CreateImageFromMemory)(HWND hWnd, void* pImageSrc, std::uint32_t iImageSize, ANImageID* pImageIDPtr);
@@ -38,3 +50,6 @@ struct ANRendererFuncionsTable
 	bool(__stdcall* CreateFontFromFile)(const char* pszPath, float FontSize, ANFontID* pFontID);
 	bool(__stdcall* TextDraw)(HWND hWnd, const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont);
 };
+
+constexpr auto UseDerective = "!use";
+constexpr auto FuncDerective = "func";

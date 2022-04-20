@@ -83,7 +83,7 @@ bool ANRenderer::InvokeInitFunctionTable()
 
 	if (!pfGetRendererFunctionTable)
 	{
-		this->SetError("%s() -> 'GetRendererFunctionsTable' nout found", __FUNCTION__);
+		this->SetError("%s() -> 'GetRendererFunctionsTable' not found", __FUNCTION__);
 		return false;
 	}
 
@@ -92,9 +92,16 @@ bool ANRenderer::InvokeInitFunctionTable()
 	return true;
 }
 
+void ANRenderer::SetMaxFps(int iMaxFps)
+{
+	this->m_iMaxFps = iMaxFps;
+}
+
 __int64 ANRenderer::GetTick()
 {
-	return GetTickCount64();
+	__int64 T = 0;
+	QueryPerformanceCounter((LARGE_INTEGER*)&T);
+	return T;
 }
 
 const char* ANRenderer::RenderTypeToStr(RenderTypes RenderType)
@@ -112,27 +119,67 @@ const char* ANRenderer::RenderTypeToStr(RenderTypes RenderType)
 	return nullptr;
 }
 
+bool ANRenderer::PrepareScene()
+{
+	//this->m_iMaxFps = 60;
+
+	if (this->m_iMaxFps > 0)
+	{
+		if (this->m_iCurrentSkipperFrame > 0)
+		{
+			if (!this->m_bFrameTimeIsGrabbed) 
+			{
+				this->m_bFrameTimeIsGrabbed = true;
+				this->m_BeginFrameTick = GetTick();
+			}
+			this->m_iCurrentSkipperFrame--;
+			return false;
+		}
+
+		this->m_iCurrentSkipperFrame = ((1000000 * 2.5f) / this->m_iMaxFps) + ((this->m_EndFrameTick - this->m_BeginFrameTick) / 10);
+		this->m_bFrameTimeIsGrabbed = false;
+
+		printf("Frame to skip: %d\n", this->m_iCurrentSkipperFrame);
+	}
+	else
+	{
+		this->m_BeginFrameTick = GetTick();
+	}
+
+	return true;
+}
+
 bool ANRenderer::BeginFrame()
 {
-	this->m_CurrentTick = GetTick();
+	auto ret = this->m_pANRendererFuncionsTable->BeginFrame(this->m_hWnd);
 
 	if (!this->m_FpsSecondTimer)
-		this->m_FpsSecondTimer = GetTick();
+		this->m_FpsSecondTimer = this->m_BeginFrameTick;
 
-	return this->m_pANRendererFuncionsTable->BeginFrame(this->m_hWnd);
+	return ret;
 }
 
 bool ANRenderer::EndFrame()
 {
 	this->m_iCurrentFpsCounter++;
 
-	if (this->m_CurrentTick - this->m_FpsSecondTimer > 1000)
+	this->m_EndFrameTick = GetTick();
+
+	if ((this->m_EndFrameTick - this->m_FpsSecondTimer) / 10000 >= 1000)
 	{
-		this->m_FpsSecondTimer = 0;
 		this->m_iFpsCounter = this->m_iCurrentFpsCounter;
+		this->m_FpsSecondTimer = 0;
+		this->m_iCurrentFpsCounter = 0;
 	}
 
+	this->m_MaxFpsFrameTime = (double)(this->m_EndFrameTick - this->m_BeginFrameTick) / 10000000;
+
 	return this->m_pANRendererFuncionsTable->EndFrame(this->m_hWnd);
+}
+
+bool ANRenderer::ClearScene()
+{
+	return this->m_pANRendererFuncionsTable->ClearScene(this->m_hWnd);
 }
 
 bool ANRenderer::ResetScene(WPARAM wParam, LPARAM lParam)
@@ -159,6 +206,11 @@ int ANRenderer::GetFramePerSecond()
 	return this->m_iFpsCounter;
 }
 
+double ANRenderer::GetFrameTime()
+{
+	return this->m_MaxFpsFrameTime;
+}
+
 bool ANRenderer::CreateImageFromMemory(void* pImageSrc, std::uint32_t iImageSize, ANImageID* pImageIDPtr)
 {
 	return this->m_pANRendererFuncionsTable->CreateImageFromMemory(this->m_hWnd, pImageSrc, iImageSize, pImageIDPtr);
@@ -167,8 +219,11 @@ bool ANRenderer::CreateImageFromMemory(void* pImageSrc, std::uint32_t iImageSize
 bool ANRenderer::CreateImageFromResource(ANUniqueResource* pResource, ANImageID* pImageIDPtr)
 {
 	if (!pResource->ResourceIsDone())
+	{
+		this->SetError("%s() -> Bad resource", __FUNCTION__);
 		return false;
-
+	}
+		
 	return this->m_pANRendererFuncionsTable->CreateImageFromMemory(this->m_hWnd, pResource->GetResourceLocation(), pResource->GetResourceSize(), pImageIDPtr);
 }
 

@@ -1,16 +1,5 @@
 #pragma once
 
-struct ANComponents
-{
-	ANWindow* m_pANWindow;
-	ANInput* m_pANInput;
-	ANRenderer* m_ANRenderer;
-	ANGame* m_pANGame;
-	ANResourceManager* m_pANResourceManager;
-	ANScriptManager* m_pANScriptManager;
-	ANScriptInterpreter* m_pANScriptInterpreter;
-};
-
 class ANCore
 {
 public:
@@ -31,7 +20,8 @@ public:
 	ANGame* GetGame();
 	ANResourceManager* GetResourceManager();
 	ANScriptManager* GetScriptManager();
-	ANScriptInterpreter* GetScriptInterpreter();
+	ANScriptInterpriter* GetScriptInterpreter();
+	ANScene* GetScene();
 
 	bool Run();
 private:

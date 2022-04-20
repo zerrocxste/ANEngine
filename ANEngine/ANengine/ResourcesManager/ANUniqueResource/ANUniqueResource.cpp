@@ -33,17 +33,7 @@ void* ANUniqueResource::GetResourceLocation()
 	return this->m_pResourceLocation;
 }
 
-void*& ANUniqueResource::GetResourceLocationPtr()
-{
-	return this->m_pResourceLocation;
-}
-
 std::uint32_t ANUniqueResource::GetResourceSize()
-{
-	return this->m_iResourceSize;
-}
-
-std::uint32_t& ANUniqueResource::GetResourceSizePtr()
 {
 	return this->m_iResourceSize;
 }

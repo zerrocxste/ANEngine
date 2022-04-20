@@ -8,13 +8,21 @@ public:
 
 	bool Initalize();
 
+	bool PrepareScene();
+
 	bool BeginFrame();
 	bool EndFrame();
+
+	bool ClearScene();
 	bool ResetScene(WPARAM wParam, LPARAM lParam);
+
 	anVec2 GetScreenSize();
 	anRect InfiniteRect();
 
 	int GetFramePerSecond();
+	double GetFrameTime();
+
+	void SetMaxFps(int iMaxFps);
 
 	bool CreateImageFromMemory(void* pImageSrc, std::uint32_t iImageSize, ANImageID* pImageIDPtr);
 	bool CreateImageFromResource(ANUniqueResource* pResource, ANImageID* pImageIDPtr);
@@ -38,10 +46,17 @@ private:
 	HWND m_hWnd;
 	HMODULE m_RenderModule;
 
-	__int64 m_CurrentTick;
 	__int64 m_FpsSecondTimer;
 	int m_iCurrentFpsCounter;
 	int m_iFpsCounter;
+	__int64 m_BeginFrameTick;
+	__int64 m_EndFrameTick;
+	double m_MaxFpsFrameTime;
+
+	bool m_bFrameTimeIsGrabbed;
+	int m_iCurrentSkipperFrame;
+
+	int m_iMaxFps;
 
 	bool LoadRendererModule();
 	bool InvokeInitRender();

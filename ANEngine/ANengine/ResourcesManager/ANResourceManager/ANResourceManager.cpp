@@ -13,7 +13,7 @@ ANResourceManager::~ANResourceManager()
 
 bool ANResourceManager::ReadBinFile(const char* pszPath, ANUniqueResource* pUniqueResource)
 {
-	return ReadFile(pszPath, pUniqueResource->GetResourceLocationPtr(), pUniqueResource->GetResourceSizePtr(), true);
+	return ReadFile(pszPath, pUniqueResource->m_pResourceLocation, pUniqueResource->m_iResourceSize, true);
 }
 
 bool ANResourceManager::ReadBinFile(const char* pszPath, void*& pBuf, std::uint32_t& iOutFileSize)
@@ -54,12 +54,7 @@ bool ANResourceManager::FileDelete(const char* pszPath)
 
 bool ANResourceManager::ReadFile(const char* pszPath, void*& pBuf, std::uint32_t& iOutFileSize, bool IsBinary)
 {
-	auto Flags = std::ios::in | std::ios::ate;
-
-	if (IsBinary)
-		Flags |= std::ios::binary;
-
-	std::fstream FileStream(pszPath, Flags);
+	std::fstream FileStream(pszPath, std::ios::in | std::ios::ate | std::ios::binary);
 
 	if (!FileStream.is_open())
 	{
@@ -85,6 +80,12 @@ bool ANResourceManager::ReadFile(const char* pszPath, void*& pBuf, std::uint32_t
 	FileStream.read((char*)pBuf, iOutFileSize);
 
 	FileStream.close();
+
+	if (!IsBinary)
+	{
+		*((char*)pBuf + iOutFileSize) = 0;
+		iOutFileSize++;
+	}
 
 	return true;
 }

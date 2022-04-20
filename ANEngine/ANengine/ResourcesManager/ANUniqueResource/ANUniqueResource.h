@@ -10,9 +10,7 @@ public:
 	bool AllocateResource(std::uint32_t iSize);
 
 	void* GetResourceLocation();
-	void*& GetResourceLocationPtr();
 	std::uint32_t GetResourceSize();
-	std::uint32_t& GetResourceSizePtr();
 	bool ResourceIsDone();
 	bool Free();
 private:
