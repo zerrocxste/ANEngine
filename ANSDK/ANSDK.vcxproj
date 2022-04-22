@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{8c75554e-e24b-4e99-ae2b-d080b152f993}</ProjectGuid>
-    <RootNamespace>ANEngine</RootNamespace>
+    <ProjectGuid>{44f2f08b-c805-4ad1-9978-5896d15cd017}</ProjectGuid>
+    <RootNamespace>ANSDK</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -33,12 +33,11 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
-    <SpectreMitigation>false</SpectreMitigation>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -47,7 +46,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -130,7 +129,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -141,46 +140,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ANEngine.cpp" />
-    <ClCompile Include="ANengine\ANApi\ANApi.cpp" />
-    <ClCompile Include="ANengine\ANCore\ANCore.cpp" />
-    <ClCompile Include="ANengine\ANGame\ANGame.cpp" />
-    <ClCompile Include="ANengine\ANInput\ANInput.cpp" />
-    <ClCompile Include="ANengine\ANLoader\ANLoader.cpp" />
-    <ClCompile Include="ANengine\ANMath\ANColor\ANColor.cpp" />
-    <ClCompile Include="ANengine\ANMath\ANRect\ANRect.cpp" />
-    <ClCompile Include="ANengine\ANMath\ANVec2\ANVec2.cpp" />
-    <ClCompile Include="ANengine\ANMath\ANVec3\ANVec3.cpp" />
-    <ClCompile Include="ANengine\ANMemory\ANMemory.cpp" />
-    <ClCompile Include="ANengine\ANRenderer\ANRenderer.cpp" />
-    <ClCompile Include="ANengine\ANScene\ANScene.cpp" />
-    <ClCompile Include="ANengine\ANWindow\ANWindow.cpp" />
-    <ClCompile Include="ANengine\Interfaces\IANError\IANError.cpp" />
-    <ClCompile Include="ANengine\ResourcesManager\ANResourceManager\ANResourceManager.cpp" />
-    <ClCompile Include="ANengine\ResourcesManager\ANUniqueResource\ANUniqueResource.cpp" />
+    <ClCompile Include="ANSDK\ANMath\ANColor\ANColor.cpp" />
+    <ClCompile Include="ANSDK\ANMath\ANRect\ANRect.cpp" />
+    <ClCompile Include="ANSDK\ANMath\ANVec2\ANVec2.cpp" />
+    <ClCompile Include="ANSDK\ANMath\ANVec3\ANVec3.cpp" />
+    <ClCompile Include="ANSDK\ANSDK.cpp" />
+    <ClCompile Include="ANSDK\IANError\IANError.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ANengine\ANApi\ANApi.h" />
-    <ClInclude Include="ANengine\ANCore\ANCore.h" />
-    <ClInclude Include="ANengine\ANEngine.h" />
-    <ClInclude Include="ANengine\ANGame\ANGame.h" />
-    <ClInclude Include="ANengine\ANInput\ANInput.h" />
-    <ClInclude Include="ANengine\ANLoader\ANLoader.h" />
-    <ClInclude Include="ANengine\ANMath\ANColor\ANColor.h" />
-    <ClInclude Include="ANengine\ANMath\ANRect\ANRect.h" />
-    <ClInclude Include="ANengine\ANMath\ANVec2\ANVec2.h" />
-    <ClInclude Include="ANengine\ANMath\ANVec3\ANVec3.h" />
-    <ClInclude Include="ANengine\ANMemory\ANMemory.h" />
-    <ClInclude Include="ANengine\ANRenderer\ANRenderer.h" />
-    <ClInclude Include="ANengine\ANScene\ANScene.h" />
-    <ClInclude Include="ANengine\ANTypes.h" />
-    <ClInclude Include="ANengine\ANWindow\ANWindow.h" />
-    <ClInclude Include="ANengine\Interfaces\IANApi\IANApi.h" />
-    <ClInclude Include="ANengine\Interfaces\IANError\IANError.h" />
-    <ClInclude Include="ANengine\Interfaces\IANGameScene\IANGameScene.h" />
-    <ClInclude Include="ANengine\Interfaces\IANLoader\IANLoader.h" />
-    <ClInclude Include="ANengine\ResourcesManager\ANResourceManager\ANResourceManager.h" />
-    <ClInclude Include="ANengine\ResourcesManager\ANUniqueResource\ANUniqueResource.h" />
+    <ClInclude Include="ANSDK\ANMath\ANColor\ANColor.h" />
+    <ClInclude Include="ANSDK\ANMath\ANRect\ANRect.h" />
+    <ClInclude Include="ANSDK\ANMath\ANVec2\ANVec2.h" />
+    <ClInclude Include="ANSDK\ANMath\ANVec3\ANVec3.h" />
+    <ClInclude Include="ANSDK\ANSDK.h" />
+    <ClInclude Include="ANSDK\IANApi\IANApi.h" />
+    <ClInclude Include="ANSDK\IANError\IANError.h" />
+    <ClInclude Include="ANSDK\IANGameScene\IANGameScene.h" />
+    <ClInclude Include="ANSDK\IANLoader\IANLoader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

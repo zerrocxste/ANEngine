@@ -1,37 +1,35 @@
-﻿#include <iostream>
+﻿#include "ANengine/ANEngine.h"
 
-#include "ANengine/ANEngine.h"
+constexpr auto MODULE_DESC = "AlterNative engine (ANEngine). Timestamp: " __DATE__;
 
-std::vector<HANDLE> vContextes;
-
-void CreateEngine(void* Arg)
+extern "C" __declspec(dllexport) IANLoader * __stdcall CreateEngineInstance(
+	RenderTypes RenderType,
+	const char* pszWindowName,
+	anVec2 vWindowPosition,
+	anVec2 vWindowSize,
+	bool bHasWindowFrame)
 {
-	auto pCtx = new ANCore(RenderTypes::D2D, "ANEngine", anVec2(100.f, 100.f), anVec2(500.f, 500.f), true, "TestScript.ans");
-
-	pCtx->Run();
-
-	printf("End thread: %d\n", (int)Arg);
+	return new ANLoader(RenderType, pszWindowName, vWindowPosition, vWindowSize, bHasWindowFrame);
 }
 
-void CreateEngineCount(int c, std::vector<HANDLE>& vContextes, void* ThreadFunc)
+BOOL APIENTRY DllMain(HMODULE hModule,
+	DWORD  ul_reason_for_call,
+	LPVOID lpReserved
+)
 {
-	for (auto i = 0; i < c; i++)
+	switch (ul_reason_for_call)
 	{
-		vContextes.push_back(CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)CreateEngine, (void*)i, 0, nullptr));
+	case DLL_PROCESS_ATTACH:
+		printf("%s() -> %s\n", __FUNCTION__, MODULE_DESC);
+		break;
+	case DLL_THREAD_ATTACH:
+		break;
+	case DLL_THREAD_DETACH:
+		break;
+	case DLL_PROCESS_DETACH:
+		break;
 	}
+	return TRUE;
 }
 
-void WaitThreadHandles(std::vector<HANDLE>& vContextes)
-{
-	for (auto h : vContextes)
-	{
-		WaitForSingleObject(h, INFINITE);
-	}
-}
 
-int main()
-{
-	CreateEngineCount(1, vContextes, CreateEngine);
-
-	WaitThreadHandles(vContextes);
-}

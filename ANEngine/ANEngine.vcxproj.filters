@@ -31,9 +31,6 @@
     <Filter Include="ANEngine\Interfaces">
       <UniqueIdentifier>{1fe229af-3c00-4c5a-817b-656fbf5cfd3a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\Interfaces\ANError">
-      <UniqueIdentifier>{7f1714c1-c84a-440a-b15a-18e753e5b1f9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ANEngine\ANMemory">
       <UniqueIdentifier>{b6145d4a-c681-42b9-868b-0f45bd9b22e2}</UniqueIdentifier>
     </Filter>
@@ -58,34 +55,37 @@
     <Filter Include="ANEngine\ResourcesManager\ANUniqueResource">
       <UniqueIdentifier>{875c400d-9856-4c03-9d9a-13a6b31cc93f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\Script">
-      <UniqueIdentifier>{962e21eb-c367-4c12-87b3-cf7c39b99a33}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ANEngine\Script\ANScriptManager">
-      <UniqueIdentifier>{0f0f95e0-0cae-4573-853e-469fd8d4b0e7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ANEngine\Script\ANScript">
-      <UniqueIdentifier>{b3c7ba9f-b8dd-472d-93fc-e51b29772db8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ANEngine\ANScene">
       <UniqueIdentifier>{d2a7a479-cca5-4291-b91b-274596f6fee6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\Game">
-      <UniqueIdentifier>{47c8c6f3-939c-429e-9949-0ca773d43f53}</UniqueIdentifier>
+    <Filter Include="ANEngine\ANGame">
+      <UniqueIdentifier>{43574c47-80a0-4dc3-8cbd-9a1852953078}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\Game\ANGame">
-      <UniqueIdentifier>{f0f61718-026b-4f04-b8a7-7ecdf74d0f09}</UniqueIdentifier>
+    <Filter Include="ANEngine\ANApi">
+      <UniqueIdentifier>{97abd957-34c0-4a8c-9441-ac77caed5d3c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\Script\ANScriptInterpriter">
-      <UniqueIdentifier>{da57c124-16c5-43d0-84fe-e620160be0b8}</UniqueIdentifier>
+    <Filter Include="ANEngine\ANLoader">
+      <UniqueIdentifier>{2b6e497e-67e9-4139-910c-1a9820dda63d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\ANCore">
+      <UniqueIdentifier>{0d978f71-7838-49fc-96c3-7d3d32063bb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\IANError">
+      <UniqueIdentifier>{429fe0a2-f6bc-4bcb-880b-1eae25ba7a1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\IANApi">
+      <UniqueIdentifier>{bbcfb80e-a352-4157-ba4a-8088f68087dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\IANGameScene">
+      <UniqueIdentifier>{df39942c-7208-4673-b5be-b178e0a1fd6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\IANLoader">
+      <UniqueIdentifier>{8451807c-f18f-4c7d-93d7-b6bd0f470a88}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ANEngine.cpp">
       <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="ANengine\ANCore.cpp">
-      <Filter>ANEngine</Filter>
     </ClCompile>
     <ClCompile Include="ANengine\ANMath\ANVec2\ANVec2.cpp">
       <Filter>ANEngine\ANMath\ANVec2</Filter>
@@ -95,9 +95,6 @@
     </ClCompile>
     <ClCompile Include="ANengine\ANWindow\ANWindow.cpp">
       <Filter>ANEngine\ANWindow</Filter>
-    </ClCompile>
-    <ClCompile Include="ANengine\Interfaces\ANError\ANError.cpp">
-      <Filter>ANEngine\Interfaces\ANError</Filter>
     </ClCompile>
     <ClCompile Include="ANengine\ANMemory\ANMemory.cpp">
       <Filter>ANEngine\ANMemory</Filter>
@@ -120,26 +117,26 @@
     <ClCompile Include="ANengine\ResourcesManager\ANUniqueResource\ANUniqueResource.cpp">
       <Filter>ANEngine\ResourcesManager\ANUniqueResource</Filter>
     </ClCompile>
-    <ClCompile Include="ANengine\Script\ANScriptManager\ANScriptManager.cpp">
-      <Filter>ANEngine\Script\ANScriptManager</Filter>
-    </ClCompile>
-    <ClCompile Include="ANengine\Script\ANScript\ANScript.cpp">
-      <Filter>ANEngine\Script\ANScript</Filter>
-    </ClCompile>
     <ClCompile Include="ANengine\ANScene\ANScene.cpp">
       <Filter>ANEngine\ANScene</Filter>
     </ClCompile>
-    <ClCompile Include="ANengine\Game\ANGame\ANGame.cpp">
-      <Filter>ANEngine\Game\ANGame</Filter>
+    <ClCompile Include="ANengine\ANGame\ANGame.cpp">
+      <Filter>ANEngine\ANGame</Filter>
     </ClCompile>
-    <ClCompile Include="ANengine\Script\ANScriptInterpriter\ANScriptInterpriter.cpp">
-      <Filter>ANEngine\Script\ANScriptInterpriter</Filter>
+    <ClCompile Include="ANengine\ANApi\ANApi.cpp">
+      <Filter>ANEngine\ANApi</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\ANLoader\ANLoader.cpp">
+      <Filter>ANEngine\ANLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\ANCore\ANCore.cpp">
+      <Filter>ANEngine\ANCore</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\Interfaces\IANError\IANError.cpp">
+      <Filter>ANEngine\Interfaces\IANError</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ANengine\ANCore.h">
-      <Filter>ANEngine</Filter>
-    </ClInclude>
     <ClInclude Include="ANengine\ANEngine.h">
       <Filter>ANEngine</Filter>
     </ClInclude>
@@ -151,9 +148,6 @@
     </ClInclude>
     <ClInclude Include="ANengine\ANWindow\ANWindow.h">
       <Filter>ANEngine\ANWindow</Filter>
-    </ClInclude>
-    <ClInclude Include="ANengine\Interfaces\ANError\ANError.h">
-      <Filter>ANEngine\Interfaces\ANError</Filter>
     </ClInclude>
     <ClInclude Include="ANengine\ANMemory\ANMemory.h">
       <Filter>ANEngine\ANMemory</Filter>
@@ -179,20 +173,32 @@
     <ClInclude Include="ANengine\ResourcesManager\ANUniqueResource\ANUniqueResource.h">
       <Filter>ANEngine\ResourcesManager\ANUniqueResource</Filter>
     </ClInclude>
-    <ClInclude Include="ANengine\Script\ANScriptManager\ANScriptManager.h">
-      <Filter>ANEngine\Script\ANScriptManager</Filter>
-    </ClInclude>
-    <ClInclude Include="ANengine\Script\ANScript\ANScript.h">
-      <Filter>ANEngine\Script\ANScript</Filter>
-    </ClInclude>
     <ClInclude Include="ANengine\ANScene\ANScene.h">
       <Filter>ANEngine\ANScene</Filter>
     </ClInclude>
-    <ClInclude Include="ANengine\Game\ANGame\ANGame.h">
-      <Filter>ANEngine\Game\ANGame</Filter>
+    <ClInclude Include="ANengine\ANGame\ANGame.h">
+      <Filter>ANEngine\ANGame</Filter>
     </ClInclude>
-    <ClInclude Include="ANengine\Script\ANScriptInterpriter\ANScriptInterpriter.h">
-      <Filter>ANEngine\Script\ANScriptInterpriter</Filter>
+    <ClInclude Include="ANengine\ANApi\ANApi.h">
+      <Filter>ANEngine\ANApi</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\ANLoader\ANLoader.h">
+      <Filter>ANEngine\ANLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\ANCore\ANCore.h">
+      <Filter>ANEngine\ANCore</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Interfaces\IANError\IANError.h">
+      <Filter>ANEngine\Interfaces\IANError</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Interfaces\IANApi\IANApi.h">
+      <Filter>ANEngine\Interfaces\IANApi</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Interfaces\IANGameScene\IANGameScene.h">
+      <Filter>ANEngine\Interfaces\IANGameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Interfaces\IANLoader\IANLoader.h">
+      <Filter>ANEngine\Interfaces\IANLoader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

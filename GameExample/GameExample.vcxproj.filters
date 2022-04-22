@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ANSDK">
+      <UniqueIdentifier>{ea121146-d0f5-434a-bc7f-2dcf07f3e882}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\ANMath">
+      <UniqueIdentifier>{4ebce7e4-fc5c-4fd8-9628-f68a22023f02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\ANMath\ANVec2">
+      <UniqueIdentifier>{720363f3-13ed-4dc4-b9a3-9a6a037018ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\ANMath\ANVec3">
+      <UniqueIdentifier>{138e470b-df23-4067-b7ad-2b758f73a2ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\ANMath\ANRect">
+      <UniqueIdentifier>{5ee56e28-468e-4c24-beb3-f057e7c4993d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\ANMath\ANColor">
+      <UniqueIdentifier>{dd634789-1188-4e51-a3c0-51861fb2c91d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\IANApi">
+      <UniqueIdentifier>{ef1a3036-2b55-4ddb-9ee6-3cc03ec85563}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\IANError">
+      <UniqueIdentifier>{25e9d551-fc51-4ccb-a5ae-cf26d9e28295}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\IANGameScene">
+      <UniqueIdentifier>{ed717d9d-e125-4d78-83df-9ea9cc2e2cd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\IANLoader">
+      <UniqueIdentifier>{6c85ce63-416d-42db-b206-dff138b48568}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GameExample.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="ANSDK\ANSDK.cpp">
+      <Filter>ANSDK</Filter>
+    </ClCompile>
+    <ClCompile Include="ANSDK\ANMath\ANVec2\ANVec2.cpp">
+      <Filter>ANSDK\ANMath\ANVec2</Filter>
+    </ClCompile>
+    <ClCompile Include="ANSDK\ANMath\ANVec3\ANVec3.cpp">
+      <Filter>ANSDK\ANMath\ANVec3</Filter>
+    </ClCompile>
+    <ClCompile Include="ANSDK\ANMath\ANRect\ANRect.cpp">
+      <Filter>ANSDK\ANMath\ANRect</Filter>
+    </ClCompile>
+    <ClCompile Include="ANSDK\ANMath\ANColor\ANColor.cpp">
+      <Filter>ANSDK\ANMath\ANColor</Filter>
+    </ClCompile>
+    <ClCompile Include="ANSDK\IANError\IANError.cpp">
+      <Filter>ANSDK\IANError</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ANSDK\ANSDK.h">
+      <Filter>ANSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\ANMath\ANVec2\ANVec2.h">
+      <Filter>ANSDK\ANMath\ANVec2</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\ANMath\ANVec3\ANVec3.h">
+      <Filter>ANSDK\ANMath\ANVec3</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\ANMath\ANRect\ANRect.h">
+      <Filter>ANSDK\ANMath\ANRect</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\ANMath\ANColor\ANColor.h">
+      <Filter>ANSDK\ANMath\ANColor</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\IANApi\IANApi.h">
+      <Filter>ANSDK\IANApi</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\IANError\IANError.h">
+      <Filter>ANSDK\IANError</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\IANGameScene\IANGameScene.h">
+      <Filter>ANSDK\IANGameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\IANLoader\IANLoader.h">
+      <Filter>ANSDK\IANLoader</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ANSDK">
+      <UniqueIdentifier>{d6c30574-7b7c-4a17-8d40-15b8d76c3e89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\ANMath">
+      <UniqueIdentifier>{4f25d44d-fe11-4bcd-904b-7a1c06749292}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\ANMath\ANColor">
+      <UniqueIdentifier>{eda380b2-0f7c-4234-9286-9696a225449b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\ANMath\ANVec2">
+      <UniqueIdentifier>{0b625e46-556e-48ba-994a-32fabe42759a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\ANMath\ANRect">
+      <UniqueIdentifier>{c5d24589-7f0c-4f05-b530-68e44c26712c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\ANMath\ANVec3">
+      <UniqueIdentifier>{b3828b69-5db7-48b2-b863-e410e4be2277}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\IANGameScene">
+      <UniqueIdentifier>{f7cb6876-b74c-4246-9608-ecbb3491675c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\IANApi">
+      <UniqueIdentifier>{58a7d104-93ae-4d5b-a88a-9f6cbf02ff52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\ANLoader">
+      <UniqueIdentifier>{4dca94ad-8e7a-44be-b204-0818e661a457}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\IANError">
+      <UniqueIdentifier>{0b347406-11c8-4dee-9ea2-14955ff5637a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ANSDK\ANMath\ANColor\ANColor.cpp">
+      <Filter>ANSDK\ANMath\ANColor</Filter>
+    </ClCompile>
+    <ClCompile Include="ANSDK\ANMath\ANVec2\ANVec2.cpp">
+      <Filter>ANSDK\ANMath\ANVec2</Filter>
+    </ClCompile>
+    <ClCompile Include="ANSDK\ANMath\ANRect\ANRect.cpp">
+      <Filter>ANSDK\ANMath\ANRect</Filter>
+    </ClCompile>
+    <ClCompile Include="ANSDK\ANMath\ANVec3\ANVec3.cpp">
+      <Filter>ANSDK\ANMath\ANVec3</Filter>
+    </ClCompile>
+    <ClCompile Include="ANSDK\ANSDK.cpp">
+      <Filter>ANSDK</Filter>
+    </ClCompile>
+    <ClCompile Include="ANSDK\IANError\IANError.cpp">
+      <Filter>ANSDK\IANError</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ANSDK\ANSDK.h">
+      <Filter>ANSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\ANMath\ANColor\ANColor.h">
+      <Filter>ANSDK\ANMath\ANColor</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\ANMath\ANVec2\ANVec2.h">
+      <Filter>ANSDK\ANMath\ANVec2</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\ANMath\ANRect\ANRect.h">
+      <Filter>ANSDK\ANMath\ANRect</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\ANMath\ANVec3\ANVec3.h">
+      <Filter>ANSDK\ANMath\ANVec3</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\IANGameScene\IANGameScene.h">
+      <Filter>ANSDK\IANGameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\IANApi\IANApi.h">
+      <Filter>ANSDK\IANApi</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\IANLoader\IANLoader.h">
+      <Filter>ANSDK\ANLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\IANError\IANError.h">
+      <Filter>ANSDK\IANError</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

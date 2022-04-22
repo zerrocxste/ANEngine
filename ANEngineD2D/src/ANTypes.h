@@ -30,11 +30,13 @@ struct ANRendererFuncionsTable
 	bool(__stdcall* ResetScene)(HWND hWnd, WPARAM wParam, LPARAM lParam);
 	bool(__stdcall* GetScreenSize)(HWND hWnd, anVec2* pAnvec2Out);
 	bool(__stdcall* CreateImageFromMemory)(HWND hWnd, void* pImageSrc, std::uint32_t iImageSize, ANImageID* pImageIDPtr);
+	void(__stdcall* FreeImage)(ANImageID* pImageIDPtr);
 	bool(__stdcall* DrawImage)(HWND hWnd, ANImageID pImageID, anRect Pos, float Opacity);
 	bool(__stdcall* DrawRectangle)(HWND hWnd, anRect Pos, anColor Color, float Rounding);
 	bool(__stdcall* DrawFilledRectangle)(HWND hWnd, anRect Pos, anColor Color, float Rounding);
 	bool(__stdcall* DrawCircle)(HWND hWnd, anVec2 Pos, anColor Color, float Radius);
 	bool(__stdcall* DrawFilledCircle)(HWND hWnd, anVec2 Pos, anColor Color, float Radius);
-	bool(__stdcall* CreateFontFromFile)(const char* pszPath, float FontSize, ANFontID* pFontID);
+	bool(__stdcall* CreateFontFromFile)(const char* pszPath, float FontSize, ANFontID* pFontIDPtr);
+	void(__stdcall* FreeFont)(ANFontID* pFontIDPtr);
 	bool(__stdcall* TextDraw)(HWND hWnd, const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont);
 };

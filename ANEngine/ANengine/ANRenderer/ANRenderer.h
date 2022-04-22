@@ -26,6 +26,7 @@ public:
 
 	bool CreateImageFromMemory(void* pImageSrc, std::uint32_t iImageSize, ANImageID* pImageIDPtr);
 	bool CreateImageFromResource(ANUniqueResource* pResource, ANImageID* pImageIDPtr);
+	void FreeImage(ANImageID* pImageIDPtr);
 	bool DrawImage(ANImageID pImageID, anRect Pos, float Opacity = 1.f);
 	bool DrawRectangle(anRect Pos, anColor Color, float Rounding = 0.f);
 	bool DrawFilledRectangle(anRect Pos, anColor Color, float Rounding = 0.f);
@@ -34,7 +35,8 @@ public:
 	bool DrawFilledRectangle(anVec2 Pos, anVec2 Size, anColor Color, float Rounding = 0.f);
 	bool DrawCircle(anVec2 Pos, anColor Color, float Radius);
 	bool DrawFilledCircle(anVec2 Pos, anColor Color, float Radius);
-	bool CreateFontFromFile(const char* pszPath, float FontSize, ANFontID* pFontID);
+	bool CreateFontFromFile(const char* pszPath, float FontSize, ANFontID* pFontIDPtr);
+	void FreeFont(ANFontID* pFontIDPtr);
 	bool TextDraw(const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont);
 
 private:

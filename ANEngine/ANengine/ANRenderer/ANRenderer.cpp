@@ -121,8 +121,6 @@ const char* ANRenderer::RenderTypeToStr(RenderTypes RenderType)
 
 bool ANRenderer::PrepareScene()
 {
-	//this->m_iMaxFps = 60;
-
 	if (this->m_iMaxFps > 0)
 	{
 		if (this->m_iCurrentSkipperFrame > 0)
@@ -138,8 +136,6 @@ bool ANRenderer::PrepareScene()
 
 		this->m_iCurrentSkipperFrame = ((1000000 * 2.5f) / this->m_iMaxFps) + ((this->m_EndFrameTick - this->m_BeginFrameTick) / 10);
 		this->m_bFrameTimeIsGrabbed = false;
-
-		printf("Frame to skip: %d\n", this->m_iCurrentSkipperFrame);
 	}
 	else
 	{
@@ -227,6 +223,11 @@ bool ANRenderer::CreateImageFromResource(ANUniqueResource* pResource, ANImageID*
 	return this->m_pANRendererFuncionsTable->CreateImageFromMemory(this->m_hWnd, pResource->GetResourceLocation(), pResource->GetResourceSize(), pImageIDPtr);
 }
 
+void ANRenderer::FreeImage(ANImageID* pImageIDPtr)
+{
+	this->m_pANRendererFuncionsTable->FreeImage(pImageIDPtr);
+}
+
 bool ANRenderer::DrawImage(ANImageID pImageID, anRect Pos, float Opacity)
 {
 	return this->m_pANRendererFuncionsTable->DrawImage(this->m_hWnd, pImageID, Pos, Opacity);
@@ -267,9 +268,14 @@ bool ANRenderer::DrawFilledCircle(anVec2 Pos, anColor Color, float Radius)
 	return this->m_pANRendererFuncionsTable->DrawFilledCircle(this->m_hWnd, Pos, Color, Radius);
 }
 
-bool ANRenderer::CreateFontFromFile(const char* pszPath, float FontSize, ANFontID* pFontID)
+bool ANRenderer::CreateFontFromFile(const char* pszPath, float FontSize, ANFontID* pFontIDPtr)
 {
-	return this->m_pANRendererFuncionsTable->CreateFontFromFile(pszPath, FontSize, pFontID);
+	return this->m_pANRendererFuncionsTable->CreateFontFromFile(pszPath, FontSize, pFontIDPtr);
+}
+
+void ANRenderer::FreeFont(ANFontID* pFontIDPtr)
+{
+	this->m_pANRendererFuncionsTable->FreeFont(pFontIDPtr);
 }
 
 bool ANRenderer::TextDraw(const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont)

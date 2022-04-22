@@ -27,12 +27,14 @@ extern "C" __declspec(dllexport) bool __stdcall ClearScene(HWND hWnd);
 extern "C" __declspec(dllexport) bool __stdcall ResetScene(HWND hWnd, WPARAM wParam, LPARAM lParam);
 extern "C" __declspec(dllexport) bool __stdcall GetScreenSize(HWND hWnd, anVec2 * pAnvec2Out);
 extern "C" __declspec(dllexport) bool __stdcall CreateImageFromMemory(HWND hWnd, void* pImageSrc, std::uint32_t iImageSize, ANImageID * pImageIDPtr);
+extern "C" __declspec(dllexport) void __stdcall FreeImage(ANImageID* pImageIDPtr);
 extern "C" __declspec(dllexport) bool __stdcall DrawImage(HWND hWnd, ANImageID pImageID, anRect Pos, float Opacity);
 extern "C" __declspec(dllexport) bool __stdcall DrawRectangle(HWND hWnd, anRect Pos, anColor Color, float Rounding);
 extern "C" __declspec(dllexport) bool __stdcall DrawFilledRectangle(HWND hWnd, anRect Pos, anColor Color, float Rounding);
 extern "C" __declspec(dllexport) bool __stdcall DrawCircle(HWND hWnd, anVec2 Pos, anColor Color, float Radius);
 extern "C" __declspec(dllexport) bool __stdcall DrawFilledCircle(HWND hWnd, anVec2 Pos, anColor Color, float Radius);
-extern "C" __declspec(dllexport) bool __stdcall CreateFontFromFile(const char* pszPath, float FontSize, ANFontID * pFontID);
+extern "C" __declspec(dllexport) bool __stdcall CreateFontFromFile(const char* pszPath, float FontSize, ANFontID * pFontIDPtr);
+extern "C" __declspec(dllexport) void __stdcall FreeFont(ANFontID* pFontIDPtr);
 extern "C" __declspec(dllexport) bool __stdcall TextDraw(HWND hWnd, const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont);
 
 D2DWindowContextRenderInformation& GetWindowContextRenderInformation(HWND hWnd)
@@ -148,12 +150,14 @@ bool CreateRendererFunctionsTable()
 	g_ANRendererFuncionsTable.ResetScene = ResetScene;
 	g_ANRendererFuncionsTable.GetScreenSize = GetScreenSize;
 	g_ANRendererFuncionsTable.CreateImageFromMemory = CreateImageFromMemory;
+	g_ANRendererFuncionsTable.FreeImage = FreeImage;
 	g_ANRendererFuncionsTable.DrawImage = DrawImage;
 	g_ANRendererFuncionsTable.DrawRectangle = DrawRectangle;
 	g_ANRendererFuncionsTable.DrawFilledRectangle = DrawFilledRectangle;
 	g_ANRendererFuncionsTable.DrawCircle = DrawCircle;
 	g_ANRendererFuncionsTable.DrawFilledCircle = DrawFilledCircle;
 	g_ANRendererFuncionsTable.CreateFontFromFile = CreateFontFromFile;
+	g_ANRendererFuncionsTable.FreeFont = FreeFont;
 	g_ANRendererFuncionsTable.TextDraw = TextDraw;
 
 	return true;
@@ -287,6 +291,15 @@ extern "C" __declspec(dllexport) bool __stdcall CreateImageFromMemory(HWND hWnd,
 	*pImageIDPtr = (ANImageID)pD2D1Bitmap;
 
 	return true;
+}
+
+extern "C" __declspec(dllexport) void __stdcall FreeImage(ANImageID * pImageIDPtr)
+{
+	if (!*pImageIDPtr)
+		return;
+
+	((ID2D1Bitmap*)(*pImageIDPtr))->Release();
+	*pImageIDPtr = nullptr;
 }
 
 extern "C" __declspec(dllexport) bool __stdcall DrawImage(HWND hWnd, ANImageID pImageID, anRect Pos, float Opacity)
@@ -481,7 +494,7 @@ private:
 	const wchar_t* m_pwszFontPath;
 };
 
-extern "C" __declspec(dllexport) bool __stdcall CreateFontFromFile(const char* pszPath, float FontSize, ANFontID * pFontID)
+extern "C" __declspec(dllexport) bool __stdcall CreateFontFromFile(const char* pszPath, float FontSize, ANFontID * pFontIDPtr)
 {
 	auto ret = false;
 
@@ -511,7 +524,7 @@ extern "C" __declspec(dllexport) bool __stdcall CreateFontFromFile(const char* p
 	UINT32 Length = 0;
 	wchar_t* pwszLocalName = nullptr;
 
-	*pFontID = nullptr;
+	*pFontIDPtr = nullptr;
 
 	if (!pFontLoader)
 		goto failed;
@@ -541,7 +554,7 @@ extern "C" __declspec(dllexport) bool __stdcall CreateFontFromFile(const char* p
 	if (FAILED(g_D2DInterfaces.pDWriteFactory->CreateTextFormat(pwszLocalName, pFontCollection, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, FontSize, L"", &pTextFormat)))
 		goto failed;
 
-	*pFontID = pTextFormat;
+	*pFontIDPtr = pTextFormat;
 
 	ret = true;
 
@@ -554,6 +567,15 @@ failed:
 		delete[] pwszPath;
 
 	return ret;
+}
+
+extern "C" __declspec(dllexport) void __stdcall FreeFont(ANFontID* pFontIDPtr)
+{
+	if (!*pFontIDPtr)
+		return;
+
+	((IDWriteTextFormat*)(*pFontIDPtr))->Release();
+	*pFontIDPtr = nullptr;
 }
 
 extern "C" __declspec(dllexport) bool __stdcall TextDraw(HWND hWnd, const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont)
@@ -584,7 +606,6 @@ extern "C" __declspec(dllexport) bool __stdcall TextDraw(HWND hWnd, const char* 
 
 	return true;
 }
-
 
 BOOL APIENTRY DllMain( HMODULE hModule,
 					   DWORD  ul_reason_for_call,
