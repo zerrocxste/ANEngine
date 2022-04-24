@@ -15,6 +15,7 @@ public:
 
 	anColor& MakeRand();
 
+	static const anColor Rand();
 	static const anColor Red();
 	static const anColor Green();
 	static const anColor Blue();

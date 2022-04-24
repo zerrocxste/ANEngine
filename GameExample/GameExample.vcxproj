@@ -140,24 +140,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ANSDK\ANMath\ANColor\ANColor.cpp" />
-    <ClCompile Include="ANSDK\ANMath\ANRect\ANRect.cpp" />
-    <ClCompile Include="ANSDK\ANMath\ANVec2\ANVec2.cpp" />
-    <ClCompile Include="ANSDK\ANMath\ANVec3\ANVec3.cpp" />
-    <ClCompile Include="ANSDK\ANSDK.cpp" />
-    <ClCompile Include="ANSDK\IANError\IANError.cpp" />
+    <ClCompile Include="..\ANSDK\ANSDK\ANMath\ANColor\ANColor.cpp" />
+    <ClCompile Include="..\ANSDK\ANSDK\ANMath\ANRect\ANRect.cpp" />
+    <ClCompile Include="..\ANSDK\ANSDK\ANMath\ANVec2\ANVec2.cpp" />
+    <ClCompile Include="..\ANSDK\ANSDK\ANMath\ANVec3\ANVec3.cpp" />
+    <ClCompile Include="..\ANSDK\ANSDK\ANSDK.cpp" />
+    <ClCompile Include="..\ANSDK\ANSDK\IANError\IANError.cpp" />
     <ClCompile Include="GameExample.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ANSDK\ANMath\ANColor\ANColor.h" />
-    <ClInclude Include="ANSDK\ANMath\ANRect\ANRect.h" />
-    <ClInclude Include="ANSDK\ANMath\ANVec2\ANVec2.h" />
-    <ClInclude Include="ANSDK\ANMath\ANVec3\ANVec3.h" />
-    <ClInclude Include="ANSDK\ANSDK.h" />
-    <ClInclude Include="ANSDK\IANApi\IANApi.h" />
-    <ClInclude Include="ANSDK\IANError\IANError.h" />
-    <ClInclude Include="ANSDK\IANGameScene\IANGameScene.h" />
-    <ClInclude Include="ANSDK\IANLoader\IANLoader.h" />
+    <ClInclude Include="..\ANSDK\ANSDK\ANMath\ANColor\ANColor.h" />
+    <ClInclude Include="..\ANSDK\ANSDK\ANMath\ANRect\ANRect.h" />
+    <ClInclude Include="..\ANSDK\ANSDK\ANMath\ANVec2\ANVec2.h" />
+    <ClInclude Include="..\ANSDK\ANSDK\ANMath\ANVec3\ANVec3.h" />
+    <ClInclude Include="..\ANSDK\ANSDK\ANSDK.h" />
+    <ClInclude Include="..\ANSDK\ANSDK\IANApi\IANApi.h" />
+    <ClInclude Include="..\ANSDK\ANSDK\IANError\IANError.h" />
+    <ClInclude Include="..\ANSDK\ANSDK\IANGameScene\IANGameScene.h" />
+    <ClInclude Include="..\ANSDK\ANSDK\IANLoader\IANLoader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

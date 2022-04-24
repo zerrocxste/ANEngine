@@ -23,8 +23,3 @@ IANLoader* CreateEngineInstance(
 
 	return pfCreateEngineInstance(RenderType, pszWindowName, vWindowPosition, vWindowSize, bHasWindowFrame);
 }
-
-int main()
-{
-	return 0;
-}

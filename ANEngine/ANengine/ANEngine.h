@@ -23,6 +23,7 @@ class ANGame;
 class ANResourceManager;
 class ANScene;
 class ANApi;
+class ANGui;
 
 #include "ANTypes.h"
 
@@ -41,5 +42,6 @@ class ANApi;
 #include "ANGame/ANGame.h"
 #include "ANScene/ANScene.h"
 #include "ANApi/ANApi.h"
+#include "ANGui/ANGui.h"
 #include "ANCore/ANCore.h"
 #include "ANLoader/ANLoader.h"

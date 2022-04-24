@@ -30,11 +30,7 @@ bool ANScene::Run()
 		if (!r->PrepareScene())
 			continue;
 
-		if (!r->BeginFrame())
-		{
-			this->SetError("%s() -> Begin frame issue", __FUNCTION__);
-			return false;
-		}
+		r->BeginFrame();
 
 		r->ClearScene();
 

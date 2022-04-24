@@ -18,6 +18,7 @@ public:
 	ANResourceManager* GetResourceManager();
 	ANScene* GetScene();
 	ANApi* GetApi();
+	ANGui* GetGui();
 
 	bool Initialize();
 	bool Run();

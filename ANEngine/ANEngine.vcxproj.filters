@@ -82,6 +82,30 @@
     <Filter Include="ANEngine\Interfaces\IANLoader">
       <UniqueIdentifier>{8451807c-f18f-4c7d-93d7-b6bd0f470a88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ANEngine\ANGui">
+      <UniqueIdentifier>{be2c0888-9105-48a3-8ea0-dfbe92c37024}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\GameEntity">
+      <UniqueIdentifier>{275d415f-9d5a-4ede-bfc6-791ab15d2db0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\GameEntity\IANBasicEntity">
+      <UniqueIdentifier>{686cde0a-594f-49f5-b17b-cb02f01d9977}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\GameEntity\IANActor">
+      <UniqueIdentifier>{887c1bc3-a82b-470e-8dc4-db2ff2d38be0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\GameEntity\IANEntity">
+      <UniqueIdentifier>{6fd5d644-8913-4f3a-b714-25954d34ab0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\GameEntity\IANActionController">
+      <UniqueIdentifier>{97704094-1c96-4b66-ba3e-c363ba94847c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\GameEntity\IANAnimationController">
+      <UniqueIdentifier>{2021931d-34cf-45bc-9efc-e858b2afa59a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\ANPerfomance">
+      <UniqueIdentifier>{3392c943-120b-4a2d-bf4e-602a89b77df8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ANEngine.cpp">
@@ -134,6 +158,9 @@
     </ClCompile>
     <ClCompile Include="ANengine\Interfaces\IANError\IANError.cpp">
       <Filter>ANEngine\Interfaces\IANError</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\ANGui\ANGui.cpp">
+      <Filter>ANEngine\ANGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +226,9 @@
     </ClInclude>
     <ClInclude Include="ANengine\Interfaces\IANLoader\IANLoader.h">
       <Filter>ANEngine\Interfaces\IANLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\ANGui\ANGui.h">
+      <Filter>ANEngine\ANGui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

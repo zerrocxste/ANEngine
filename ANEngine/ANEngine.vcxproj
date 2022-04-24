@@ -145,6 +145,7 @@
     <ClCompile Include="ANengine\ANApi\ANApi.cpp" />
     <ClCompile Include="ANengine\ANCore\ANCore.cpp" />
     <ClCompile Include="ANengine\ANGame\ANGame.cpp" />
+    <ClCompile Include="ANengine\ANGui\ANGui.cpp" />
     <ClCompile Include="ANengine\ANInput\ANInput.cpp" />
     <ClCompile Include="ANengine\ANLoader\ANLoader.cpp" />
     <ClCompile Include="ANengine\ANMath\ANColor\ANColor.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="ANengine\ANCore\ANCore.h" />
     <ClInclude Include="ANengine\ANEngine.h" />
     <ClInclude Include="ANengine\ANGame\ANGame.h" />
+    <ClInclude Include="ANengine\ANGui\ANGui.h" />
     <ClInclude Include="ANengine\ANInput\ANInput.h" />
     <ClInclude Include="ANengine\ANLoader\ANLoader.h" />
     <ClInclude Include="ANengine\ANMath\ANColor\ANColor.h" />

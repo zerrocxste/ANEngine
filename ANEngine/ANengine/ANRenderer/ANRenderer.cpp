@@ -178,9 +178,9 @@ bool ANRenderer::ClearScene()
 	return this->m_pANRendererFuncionsTable->ClearScene(this->m_hWnd);
 }
 
-bool ANRenderer::ResetScene(WPARAM wParam, LPARAM lParam)
+bool ANRenderer::ResetScene(anVec2 ScreenSize)
 {
-	return this->m_pANRendererFuncionsTable->ResetScene(this->m_hWnd, wParam, lParam);
+	return this->m_pANRendererFuncionsTable->ResetScene(this->m_hWnd, ScreenSize);
 }
 
 anVec2 ANRenderer::GetScreenSize()
@@ -233,9 +233,9 @@ bool ANRenderer::DrawImage(ANImageID pImageID, anRect Pos, float Opacity)
 	return this->m_pANRendererFuncionsTable->DrawImage(this->m_hWnd, pImageID, Pos, Opacity);
 }
 
-bool ANRenderer::DrawRectangle(anRect Pos, anColor Color, float Rounding)
+bool ANRenderer::DrawRectangle(anRect Pos, anColor Color, float LineThickness, float Rounding)
 {
-	return this->m_pANRendererFuncionsTable->DrawRectangle(this->m_hWnd, Pos, Color, Rounding);
+	return this->m_pANRendererFuncionsTable->DrawRectangle(this->m_hWnd, Pos, Color, LineThickness, Rounding);
 }
 
 bool ANRenderer::DrawFilledRectangle(anRect Pos, anColor Color, float Rounding)
@@ -245,22 +245,37 @@ bool ANRenderer::DrawFilledRectangle(anRect Pos, anColor Color, float Rounding)
 
 bool ANRenderer::DrawImage(ANImageID pImageID, anVec2 Pos, anVec2 Size, float Opacity)
 {
-	return this->m_pANRendererFuncionsTable->DrawImage(this->m_hWnd, pImageID, anRect(Pos, Pos + Size), Opacity);
+	return this->m_pANRendererFuncionsTable->DrawImage(this->m_hWnd, pImageID, anRect(Pos, Pos + Size), Opacity);	
 }
 
-bool ANRenderer::DrawRectangle(anVec2 Pos, anVec2 Size, anColor Color, float Rounding)
+bool ANRenderer::DrawLine(anVec2 From, anVec2 To, anColor Color, float LineThickness)
 {
-	return this->m_pANRendererFuncionsTable->DrawRectangle(this->m_hWnd, anRect(Pos, Pos + Size), Color, Rounding);
+	return this->m_pANRendererFuncionsTable->DrawLine(this->m_hWnd, From, To, Color, LineThickness);
+}
+
+bool ANRenderer::DrawRectangle(anVec2 Pos, anVec2 Size, anColor Color, float LineThickness, float Rounding)
+{
+	return this->m_pANRendererFuncionsTable->DrawRectangle(this->m_hWnd, anRect(Pos, Pos + Size), Color, LineThickness, Rounding);
 }
 
 bool ANRenderer::DrawFilledRectangle(anVec2 Pos, anVec2 Size, anColor Color, float Rounding)
 {
-	return this->m_pANRendererFuncionsTable->DrawFilledRectangle(this->m_hWnd, anRect(Pos, Pos + Size), Color, Rounding);
+	return this->m_pANRendererFuncionsTable->DrawFilledRectangle(this->m_hWnd, anRect(Pos, Pos + Size), Color, Rounding);	
 }
 
-bool ANRenderer::DrawCircle(anVec2 Pos, anColor Color, float Radius)
+bool ANRenderer::DrawTrinagle(anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color, float LineThickness)
 {
-	return this->m_pANRendererFuncionsTable->DrawCircle(this->m_hWnd, Pos, Color, Radius);
+	return this->m_pANRendererFuncionsTable->DrawTrinagle(this->m_hWnd, pt1, pt2, pt3, Color, LineThickness);
+}
+
+bool ANRenderer::DrawFilledTrinagle(anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color)
+{
+	return this->m_pANRendererFuncionsTable->DrawTrinagleFilled(this->m_hWnd, pt1, pt2, pt3, Color);
+}
+
+bool ANRenderer::DrawCircle(anVec2 Pos, anColor Color, float Radius, float LineThickness)
+{
+	return this->m_pANRendererFuncionsTable->DrawCircle(this->m_hWnd, Pos, Color, Radius, LineThickness);
 }
 
 bool ANRenderer::DrawFilledCircle(anVec2 Pos, anColor Color, float Radius)

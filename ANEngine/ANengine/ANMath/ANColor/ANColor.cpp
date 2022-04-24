@@ -52,6 +52,11 @@ anColor& anColor::MakeRand()
 	return *this;
 }
 
+const anColor anColor::Rand()
+{
+	return anColor().MakeRand();
+}
+
 const anColor anColor::Red()
 {
 	return anColor(255, 0, 0);

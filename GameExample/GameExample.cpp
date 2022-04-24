@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 
-#include "ANSDK/ANSDK.h"
+#include "../ANSDK/ANSDK/ANSDK.h"
 
 class CTestGameScene : public IANGameScene
 {
@@ -51,6 +51,14 @@ void CTestGameScene::Entry(IANApi* pApi)
 	char buff[256] = { 0 };
 	sprintf_s(buff, "FPS: %d\nFrametime: %lf\nScreenSize: %.0f:%.0f", pApi->FPS, pApi->Frametime, pApi->ScreenSize.x, pApi->ScreenSize.y);
 	pApi->TextDraw(buff, anVec2(30.f, 30.f), anColor::Red(), this->m_fontStolzLight);
+
+	/*pApi->DrawCircle(anVec2(100.f, 100.f), anColor::Blue(), 100.f, 5.f);
+	pApi->DrawRectangle(anVec2(200.f, 200.f), anVec2(100.f, 100.f), anColor::Green(), 15.f, 25.f);
+	pApi->DrawTrinagle(anVec2(350.f, 350.f), anVec2(400.f, 350.f), anVec2(375.f, 450.f), anColor::Magenta(), 15.f);
+	pApi->DrawLine(anVec2(), pApi->ScreenSize, anColor::Yellow());*/
+
+	static bool bVar = false;
+	pApi->AddCheckbox("Test", &bVar);
 }
 
 int main()

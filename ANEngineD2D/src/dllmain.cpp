@@ -24,14 +24,17 @@ CRITICAL_SECTION g_csInitializeRenderer;
 extern "C" __declspec(dllexport) bool __stdcall BeginFrame(HWND hWnd);
 extern "C" __declspec(dllexport) bool __stdcall EndFrame(HWND hWnd);
 extern "C" __declspec(dllexport) bool __stdcall ClearScene(HWND hWnd);
-extern "C" __declspec(dllexport) bool __stdcall ResetScene(HWND hWnd, WPARAM wParam, LPARAM lParam);
+extern "C" __declspec(dllexport) bool __stdcall ResetScene(HWND hWnd, anVec2 ScreenSize);
 extern "C" __declspec(dllexport) bool __stdcall GetScreenSize(HWND hWnd, anVec2 * pAnvec2Out);
 extern "C" __declspec(dllexport) bool __stdcall CreateImageFromMemory(HWND hWnd, void* pImageSrc, std::uint32_t iImageSize, ANImageID * pImageIDPtr);
 extern "C" __declspec(dllexport) void __stdcall FreeImage(ANImageID* pImageIDPtr);
 extern "C" __declspec(dllexport) bool __stdcall DrawImage(HWND hWnd, ANImageID pImageID, anRect Pos, float Opacity);
-extern "C" __declspec(dllexport) bool __stdcall DrawRectangle(HWND hWnd, anRect Pos, anColor Color, float Rounding);
+extern "C" __declspec(dllexport) bool __stdcall DrawLine(HWND hWnd, anVec2 From, anVec2 To, anColor Color, float LineThickness);
+extern "C" __declspec(dllexport) bool __stdcall DrawRectangle(HWND hWnd, anRect Pos, anColor Color, float LineThickness, float Rounding);
 extern "C" __declspec(dllexport) bool __stdcall DrawFilledRectangle(HWND hWnd, anRect Pos, anColor Color, float Rounding);
-extern "C" __declspec(dllexport) bool __stdcall DrawCircle(HWND hWnd, anVec2 Pos, anColor Color, float Radius);
+extern "C" __declspec(dllexport) bool __stdcall DrawCircle(HWND hWnd, anVec2 Pos, anColor Color, float Radius, float LineThickness);
+extern "C" __declspec(dllexport) bool __stdcall DrawTrinagle(HWND hWnd, anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color, float LineThickness);
+extern "C" __declspec(dllexport) bool __stdcall DrawTrinagleFilled(HWND hWnd, anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color);
 extern "C" __declspec(dllexport) bool __stdcall DrawFilledCircle(HWND hWnd, anVec2 Pos, anColor Color, float Radius);
 extern "C" __declspec(dllexport) bool __stdcall CreateFontFromFile(const char* pszPath, float FontSize, ANFontID * pFontIDPtr);
 extern "C" __declspec(dllexport) void __stdcall FreeFont(ANFontID* pFontIDPtr);
@@ -153,7 +156,10 @@ bool CreateRendererFunctionsTable()
 	g_ANRendererFuncionsTable.FreeImage = FreeImage;
 	g_ANRendererFuncionsTable.DrawImage = DrawImage;
 	g_ANRendererFuncionsTable.DrawRectangle = DrawRectangle;
+	g_ANRendererFuncionsTable.DrawLine = DrawLine;
 	g_ANRendererFuncionsTable.DrawFilledRectangle = DrawFilledRectangle;
+	g_ANRendererFuncionsTable.DrawTrinagle = DrawTrinagle;
+	g_ANRendererFuncionsTable.DrawTrinagleFilled = DrawTrinagleFilled;
 	g_ANRendererFuncionsTable.DrawCircle = DrawCircle;
 	g_ANRendererFuncionsTable.DrawFilledCircle = DrawFilledCircle;
 	g_ANRendererFuncionsTable.CreateFontFromFile = CreateFontFromFile;
@@ -246,17 +252,14 @@ extern "C" __declspec(dllexport) bool __stdcall ClearScene(HWND hWnd)
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall ResetScene(HWND hWnd, WPARAM wParam, LPARAM lParam)
+extern "C" __declspec(dllexport) bool __stdcall ResetScene(HWND hWnd, anVec2 ScreenSize)
 {
 	auto& ri = GetWindowContextRenderInformation(hWnd);
 
 	if (!ri.m_pRenderTarget)
 		return false;
 
-	if (wParam == SIZE_MINIMIZED)
-		return false;
-
-	ri.m_pRenderTarget->Resize(D2D1::SizeU(LOWORD(lParam), HIWORD(lParam)));
+	ri.m_pRenderTarget->Resize(D2D1::SizeU((int)ScreenSize.x, (int)ScreenSize.y));
 
 	return true;
 }
@@ -314,7 +317,21 @@ extern "C" __declspec(dllexport) bool __stdcall DrawImage(HWND hWnd, ANImageID p
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall DrawRectangle(HWND hWnd, anRect Pos, anColor Color, float Rounding)
+extern "C" __declspec(dllexport) bool __stdcall DrawLine(HWND hWnd, anVec2 From, anVec2 To, anColor Color, float LineThickness)
+{
+	auto& ri = GetWindowContextRenderInformation(hWnd);
+
+	if (!ri.m_pRenderTarget)
+		return false;
+
+	SetBrushColor(hWnd, Color);
+
+	ri.m_pRenderTarget->DrawLine(D2D1::Point2F(From.x, From.y), D2D1::Point2F(To.x, To.y), ri.m_pColorBrush, LineThickness);
+
+	return true;
+}
+
+extern "C" __declspec(dllexport) bool __stdcall DrawRectangle(HWND hWnd, anRect Pos, anColor Color, float LineThickness, float Rounding)
 {
 	auto& ri = GetWindowContextRenderInformation(hWnd);
 
@@ -326,9 +343,9 @@ extern "C" __declspec(dllexport) bool __stdcall DrawRectangle(HWND hWnd, anRect 
 	auto Rect = D2D1::RectF(Pos.first.x, Pos.first.y, Pos.second.x, Pos.second.y);
 
 	if (Rounding > 0.f)
-		ri.m_pRenderTarget->DrawRectangle(Rect, ri.m_pColorBrush);
+		ri.m_pRenderTarget->DrawRoundedRectangle(D2D1::RoundedRect(Rect, Rounding, Rounding), ri.m_pColorBrush, LineThickness);
 	else
-		ri.m_pRenderTarget->DrawRoundedRectangle(D2D1::RoundedRect(Rect, Rounding, Rounding), ri.m_pColorBrush);
+		ri.m_pRenderTarget->DrawRectangle(Rect, ri.m_pColorBrush, LineThickness);
 
 	return true;
 }
@@ -345,14 +362,106 @@ extern "C" __declspec(dllexport) bool __stdcall DrawFilledRectangle(HWND hWnd, a
 	auto Rect = D2D1::RectF(Pos.first.x, Pos.first.y, Pos.second.x, Pos.second.y);
 
 	if (Rounding > 0.f)
-		ri.m_pRenderTarget->FillRectangle(Rect, ri.m_pColorBrush);
-	else
 		ri.m_pRenderTarget->FillRoundedRectangle(D2D1::RoundedRect(Rect, Rounding, Rounding), ri.m_pColorBrush);
+	else
+		ri.m_pRenderTarget->FillRectangle(Rect, ri.m_pColorBrush);
 
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall DrawCircle(HWND hWnd, anVec2 Pos, anColor Color, float Radius)
+bool CreateTrinagleGeometry(ID2D1Factory* pD2D1Factory, D2D1_POINT_2F pt1, D2D1_POINT_2F pt2, D2D1_POINT_2F pt3, ID2D1PathGeometry** pD2D1PathGeometry)
+{
+	ID2D1GeometrySink* pSink = nullptr;
+
+	if (FAILED(pD2D1Factory->CreatePathGeometry(pD2D1PathGeometry)))
+		return false;
+
+	if (FAILED(((ID2D1PathGeometry*)(*pD2D1PathGeometry))->Open(&pSink)))
+		return false;
+
+	pSink->BeginFigure(pt1, D2D1_FIGURE_BEGIN_FILLED);
+
+	pSink->AddLine(pt2);
+
+	pSink->AddLine(pt3);
+
+	pSink->EndFigure(D2D1_FIGURE_END_CLOSED);
+
+	if (FAILED(pSink->Close()))
+		return false;
+
+	pSink->Release();
+
+	return true;
+}
+
+bool CreateRoundedTrinagleGeometry(ID2D1Factory* pD2D1Factory, D2D1_POINT_2F pt1, D2D1_POINT_2F pt2, D2D1_POINT_2F pt3, ID2D1PathGeometry** pD2D1PathGeometry)
+{
+	ID2D1GeometrySink* pSink = nullptr;
+
+	if (FAILED(pD2D1Factory->CreatePathGeometry(pD2D1PathGeometry)))
+		return false;
+
+	if (FAILED(((ID2D1PathGeometry*)(*pD2D1PathGeometry))->Open(&pSink)))
+		return false;
+
+	pSink->BeginFigure(pt1, D2D1_FIGURE_BEGIN_FILLED);
+
+	pSink->AddLine(pt2);
+
+	pSink->AddLine(pt3);
+
+	pSink->EndFigure(D2D1_FIGURE_END_CLOSED);
+
+	if (FAILED(pSink->Close()))
+		return false;
+
+	pSink->Release();
+
+	return true;
+}
+
+extern "C" __declspec(dllexport) bool __stdcall DrawTrinagle(HWND hWnd, anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color, float LineThickness)
+{
+	auto& ri = GetWindowContextRenderInformation(hWnd);
+
+	if (!ri.m_pRenderTarget)
+		return false;
+
+	SetBrushColor(hWnd, Color);
+
+	ID2D1PathGeometry* TriGeometry = nullptr;
+
+	if (!CreateTrinagleGeometry(g_D2DInterfaces.m_pFactory, D2D1::Point2F(pt1.x, pt1.y), D2D1::Point2F(pt2.x, pt2.y), D2D1::Point2F(pt3.x, pt3.y), &TriGeometry))
+		return false;
+
+	ri.m_pRenderTarget->DrawGeometry(TriGeometry, ri.m_pColorBrush, LineThickness);
+
+	TriGeometry->Release();
+
+	return true;
+}
+
+extern "C" __declspec(dllexport) bool __stdcall DrawTrinagleFilled(HWND hWnd, anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color)
+{
+	auto& ri = GetWindowContextRenderInformation(hWnd);
+
+	if (!ri.m_pRenderTarget)
+		return false;
+
+	SetBrushColor(hWnd, Color);
+
+	ID2D1PathGeometry* TriGeometry = nullptr;
+
+	if (!CreateTrinagleGeometry(g_D2DInterfaces.m_pFactory, D2D1::Point2F(pt1.x, pt1.y), D2D1::Point2F(pt2.x, pt2.y), D2D1::Point2F(pt3.x, pt3.y), &TriGeometry))
+		return false;
+
+	ri.m_pRenderTarget->FillGeometry(TriGeometry, ri.m_pColorBrush);
+
+	return true;
+}
+
+extern "C" __declspec(dllexport) bool __stdcall DrawCircle(HWND hWnd, anVec2 Pos, anColor Color, float Radius, float LineThickness)
 {
 	auto& ri = GetWindowContextRenderInformation(hWnd);
 
@@ -363,7 +472,7 @@ extern "C" __declspec(dllexport) bool __stdcall DrawCircle(HWND hWnd, anVec2 Pos
 
 	Radius /= 2.f;
 
-	ri.m_pRenderTarget->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(Pos.x + Radius, Pos.y + Radius), Radius, Radius), ri.m_pColorBrush);
+	ri.m_pRenderTarget->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(Pos.x + Radius, Pos.y + Radius), Radius, Radius), ri.m_pColorBrush, LineThickness);
 
 	return true;
 }

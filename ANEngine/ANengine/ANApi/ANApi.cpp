@@ -34,18 +34,28 @@ bool ANApi::DrawImage(ANImageID pImageID, anVec2 Pos, anVec2 Size, float Opacity
 	return this->m_pCore->GetRenderer()->DrawImage(pImageID, Pos, Size, Opacity);
 }
 
-bool ANApi::DrawRectangle(anVec2 Pos, anVec2 Size, anColor Color, float Rounding, bool Filled)
+bool ANApi::DrawLine(anVec2 From, anVec2 To, anColor Color, float LineThickness)
 {
-	auto r = this->m_pCore->GetRenderer();
-
-	return Filled ? r->DrawFilledRectangle(Pos, Size, Color, Rounding) : r->DrawRectangle(Pos, Size, Color, Rounding);
+	return this->m_pCore->GetRenderer()->DrawLine(From, To, Color, LineThickness);
 }
 
-bool ANApi::DrawCircle(anVec2 Pos, anColor Color, float Radius, bool Filled)
+bool ANApi::DrawRectangle(anVec2 Pos, anVec2 Size, anColor Color, float LineThickness, float Rounding, bool Filled)
 {
 	auto r = this->m_pCore->GetRenderer();
 
-	return Filled ? r->DrawFilledCircle(Pos, Color, Radius) : r->DrawCircle(Pos, Color, Radius);
+	return Filled ? r->DrawFilledRectangle(Pos, Size, Color, Rounding) : r->DrawRectangle(Pos, Size, Color, LineThickness, Rounding);
+}
+
+bool ANApi::DrawTrinagle(anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color, float LineThickness, bool Filled)
+{
+	return Filled ? this->m_pCore->GetRenderer()->DrawFilledTrinagle(pt1, pt2, pt3, Color) : this->m_pCore->GetRenderer()->DrawTrinagle(pt1, pt2, pt3, Color, LineThickness);
+}
+
+bool ANApi::DrawCircle(anVec2 Pos, anColor Color, float Radius, float LineThickness, bool Filled)
+{
+	auto r = this->m_pCore->GetRenderer();
+
+	return Filled ? r->DrawFilledCircle(Pos, Color, Radius) : r->DrawCircle(Pos, Color, Radius, LineThickness);
 }
 
 bool ANApi::CreateFontFromFile(const char* pszPath, float FontSize, ANFontID* pFontID)
@@ -61,6 +71,11 @@ void ANApi::FreeFont(ANFontID* pFontIDPtr)
 bool ANApi::TextDraw(const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont)
 {
 	return this->m_pCore->GetRenderer()->TextDraw(pszText, Pos, Color, pFont);
+}
+
+bool ANApi::AddCheckbox(const char* pszName, bool* pVar)
+{
+	return this->m_pCore->GetGui()->CheckBox(pszName, pVar);
 }
 
 void ANApi::Update()

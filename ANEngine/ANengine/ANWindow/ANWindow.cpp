@@ -15,16 +15,42 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 		switch (Msg)
 		{
 		case WM_SIZE:
-			pANWindow->m_pCore->GetRenderer()->ResetScene(wParam, lParam);
+			if (wParam == SIZE_MINIMIZED)
+				break;
+
+			pANWindow->m_pCore->GetRenderer()->ResetScene(anVec2(LOWORD(lParam), HIWORD(lParam)));
 			break;
 		case WM_DESTROY:
 			PostQuitMessage(0);
 			return 0;
-		case WM_KEYDOWN:
-			pANWindow->m_pCore->GetInput()->SetStateKey(wParam, true);
+		case WM_LBUTTONDOWN: case WM_LBUTTONDBLCLK:
+		case WM_RBUTTONDOWN: case WM_RBUTTONDBLCLK:
+		case WM_MBUTTONDOWN: case WM_MBUTTONDBLCLK:
+		{
+			int button = 0;
+			if (Msg == WM_LBUTTONDOWN || Msg == WM_LBUTTONDBLCLK) button = 0;
+			if (Msg == WM_RBUTTONDOWN || Msg == WM_RBUTTONDBLCLK) button = 1;
+			if (Msg == WM_MBUTTONDOWN || Msg == WM_MBUTTONDBLCLK) button = 2;
+			pANWindow->m_pCore->GetInput()->SetCursorKey(button, true);
 			break;
+		}
+		case WM_LBUTTONUP:
+		case WM_RBUTTONUP:
+		case WM_MBUTTONUP:
+		{
+			int button = 0;
+			if (Msg == WM_LBUTTONUP) button = 0;
+			if (Msg == WM_RBUTTONUP) button = 1;
+			if (Msg == WM_MBUTTONUP) button = 2;
+			pANWindow->m_pCore->GetInput()->SetCursorKey(button, false);
+			break;
+		}
+		case WM_MOUSEMOVE:
+			pANWindow->m_pCore->GetInput()->SetCursorPos(anVec2(LOWORD(lParam), HIWORD(lParam)));
+			break;
+		case WM_KEYDOWN:
 		case WM_KEYUP:
-			pANWindow->m_pCore->GetInput()->SetStateKey(wParam, false);
+			pANWindow->m_pCore->GetInput()->SetStateKey(wParam, Msg == WM_KEYDOWN);
 			break;
 		default:
 			break;
