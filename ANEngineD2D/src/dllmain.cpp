@@ -24,21 +24,27 @@ CRITICAL_SECTION g_csInitializeRenderer;
 extern "C" __declspec(dllexport) bool __stdcall BeginFrame(HWND hWnd);
 extern "C" __declspec(dllexport) bool __stdcall EndFrame(HWND hWnd);
 extern "C" __declspec(dllexport) bool __stdcall ClearScene(HWND hWnd);
-extern "C" __declspec(dllexport) bool __stdcall ResetScene(HWND hWnd, anVec2 ScreenSize);
-extern "C" __declspec(dllexport) bool __stdcall GetScreenSize(HWND hWnd, anVec2 * pAnvec2Out);
+extern "C" __declspec(dllexport) bool __stdcall ResetScene(HWND hWnd, ANInternalGuiWindowID * GuiWindow, anVec2 ScreenSize);
+extern "C" __declspec(dllexport) bool __stdcall GetScreenSize(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2 * pAnvec2Out);
 extern "C" __declspec(dllexport) bool __stdcall CreateImageFromMemory(HWND hWnd, void* pImageSrc, std::uint32_t iImageSize, ANImageID * pImageIDPtr);
 extern "C" __declspec(dllexport) void __stdcall FreeImage(ANImageID* pImageIDPtr);
-extern "C" __declspec(dllexport) bool __stdcall DrawImage(HWND hWnd, ANImageID pImageID, anRect Pos, float Opacity);
-extern "C" __declspec(dllexport) bool __stdcall DrawLine(HWND hWnd, anVec2 From, anVec2 To, anColor Color, float LineThickness);
-extern "C" __declspec(dllexport) bool __stdcall DrawRectangle(HWND hWnd, anRect Pos, anColor Color, float LineThickness, float Rounding);
-extern "C" __declspec(dllexport) bool __stdcall DrawFilledRectangle(HWND hWnd, anRect Pos, anColor Color, float Rounding);
-extern "C" __declspec(dllexport) bool __stdcall DrawCircle(HWND hWnd, anVec2 Pos, anColor Color, float Radius, float LineThickness);
-extern "C" __declspec(dllexport) bool __stdcall DrawTrinagle(HWND hWnd, anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color, float LineThickness);
-extern "C" __declspec(dllexport) bool __stdcall DrawTrinagleFilled(HWND hWnd, anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color);
-extern "C" __declspec(dllexport) bool __stdcall DrawFilledCircle(HWND hWnd, anVec2 Pos, anColor Color, float Radius);
+extern "C" __declspec(dllexport) bool __stdcall DrawImage(HWND hWnd, ANInternalGuiWindowID GuiWindow, ANImageID pImageID, anRect Pos, float Opacity);
+extern "C" __declspec(dllexport) bool __stdcall DrawLine(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2 From, anVec2 To, anColor Color, float LineThickness);
+extern "C" __declspec(dllexport) bool __stdcall DrawRectangle(HWND hWnd, ANInternalGuiWindowID GuiWindow, anRect Pos, anColor Color, float LineThickness, float Rounding);
+extern "C" __declspec(dllexport) bool __stdcall DrawFilledRectangle(HWND hWnd, ANInternalGuiWindowID GuiWindow, anRect Pos, anColor Color, float Rounding);
+extern "C" __declspec(dllexport) bool __stdcall DrawCircle(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2 Pos, anColor Color, float Radius, float LineThickness);
+extern "C" __declspec(dllexport) bool __stdcall DrawTrinagle(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color, float LineThickness);
+extern "C" __declspec(dllexport) bool __stdcall DrawTrinagleFilled(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color);
+extern "C" __declspec(dllexport) bool __stdcall DrawFilledCircle(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2 Pos, anColor Color, float Radius);
 extern "C" __declspec(dllexport) bool __stdcall CreateFontFromFile(const char* pszPath, float FontSize, ANFontID * pFontIDPtr);
 extern "C" __declspec(dllexport) void __stdcall FreeFont(ANFontID* pFontIDPtr);
-extern "C" __declspec(dllexport) bool __stdcall TextDraw(HWND hWnd, const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont);
+extern "C" __declspec(dllexport) bool __stdcall TextCalcSize(HWND hWnd, const char* pszText, ANFontID FontID, anVec2 * pTextSize);
+extern "C" __declspec(dllexport) bool __stdcall TextDraw(HWND hWnd, ANInternalGuiWindowID GuiWindow, const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont);
+extern "C" __declspec(dllexport) bool __stdcall CreateGuiWindow(HWND hWnd, ANInternalGuiWindowID * pGuiWindow, anVec2 Size);
+extern "C" __declspec(dllexport) bool __stdcall DeleteGuiWindow(ANInternalGuiWindowID * GuiWindow);
+extern "C" __declspec(dllexport) bool __stdcall BeginGuiWindow(ANInternalGuiWindowID GuiWindow);
+extern "C" __declspec(dllexport) bool __stdcall EndGuiWindow(ANInternalGuiWindowID GuiWindow);
+extern "C" __declspec(dllexport) bool __stdcall DrawGuiWindow(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2 Pos);
 
 D2DWindowContextRenderInformation& GetWindowContextRenderInformation(HWND hWnd)
 {
@@ -164,7 +170,13 @@ bool CreateRendererFunctionsTable()
 	g_ANRendererFuncionsTable.DrawFilledCircle = DrawFilledCircle;
 	g_ANRendererFuncionsTable.CreateFontFromFile = CreateFontFromFile;
 	g_ANRendererFuncionsTable.FreeFont = FreeFont;
+	g_ANRendererFuncionsTable.TextCalcSize = TextCalcSize;
 	g_ANRendererFuncionsTable.TextDraw = TextDraw;
+	g_ANRendererFuncionsTable.CreateGuiWindow = CreateGuiWindow;
+	g_ANRendererFuncionsTable.DeleteGuiWindow = DeleteGuiWindow;
+	g_ANRendererFuncionsTable.BeginGuiWindow = BeginGuiWindow;
+	g_ANRendererFuncionsTable.EndGuiWindow = EndGuiWindow;
+	g_ANRendererFuncionsTable.DrawGuiWindow = DrawGuiWindow;
 
 	return true;
 }
@@ -252,26 +264,44 @@ extern "C" __declspec(dllexport) bool __stdcall ClearScene(HWND hWnd)
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall ResetScene(HWND hWnd, anVec2 ScreenSize)
+extern "C" __declspec(dllexport) bool __stdcall ResetScene(HWND hWnd, ANInternalGuiWindowID * GuiWindow, anVec2 ScreenSize)
 {
 	auto& ri = GetWindowContextRenderInformation(hWnd);
 
 	if (!ri.m_pRenderTarget)
 		return false;
 
-	ri.m_pRenderTarget->Resize(D2D1::SizeU((int)ScreenSize.x, (int)ScreenSize.y));
+	if (*GuiWindow == 0)
+	{
+		ri.m_pRenderTarget->Resize(D2D1::SizeU((int)ScreenSize.x, (int)ScreenSize.y));
+	}
+	else
+	{
+		((ID2D1BitmapRenderTarget*)(*GuiWindow))->Release();
+		*GuiWindow = nullptr;
+		ri.m_pRenderTarget->CreateCompatibleRenderTarget(D2D1::SizeF(), (ID2D1BitmapRenderTarget**)GuiWindow);
+	}
 
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall GetScreenSize(HWND hWnd, anVec2 * pAnvec2Out)
+extern "C" __declspec(dllexport) bool __stdcall GetScreenSize(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2 * pAnvec2Out)
 {
 	auto& ri = GetWindowContextRenderInformation(hWnd);
 
 	if (!pAnvec2Out || !ri.m_pRenderTarget)
 		return false;
 
-	auto ScreenSize = ri.m_pRenderTarget->GetSize();
+	D2D1_SIZE_F ScreenSize;
+		
+	if (GuiWindow == 0)
+	{
+		ScreenSize = ri.m_pRenderTarget->GetSize();
+	}
+	else
+	{
+		((ID2D1BitmapRenderTarget*)GuiWindow)->GetSize();
+	}
 
 	pAnvec2Out->x = ScreenSize.width;
 	pAnvec2Out->y = ScreenSize.height;
@@ -305,19 +335,26 @@ extern "C" __declspec(dllexport) void __stdcall FreeImage(ANImageID * pImageIDPt
 	*pImageIDPtr = nullptr;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall DrawImage(HWND hWnd, ANImageID pImageID, anRect Pos, float Opacity)
+extern "C" __declspec(dllexport) bool __stdcall DrawImage(HWND hWnd, ANInternalGuiWindowID GuiWindow, ANImageID pImageID, anRect Pos, float Opacity)
 {
 	auto& ri = GetWindowContextRenderInformation(hWnd);
 
 	if (!ri.m_pRenderTarget)
 		return false;
 
-	ri.m_pRenderTarget->DrawBitmap((ID2D1Bitmap*)pImageID, D2D1::RectF(Pos.first.x, Pos.first.y, Pos.second.x, Pos.second.y), Opacity);
+	if (GuiWindow == 0)
+	{
+		ri.m_pRenderTarget->DrawBitmap((ID2D1Bitmap*)pImageID, D2D1::RectF(Pos.first.x, Pos.first.y, Pos.second.x, Pos.second.y), Opacity);
+	}
+	else
+	{
+		((ID2D1BitmapRenderTarget*)GuiWindow)->DrawBitmap((ID2D1Bitmap*)pImageID, D2D1::RectF(Pos.first.x, Pos.first.y, Pos.second.x, Pos.second.y), Opacity);
+	}
 
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall DrawLine(HWND hWnd, anVec2 From, anVec2 To, anColor Color, float LineThickness)
+extern "C" __declspec(dllexport) bool __stdcall DrawLine(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2 From, anVec2 To, anColor Color, float LineThickness)
 {
 	auto& ri = GetWindowContextRenderInformation(hWnd);
 
@@ -326,12 +363,19 @@ extern "C" __declspec(dllexport) bool __stdcall DrawLine(HWND hWnd, anVec2 From,
 
 	SetBrushColor(hWnd, Color);
 
-	ri.m_pRenderTarget->DrawLine(D2D1::Point2F(From.x, From.y), D2D1::Point2F(To.x, To.y), ri.m_pColorBrush, LineThickness);
+	if (GuiWindow == 0)
+	{
+		ri.m_pRenderTarget->DrawLine(D2D1::Point2F(From.x, From.y), D2D1::Point2F(To.x, To.y), ri.m_pColorBrush, LineThickness);
+	}
+	else
+	{
+		((ID2D1BitmapRenderTarget*)GuiWindow)->DrawLine(D2D1::Point2F(From.x, From.y), D2D1::Point2F(To.x, To.y), ri.m_pColorBrush, LineThickness);
+	}
 
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall DrawRectangle(HWND hWnd, anRect Pos, anColor Color, float LineThickness, float Rounding)
+extern "C" __declspec(dllexport) bool __stdcall DrawRectangle(HWND hWnd, ANInternalGuiWindowID GuiWindow, anRect Pos, anColor Color, float LineThickness, float Rounding)
 {
 	auto& ri = GetWindowContextRenderInformation(hWnd);
 
@@ -342,15 +386,27 @@ extern "C" __declspec(dllexport) bool __stdcall DrawRectangle(HWND hWnd, anRect 
 
 	auto Rect = D2D1::RectF(Pos.first.x, Pos.first.y, Pos.second.x, Pos.second.y);
 
-	if (Rounding > 0.f)
-		ri.m_pRenderTarget->DrawRoundedRectangle(D2D1::RoundedRect(Rect, Rounding, Rounding), ri.m_pColorBrush, LineThickness);
+	if (GuiWindow == 0)
+	{
+		if (Rounding > 0.f)
+			ri.m_pRenderTarget->DrawRoundedRectangle(D2D1::RoundedRect(Rect, Rounding, Rounding), ri.m_pColorBrush, LineThickness);
+		else
+			ri.m_pRenderTarget->DrawRectangle(Rect, ri.m_pColorBrush, LineThickness);
+	}
 	else
-		ri.m_pRenderTarget->DrawRectangle(Rect, ri.m_pColorBrush, LineThickness);
+	{
+		ID2D1BitmapRenderTarget* BitmapRenderTarget = (ID2D1BitmapRenderTarget*)GuiWindow;
+
+		if (Rounding > 0.f)
+			BitmapRenderTarget->DrawRoundedRectangle(D2D1::RoundedRect(Rect, Rounding, Rounding), ri.m_pColorBrush, LineThickness);
+		else
+			BitmapRenderTarget->DrawRectangle(Rect, ri.m_pColorBrush, LineThickness);
+	}
 
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall DrawFilledRectangle(HWND hWnd, anRect Pos, anColor Color, float Rounding)
+extern "C" __declspec(dllexport) bool __stdcall DrawFilledRectangle(HWND hWnd, ANInternalGuiWindowID GuiWindow, anRect Pos, anColor Color, float Rounding)
 {
 	auto& ri = GetWindowContextRenderInformation(hWnd);
 
@@ -361,10 +417,22 @@ extern "C" __declspec(dllexport) bool __stdcall DrawFilledRectangle(HWND hWnd, a
 
 	auto Rect = D2D1::RectF(Pos.first.x, Pos.first.y, Pos.second.x, Pos.second.y);
 
-	if (Rounding > 0.f)
-		ri.m_pRenderTarget->FillRoundedRectangle(D2D1::RoundedRect(Rect, Rounding, Rounding), ri.m_pColorBrush);
+	if (GuiWindow == 0)
+	{
+		if (Rounding > 0.f)
+			ri.m_pRenderTarget->FillRoundedRectangle(D2D1::RoundedRect(Rect, Rounding, Rounding), ri.m_pColorBrush);
+		else
+			ri.m_pRenderTarget->FillRectangle(Rect, ri.m_pColorBrush);
+	}
 	else
-		ri.m_pRenderTarget->FillRectangle(Rect, ri.m_pColorBrush);
+	{
+		ID2D1BitmapRenderTarget* BitmapRenderTarget = (ID2D1BitmapRenderTarget*)GuiWindow;
+
+		if (Rounding > 0.f)
+			BitmapRenderTarget->FillRoundedRectangle(D2D1::RoundedRect(Rect, Rounding, Rounding), ri.m_pColorBrush);
+		else
+			BitmapRenderTarget->FillRectangle(Rect, ri.m_pColorBrush);
+	}
 
 	return true;
 }
@@ -395,33 +463,7 @@ bool CreateTrinagleGeometry(ID2D1Factory* pD2D1Factory, D2D1_POINT_2F pt1, D2D1_
 	return true;
 }
 
-bool CreateRoundedTrinagleGeometry(ID2D1Factory* pD2D1Factory, D2D1_POINT_2F pt1, D2D1_POINT_2F pt2, D2D1_POINT_2F pt3, ID2D1PathGeometry** pD2D1PathGeometry)
-{
-	ID2D1GeometrySink* pSink = nullptr;
-
-	if (FAILED(pD2D1Factory->CreatePathGeometry(pD2D1PathGeometry)))
-		return false;
-
-	if (FAILED(((ID2D1PathGeometry*)(*pD2D1PathGeometry))->Open(&pSink)))
-		return false;
-
-	pSink->BeginFigure(pt1, D2D1_FIGURE_BEGIN_FILLED);
-
-	pSink->AddLine(pt2);
-
-	pSink->AddLine(pt3);
-
-	pSink->EndFigure(D2D1_FIGURE_END_CLOSED);
-
-	if (FAILED(pSink->Close()))
-		return false;
-
-	pSink->Release();
-
-	return true;
-}
-
-extern "C" __declspec(dllexport) bool __stdcall DrawTrinagle(HWND hWnd, anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color, float LineThickness)
+extern "C" __declspec(dllexport) bool __stdcall DrawTrinagle(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color, float LineThickness)
 {
 	auto& ri = GetWindowContextRenderInformation(hWnd);
 
@@ -435,14 +477,21 @@ extern "C" __declspec(dllexport) bool __stdcall DrawTrinagle(HWND hWnd, anVec2 p
 	if (!CreateTrinagleGeometry(g_D2DInterfaces.m_pFactory, D2D1::Point2F(pt1.x, pt1.y), D2D1::Point2F(pt2.x, pt2.y), D2D1::Point2F(pt3.x, pt3.y), &TriGeometry))
 		return false;
 
-	ri.m_pRenderTarget->DrawGeometry(TriGeometry, ri.m_pColorBrush, LineThickness);
+	if (GuiWindow == 0)
+	{
+		ri.m_pRenderTarget->DrawGeometry(TriGeometry, ri.m_pColorBrush, LineThickness);
+	}
+	else
+	{
+		((ID2D1BitmapRenderTarget*)GuiWindow)->DrawGeometry(TriGeometry, ri.m_pColorBrush, LineThickness);
+	}
 
 	TriGeometry->Release();
 
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall DrawTrinagleFilled(HWND hWnd, anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color)
+extern "C" __declspec(dllexport) bool __stdcall DrawTrinagleFilled(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color)
 {
 	auto& ri = GetWindowContextRenderInformation(hWnd);
 
@@ -456,12 +505,19 @@ extern "C" __declspec(dllexport) bool __stdcall DrawTrinagleFilled(HWND hWnd, an
 	if (!CreateTrinagleGeometry(g_D2DInterfaces.m_pFactory, D2D1::Point2F(pt1.x, pt1.y), D2D1::Point2F(pt2.x, pt2.y), D2D1::Point2F(pt3.x, pt3.y), &TriGeometry))
 		return false;
 
-	ri.m_pRenderTarget->FillGeometry(TriGeometry, ri.m_pColorBrush);
+	if (GuiWindow == 0)
+	{
+		ri.m_pRenderTarget->FillGeometry(TriGeometry, ri.m_pColorBrush);
+	}
+	else
+	{
+		((ID2D1BitmapRenderTarget*)GuiWindow)->FillGeometry(TriGeometry, ri.m_pColorBrush);
+	}
 
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall DrawCircle(HWND hWnd, anVec2 Pos, anColor Color, float Radius, float LineThickness)
+extern "C" __declspec(dllexport) bool __stdcall DrawCircle(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2 Pos, anColor Color, float Radius, float LineThickness)
 {
 	auto& ri = GetWindowContextRenderInformation(hWnd);
 
@@ -472,12 +528,19 @@ extern "C" __declspec(dllexport) bool __stdcall DrawCircle(HWND hWnd, anVec2 Pos
 
 	Radius /= 2.f;
 
-	ri.m_pRenderTarget->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(Pos.x + Radius, Pos.y + Radius), Radius, Radius), ri.m_pColorBrush, LineThickness);
+	if (GuiWindow == 0)
+	{
+		ri.m_pRenderTarget->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(Pos.x + Radius, Pos.y + Radius), Radius, Radius), ri.m_pColorBrush, LineThickness);
+	}
+	else
+	{
+		((ID2D1BitmapRenderTarget*)GuiWindow)->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(Pos.x + Radius, Pos.y + Radius), Radius, Radius), ri.m_pColorBrush, LineThickness);
+	}
 
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall DrawFilledCircle(HWND hWnd, anVec2 Pos, anColor Color, float Radius)
+extern "C" __declspec(dllexport) bool __stdcall DrawFilledCircle(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2 Pos, anColor Color, float Radius)
 {
 	auto& ri = GetWindowContextRenderInformation(hWnd);
 
@@ -488,7 +551,14 @@ extern "C" __declspec(dllexport) bool __stdcall DrawFilledCircle(HWND hWnd, anVe
 
 	Radius /= 2.f;
 
-	ri.m_pRenderTarget->FillEllipse(D2D1::Ellipse(D2D1::Point2F(Pos.x + Radius, Pos.y + Radius), Radius, Radius), ri.m_pColorBrush);
+	if (GuiWindow == 0)
+	{
+		ri.m_pRenderTarget->FillEllipse(D2D1::Ellipse(D2D1::Point2F(Pos.x + Radius, Pos.y + Radius), Radius, Radius), ri.m_pColorBrush);
+	}
+	else
+	{
+		((ID2D1BitmapRenderTarget*)GuiWindow)->FillEllipse(D2D1::Ellipse(D2D1::Point2F(Pos.x + Radius, Pos.y + Radius), Radius, Radius), ri.m_pColorBrush);
+	}
 
 	return true;
 }
@@ -687,7 +757,50 @@ extern "C" __declspec(dllexport) void __stdcall FreeFont(ANFontID* pFontIDPtr)
 	*pFontIDPtr = nullptr;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall TextDraw(HWND hWnd, const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont)
+extern "C" __declspec(dllexport) bool __stdcall TextCalcSize(HWND hWnd, const char* pszText, ANFontID FontID, anVec2* pTextSize)
+{
+	auto StrLengthText = strlen(pszText) + 1;
+
+	wchar_t* pwszText = new wchar_t[StrLengthText]();
+
+	if (!pwszText)
+		return false;
+
+	if (!MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, pszText, StrLengthText, pwszText, StrLengthText))
+	{
+		delete[] pwszText;
+		return false;
+	}
+
+	auto ret = false;
+
+	IDWriteTextFormat* pDWriteTextFormat = (IDWriteTextFormat*)FontID;
+	IDWriteTextLayout* pDWriteTextLayout = nullptr;
+	DWRITE_TEXT_METRICS TextMetrics{};
+
+	if (FAILED(g_D2DInterfaces.pDWriteFactory->CreateTextLayout(pwszText, StrLengthText, pDWriteTextFormat, 3.402823466e+38F, 3.402823466e+38F, &pDWriteTextLayout)))
+		goto failed;
+
+	if (FAILED(pDWriteTextLayout->GetMetrics(&TextMetrics)))
+		goto failed;
+
+	ret = true;
+
+	pTextSize->x = TextMetrics.widthIncludingTrailingWhitespace;
+	pTextSize->y = TextMetrics.height;
+
+failed:
+
+	if (pDWriteTextLayout != nullptr)
+		pDWriteTextLayout->Release();
+
+	if (pwszText)
+		delete[] pwszText;
+
+	return ret;
+}
+
+extern "C" __declspec(dllexport) bool __stdcall TextDraw(HWND hWnd, ANInternalGuiWindowID GuiWindow, const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont)
 {
 	auto StrLengthText = strlen(pszText) + 1;
 
@@ -706,12 +819,117 @@ extern "C" __declspec(dllexport) bool __stdcall TextDraw(HWND hWnd, const char* 
 
 	auto& ri = GetWindowContextRenderInformation(hWnd);
 
-	ri.m_pRenderTarget->DrawTextA(pwszText, wcslen(pwszText),
-		(IDWriteTextFormat*)pFont,
-		D2D1::RectF(Pos.x, Pos.y, 3.402823466e+38F, 3.402823466e+38F), 
-		ri.m_pColorBrush);
+	if (!ri.m_pRenderTarget)
+	{
+		delete[] pwszText;
+		return false;
+	}
+
+	if (GuiWindow == 0)
+	{
+		ri.m_pRenderTarget->DrawTextA(pwszText, wcslen(pwszText),
+			(IDWriteTextFormat*)pFont,
+			D2D1::RectF(Pos.x, Pos.y, 3.402823466e+38F, 3.402823466e+38F),
+			ri.m_pColorBrush, 
+			D2D1_DRAW_TEXT_OPTIONS::D2D1_DRAW_TEXT_OPTIONS_NONE, 
+			DWRITE_MEASURING_MODE::DWRITE_MEASURING_MODE_NATURAL);
+	}
+	else
+	{
+		((ID2D1BitmapRenderTarget*)GuiWindow)->DrawTextA(pwszText, wcslen(pwszText),
+			(IDWriteTextFormat*)pFont,
+			D2D1::RectF(Pos.x, Pos.y, 3.402823466e+38F, 3.402823466e+38F),
+			ri.m_pColorBrush,
+			D2D1_DRAW_TEXT_OPTIONS::D2D1_DRAW_TEXT_OPTIONS_NONE,
+			DWRITE_MEASURING_MODE::DWRITE_MEASURING_MODE_NATURAL);
+	}
 
 	delete[] pwszText;
+
+	return true;
+}
+
+extern "C" __declspec(dllexport) bool __stdcall CreateGuiWindow(HWND hWnd, ANInternalGuiWindowID * pGuiWindow, anVec2 Size)
+{
+	*pGuiWindow = nullptr;
+
+	auto& ri = GetWindowContextRenderInformation(hWnd);
+
+	if (!ri.m_pRenderTarget)
+		return false;
+
+	ID2D1BitmapRenderTarget* BitmapRenderTarget = nullptr;
+
+	if (FAILED(ri.m_pRenderTarget->CreateCompatibleRenderTarget(D2D1::SizeF(Size.x, Size.y), &BitmapRenderTarget)))
+		return false;
+
+	*pGuiWindow = (ANInternalGuiWindowID*)BitmapRenderTarget;
+
+	return true;
+}
+
+extern "C" __declspec(dllexport) bool __stdcall DeleteGuiWindow(ANInternalGuiWindowID * GuiWindow)
+{
+	if (!GuiWindow)
+		return false;
+
+	((ID2D1BitmapRenderTarget*)(*GuiWindow))->Release();
+	*GuiWindow = nullptr;
+
+	return true;
+}
+
+extern "C" __declspec(dllexport) bool __stdcall BeginGuiWindow(ANInternalGuiWindowID GuiWindow)
+{
+	if (!GuiWindow)
+		return false;
+
+	ID2D1BitmapRenderTarget* BitmapRenderTarget = (ID2D1BitmapRenderTarget*)GuiWindow;
+
+	BitmapRenderTarget->BeginDraw();
+	BitmapRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+	BitmapRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
+
+	return true;
+}
+
+extern "C" __declspec(dllexport) bool __stdcall EndGuiWindow(ANInternalGuiWindowID GuiWindow)
+{
+	if (!GuiWindow)
+		return false;
+
+	ID2D1BitmapRenderTarget* BitmapRenderTarget = (ID2D1BitmapRenderTarget*)GuiWindow;
+	
+	BitmapRenderTarget->EndDraw();
+
+	return true;
+}
+
+extern "C" __declspec(dllexport) bool __stdcall DrawGuiWindow(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2 Pos)
+{
+	auto& ri = GetWindowContextRenderInformation(hWnd);
+
+	if (!ri.m_pRenderTarget)
+		return false;
+
+	if (!GuiWindow)
+		return false;
+
+	ID2D1BitmapRenderTarget* BitmapRenderTarget = (ID2D1BitmapRenderTarget*)GuiWindow;
+
+	ID2D1Bitmap* Bitmap = nullptr;
+
+	if (FAILED(BitmapRenderTarget->GetBitmap(&Bitmap)))
+		return false;	
+
+	if (!Bitmap)
+		return false;
+
+	auto BitmapSize = BitmapRenderTarget->GetSize();
+
+	ri.m_pRenderTarget->DrawBitmap(Bitmap, D2D1::RectF(Pos.x, Pos.y, Pos.x + BitmapSize.width, Pos.y + BitmapSize.height), 1.f);
+
+	Bitmap->Release();
 
 	return true;
 }

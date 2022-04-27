@@ -145,10 +145,12 @@
     <ClCompile Include="ANengine\ANApi\ANApi.cpp" />
     <ClCompile Include="ANengine\ANCore\ANCore.cpp" />
     <ClCompile Include="ANengine\ANGame\ANGame.cpp" />
+    <ClCompile Include="ANengine\ANGuiWindow\ANGuiWindow.cpp" />
     <ClCompile Include="ANengine\ANGui\ANGui.cpp" />
     <ClCompile Include="ANengine\ANInput\ANInput.cpp" />
     <ClCompile Include="ANengine\ANLoader\ANLoader.cpp" />
     <ClCompile Include="ANengine\ANMath\ANColor\ANColor.cpp" />
+    <ClCompile Include="ANengine\ANMath\ANMathUtils\ANMathUtils.cpp" />
     <ClCompile Include="ANengine\ANMath\ANRect\ANRect.cpp" />
     <ClCompile Include="ANengine\ANMath\ANVec2\ANVec2.cpp" />
     <ClCompile Include="ANengine\ANMath\ANVec3\ANVec3.cpp" />
@@ -156,6 +158,7 @@
     <ClCompile Include="ANengine\ANRenderer\ANRenderer.cpp" />
     <ClCompile Include="ANengine\ANScene\ANScene.cpp" />
     <ClCompile Include="ANengine\ANWindow\ANWindow.cpp" />
+    <ClCompile Include="ANengine\Interfaces\IANApi\IANApi.cpp" />
     <ClCompile Include="ANengine\Interfaces\IANError\IANError.cpp" />
     <ClCompile Include="ANengine\ResourcesManager\ANResourceManager\ANResourceManager.cpp" />
     <ClCompile Include="ANengine\ResourcesManager\ANUniqueResource\ANUniqueResource.cpp" />
@@ -165,10 +168,12 @@
     <ClInclude Include="ANengine\ANCore\ANCore.h" />
     <ClInclude Include="ANengine\ANEngine.h" />
     <ClInclude Include="ANengine\ANGame\ANGame.h" />
+    <ClInclude Include="ANengine\ANGuiWindow\ANGuiWindow.h" />
     <ClInclude Include="ANengine\ANGui\ANGui.h" />
     <ClInclude Include="ANengine\ANInput\ANInput.h" />
     <ClInclude Include="ANengine\ANLoader\ANLoader.h" />
     <ClInclude Include="ANengine\ANMath\ANColor\ANColor.h" />
+    <ClInclude Include="ANengine\ANMath\ANMathUtils\ANMathUtils.h" />
     <ClInclude Include="ANengine\ANMath\ANRect\ANRect.h" />
     <ClInclude Include="ANengine\ANMath\ANVec2\ANVec2.h" />
     <ClInclude Include="ANengine\ANMath\ANVec3\ANVec3.h" />

@@ -16,11 +16,13 @@ bool ANScene::Run()
 {
 	auto w = this->m_pCore->GetWindow();
 
-	auto r = this->m_pCore->GetRenderer();
-
 	w->WindowShow();
 
+	auto r = this->m_pCore->GetRenderer();
+
 	auto g = this->m_pCore->GetGame();
+
+	auto i = this->m_pCore->GetInput();
 
 	while (w->ProcessWindow())
 	{
@@ -33,6 +35,8 @@ bool ANScene::Run()
 		r->BeginFrame();
 
 		r->ClearScene();
+		
+		i->Update();
 
 		g->RunScene();
 

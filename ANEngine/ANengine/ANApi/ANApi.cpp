@@ -6,12 +6,16 @@ ANApi::ANApi(ANCore* pCore) :
 {
 	this->FPS = 0;
 	this->Frametime = 0.;
-	this->ScreenSize.x = this->ScreenSize.y = 0.f;
 }
 
 ANApi::~ANApi()
 {
 
+}
+
+anVec2 ANApi::GetScreenSize()
+{
+	return this->m_pCore->GetRenderer()->GetScreenSize();
 }
 
 bool ANApi::CreateImage(const char* pszPath, ANImageID* pImageID)
@@ -68,14 +72,59 @@ void ANApi::FreeFont(ANFontID* pFontIDPtr)
 	this->m_pCore->GetRenderer()->FreeFont(pFontIDPtr);
 }
 
-bool ANApi::TextDraw(const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont)
+void ANApi::PushFont(ANFontID FontID)
 {
-	return this->m_pCore->GetRenderer()->TextDraw(pszText, Pos, Color, pFont);
+	this->m_pCore->GetRenderer()->PushFont(FontID);
 }
 
-bool ANApi::AddCheckbox(const char* pszName, bool* pVar)
+void ANApi::PopFont()
 {
-	return this->m_pCore->GetGui()->CheckBox(pszName, pVar);
+	this->m_pCore->GetRenderer()->PopFont();
+}
+
+bool ANApi::TextDraw(const char* pszText, anVec2 Pos, anColor Color)
+{
+	return this->m_pCore->GetRenderer()->TextDraw(pszText, Pos, Color);
+}
+
+bool ANApi::RegGuiWindow(ANGuiWindowID* pGuiWindowID, anVec2 Size)
+{
+	return this->m_pCore->GetGui()->WindowCreate(pGuiWindowID, Size);
+}
+
+bool ANApi::UnregGuiWindow(ANGuiWindowID* pGuiWindowID)
+{
+	return this->m_pCore->GetGui()->WindowDelete(pGuiWindowID);
+}
+
+bool ANApi::BeginGuiWindow(ANGuiWindowID GuiWindow, anVec2 Pos)
+{
+	return this->m_pCore->GetGui()->WindowBegin(GuiWindow, Pos);
+}
+
+void ANApi::EndGuiWindow()
+{
+	this->m_pCore->GetGui()->WindowEnd();
+}
+
+anVec2 ANApi::GetCurrentWindowSize()
+{
+	return this->m_pCore->GetRenderer()->GetCurrentWindowSize();
+}
+
+bool ANApi::AddCheckbox(const char* pszName, anVec2 Pos, anVec2 Size, bool* pVar)
+{
+	return this->m_pCore->GetGui()->CheckBox(pszName, Pos, Size, pVar);
+}
+
+bool ANApi::AddSliderInt(const char* pszName, anVec2 Pos, anVec2 Size, int iMin, int iMax, int* pVar)
+{
+	return this->m_pCore->GetGui()->SliderInt(pszName, Pos, Size, iMin, iMax, pVar);
+}
+
+bool ANApi::AddSliderFloat(const char* pszName, anVec2 Pos, anVec2 Size, float flMin, float flMax, float* pVar)
+{
+	return this->m_pCore->GetGui()->SliderFloat(pszName, Pos, Size, flMin, flMax, pVar);
 }
 
 void ANApi::Update()
@@ -84,5 +133,4 @@ void ANApi::Update()
 
 	this->FPS = r->GetFramePerSecond();
 	this->Frametime = r->GetFrameTime();
-	this->ScreenSize = r->GetScreenSize();
 }

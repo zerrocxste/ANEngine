@@ -29,7 +29,7 @@ std::uint8_t& anColor::operator[](std::uint32_t idx)
 {
 	if (idx > RGBA_MAX_SIZE)
 	{
-		static auto n = std::uint8_t(0);
+		auto n = std::uint8_t(0);
 		return n;
 	}
 
@@ -50,6 +50,11 @@ anColor& anColor::MakeRand()
 	this->b = rand() % 255;
 	this->a = 255;
 	return *this;
+}
+
+const anColor anColor::Rand()
+{
+	return anColor().MakeRand();
 }
 
 const anColor anColor::Red()

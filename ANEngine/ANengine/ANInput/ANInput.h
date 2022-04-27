@@ -7,7 +7,6 @@ public:
 	~ANInput();
 
 	void SetCursorKey(int k, bool State);
-	bool GetCursorKey(int k);
 
 	bool IsCursorKeyDowned(int k);
 	bool IsCursorKeyReleased(int k);
@@ -17,22 +16,27 @@ public:
 	anVec2 GetCursorPos();
 
 	void SetStateKey(int k, bool State);
-	bool GetStateKey(int k);
 
 	bool IsKeyDowned(int k);
+	bool IsKeyClicked(int k);
 	bool IsKeyReleased(int k);
-	bool GetKeyDownTime(int k);
+	float GetKeyDownTime(int k);
+
+	void SetCorrectWindowStartPos(anVec2 Pos);
+
+	void Update();
 private:
 	ANCore* m_pCore;
 
-	static inline bool IsInArrayRange(int k, int MaxArrSize);
-
-	bool m_bCursorKeyMap[5];
 	anVec2 m_CursorPos;
-
-	bool m_bKeyMap[255];
-
 	KeyInformation m_kiCursorKeyMap[5];
+
 	KeyInformation m_kiKeyMap[255];
+
+	anVec2 m_CorrectWindowStartPos;
+
+	void UpdateKeyMap(KeyInformation* pkiKeyMap);
+
+	static inline bool IsInArrayRange(int k, int MaxArrSize);
 };
 

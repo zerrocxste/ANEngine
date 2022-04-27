@@ -106,6 +106,15 @@
     <Filter Include="ANEngine\ANPerfomance">
       <UniqueIdentifier>{3392c943-120b-4a2d-bf4e-602a89b77df8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ANEngine\ANMath\ANMathUtils">
+      <UniqueIdentifier>{ab85339c-5cc1-41dd-bc07-007a479c0a60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\ANGuiWindow">
+      <UniqueIdentifier>{87559cfa-fb43-4dc5-bddd-042288cd62f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\GuiWidow">
+      <UniqueIdentifier>{5bf8a45f-138a-4b97-9461-e949e7d33322}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ANEngine.cpp">
@@ -161,6 +170,15 @@
     </ClCompile>
     <ClCompile Include="ANengine\ANGui\ANGui.cpp">
       <Filter>ANEngine\ANGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\ANMath\ANMathUtils\ANMathUtils.cpp">
+      <Filter>ANEngine\ANMath\ANMathUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\ANGuiWindow\ANGuiWindow.cpp">
+      <Filter>ANEngine\ANGuiWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\Interfaces\IANApi\IANApi.cpp">
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -229,6 +247,12 @@
     </ClInclude>
     <ClInclude Include="ANengine\ANGui\ANGui.h">
       <Filter>ANEngine\ANGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\ANMath\ANMathUtils\ANMathUtils.h">
+      <Filter>ANEngine\ANMath\ANMathUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\ANGuiWindow\ANGuiWindow.h">
+      <Filter>ANEngine\ANGuiWindow</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

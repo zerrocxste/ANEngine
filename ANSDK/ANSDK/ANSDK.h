@@ -10,6 +10,7 @@
 
 typedef void* ANImageID;
 typedef void* ANFontID;
+typedef void* ANGuiWindowID;
 
 #include "IANError/IANError.h"
 #include "IANApi/IANApi.h"

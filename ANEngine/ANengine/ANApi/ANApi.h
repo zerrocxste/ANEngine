@@ -7,6 +7,8 @@ public:
 	ANApi(ANCore* pCore);
 	~ANApi();
 
+	anVec2 GetScreenSize() override;
+
 	bool CreateImage(const char* pszPath, ANImageID* pImageID) override;
 	void FreeImage(ANImageID* pImageIDPtr) override;
 	bool DrawImage(ANImageID pImageID, anVec2 Pos, anVec2 Size, float Opacity) override;
@@ -16,9 +18,20 @@ public:
 	bool DrawCircle(anVec2 Pos, anColor Color, float Radius, float LineThickness = 1.f, bool Filled = false) override;
 	bool CreateFontFromFile(const char* pszPath, float FontSize, ANFontID* pFontID) override;
 	void FreeFont(ANFontID* pFontIDPtr) override;
-	bool TextDraw(const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont) override;
+	void PushFont(ANFontID FontID) override;
+	void PopFont() override;
+	bool TextDraw(const char* pszText, anVec2 Pos, anColor Color) override;
 
-	bool AddCheckbox(const char* pszName, bool* pVar) override;
+	bool RegGuiWindow(ANGuiWindowID* pGuiWindowID, anVec2 Size) override;
+	bool UnregGuiWindow(ANGuiWindowID* pGuiWindowID) override;
+
+	bool BeginGuiWindow(ANGuiWindowID GuiWindow, anVec2 Pos) override;
+	void EndGuiWindow() override;
+	anVec2 GetCurrentWindowSize() override;
+
+	bool AddCheckbox(const char* pszName, anVec2 Pos, anVec2 Size, bool* pVar) override;
+	bool AddSliderInt(const char* pszName, anVec2 Pos, anVec2 Size, int iMin, int iMax, int* pVar) override;
+	bool AddSliderFloat(const char* pszName, anVec2 Pos, anVec2 Size, float flMin, float flMax, float* pVar) override;
 private:
 	ANCore* m_pCore;
 

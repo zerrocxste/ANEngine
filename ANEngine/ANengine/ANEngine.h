@@ -15,6 +15,8 @@
 #include "ANMath/ANRect/ANRect.h"
 #include "ANMath/ANColor/ANColor.h"
 
+#include "ANMath/ANMathUtils/ANMathUtils.h"
+
 class ANCore;
 class ANWindow;
 class ANInput;
@@ -42,6 +44,7 @@ class ANGui;
 #include "ANGame/ANGame.h"
 #include "ANScene/ANScene.h"
 #include "ANApi/ANApi.h"
+#include "ANGuiWindow/ANGuiWindow.h"
 #include "ANGui/ANGui.h"
 #include "ANCore/ANCore.h"
 #include "ANLoader/ANLoader.h"

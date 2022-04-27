@@ -40,8 +40,18 @@ public:
 	bool DrawFilledCircle(anVec2 Pos, anColor Color, float Radius);
 	bool CreateFontFromFile(const char* pszPath, float FontSize, ANFontID* pFontIDPtr);
 	void FreeFont(ANFontID* pFontIDPtr);
-	bool TextDraw(const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont);
+	bool TextCalcSize(const char* pszText, anVec2* pTextSize);
+	bool TextDraw(const char* pszText, anVec2 Pos, anColor Color);
+	bool CreateGuiWindow(ANInternalGuiWindowID* pGuiWindow, anVec2 Size);
+	bool DeleteGuiWindow(ANInternalGuiWindowID* pGuiWindow);
+	bool BeginGuiWindow(ANInternalGuiWindowID GuiWindow, anVec2 Pos, anVec2 Size);
+	bool EndGuiWindow();
+	anVec2 GetCurrentWindowSize();
+	bool DrawGuiWindow();
 
+	void PushFont(ANFontID Font);
+	void PopFont();
+	ANFontID GetFont();
 private:
 	ANCore* m_pCore;
 
@@ -63,9 +73,17 @@ private:
 
 	int m_iMaxFps;
 
+	ANInternalGuiWindowID m_CurrentWindowID;
+	anVec2 m_CurrentWindowIDPos;
+	anVec2 m_CurrentWindowIDSize;
+
+	ANFontID m_AutoLoadedDefaultFont;
+	ANFontID m_FontID;
+
 	bool LoadRendererModule();
 	bool InvokeInitRender();
 	bool InvokeInitFunctionTable();
+	bool CreateDefaultFont();
 
 	__int64 GetTick();
 
