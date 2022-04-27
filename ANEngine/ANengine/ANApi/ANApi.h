@@ -27,7 +27,9 @@ public:
 
 	bool BeginGuiWindow(ANGuiWindowID GuiWindow, anVec2 Pos) override;
 	void EndGuiWindow() override;
-	anVec2 GetCurrentWindowSize() override;
+
+	bool GetGuiWindowSize(ANGuiWindowID GuiWindow, anVec2* pSize) override;
+	bool ResizeGuiWindow(ANGuiWindowID* pGuiWindow, anVec2 Size) override;
 
 	bool AddCheckbox(const char* pszName, anVec2 Pos, anVec2 Size, bool* pVar) override;
 	bool AddSliderInt(const char* pszName, anVec2 Pos, anVec2 Size, int iMin, int iMax, int* pVar) override;

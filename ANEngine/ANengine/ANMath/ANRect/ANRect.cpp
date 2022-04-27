@@ -37,6 +37,11 @@ bool anRect::operator==(anRect o)
 	return this->first == o.first && this->second == o.second;
 }
 
+bool anRect::operator!=(anRect o)
+{
+	return !operator==(o);
+}
+
 anRect& anRect::operator=(anRect o)
 {
 	this->first = o.first;

@@ -26,7 +26,9 @@ public:
 
 	virtual bool BeginGuiWindow(ANGuiWindowID GuiWindow, anVec2 Pos) = 0;
 	virtual void EndGuiWindow() = 0;
-	virtual anVec2 GetCurrentWindowSize() = 0;
+
+	virtual bool GetGuiWindowSize(ANGuiWindowID GuiWindow, anVec2* pSize) = 0;
+	virtual bool ResizeGuiWindow(ANGuiWindowID* pGuiWindow, anVec2 Size) = 0;
 
 	virtual bool AddCheckbox(const char* pszName, anVec2 Pos, anVec2 Size, bool* pVar) = 0;
 	virtual bool AddSliderInt(const char* pszName, anVec2 Pos, anVec2 Size, int iMin, int iMax, int* pVar) = 0;

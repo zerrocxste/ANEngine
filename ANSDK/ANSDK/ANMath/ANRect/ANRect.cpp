@@ -6,13 +6,13 @@ anRect::anRect()
 }
 
 anRect::anRect(float all) :
-	first(anVec2(all)), 
+	first(anVec2(all)),
 	second(anVec2(all))
 {
 
 }
 
-anRect::anRect(anVec2 First, anVec2 Second) : 
+anRect::anRect(anVec2 First, anVec2 Second) :
 	first(First), second(Second)
 {
 
@@ -35,6 +35,11 @@ anRect::~anRect()
 bool anRect::operator==(anRect o)
 {
 	return this->first == o.first && this->second == o.second;
+}
+
+bool anRect::operator!=(anRect o)
+{
+	return !operator==(o);
 }
 
 anRect& anRect::operator=(anRect o)

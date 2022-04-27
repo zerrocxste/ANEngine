@@ -9,6 +9,7 @@ public:
 	~anVec2();
 
 	bool operator==(anVec2 o);
+	bool operator!=(anVec2 o);
 
 	anVec2& operator=(anVec2 o);
 	anVec2& operator=(float o);

@@ -40,6 +40,13 @@ bool ANGui::WindowBegin(ANGuiWindowID GuiWindow, anVec2 Pos)
 {
 	ANGuiWindow* gw = (ANGuiWindow*)GuiWindow;
 
+	anVec2 CurrentWindowSize;
+
+	this->m_pCore->GetRenderer()->GetGuiWindowSize(gw->m_InternalGuiWindowID, &CurrentWindowSize);
+
+	if (gw->m_Size != CurrentWindowSize)
+		this->m_pCore->GetRenderer()->SetGuiWindowSize(&gw->m_InternalGuiWindowID, gw->m_Size);
+
 	return this->m_pCore->GetRenderer()->BeginGuiWindow(gw->m_InternalGuiWindowID, Pos, gw->m_Size);
 }
 
@@ -47,6 +54,19 @@ void ANGui::WindowEnd()
 {
 	this->m_pCore->GetRenderer()->DrawGuiWindow();
 	this->m_pCore->GetRenderer()->EndGuiWindow();
+}
+
+bool ANGui::WindowGetSize(ANGuiWindowID GuiWindow, anVec2* pSize)
+{
+	ANGuiWindow* gw = (ANGuiWindow*)(GuiWindow);
+	return this->m_pCore->GetRenderer()->GetGuiWindowSize(gw->m_InternalGuiWindowID, pSize);
+}
+
+bool ANGui::WindowResize(ANGuiWindowID* pGuiWindow, anVec2 Size)
+{
+	ANGuiWindow* gw = (ANGuiWindow*)(*pGuiWindow);
+	gw->m_Size = Size;
+	return true;
 }
 
 bool ANGui::CheckBox(const char* pszName, anVec2 Pos, anVec2 Size, bool* pVar)

@@ -61,7 +61,7 @@ struct ANRendererFuncionsTable
 	bool(__stdcall* BeginFrame)(HWND hWnd);
 	bool(__stdcall* EndFrame)(HWND hWnd);
 	bool(__stdcall* ClearScene)(HWND hWnd);
-	bool(__stdcall* ResetScene)(HWND hWnd, ANInternalGuiWindowID* pGuiWindow, anVec2 ScreenSize);
+	bool(__stdcall* ResetScene)(HWND hWnd, anVec2 ScreenSize);
 	bool(__stdcall* GetScreenSize)(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2* pAnvec2Out);
 	bool(__stdcall* CreateImageFromMemory)(HWND hWnd, void* pImageSrc, std::uint32_t iImageSize, ANImageID* pImageIDPtr);
 	void(__stdcall* FreeImage)(ANImageID* pImageIDPtr);
@@ -81,5 +81,7 @@ struct ANRendererFuncionsTable
 	bool(__stdcall* DeleteGuiWindow)(ANInternalGuiWindowID* pGuiWindow);
 	bool(__stdcall* BeginGuiWindow)(ANInternalGuiWindowID GuiWindow);
 	bool(__stdcall* EndGuiWindow)(ANInternalGuiWindowID GuiWindow);
+	bool(__stdcall* GetGuiWindowSize)(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2* pWindowSize);
+	bool(__stdcall* ResizeGuiWindow)(HWND hWnd, ANInternalGuiWindowID* GuiWindow, anVec2 WindowSize);
 	bool(__stdcall* DrawGuiWindow)(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2 Pos);
 };

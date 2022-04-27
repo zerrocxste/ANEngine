@@ -10,6 +10,7 @@ public:
 	~anRect();
 
 	bool operator==(anRect o);
+	bool operator!=(anRect o);
 
 	anRect& operator=(anRect o);
 

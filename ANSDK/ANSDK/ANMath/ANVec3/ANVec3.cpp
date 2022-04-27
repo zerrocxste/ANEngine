@@ -25,6 +25,11 @@ bool anVec3::operator==(anVec3 o)
 	return this->x == o.x && this->y == o.y && this->z == o.z;
 }
 
+bool anVec3::operator!=(anVec3 o)
+{
+	return !operator==(o);
+}
+
 anVec3& anVec3::operator=(anVec3 o)
 {
 	this->x = o.x;
@@ -96,3 +101,9 @@ anVec3& anVec3::operator-=(float o)
 
 	return *this;
 }
+
+void anVec3::Clear()
+{
+	this->x = this->y = this->z = 0.f;
+}
+

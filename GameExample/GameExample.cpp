@@ -73,7 +73,14 @@ void CTestGameScene::Entry(IANApi* pApi)
 	pApi->TextDraw("TEST", anVec2(40.f, 320.f), anColor::Red());
 
 	pApi->BeginGuiWindow(this->m_AnotherWindow, anVec2(30.f, 400.f));
-	pApi->DrawImage(this->m_imgImageKrolik, anVec2(), pApi->GetCurrentWindowSize(), 0.5f);
+
+	anVec2 WindowSize;
+	pApi->GetGuiWindowSize(this->m_AnotherWindow, &WindowSize);
+
+	if (GetAsyncKeyState('V'))
+		pApi->ResizeGuiWindow(&this->m_AnotherWindow, anVec2(500.f, 500.f));
+
+	pApi->DrawImage(this->m_imgImageKrolik, anVec2(), WindowSize, 0.5f);
 	pApi->AddSliderInt("Test slider", anVec2(10.f, 10.f), anVec2(250.f, 30.f), 10, 68, &iVar);
 	pApi->TextDraw("TEST", anVec2(10.f, 90.f), anColor::Red());
 	pApi->TextDraw("TES2", anVec2(10.f, 130.f), anColor::Red());

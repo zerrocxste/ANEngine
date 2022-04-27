@@ -24,7 +24,7 @@ CRITICAL_SECTION g_csInitializeRenderer;
 extern "C" __declspec(dllexport) bool __stdcall BeginFrame(HWND hWnd);
 extern "C" __declspec(dllexport) bool __stdcall EndFrame(HWND hWnd);
 extern "C" __declspec(dllexport) bool __stdcall ClearScene(HWND hWnd);
-extern "C" __declspec(dllexport) bool __stdcall ResetScene(HWND hWnd, ANInternalGuiWindowID * GuiWindow, anVec2 ScreenSize);
+extern "C" __declspec(dllexport) bool __stdcall ResetScene(HWND hWnd, anVec2 ScreenSize);
 extern "C" __declspec(dllexport) bool __stdcall GetScreenSize(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2 * pAnvec2Out);
 extern "C" __declspec(dllexport) bool __stdcall CreateImageFromMemory(HWND hWnd, void* pImageSrc, std::uint32_t iImageSize, ANImageID * pImageIDPtr);
 extern "C" __declspec(dllexport) void __stdcall FreeImage(ANImageID* pImageIDPtr);
@@ -44,6 +44,8 @@ extern "C" __declspec(dllexport) bool __stdcall CreateGuiWindow(HWND hWnd, ANInt
 extern "C" __declspec(dllexport) bool __stdcall DeleteGuiWindow(ANInternalGuiWindowID * GuiWindow);
 extern "C" __declspec(dllexport) bool __stdcall BeginGuiWindow(ANInternalGuiWindowID GuiWindow);
 extern "C" __declspec(dllexport) bool __stdcall EndGuiWindow(ANInternalGuiWindowID GuiWindow);
+extern "C" __declspec(dllexport) bool __stdcall GetGuiWindowSize(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2 * pWindowSize);
+extern "C" __declspec(dllexport) bool __stdcall ResizeGuiWindow(HWND hWnd, ANInternalGuiWindowID * GuiWindow, anVec2 WindowSize);
 extern "C" __declspec(dllexport) bool __stdcall DrawGuiWindow(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2 Pos);
 
 D2DWindowContextRenderInformation& GetWindowContextRenderInformation(HWND hWnd)
@@ -176,6 +178,8 @@ bool CreateRendererFunctionsTable()
 	g_ANRendererFuncionsTable.DeleteGuiWindow = DeleteGuiWindow;
 	g_ANRendererFuncionsTable.BeginGuiWindow = BeginGuiWindow;
 	g_ANRendererFuncionsTable.EndGuiWindow = EndGuiWindow;
+	g_ANRendererFuncionsTable.GetGuiWindowSize = GetGuiWindowSize;
+	g_ANRendererFuncionsTable.ResizeGuiWindow = ResizeGuiWindow;
 	g_ANRendererFuncionsTable.DrawGuiWindow = DrawGuiWindow;
 
 	return true;
@@ -264,23 +268,14 @@ extern "C" __declspec(dllexport) bool __stdcall ClearScene(HWND hWnd)
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall ResetScene(HWND hWnd, ANInternalGuiWindowID * GuiWindow, anVec2 ScreenSize)
+extern "C" __declspec(dllexport) bool __stdcall ResetScene(HWND hWnd, anVec2 ScreenSize)
 {
 	auto& ri = GetWindowContextRenderInformation(hWnd);
 
 	if (!ri.m_pRenderTarget)
 		return false;
 
-	if (*GuiWindow == 0)
-	{
-		ri.m_pRenderTarget->Resize(D2D1::SizeU((int)ScreenSize.x, (int)ScreenSize.y));
-	}
-	else
-	{
-		((ID2D1BitmapRenderTarget*)(*GuiWindow))->Release();
-		*GuiWindow = nullptr;
-		ri.m_pRenderTarget->CreateCompatibleRenderTarget(D2D1::SizeF(), (ID2D1BitmapRenderTarget**)GuiWindow);
-	}
+	ri.m_pRenderTarget->Resize(D2D1::SizeU((int)ScreenSize.x, (int)ScreenSize.y));
 
 	return true;
 }
@@ -901,6 +896,45 @@ extern "C" __declspec(dllexport) bool __stdcall EndGuiWindow(ANInternalGuiWindow
 	ID2D1BitmapRenderTarget* BitmapRenderTarget = (ID2D1BitmapRenderTarget*)GuiWindow;
 	
 	BitmapRenderTarget->EndDraw();
+
+	return true;
+}
+
+extern "C" __declspec(dllexport) bool __stdcall GetGuiWindowSize(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2* pWindowSize)
+{
+	auto& ri = GetWindowContextRenderInformation(hWnd);
+
+	if (!ri.m_pRenderTarget)
+		return false;
+
+	if (!GuiWindow)
+		return false;
+
+	ID2D1BitmapRenderTarget* BitmapRenderTarget = (ID2D1BitmapRenderTarget*)GuiWindow;
+
+	auto Size = BitmapRenderTarget->GetSize();
+
+	pWindowSize->x = Size.width;
+	pWindowSize->y = Size.height;
+
+	return true;
+}
+
+extern "C" __declspec(dllexport) bool __stdcall ResizeGuiWindow(HWND hWnd, ANInternalGuiWindowID * GuiWindow, anVec2 WindowSize)
+{
+	auto& ri = GetWindowContextRenderInformation(hWnd);
+
+	if (!ri.m_pRenderTarget)
+		return false;
+
+	if (!*GuiWindow)
+		return false;
+
+	ID2D1BitmapRenderTarget* BitmapRenderTarget = (ID2D1BitmapRenderTarget*)(*GuiWindow);
+
+	BitmapRenderTarget->Release();
+	*GuiWindow = nullptr;
+	ri.m_pRenderTarget->CreateCompatibleRenderTarget(D2D1::SizeF(WindowSize.x, WindowSize.y), (ID2D1BitmapRenderTarget**)GuiWindow);
 
 	return true;
 }

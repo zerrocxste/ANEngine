@@ -197,7 +197,7 @@ bool ANRenderer::ClearScene()
 
 bool ANRenderer::ResetScene(anVec2 ScreenSize)
 {
-	return this->m_pANRendererFuncionsTable->ResetScene(this->m_hWnd, &this->m_CurrentWindowID, ScreenSize);
+	return this->m_pANRendererFuncionsTable->ResetScene(this->m_hWnd, ScreenSize);
 }
 
 anVec2 ANRenderer::GetScreenSize()
@@ -362,9 +362,14 @@ bool ANRenderer::EndGuiWindow()
 	return ret;
 }
 
-anVec2 ANRenderer::GetCurrentWindowSize()
+bool ANRenderer::GetGuiWindowSize(ANInternalGuiWindowID GuiWindow, anVec2* pSize)
 {
-	return this->m_CurrentWindowIDSize;
+	return this->m_pANRendererFuncionsTable->GetGuiWindowSize(this->m_hWnd, GuiWindow, pSize);
+}
+
+bool ANRenderer::SetGuiWindowSize(ANInternalGuiWindowID* pGuiWindow, anVec2 Size)
+{
+	return this->m_pANRendererFuncionsTable->ResizeGuiWindow(this->m_hWnd, pGuiWindow, Size);
 }
 
 bool ANRenderer::DrawGuiWindow()

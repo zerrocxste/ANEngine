@@ -107,9 +107,14 @@ void ANApi::EndGuiWindow()
 	this->m_pCore->GetGui()->WindowEnd();
 }
 
-anVec2 ANApi::GetCurrentWindowSize()
+bool ANApi::ResizeGuiWindow(ANGuiWindowID* pGuiWindow, anVec2 Size)
 {
-	return this->m_pCore->GetRenderer()->GetCurrentWindowSize();
+	return this->m_pCore->GetGui()->WindowResize(pGuiWindow, Size);
+}
+
+bool ANApi::GetGuiWindowSize(ANGuiWindowID GuiWindow, anVec2* pSize)
+{
+	return this->m_pCore->GetGui()->WindowGetSize(GuiWindow, pSize);
 }
 
 bool ANApi::AddCheckbox(const char* pszName, anVec2 Pos, anVec2 Size, bool* pVar)

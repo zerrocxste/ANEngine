@@ -46,7 +46,8 @@ public:
 	bool DeleteGuiWindow(ANInternalGuiWindowID* pGuiWindow);
 	bool BeginGuiWindow(ANInternalGuiWindowID GuiWindow, anVec2 Pos, anVec2 Size);
 	bool EndGuiWindow();
-	anVec2 GetCurrentWindowSize();
+	bool GetGuiWindowSize(ANInternalGuiWindowID GuiWindow, anVec2* pSize);
+	bool SetGuiWindowSize(ANInternalGuiWindowID* pGuiWindow, anVec2 Size);
 	bool DrawGuiWindow();
 
 	void PushFont(ANFontID Font);

@@ -25,6 +25,11 @@ bool anVec2::operator==(anVec2 o)
 	return this->x == o.x && this->y == o.y;
 }
 
+bool anVec2::operator!=(anVec2 o)
+{
+	return !operator==(o);
+}
+
 anVec2& anVec2::operator=(anVec2 o)
 {
 	this->x = o.x;
