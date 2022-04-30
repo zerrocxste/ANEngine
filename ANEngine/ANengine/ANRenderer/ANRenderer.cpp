@@ -3,11 +3,15 @@
 ANRenderer::ANRenderer(ANCore* pCore, RenderTypes RenderType) :
 	IANError(),
 	m_pCore(pCore),
-	m_RenderType(RenderType),
-	m_RenderModule(0),
-	m_hWnd(0),
 	m_pANRendererFuncionsTable(nullptr),
-	m_CurrentWindowID(0)
+	m_RenderType(RenderType),
+	m_hWnd(0),
+	m_RenderModule(0),
+	m_CurrentWindowID(0), 
+	m_CurrentWindowIDPos(anVec2()),
+	m_CurrentWindowIDSize(anVec2()),
+	m_FontIDDefault(0),
+	m_FontID(0)
 {
 	
 }
@@ -100,25 +104,13 @@ bool ANRenderer::CreateDefaultFont()
 {
 	const char* pszDefaultFont = "C:\\Windows\\Fonts\\Arial.ttf";
 
-	if (!this->m_pCore->GetRenderer()->CreateFontFromFile(pszDefaultFont, 20.f, &this->m_AutoLoadedDefaultFont))
+	if (!this->m_pCore->GetRenderer()->CreateFontFromFile(pszDefaultFont, 20.f, &this->m_FontIDDefault))
 	{
 		this->SetError("%s() -> Error load default font '%s'", __FUNCTION__, pszDefaultFont);
 		return false;
 	}
 
 	return true;
-}
-
-void ANRenderer::SetMaxFps(int iMaxFps)
-{
-	this->m_iMaxFps = iMaxFps;
-}
-
-__int64 ANRenderer::GetTick()
-{
-	__int64 T = 0;
-	QueryPerformanceCounter((LARGE_INTEGER*)&T);
-	return T;
 }
 
 const char* ANRenderer::RenderTypeToStr(RenderTypes RenderType)
@@ -136,57 +128,13 @@ const char* ANRenderer::RenderTypeToStr(RenderTypes RenderType)
 	return nullptr;
 }
 
-bool ANRenderer::PrepareScene()
-{
-	if (this->m_iMaxFps > 0)
-	{
-		if (this->m_iCurrentSkipperFrame > 0)
-		{
-			if (!this->m_bFrameTimeIsGrabbed) 
-			{
-				this->m_bFrameTimeIsGrabbed = true;
-				this->m_BeginFrameTick = GetTick();
-			}
-			this->m_iCurrentSkipperFrame--;
-			return false;
-		}
-
-		this->m_iCurrentSkipperFrame = ((1000000 * 2.5f) / this->m_iMaxFps) + ((this->m_EndFrameTick - this->m_BeginFrameTick) / 10);
-		this->m_bFrameTimeIsGrabbed = false;
-	}
-	else
-	{
-		this->m_BeginFrameTick = GetTick();
-	}
-
-	return true;
-}
-
 bool ANRenderer::BeginFrame()
 {
-	auto ret = this->m_pANRendererFuncionsTable->BeginFrame(this->m_hWnd);
-
-	if (!this->m_FpsSecondTimer)
-		this->m_FpsSecondTimer = this->m_BeginFrameTick;
-
-	return ret;
+	return this->m_pANRendererFuncionsTable->BeginFrame(this->m_hWnd);
 }
 
 bool ANRenderer::EndFrame()
 {
-	this->m_iCurrentFpsCounter++;
-
-	this->m_EndFrameTick = GetTick();
-
-	if ((this->m_EndFrameTick - this->m_FpsSecondTimer) / 10000 >= 1000)
-	{
-		this->m_iFpsCounter = this->m_iCurrentFpsCounter;
-		this->m_FpsSecondTimer = 0;
-		this->m_iCurrentFpsCounter = 0;
-	}
-
-	this->m_MaxFpsFrameTime = (double)(this->m_EndFrameTick - this->m_BeginFrameTick) / 10000000;
-
 	return this->m_pANRendererFuncionsTable->EndFrame(this->m_hWnd);
 }
 
@@ -212,16 +160,6 @@ anVec2 ANRenderer::GetScreenSize()
 anRect ANRenderer::InfiniteRect()
 {
 	return anRect(-3.402823466e+38F, -3.402823466e+38F, 3.402823466e+38F, 3.402823466e+38F);
-}
-
-int ANRenderer::GetFramePerSecond()
-{
-	return this->m_iFpsCounter;
-}
-
-double ANRenderer::GetFrameTime()
-{
-	return this->m_MaxFpsFrameTime;
 }
 
 bool ANRenderer::CreateImageFromMemory(void* pImageSrc, std::uint32_t iImageSize, ANImageID* pImageIDPtr)
@@ -389,5 +327,5 @@ void ANRenderer::PopFont()
 
 ANFontID ANRenderer::GetFont()
 {
-	return this->m_FontID != 0 ? this->m_FontID : this->m_AutoLoadedDefaultFont;
+	return this->m_FontID != 0 ? this->m_FontID : this->m_FontIDDefault;
 }

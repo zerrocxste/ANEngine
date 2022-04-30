@@ -31,9 +31,10 @@ public:
 	bool GetGuiWindowSize(ANGuiWindowID GuiWindow, anVec2* pSize) override;
 	bool ResizeGuiWindow(ANGuiWindowID* pGuiWindow, anVec2 Size) override;
 
-	bool AddCheckbox(const char* pszName, anVec2 Pos, anVec2 Size, bool* pVar) override;
-	bool AddSliderInt(const char* pszName, anVec2 Pos, anVec2 Size, int iMin, int iMax, int* pVar) override;
-	bool AddSliderFloat(const char* pszName, anVec2 Pos, anVec2 Size, float flMin, float flMax, float* pVar) override;
+	bool AddButton(const char* pszName, anVec2 Pos, anVec2 Size, IANGuiButtonSkin* pButtonSkin = nullptr) override;
+	bool AddCheckbox(const char* pszName, anVec2 Pos, anVec2 Size, bool* pVar, IANCheckboxSkin* pCheckboxSkin = nullptr) override;
+	bool AddSliderInt(const char* pszName, anVec2 Pos, anVec2 Size, int iMin, int iMax, int* pVar, IANSliderSkin* pSliderSkin = nullptr) override;
+	bool AddSliderFloat(const char* pszName, anVec2 Pos, anVec2 Size, float flMin, float flMax, float* pVar, IANSliderSkin* pSliderSkin = nullptr) override;
 private:
 	ANCore* m_pCore;
 

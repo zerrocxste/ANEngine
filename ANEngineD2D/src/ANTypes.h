@@ -43,7 +43,7 @@ struct ANRendererFuncionsTable
 	bool(__stdcall* CreateFontFromFile)(const char* pszPath, float FontSize, ANFontID* pFontIDPtr);
 	void(__stdcall* FreeFont)(ANFontID* pFontIDPtr);
 	bool(__stdcall* TextCalcSize)(HWND hWnd, const char* pszText, ANFontID FontID, anVec2* pTextSize);
-	bool(__stdcall* TextDraw)(HWND hWnd, ANInternalGuiWindowID GuiWindow, const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont);
+	bool(__stdcall* TextDraw)(HWND hWnd, ANInternalGuiWindowID GuiWindow, const char* pszText, anVec2 Pos, anColor Color, ANFontID FontID);
 	bool(__stdcall* CreateGuiWindow)(HWND hWnd, ANInternalGuiWindowID* pGuiWindow, anVec2 Size);
 	bool(__stdcall* DeleteGuiWindow)(ANInternalGuiWindowID* pGuiWindow);
 	bool(__stdcall* BeginGuiWindow)(ANInternalGuiWindowID GuiWindow);

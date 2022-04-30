@@ -13,6 +13,7 @@ typedef void* ANFontID;
 typedef void* ANGuiWindowID;
 
 #include "IANError/IANError.h"
+#include "Gui/GuiSkin.h"
 #include "IANApi/IANApi.h"
 #include "IANGameScene/IANGameScene.h"
 #include "IANLoader/IANLoader.h"

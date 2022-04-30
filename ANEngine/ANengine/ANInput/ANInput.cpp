@@ -113,7 +113,6 @@ void ANInput::UpdateKeyMap(KeyInformation* pkiKeyMap)
 
 	km.m_bIsClicked = km.m_bIsDowned && !km.m_bPrevFrameIsDowned;
 	km.m_bIsReleased = !km.m_bIsDowned && km.m_bPrevFrameIsDowned;
-
 	km.m_bPrevFrameIsDowned = km.m_bIsDowned;
 
 	if (km.m_bIsDowned)

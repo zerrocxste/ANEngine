@@ -15,6 +15,7 @@ ANCore::ANCore(
 	m_EngineComponents.m_pANScene = ANMemory::GetInstance()->Allocate<ANScene>(this);
 	m_EngineComponents.m_ANApi = ANMemory::GetInstance()->Allocate<ANApi>(this);
 	m_EngineComponents.m_ANGui = ANMemory::GetInstance()->Allocate<ANGui>(this);
+	m_EngineComponents.m_ANPerfomance = ANMemory::GetInstance()->Allocate<ANPerfomance>();
 }
 
 ANCore::~ANCore()
@@ -68,6 +69,12 @@ ANGui* ANCore::GetGui()
 {
 	assert(this->m_EngineComponents.m_ANGui != nullptr);
 	return this->m_EngineComponents.m_ANGui;
+}
+
+ANPerfomance* ANCore::GetPerfomance()
+{
+	assert(this->m_EngineComponents.m_ANPerfomance != nullptr);
+	return this->m_EngineComponents.m_ANPerfomance;
 }
 
 bool ANCore::Initialize()

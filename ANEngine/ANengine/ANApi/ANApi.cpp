@@ -117,25 +117,30 @@ bool ANApi::GetGuiWindowSize(ANGuiWindowID GuiWindow, anVec2* pSize)
 	return this->m_pCore->GetGui()->WindowGetSize(GuiWindow, pSize);
 }
 
-bool ANApi::AddCheckbox(const char* pszName, anVec2 Pos, anVec2 Size, bool* pVar)
+bool ANApi::AddButton(const char* pszName, anVec2 Pos, anVec2 Size, IANGuiButtonSkin* pButtonSkin)
 {
-	return this->m_pCore->GetGui()->CheckBox(pszName, Pos, Size, pVar);
+	return this->m_pCore->GetGui()->Button(pszName, Pos, Size, pButtonSkin);
 }
 
-bool ANApi::AddSliderInt(const char* pszName, anVec2 Pos, anVec2 Size, int iMin, int iMax, int* pVar)
+bool ANApi::AddCheckbox(const char* pszName, anVec2 Pos, anVec2 Size, bool* pVar, IANCheckboxSkin* pCheckboxSkin)
 {
-	return this->m_pCore->GetGui()->SliderInt(pszName, Pos, Size, iMin, iMax, pVar);
+	return this->m_pCore->GetGui()->Checkbox(pszName, Pos, Size, pVar, pCheckboxSkin);
 }
 
-bool ANApi::AddSliderFloat(const char* pszName, anVec2 Pos, anVec2 Size, float flMin, float flMax, float* pVar)
+bool ANApi::AddSliderInt(const char* pszName, anVec2 Pos, anVec2 Size, int iMin, int iMax, int* pVar, IANSliderSkin* pSliderSkin)
 {
-	return this->m_pCore->GetGui()->SliderFloat(pszName, Pos, Size, flMin, flMax, pVar);
+	return this->m_pCore->GetGui()->SliderInt(pszName, Pos, Size, iMin, iMax, pVar, pSliderSkin);
+}
+
+bool ANApi::AddSliderFloat(const char* pszName, anVec2 Pos, anVec2 Size, float flMin, float flMax, float* pVar, IANSliderSkin* pSliderSkin)
+{
+	return this->m_pCore->GetGui()->SliderFloat(pszName, Pos, Size, flMin, flMax, pVar, pSliderSkin);
 }
 
 void ANApi::Update()
 {
-	auto r = this->m_pCore->GetRenderer();
+	auto p = this->m_pCore->GetPerfomance();
 
-	this->FPS = r->GetFramePerSecond();
-	this->Frametime = r->GetFrameTime();
+	this->FPS = p->GetFramePerSecond();
+	this->Frametime = p->GetFrameTime();
 }

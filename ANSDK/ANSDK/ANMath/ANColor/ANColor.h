@@ -25,6 +25,7 @@ public:
 	static const anColor Grey();
 	static const anColor White();
 	static const anColor Black();
-private:
+
 	std::uint8_t r, g, b, a;
+private:
 };

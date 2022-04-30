@@ -145,8 +145,6 @@
     <ClCompile Include="ANengine\ANApi\ANApi.cpp" />
     <ClCompile Include="ANengine\ANCore\ANCore.cpp" />
     <ClCompile Include="ANengine\ANGame\ANGame.cpp" />
-    <ClCompile Include="ANengine\ANGuiWindow\ANGuiWindow.cpp" />
-    <ClCompile Include="ANengine\ANGui\ANGui.cpp" />
     <ClCompile Include="ANengine\ANInput\ANInput.cpp" />
     <ClCompile Include="ANengine\ANLoader\ANLoader.cpp" />
     <ClCompile Include="ANengine\ANMath\ANColor\ANColor.cpp" />
@@ -155,10 +153,12 @@
     <ClCompile Include="ANengine\ANMath\ANVec2\ANVec2.cpp" />
     <ClCompile Include="ANengine\ANMath\ANVec3\ANVec3.cpp" />
     <ClCompile Include="ANengine\ANMemory\ANMemory.cpp" />
+    <ClCompile Include="ANengine\ANPerfomance\ANPerfomance.cpp" />
     <ClCompile Include="ANengine\ANRenderer\ANRenderer.cpp" />
     <ClCompile Include="ANengine\ANScene\ANScene.cpp" />
     <ClCompile Include="ANengine\ANWindow\ANWindow.cpp" />
-    <ClCompile Include="ANengine\Interfaces\IANApi\IANApi.cpp" />
+    <ClCompile Include="ANengine\Gui\ANGuiWindow\ANGuiWindow.cpp" />
+    <ClCompile Include="ANengine\Gui\ANGui\ANGui.cpp" />
     <ClCompile Include="ANengine\Interfaces\IANError\IANError.cpp" />
     <ClCompile Include="ANengine\ResourcesManager\ANResourceManager\ANResourceManager.cpp" />
     <ClCompile Include="ANengine\ResourcesManager\ANUniqueResource\ANUniqueResource.cpp" />
@@ -168,8 +168,6 @@
     <ClInclude Include="ANengine\ANCore\ANCore.h" />
     <ClInclude Include="ANengine\ANEngine.h" />
     <ClInclude Include="ANengine\ANGame\ANGame.h" />
-    <ClInclude Include="ANengine\ANGuiWindow\ANGuiWindow.h" />
-    <ClInclude Include="ANengine\ANGui\ANGui.h" />
     <ClInclude Include="ANengine\ANInput\ANInput.h" />
     <ClInclude Include="ANengine\ANLoader\ANLoader.h" />
     <ClInclude Include="ANengine\ANMath\ANColor\ANColor.h" />
@@ -178,10 +176,14 @@
     <ClInclude Include="ANengine\ANMath\ANVec2\ANVec2.h" />
     <ClInclude Include="ANengine\ANMath\ANVec3\ANVec3.h" />
     <ClInclude Include="ANengine\ANMemory\ANMemory.h" />
+    <ClInclude Include="ANengine\ANPerfomance\ANPerfomance.h" />
     <ClInclude Include="ANengine\ANRenderer\ANRenderer.h" />
     <ClInclude Include="ANengine\ANScene\ANScene.h" />
     <ClInclude Include="ANengine\ANTypes.h" />
     <ClInclude Include="ANengine\ANWindow\ANWindow.h" />
+    <ClInclude Include="ANengine\Gui\ANGuiWindow\ANGuiWindow.h" />
+    <ClInclude Include="ANengine\Gui\ANGui\ANGui.h" />
+    <ClInclude Include="ANengine\Interfaces\GuiSkin\GuiSkin.h" />
     <ClInclude Include="ANengine\Interfaces\IANApi\IANApi.h" />
     <ClInclude Include="ANengine\Interfaces\IANError\IANError.h" />
     <ClInclude Include="ANengine\Interfaces\IANGameScene\IANGameScene.h" />

@@ -19,6 +19,7 @@ public:
 	ANScene* GetScene();
 	ANApi* GetApi();
 	ANGui* GetGui();
+	ANPerfomance* GetPerfomance();
 
 	bool Initialize();
 	bool Run();

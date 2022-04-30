@@ -30,7 +30,8 @@ public:
 	virtual bool GetGuiWindowSize(ANGuiWindowID GuiWindow, anVec2* pSize) = 0;
 	virtual bool ResizeGuiWindow(ANGuiWindowID* pGuiWindow, anVec2 Size) = 0;
 
-	virtual bool AddCheckbox(const char* pszName, anVec2 Pos, anVec2 Size, bool* pVar) = 0;
-	virtual bool AddSliderInt(const char* pszName, anVec2 Pos, anVec2 Size, int iMin, int iMax, int* pVar) = 0;
-	virtual bool AddSliderFloat(const char* pszName, anVec2 Pos, anVec2 Size, float flMin, float flMax, float* pVar) = 0;
+	virtual bool AddButton(const char* pszName, anVec2 Pos, anVec2 Size, IANGuiButtonSkin* pButtonSkin = nullptr) = 0;
+	virtual bool AddCheckbox(const char* pszName, anVec2 Pos, anVec2 Size, bool* pVar, IANCheckboxSkin* pCheckboxSkin = nullptr) = 0;
+	virtual bool AddSliderInt(const char* pszName, anVec2 Pos, anVec2 Size, int iMin, int iMax, int* pVar, IANSliderSkin* pSliderSkin = nullptr) = 0;
+	virtual bool AddSliderFloat(const char* pszName, anVec2 Pos, anVec2 Size, float flMin, float flMax, float* pVar, IANSliderSkin* pSliderSkin = nullptr) = 0;
 };

@@ -39,7 +39,7 @@ extern "C" __declspec(dllexport) bool __stdcall DrawFilledCircle(HWND hWnd, ANIn
 extern "C" __declspec(dllexport) bool __stdcall CreateFontFromFile(const char* pszPath, float FontSize, ANFontID * pFontIDPtr);
 extern "C" __declspec(dllexport) void __stdcall FreeFont(ANFontID* pFontIDPtr);
 extern "C" __declspec(dllexport) bool __stdcall TextCalcSize(HWND hWnd, const char* pszText, ANFontID FontID, anVec2 * pTextSize);
-extern "C" __declspec(dllexport) bool __stdcall TextDraw(HWND hWnd, ANInternalGuiWindowID GuiWindow, const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont);
+extern "C" __declspec(dllexport) bool __stdcall TextDraw(HWND hWnd, ANInternalGuiWindowID GuiWindow, const char* pszText, anVec2 Pos, anColor Color, ANFontID FontID);
 extern "C" __declspec(dllexport) bool __stdcall CreateGuiWindow(HWND hWnd, ANInternalGuiWindowID * pGuiWindow, anVec2 Size);
 extern "C" __declspec(dllexport) bool __stdcall DeleteGuiWindow(ANInternalGuiWindowID * GuiWindow);
 extern "C" __declspec(dllexport) bool __stdcall BeginGuiWindow(ANInternalGuiWindowID GuiWindow);
@@ -185,9 +185,9 @@ bool CreateRendererFunctionsTable()
 	return true;
 }
 
-void __forceinline SetBrushColor(HWND hWnd, anColor Color)
+void __forceinline SetBrushColor(ID2D1SolidColorBrush* m_pColorBrush, HWND hWnd, anColor Color)
 {
-	GetWindowContextRenderInformation(hWnd).m_pColorBrush->SetColor(D2D1::ColorF(Color[RED] / 255.f, Color[GREEN] / 255.f, Color[BLUE] / 255.f, Color[ALPHA] / 255.f));
+	m_pColorBrush->SetColor(D2D1::ColorF(Color.r / 255.f, Color.g / 255.f, Color.b / 255.f, Color.a / 255.f));
 }
 
 bool Initialize(HWND hWnd)
@@ -356,7 +356,7 @@ extern "C" __declspec(dllexport) bool __stdcall DrawLine(HWND hWnd, ANInternalGu
 	if (!ri.m_pRenderTarget)
 		return false;
 
-	SetBrushColor(hWnd, Color);
+	SetBrushColor(ri.m_pColorBrush, hWnd, Color);
 
 	if (GuiWindow == 0)
 	{
@@ -377,7 +377,7 @@ extern "C" __declspec(dllexport) bool __stdcall DrawRectangle(HWND hWnd, ANInter
 	if (!ri.m_pRenderTarget)
 		return false;
 
-	SetBrushColor(hWnd, Color);
+	SetBrushColor(ri.m_pColorBrush, hWnd, Color);
 
 	auto Rect = D2D1::RectF(Pos.first.x, Pos.first.y, Pos.second.x, Pos.second.y);
 
@@ -408,7 +408,7 @@ extern "C" __declspec(dllexport) bool __stdcall DrawFilledRectangle(HWND hWnd, A
 	if (!ri.m_pRenderTarget)
 		return false;
 
-	SetBrushColor(hWnd, Color);
+	SetBrushColor(ri.m_pColorBrush, hWnd, Color);
 
 	auto Rect = D2D1::RectF(Pos.first.x, Pos.first.y, Pos.second.x, Pos.second.y);
 
@@ -431,6 +431,8 @@ extern "C" __declspec(dllexport) bool __stdcall DrawFilledRectangle(HWND hWnd, A
 
 	return true;
 }
+
+std::map<void*, ID2D1PathGeometry*>;
 
 bool CreateTrinagleGeometry(ID2D1Factory* pD2D1Factory, D2D1_POINT_2F pt1, D2D1_POINT_2F pt2, D2D1_POINT_2F pt3, ID2D1PathGeometry** pD2D1PathGeometry)
 {
@@ -465,7 +467,7 @@ extern "C" __declspec(dllexport) bool __stdcall DrawTrinagle(HWND hWnd, ANIntern
 	if (!ri.m_pRenderTarget)
 		return false;
 
-	SetBrushColor(hWnd, Color);
+	SetBrushColor(ri.m_pColorBrush, hWnd, Color);
 
 	ID2D1PathGeometry* TriGeometry = nullptr;
 
@@ -493,7 +495,7 @@ extern "C" __declspec(dllexport) bool __stdcall DrawTrinagleFilled(HWND hWnd, AN
 	if (!ri.m_pRenderTarget)
 		return false;
 
-	SetBrushColor(hWnd, Color);
+	SetBrushColor(ri.m_pColorBrush, hWnd, Color);
 
 	ID2D1PathGeometry* TriGeometry = nullptr;
 
@@ -519,7 +521,7 @@ extern "C" __declspec(dllexport) bool __stdcall DrawCircle(HWND hWnd, ANInternal
 	if (!ri.m_pRenderTarget)
 		return false;
 
-	SetBrushColor(hWnd, Color);
+	SetBrushColor(ri.m_pColorBrush, hWnd, Color);
 
 	Radius /= 2.f;
 
@@ -542,7 +544,7 @@ extern "C" __declspec(dllexport) bool __stdcall DrawFilledCircle(HWND hWnd, ANIn
 	if (!ri.m_pRenderTarget)
 		return false;
 
-	SetBrushColor(hWnd, Color);
+	SetBrushColor(ri.m_pColorBrush, hWnd, Color);
 
 	Radius /= 2.f;
 
@@ -752,94 +754,109 @@ extern "C" __declspec(dllexport) void __stdcall FreeFont(ANFontID* pFontIDPtr)
 	*pFontIDPtr = nullptr;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall TextCalcSize(HWND hWnd, const char* pszText, ANFontID FontID, anVec2* pTextSize)
+typedef void* TextCacheID;
+
+struct DWriteTextCache
 {
-	auto StrLengthText = strlen(pszText) + 1;
+	const char* m_szText;
+	wchar_t* m_wszText;
+	int m_iTextLength;
+	int m_iTotalSumOfSymStr;
+	IDWriteTextFormat* m_pDWriteTextFormat;
+	IDWriteTextLayout* m_pDWriteTextLayout;
+	DWRITE_TEXT_METRICS m_dwrTextMetrics;
+};
 
-	wchar_t* pwszText = new wchar_t[StrLengthText]();
+std::map<TextCacheID, DWriteTextCache> g_DWriteTextCache;
 
-	if (!pwszText)
-		return false;
+bool ProcessTextCache(const char* pszText, ANFontID FontID, DWriteTextCache* pCachedTextElement)
+{
+	IDWriteTextFormat* pDWriteTextFormat = (IDWriteTextFormat*)FontID;
 
-	if (!MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, pszText, StrLengthText, pwszText, StrLengthText))
-	{
-		delete[] pwszText;
-		return false;
+	auto& e = g_DWriteTextCache[(void*)(pszText + (std::uintptr_t)FontID)];
+
+	auto StrLengthText = 1;
+	auto TotalSumOfSymStr = 0;
+
+	for (auto i = pszText; *i != '\0'; i++) {
+		StrLengthText++;
+		TotalSumOfSymStr += *i;
 	}
 
-	auto ret = false;
+	if (e.m_szText != pszText || 
+		e.m_iTextLength != StrLengthText || 
+		e.m_iTotalSumOfSymStr != TotalSumOfSymStr ||
+		e.m_pDWriteTextFormat != pDWriteTextFormat)
+	{
+		if (e.m_wszText != nullptr)
+			delete[] e.m_wszText;
 
-	IDWriteTextFormat* pDWriteTextFormat = (IDWriteTextFormat*)FontID;
-	IDWriteTextLayout* pDWriteTextLayout = nullptr;
-	DWRITE_TEXT_METRICS TextMetrics{};
+		if (e.m_pDWriteTextLayout)
+			e.m_pDWriteTextLayout->Release();
 
-	if (FAILED(g_D2DInterfaces.pDWriteFactory->CreateTextLayout(pwszText, StrLengthText, pDWriteTextFormat, 3.402823466e+38F, 3.402823466e+38F, &pDWriteTextLayout)))
-		goto failed;
+		e.m_wszText = new wchar_t[StrLengthText]();
 
-	if (FAILED(pDWriteTextLayout->GetMetrics(&TextMetrics)))
-		goto failed;
+		if (!e.m_wszText)
+			return false;
 
-	ret = true;
+		if (!MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, pszText, StrLengthText, e.m_wszText, StrLengthText))
+		{
+			delete[] e.m_wszText;
+			return false;
+		}
 
-	pTextSize->x = TextMetrics.widthIncludingTrailingWhitespace;
-	pTextSize->y = TextMetrics.height;
+		e.m_szText = pszText;
+		e.m_iTextLength = StrLengthText;
+		e.m_iTotalSumOfSymStr = TotalSumOfSymStr;
+		e.m_pDWriteTextFormat = pDWriteTextFormat;
 
-failed:
+		if (FAILED(g_D2DInterfaces.pDWriteFactory->CreateTextLayout(e.m_wszText, StrLengthText, e.m_pDWriteTextFormat, FLT_MAX, FLT_MAX, &e.m_pDWriteTextLayout)))
+			return false;
 
-	if (pDWriteTextLayout != nullptr)
-		pDWriteTextLayout->Release();
+		if (FAILED(e.m_pDWriteTextLayout->GetMetrics(&e.m_dwrTextMetrics)))
+			return false;
+	}
 
-	if (pwszText)
-		delete[] pwszText;
+	*pCachedTextElement = e;
 
-	return ret;
+	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall TextDraw(HWND hWnd, ANInternalGuiWindowID GuiWindow, const char* pszText, anVec2 Pos, anColor Color, ANFontID pFont)
+extern "C" __declspec(dllexport) bool __stdcall TextCalcSize(HWND hWnd, const char* pszText, ANFontID FontID, anVec2 * pTextSize)
 {
-	auto StrLengthText = strlen(pszText) + 1;
+	DWriteTextCache TextElement;
 
-	wchar_t* pwszText = new wchar_t[StrLengthText]();
-
-	if (!pwszText)
+	if (!ProcessTextCache(pszText, FontID, &TextElement))
 		return false;
 
-	if (!MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, pszText, StrLengthText, pwszText, StrLengthText))
-	{
-		delete[] pwszText;
-		return false;
-	}
+	pTextSize->x = TextElement.m_dwrTextMetrics.widthIncludingTrailingWhitespace;
+	pTextSize->y = TextElement.m_dwrTextMetrics.height;
 
-	SetBrushColor(hWnd, Color);
+	return true;
+}
+
+extern "C" __declspec(dllexport) bool __stdcall TextDraw(HWND hWnd, ANInternalGuiWindowID GuiWindow, const char* pszText, anVec2 Pos, anColor Color, ANFontID FontID)
+{
+	DWriteTextCache TextElement;
+
+	if (!ProcessTextCache(pszText, FontID, &TextElement))
+		return false;
 
 	auto& ri = GetWindowContextRenderInformation(hWnd);
 
 	if (!ri.m_pRenderTarget)
-	{
-		delete[] pwszText;
 		return false;
-	}
+
+	SetBrushColor(ri.m_pColorBrush, hWnd, Color);
 
 	if (GuiWindow == 0)
-	{
-		ri.m_pRenderTarget->DrawTextA(pwszText, wcslen(pwszText),
-			(IDWriteTextFormat*)pFont,
-			D2D1::RectF(Pos.x, Pos.y, 3.402823466e+38F, 3.402823466e+38F),
-			ri.m_pColorBrush, 
-			D2D1_DRAW_TEXT_OPTIONS::D2D1_DRAW_TEXT_OPTIONS_NONE, 
-			DWRITE_MEASURING_MODE::DWRITE_MEASURING_MODE_NATURAL);
+	{	
+		ri.m_pRenderTarget->DrawTextLayout(D2D1::Point2F(Pos.x, Pos.y), TextElement.m_pDWriteTextLayout, ri.m_pColorBrush);
 	}
 	else
 	{
-		((ID2D1BitmapRenderTarget*)GuiWindow)->DrawTextA(pwszText, wcslen(pwszText),
-			(IDWriteTextFormat*)pFont,
-			D2D1::RectF(Pos.x, Pos.y, 3.402823466e+38F, 3.402823466e+38F),
-			ri.m_pColorBrush,
-			D2D1_DRAW_TEXT_OPTIONS::D2D1_DRAW_TEXT_OPTIONS_NONE,
-			DWRITE_MEASURING_MODE::DWRITE_MEASURING_MODE_NATURAL);
+		((ID2D1BitmapRenderTarget*)GuiWindow)->DrawTextLayout(D2D1::Point2F(Pos.x, Pos.y), TextElement.m_pDWriteTextLayout, ri.m_pColorBrush);
 	}
-
-	delete[] pwszText;
 
 	return true;
 }
@@ -990,4 +1007,3 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 	}
 	return TRUE;
 }
-

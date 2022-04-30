@@ -82,9 +82,6 @@
     <Filter Include="ANEngine\Interfaces\IANLoader">
       <UniqueIdentifier>{8451807c-f18f-4c7d-93d7-b6bd0f470a88}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\ANGui">
-      <UniqueIdentifier>{be2c0888-9105-48a3-8ea0-dfbe92c37024}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ANEngine\Interfaces\GameEntity">
       <UniqueIdentifier>{275d415f-9d5a-4ede-bfc6-791ab15d2db0}</UniqueIdentifier>
     </Filter>
@@ -109,10 +106,16 @@
     <Filter Include="ANEngine\ANMath\ANMathUtils">
       <UniqueIdentifier>{ab85339c-5cc1-41dd-bc07-007a479c0a60}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\ANGuiWindow">
-      <UniqueIdentifier>{87559cfa-fb43-4dc5-bddd-042288cd62f4}</UniqueIdentifier>
+    <Filter Include="ANEngine\Gui">
+      <UniqueIdentifier>{38f9be55-0fbc-45d4-9c43-d5067289d071}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\Interfaces\GuiWidow">
+    <Filter Include="ANEngine\Gui\ANGui">
+      <UniqueIdentifier>{b1862ad7-cb3e-488c-9b58-7211946ca716}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Gui\ANGuiWindow">
+      <UniqueIdentifier>{59455b67-2631-4f3d-8b3f-4bae77a03f9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\GuiSkin">
       <UniqueIdentifier>{5bf8a45f-138a-4b97-9461-e949e7d33322}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -168,17 +171,17 @@
     <ClCompile Include="ANengine\Interfaces\IANError\IANError.cpp">
       <Filter>ANEngine\Interfaces\IANError</Filter>
     </ClCompile>
-    <ClCompile Include="ANengine\ANGui\ANGui.cpp">
-      <Filter>ANEngine\ANGui</Filter>
-    </ClCompile>
     <ClCompile Include="ANengine\ANMath\ANMathUtils\ANMathUtils.cpp">
       <Filter>ANEngine\ANMath\ANMathUtils</Filter>
     </ClCompile>
-    <ClCompile Include="ANengine\ANGuiWindow\ANGuiWindow.cpp">
-      <Filter>ANEngine\ANGuiWindow</Filter>
+    <ClCompile Include="ANengine\ANPerfomance\ANPerfomance.cpp">
+      <Filter>ANEngine\ANPerfomance</Filter>
     </ClCompile>
-    <ClCompile Include="ANengine\Interfaces\IANApi\IANApi.cpp">
-      <Filter>Исходные файлы</Filter>
+    <ClCompile Include="ANengine\Gui\ANGui\ANGui.cpp">
+      <Filter>ANEngine\Gui\ANGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\Gui\ANGuiWindow\ANGuiWindow.cpp">
+      <Filter>ANEngine\Gui\ANGuiWindow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -245,14 +248,20 @@
     <ClInclude Include="ANengine\Interfaces\IANLoader\IANLoader.h">
       <Filter>ANEngine\Interfaces\IANLoader</Filter>
     </ClInclude>
-    <ClInclude Include="ANengine\ANGui\ANGui.h">
-      <Filter>ANEngine\ANGui</Filter>
-    </ClInclude>
     <ClInclude Include="ANengine\ANMath\ANMathUtils\ANMathUtils.h">
       <Filter>ANEngine\ANMath\ANMathUtils</Filter>
     </ClInclude>
-    <ClInclude Include="ANengine\ANGuiWindow\ANGuiWindow.h">
-      <Filter>ANEngine\ANGuiWindow</Filter>
+    <ClInclude Include="ANengine\ANPerfomance\ANPerfomance.h">
+      <Filter>ANEngine\ANPerfomance</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Gui\ANGui\ANGui.h">
+      <Filter>ANEngine\Gui\ANGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Gui\ANGuiWindow\ANGuiWindow.h">
+      <Filter>ANEngine\Gui\ANGuiWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Interfaces\GuiSkin\GuiSkin.h">
+      <Filter>ANEngine\Interfaces\GuiSkin</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

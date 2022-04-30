@@ -26,10 +26,12 @@ class ANResourceManager;
 class ANScene;
 class ANApi;
 class ANGui;
+class ANPerfomance;
 
 #include "ANTypes.h"
 
 #include "Interfaces/IANError/IANError.h"
+#include "Interfaces/GuiSkin/GuiSkin.h"
 #include "Interfaces/IANApi/IANApi.h"
 #include "Interfaces/IANGameScene/IANGameScene.h"
 #include "Interfaces/IANLoader/IANLoader.h"
@@ -38,13 +40,14 @@ class ANGui;
 
 #include "ResourcesManager/ANUniqueResource/ANUniqueResource.h"
 #include "ResourcesManager/ANResourceManager/ANResourceManager.h"
+#include "ANPerfomance/ANPerfomance.h"
 #include "ANRenderer/ANRenderer.h"
 #include "ANInput/ANInput.h"
 #include "ANWindow/ANWindow.h"
 #include "ANGame/ANGame.h"
 #include "ANScene/ANScene.h"
 #include "ANApi/ANApi.h"
-#include "ANGuiWindow/ANGuiWindow.h"
-#include "ANGui/ANGui.h"
+#include "Gui/ANGuiWindow/ANGuiWindow.h"
+#include "Gui/ANGui/ANGui.h"
 #include "ANCore/ANCore.h"
 #include "ANLoader/ANLoader.h"

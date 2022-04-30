@@ -43,6 +43,12 @@
     <Filter Include="ANSDK\ANMath\ANVec3">
       <UniqueIdentifier>{ed66b6d0-3c8b-44bf-b93c-1fcb7049b480}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{119cca1f-bfca-44c8-ad6a-31a90a7c4a68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\MainMenu">
+      <UniqueIdentifier>{e84fb253-6328-4565-8332-023433a8c191}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameExample.cpp">
@@ -65,6 +71,9 @@
     </ClCompile>
     <ClCompile Include="..\ANSDK\ANSDK\ANMath\ANVec3\ANVec3.cpp">
       <Filter>ANSDK\ANMath\ANVec3</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\MainMenu\MainMenu.cpp">
+      <Filter>Game\MainMenu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -94,6 +103,15 @@
     </ClInclude>
     <ClInclude Include="..\ANSDK\ANSDK\ANMath\ANVec3\ANVec3.h">
       <Filter>ANSDK\ANMath\ANVec3</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\MainMenu\MainMenu.h">
+      <Filter>Game\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="includes.h">
+      <Filter>Исходные файлы</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

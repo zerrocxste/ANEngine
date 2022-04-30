@@ -43,6 +43,9 @@
     <Filter Include="ANSDK\IANError">
       <UniqueIdentifier>{0b347406-11c8-4dee-9ea2-14955ff5637a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ANSDK\Gui">
+      <UniqueIdentifier>{85f8ff43-1d27-41b8-aa55-13a498e24379}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ANSDK\ANMath\ANColor\ANColor.cpp">
@@ -91,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="ANSDK\IANError\IANError.h">
       <Filter>ANSDK\IANError</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\Gui\GuiSkin.h">
+      <Filter>ANSDK\Gui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

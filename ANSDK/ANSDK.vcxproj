@@ -153,6 +153,7 @@
     <ClInclude Include="ANSDK\ANMath\ANVec2\ANVec2.h" />
     <ClInclude Include="ANSDK\ANMath\ANVec3\ANVec3.h" />
     <ClInclude Include="ANSDK\ANSDK.h" />
+    <ClInclude Include="ANSDK\Gui\GuiSkin.h" />
     <ClInclude Include="ANSDK\IANApi\IANApi.h" />
     <ClInclude Include="ANSDK\IANError\IANError.h" />
     <ClInclude Include="ANSDK\IANGameScene\IANGameScene.h" />
