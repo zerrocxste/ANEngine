@@ -19,6 +19,7 @@ public:
 
 	bool CreateImageFromMemory(void* pImageSrc, std::uint32_t iImageSize, ANImageID* pImageIDPtr);
 	bool CreateImageFromResource(ANUniqueResource* pResource, ANImageID* pImageIDPtr);
+	bool GetImageSize(ANImageID ImageID, anVec2* pSize);
 	void FreeImage(ANImageID* pImageIDPtr);
 	bool DrawImage(ANImageID pImageID, anRect Pos, float Opacity = 1.f);
 	bool DrawRectangle(anRect Pos, anColor Color, float LineThickness = 1.f, float Rounding = 0.f);
@@ -51,13 +52,14 @@ private:
 
 	ANRendererFuncionsTable* m_pANRendererFuncionsTable;
 
-	RenderTypes m_RenderType;
-	HWND m_hWnd;
 	HMODULE m_RenderModule;
+	HWND m_hWnd;
+	RenderTypes m_RenderType;
 
 	ANInternalGuiWindowID m_CurrentWindowID;
 	anVec2 m_CurrentWindowIDPos;
 	anVec2 m_CurrentWindowIDSize;
+	anRect m_CurrentWindowIDRect;
 
 	ANFontID m_FontIDDefault;
 	ANFontID m_FontID;
@@ -68,4 +70,6 @@ private:
 	bool CreateDefaultFont();
 
 	const char* RenderTypeToStr(RenderTypes RenderType);
+
+	bool CheckObjectIsGuiWindowScoped(anVec2 Pos);
 };

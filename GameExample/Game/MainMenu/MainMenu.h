@@ -1,6 +1,6 @@
 #pragma once
 
-class CTestCheckboxSkin : IANCheckboxSkin
+class CTestCheckboxSkin : public IANCheckboxSkin
 {
 public:
 	CTestCheckboxSkin(ANImageID bgImage, ANImageID markImage);
@@ -16,7 +16,7 @@ private:
 	ANImageID m_markImage;
 };
 
-class CTestSliderSkin : IANSliderSkin
+class CTestSliderSkin : public IANSliderSkin
 {
 public:
 	CTestSliderSkin(ANImageID bgImage, ANImageID sliderImage);

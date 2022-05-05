@@ -15,7 +15,6 @@ CTestCheckboxSkin::~CTestCheckboxSkin()
 void CTestCheckboxSkin::SetSkin(bool IsHovered, bool IsPressed, bool IsClicked, anRect* pBgRect, anColor* pBgColor, ANImageID* pBgImage, anRect* pMarkRect, anColor* pMarkColor, ANImageID* pMarkImage)
 {
 	*pBgImage = this->m_bgImage;
-	pBgColor->a = rand() % 255;
 }
 
 
@@ -66,6 +65,9 @@ void CTestGameScene::OnUnloadScene(IANApi* pApi)
 	pApi->FreeImage(&this->m_imgImageKrolik);
 	pApi->UnregGuiWindow(&this->m_AnotherWindow);
 
+	delete m_pTestCheckboxSkin;
+	delete m_pSliderSkin;
+
 	if (this)
 		delete this;
 }
@@ -78,7 +80,7 @@ void CTestGameScene::Entry(IANApi* pApi)
 
 	char buff[256] = { 0 };
 	sprintf_s(buff, "FPS: %d\nFrametime: %lf\nScreenSize: %.0f:%.0f", pApi->FPS, pApi->Frametime, ScreenSize.x, ScreenSize.y);
-	pApi->TextDraw(buff, anVec2(5.f, 5.f), anColor::Blue());
+	pApi->TextDraw(buff, anVec2(5.f, 5.f), anColor::White());
 
 	pApi->TextDraw("TEST", anVec2(40.f, 320.f), anColor::Red());
 
@@ -93,19 +95,13 @@ void CTestGameScene::Entry(IANApi* pApi)
 
 	pApi->DrawRectangle(anVec2(30.f, 320.f), anVec2(100.f, 30.f), anColor::White(), 1.f, 0.f, true);
 
-	if (pApi->AddButton("Kek", anVec2(400.f, 500.f), anVec2(100.f, 100.f)))
-	{
-		printf("PEPEGA\n");
-	}
-
 	pApi->PushFont(this->m_fontStolzLight);
 
 	pApi->TextDraw("TEST", anVec2(40.f, 320.f), anColor::Red());
 
 	if (pApi->BeginGuiWindow(this->m_AnotherWindow, anVec2(30.f, 400.f)))
 	{
-		anVec2 WindowSize;
-		pApi->GetGuiWindowSize(this->m_AnotherWindow, &WindowSize);
+		anVec2 WindowSize = pApi->GetGuiWindowSize(this->m_AnotherWindow);
 
 		if (GetAsyncKeyState('V'))
 			pApi->ResizeGuiWindow(&this->m_AnotherWindow, anVec2(500.f, 500.f));
@@ -113,10 +109,18 @@ void CTestGameScene::Entry(IANApi* pApi)
 		pApi->DrawImage(this->m_imgImageKrolik, anVec2(), WindowSize, 0.5f);
 		pApi->AddSliderInt("Test slider", anVec2(10.f, 10.f), anVec2(250.f, 30.f), 10, 68, &iVar);
 		pApi->TextDraw("TEST", anVec2(10.f, 90.f), anColor::Red());
-		pApi->TextDraw("TES2", anVec2(10.f, 130.f), anColor::Red());
+		pApi->TextDraw("TEST2", anVec2(10.f, 120.f), anColor::Red());
+		pApi->TextDraw("TEST3", anVec2(10.f, 150.f), anColor::Red());
+		pApi->TextDraw("TEST3", anVec2(10.f, 180.f), anColor::Red());
 
 		pApi->EndGuiWindow();
 	}
 
 	pApi->PopFont();
+
+	if (pApi->AddButton("Run test level", anVec2(400.f, 500.f), anVec2(150.f, 50.f)))
+	{
+		printf("PEPEGA\n");
+		pApi->ConnectToScene(new CTestLevel());
+	}
 }

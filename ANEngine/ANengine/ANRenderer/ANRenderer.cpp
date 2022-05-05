@@ -97,6 +97,14 @@ bool ANRenderer::InvokeInitFunctionTable()
 
 	this->m_pANRendererFuncionsTable = (ANRendererFuncionsTable*)pfGetRendererFunctionTable();
 
+	if (!this->m_pANRendererFuncionsTable)
+	{
+		this->SetError("%s() -> Render function table is invalid\n", __FUNCTION__);
+		return false;
+	}
+
+	this->m_pANRendererFuncionsTable->ResetScene(this->m_hWnd, this->m_pCore->GetWindow()->GetWindow()->m_vWindowSize);
+
 	return true;
 }
 
@@ -128,6 +136,11 @@ const char* ANRenderer::RenderTypeToStr(RenderTypes RenderType)
 	return nullptr;
 }
 
+bool ANRenderer::CheckObjectIsGuiWindowScoped(anVec2 Pos)
+{
+	return this->m_CurrentWindowIDRect.IsIntersected(Pos);
+}
+
 bool ANRenderer::BeginFrame()
 {
 	return this->m_pANRendererFuncionsTable->BeginFrame(this->m_hWnd);
@@ -145,6 +158,9 @@ bool ANRenderer::ClearScene()
 
 bool ANRenderer::ResetScene(anVec2 ScreenSize)
 {
+	if (!this->m_pANRendererFuncionsTable)
+		return false;
+
 	return this->m_pANRendererFuncionsTable->ResetScene(this->m_hWnd, ScreenSize);
 }
 
@@ -176,6 +192,11 @@ bool ANRenderer::CreateImageFromResource(ANUniqueResource* pResource, ANImageID*
 	}
 		
 	return this->m_pANRendererFuncionsTable->CreateImageFromMemory(this->m_hWnd, pResource->GetResourceLocation(), pResource->GetResourceSize(), pImageIDPtr);
+}
+
+bool ANRenderer::GetImageSize(ANImageID ImageID, anVec2* pSize)
+{
+	return this->m_pANRendererFuncionsTable->GetImageSize(ImageID, pSize);
 }
 
 void ANRenderer::FreeImage(ANImageID* pImageIDPtr)
@@ -279,6 +300,7 @@ bool ANRenderer::BeginGuiWindow(ANInternalGuiWindowID GuiWindow, anVec2 Pos, anV
 	this->m_CurrentWindowID = GuiWindow;
 	this->m_CurrentWindowIDPos = Pos;
 	this->m_CurrentWindowIDSize = Size;
+	this->m_CurrentWindowIDRect = anRect(Pos, Pos + Size);
 
 	this->m_pCore->GetInput()->SetCorrectWindowStartPos(this->m_CurrentWindowIDPos);
 

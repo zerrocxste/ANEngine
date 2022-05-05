@@ -13,6 +13,11 @@ ANApi::~ANApi()
 
 }
 
+bool ANApi::ConnectToScene(IANGameScene* pGameScene)
+{
+	return this->m_pCore->GetGame()->ConnectScene(pGameScene);
+}
+
 anVec2 ANApi::GetScreenSize()
 {
 	return this->m_pCore->GetRenderer()->GetScreenSize();
@@ -26,6 +31,13 @@ bool ANApi::CreateImage(const char* pszPath, ANImageID* pImageID)
 		return false;
 
 	return this->m_pCore->GetRenderer()->CreateImageFromResource(&ImageResource, pImageID);
+}
+
+anVec2 ANApi::GetImageSize(ANImageID ImageID)
+{
+	anVec2 Size;
+	this->m_pCore->GetRenderer()->GetImageSize(ImageID, &Size);
+	return Size;
 }
 
 void ANApi::FreeImage(ANImageID* pImageIDPtr)
@@ -112,9 +124,14 @@ bool ANApi::ResizeGuiWindow(ANGuiWindowID* pGuiWindow, anVec2 Size)
 	return this->m_pCore->GetGui()->WindowResize(pGuiWindow, Size);
 }
 
-bool ANApi::GetGuiWindowSize(ANGuiWindowID GuiWindow, anVec2* pSize)
+anVec2 ANApi::GetGuiWindowSize(ANGuiWindowID GuiWindow)
 {
-	return this->m_pCore->GetGui()->WindowGetSize(GuiWindow, pSize);
+	anVec2 WindowSize;
+
+	if (!this->m_pCore->GetGui()->WindowGetSize(GuiWindow, &WindowSize))
+		return anVec2();
+
+	return WindowSize;
 }
 
 bool ANApi::AddButton(const char* pszName, anVec2 Pos, anVec2 Size, IANGuiButtonSkin* pButtonSkin)

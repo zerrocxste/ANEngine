@@ -32,7 +32,7 @@ bool ANLoader::ConnectScene(IANGameScene* pGameScene)
 
 bool ANLoader::RunScene()
 {
-	return this->m_pInstance->GetScene()->Run();
+	return this->m_pInstance->Run();
 }
 
 bool ANLoader::DestroyContext()

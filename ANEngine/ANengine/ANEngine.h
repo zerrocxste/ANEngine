@@ -23,17 +23,19 @@ class ANInput;
 class ANRenderer;
 class ANGame;
 class ANResourceManager;
-class ANScene;
 class ANApi;
 class ANGui;
 class ANPerfomance;
 
+class IANApi;
+class IANGameScene;
+
 #include "ANTypes.h"
 
 #include "Interfaces/IANError/IANError.h"
+#include "Interfaces/IANGameScene/IANGameScene.h"
 #include "Interfaces/GuiSkin/GuiSkin.h"
 #include "Interfaces/IANApi/IANApi.h"
-#include "Interfaces/IANGameScene/IANGameScene.h"
 #include "Interfaces/IANLoader/IANLoader.h"
 
 #include "ANMemory/ANMemory.h"
@@ -45,7 +47,6 @@ class ANPerfomance;
 #include "ANInput/ANInput.h"
 #include "ANWindow/ANWindow.h"
 #include "ANGame/ANGame.h"
-#include "ANScene/ANScene.h"
 #include "ANApi/ANApi.h"
 #include "Gui/ANGuiWindow/ANGuiWindow.h"
 #include "Gui/ANGui/ANGui.h"

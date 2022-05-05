@@ -12,7 +12,6 @@ ANCore::ANCore(
 	m_EngineComponents.m_ANRenderer = ANMemory::GetInstance()->Allocate<ANRenderer>(this, RenderType);
 	m_EngineComponents.m_pANGame = ANMemory::GetInstance()->Allocate<ANGame>(this);
 	m_EngineComponents.m_pANResourceManager = ANMemory::GetInstance()->Allocate<ANResourceManager>();
-	m_EngineComponents.m_pANScene = ANMemory::GetInstance()->Allocate<ANScene>(this);
 	m_EngineComponents.m_ANApi = ANMemory::GetInstance()->Allocate<ANApi>(this);
 	m_EngineComponents.m_ANGui = ANMemory::GetInstance()->Allocate<ANGui>(this);
 	m_EngineComponents.m_ANPerfomance = ANMemory::GetInstance()->Allocate<ANPerfomance>();
@@ -51,12 +50,6 @@ ANResourceManager* ANCore::GetResourceManager()
 {
 	assert(this->m_EngineComponents.m_pANResourceManager != nullptr);
 	return this->m_EngineComponents.m_pANResourceManager;
-}
-
-ANScene* ANCore::GetScene()
-{
-	assert(this->m_EngineComponents.m_pANScene != nullptr);
-	return this->m_EngineComponents.m_pANScene;
 }
 
 ANApi* ANCore::GetApi()
@@ -105,12 +98,33 @@ bool ANCore::Initialize()
 
 bool ANCore::Run()
 {
-	auto s = GetScene();
+	auto w = this->GetWindow();
+	auto r = this->GetRenderer();
+	auto g = this->GetGame();
+	auto i = this->GetInput();
+	auto p = this->GetPerfomance();
 
-	if (!s->Run())
+	w->WindowShow();
+
+	while (w->ProcessWindow())
 	{
-		this->SetError("%s() -> Scene run error\n%s", __FUNCTION__, s->What());
-		return false;
+		if (!w->IsAllowRender())
+			continue;
+
+		if (!p->PrepareScene())
+			continue;
+
+		r->BeginFrame();
+
+		r->ClearScene();
+
+		i->Update();
+
+		g->RunScene();
+
+		r->EndFrame();
+
+		p->Update();
 	}
 
 	return true;

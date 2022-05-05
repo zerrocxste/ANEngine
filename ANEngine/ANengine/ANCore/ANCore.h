@@ -16,7 +16,6 @@ public:
 	ANRenderer* GetRenderer();
 	ANGame* GetGame();
 	ANResourceManager* GetResourceManager();
-	ANScene* GetScene();
 	ANApi* GetApi();
 	ANGui* GetGui();
 	ANPerfomance* GetPerfomance();

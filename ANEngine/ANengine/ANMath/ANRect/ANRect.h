@@ -16,13 +16,31 @@ public:
 
 	anRect operator+(anRect o);
 	anRect& operator+=(anRect o);
-	anRect operator+(int o);
-	anRect& operator+=(int o);
+	anRect operator+(float o);
+	anRect& operator+=(float o);
+	anRect operator+(anVec2 o);
+	anRect& operator+=(anVec2 o);
 
 	anRect operator-(anRect o);
 	anRect& operator-=(anRect o);
-	anRect operator-(int o);
-	anRect& operator-=(int o);
+	anRect operator-(float o);
+	anRect& operator-=(float o);
+	anRect operator-(anVec2 o);
+	anRect& operator-=(anVec2 o);
+
+	anRect operator*(anRect o);
+	anRect& operator*=(anRect o);
+	anRect& operator*=(float o);
+	anRect operator*(float o);
+	anRect& operator*=(anVec2 o);
+	anRect operator*(anVec2 o);
+
+	anRect operator/(anRect o);
+	anRect& operator/=(anRect o);
+	anRect& operator/=(float o);
+	anRect operator/(float o);
+	anRect& operator/=(anVec2 o);
+	anRect operator/(anVec2 o);
 
 	bool IsIntersected(anVec2 p);
 

@@ -106,4 +106,3 @@ void anVec3::Clear()
 {
 	this->x = this->y = this->z = 0.f;
 }
-

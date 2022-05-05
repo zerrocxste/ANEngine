@@ -49,6 +49,9 @@
     <Filter Include="Game\MainMenu">
       <UniqueIdentifier>{e84fb253-6328-4565-8332-023433a8c191}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\TestLevel">
+      <UniqueIdentifier>{518ff045-8209-4047-a514-a9f0c7f3c333}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameExample.cpp">
@@ -74,6 +77,9 @@
     </ClCompile>
     <ClCompile Include="Game\MainMenu\MainMenu.cpp">
       <Filter>Game\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\TestLevel\TestLevel.cpp">
+      <Filter>Game\TestLevel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="includes.h">
       <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\TestLevel\TestLevel.h">
+      <Filter>Game\TestLevel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

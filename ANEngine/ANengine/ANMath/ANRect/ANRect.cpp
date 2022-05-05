@@ -66,12 +66,25 @@ anRect& anRect::operator+=(anRect o)
 	return *this;
 }
 
-anRect anRect::operator+(int o)
+anRect anRect::operator+(float o)
 {
 	return anRect(this->first + o, this->second + o);
 }
 
-anRect& anRect::operator+=(int o)
+anRect& anRect::operator+=(float o)
+{
+	this->first += o;
+	this->second += o;
+
+	return *this;
+}
+
+anRect anRect::operator+(anVec2 o)
+{
+	return anRect(this->first + o, this->second + o);
+}
+
+anRect& anRect::operator+=(anVec2 o)
 {
 	this->first += o;
 	this->second += o;
@@ -92,17 +105,108 @@ anRect& anRect::operator-=(anRect o)
 	return *this;
 }
 
-anRect anRect::operator-(int o)
+anRect anRect::operator-(float o)
 {
-	return anRect();
+	return anRect(this->first - o, this->second - o);
 }
 
-anRect& anRect::operator-=(int o)
+anRect& anRect::operator-=(float o)
 {
 	this->first -= o;
 	this->second -= o;
 
 	return *this;
+}
+
+anRect anRect::operator-(anVec2 o)
+{
+	return anRect(this->first - o, this->second - o);
+}
+
+anRect& anRect::operator-=(anVec2 o)
+{
+	this->first -= o;
+	this->second -= o;
+
+	return *this;
+}
+
+anRect anRect::operator*(anRect o)
+{
+	return anRect(this->first * o.first, this->second * o.second);
+}
+
+anRect& anRect::operator*=(anRect o)
+{
+	this->first *= o.first;
+	this->second *= o.second;
+
+	return *this;
+}
+
+anRect& anRect::operator*=(float o)
+{
+	this->first *= o;
+	this->second *= o;
+
+	return *this;
+}
+
+anRect anRect::operator*(float o)
+{
+	return anRect(this->first * o, this->second * o);
+}
+
+anRect& anRect::operator*=(anVec2 o)
+{
+	this->first *= o;
+	this->second *= o;
+
+	return *this;
+}
+
+anRect anRect::operator*(anVec2 o)
+{
+	return anRect(this->first * o, this->second * o);
+}
+
+anRect anRect::operator/(anRect o)
+{
+	return anRect(this->first / o.first, this->second / o.second);
+}
+
+anRect& anRect::operator/=(anRect o)
+{
+	this->first /= o.first;
+	this->second /= o.second;
+
+	return *this;
+}
+
+anRect& anRect::operator/=(float o)
+{
+	this->first /= o;
+	this->second /= o;
+
+	return *this;
+}
+
+anRect anRect::operator/(float o)
+{
+	return anRect(this->first / o, this->second / o);
+}
+
+anRect& anRect::operator/=(anVec2 o)
+{
+	this->first /= o;
+	this->second /= o;
+
+	return *this;
+}
+
+anRect anRect::operator/(anVec2 o)
+{
+	return anRect(this->first / o, this->second / o);
 }
 
 bool anRect::IsIntersected(anVec2 p)

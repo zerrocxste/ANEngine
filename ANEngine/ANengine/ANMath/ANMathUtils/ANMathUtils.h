@@ -13,6 +13,17 @@ namespace ANMathUtils
 
 		return v;
 	}
-	float Interpolation(float t, float start, float end);
-	float LinearInterpolation(float t_start, float floating_t, float t_end, float start, float end);
+	
+	double Interpolation(double t, double start, double end);
+	double LinearInterpolation(double t_start, double floating_t, double t_end, double start, double end);
+	anVec2 CalcDegDifferentBetweenParties(anVec2 SourceSize);
+	anVec2 CalcSizeAtImageAspectRatio(anVec2 OutRectSize, anVec2 SourceSize);
+	anVec2 CalcPosToCenter(anVec2 OutRectSize, anVec2 SourceSize);
+	void ZoomVerticalAligment(anVec2& SourcePos, anVec2& SourceSize, float Zoom);
+	void ZoomHorizontalAligment(anVec2& SourcePos, anVec2& SourceSize, float Zoom);
+	anVec2 CorrectSizeToOutRect(anVec2 OutRectSize, anVec2& SourcePos, anVec2& SourceSize);
+	anVec2 PointToScreen(anVec2 WorldSize, anRect ScreenWorldRect, anVec2 PointPos);
+	anVec2 CameraToScreen(anVec2 WorldSize, anVec2 WorldScreenPos, anVec2 WorldScreenSize, anVec2 PointWorld);
+	anVec2 WorldToScreen(anVec2 WorldSize, anVec2 WorldScreenPos, anVec2 WorldScreenSize, anVec2 CameraWorld, anVec2 PointWorld);
+	void ApplyZoom(anVec2& From, anVec2& To, float Zoom);
 }

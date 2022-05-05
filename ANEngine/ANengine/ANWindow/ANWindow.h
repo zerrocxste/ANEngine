@@ -25,15 +25,13 @@ public:
 
 	HWND GetHWND();
 
-	static WNDCLASS WndClass;
-
+	ANWindowData* GetWindow();
 private:
 	ANCore* m_pCore;
 
 	HWND m_hWnd;
 	MSG m_WindowMSG;
 	ANWindowData m_WindowData;
-	ANWindowData* GetWindow();
 
 	bool m_bAllowRender;
 
@@ -41,5 +39,7 @@ private:
 	bool CreateNewWindow(ANWindowData* wd);
 
 	friend LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
+	static WNDCLASS WndClass;
 };
 

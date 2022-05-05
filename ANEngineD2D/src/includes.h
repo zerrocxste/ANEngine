@@ -8,9 +8,6 @@
 #include <fstream>
 #include <corecrt_io.h>
 
-#include "../minhook.h"
-#pragma comment (lib, "minhook.lib")
-
 #include <d2d1.h>
 #pragma comment (lib, "d2d1.lib")
 

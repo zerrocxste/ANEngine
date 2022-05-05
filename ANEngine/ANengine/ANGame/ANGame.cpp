@@ -38,7 +38,13 @@ void ANGame::DisconnectScene()
 bool ANGame::RunScene()
 {
 	if (!this->m_pCurrentScene)
+	{
+		auto r = this->m_pCore->GetRenderer();
+		anVec2 Size;
+		r->TextCalcSize("NO_SCENE", &Size);
+		r->TextDraw("NO_SCENE", ANMathUtils::CalcPosToCenter(r->GetScreenSize(), Size), anColor::Red());
 		return false;
+	}
 
 	this->m_pCore->GetApi()->Update();
 

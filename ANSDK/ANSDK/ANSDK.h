@@ -12,10 +12,13 @@ typedef void* ANImageID;
 typedef void* ANFontID;
 typedef void* ANGuiWindowID;
 
+class IANApi;
+class IANGameScene;
+
 #include "IANError/IANError.h"
+#include "IANGameScene/IANGameScene.h"
 #include "Gui/GuiSkin.h"
 #include "IANApi/IANApi.h"
-#include "IANGameScene/IANGameScene.h"
 #include "IANLoader/IANLoader.h"
 
 enum RenderTypes

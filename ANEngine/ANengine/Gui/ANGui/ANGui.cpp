@@ -38,6 +38,9 @@ bool ANGui::WindowDelete(ANGuiWindowID* pGuiWindow)
 
 bool ANGui::WindowBegin(ANGuiWindowID GuiWindow, anVec2 Pos)
 {
+	if (!GuiWindow)
+		return false;
+
 	ANGuiWindow* gw = (ANGuiWindow*)GuiWindow;
 
 	anVec2 CurrentWindowSize;

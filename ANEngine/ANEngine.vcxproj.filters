@@ -55,9 +55,6 @@
     <Filter Include="ANEngine\ResourcesManager\ANUniqueResource">
       <UniqueIdentifier>{875c400d-9856-4c03-9d9a-13a6b31cc93f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\ANScene">
-      <UniqueIdentifier>{d2a7a479-cca5-4291-b91b-274596f6fee6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ANEngine\ANGame">
       <UniqueIdentifier>{43574c47-80a0-4dc3-8cbd-9a1852953078}</UniqueIdentifier>
     </Filter>
@@ -82,24 +79,6 @@
     <Filter Include="ANEngine\Interfaces\IANLoader">
       <UniqueIdentifier>{8451807c-f18f-4c7d-93d7-b6bd0f470a88}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\Interfaces\GameEntity">
-      <UniqueIdentifier>{275d415f-9d5a-4ede-bfc6-791ab15d2db0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ANEngine\Interfaces\GameEntity\IANBasicEntity">
-      <UniqueIdentifier>{686cde0a-594f-49f5-b17b-cb02f01d9977}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ANEngine\Interfaces\GameEntity\IANActor">
-      <UniqueIdentifier>{887c1bc3-a82b-470e-8dc4-db2ff2d38be0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ANEngine\Interfaces\GameEntity\IANEntity">
-      <UniqueIdentifier>{6fd5d644-8913-4f3a-b714-25954d34ab0a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ANEngine\Interfaces\GameEntity\IANActionController">
-      <UniqueIdentifier>{97704094-1c96-4b66-ba3e-c363ba94847c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ANEngine\Interfaces\GameEntity\IANAnimationController">
-      <UniqueIdentifier>{2021931d-34cf-45bc-9efc-e858b2afa59a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ANEngine\ANPerfomance">
       <UniqueIdentifier>{3392c943-120b-4a2d-bf4e-602a89b77df8}</UniqueIdentifier>
     </Filter>
@@ -117,6 +96,36 @@
     </Filter>
     <Filter Include="ANEngine\Interfaces\GuiSkin">
       <UniqueIdentifier>{5bf8a45f-138a-4b97-9461-e949e7d33322}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Network">
+      <UniqueIdentifier>{301bc838-c0cc-4bf6-a01b-123add70948e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Network\Sockets">
+      <UniqueIdentifier>{c2223133-8066-4c87-a324-481349e44070}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Network\ANNetwork">
+      <UniqueIdentifier>{96534ca0-864c-4f18-8691-42b9ca7ad545}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\Game">
+      <UniqueIdentifier>{cf544b5b-c99e-4ee1-ac7a-4ff1f6b5c73f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\Game\GameEntity">
+      <UniqueIdentifier>{275d415f-9d5a-4ede-bfc6-791ab15d2db0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\Game\GameEntity\IANBasicEntity">
+      <UniqueIdentifier>{686cde0a-594f-49f5-b17b-cb02f01d9977}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\Game\GameEntity\IANActor">
+      <UniqueIdentifier>{887c1bc3-a82b-470e-8dc4-db2ff2d38be0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\Game\GameEntity\IANEntity">
+      <UniqueIdentifier>{6fd5d644-8913-4f3a-b714-25954d34ab0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\Game\GameEntity\IANActionController">
+      <UniqueIdentifier>{97704094-1c96-4b66-ba3e-c363ba94847c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\Game\GameEntity\IANAnimationController">
+      <UniqueIdentifier>{2021931d-34cf-45bc-9efc-e858b2afa59a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -152,9 +161,6 @@
     </ClCompile>
     <ClCompile Include="ANengine\ResourcesManager\ANUniqueResource\ANUniqueResource.cpp">
       <Filter>ANEngine\ResourcesManager\ANUniqueResource</Filter>
-    </ClCompile>
-    <ClCompile Include="ANengine\ANScene\ANScene.cpp">
-      <Filter>ANEngine\ANScene</Filter>
     </ClCompile>
     <ClCompile Include="ANengine\ANGame\ANGame.cpp">
       <Filter>ANEngine\ANGame</Filter>
@@ -220,9 +226,6 @@
     </ClInclude>
     <ClInclude Include="ANengine\ResourcesManager\ANUniqueResource\ANUniqueResource.h">
       <Filter>ANEngine\ResourcesManager\ANUniqueResource</Filter>
-    </ClInclude>
-    <ClInclude Include="ANengine\ANScene\ANScene.h">
-      <Filter>ANEngine\ANScene</Filter>
     </ClInclude>
     <ClInclude Include="ANengine\ANGame\ANGame.h">
       <Filter>ANEngine\ANGame</Filter>

@@ -18,7 +18,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 			if (wParam == SIZE_MINIMIZED)
 				break;
 
-			pANWindow->m_pCore->GetRenderer()->ResetScene(anVec2(LOWORD(lParam), HIWORD(lParam)));
+			pANWindow->m_pCore->GetRenderer()->ResetScene(pANWindow->GetWindow()->m_vWindowSize = anVec2(LOWORD(lParam), HIWORD(lParam)));
 			break;
 		case WM_DESTROY:
 			PostQuitMessage(0);
@@ -100,7 +100,7 @@ bool ANWindow::CreateNewWindow(ANWindowData* pwd)
 		0,
 		ANWindow::WndClass.lpszClassName,
 		pwd->m_WindowTitle,
-		pwd->m_bHasWindowFrame ? WS_OVERLAPPEDWINDOW : WS_POPUPWINDOW,
+		pwd->m_bHasWindowFrame ? WS_OVERLAPPEDWINDOW : WS_POPUP,
 		pwd->m_vWindowPosition.x, pwd->m_vWindowPosition.y,
 		pwd->m_vWindowSize.x, pwd->m_vWindowSize.y,
 		0, 0, 

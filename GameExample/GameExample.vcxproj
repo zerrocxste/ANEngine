@@ -148,6 +148,7 @@
     <ClCompile Include="..\ANSDK\ANSDK\IANError\IANError.cpp" />
     <ClCompile Include="GameExample.cpp" />
     <ClCompile Include="Game\MainMenu\MainMenu.cpp" />
+    <ClCompile Include="Game\TestLevel\TestLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\ANSDK\ANSDK\ANMath\ANColor\ANColor.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="..\ANSDK\ANSDK\IANLoader\IANLoader.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\MainMenu\MainMenu.h" />
+    <ClInclude Include="Game\TestLevel\TestLevel.h" />
     <ClInclude Include="includes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

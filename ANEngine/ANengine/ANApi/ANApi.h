@@ -7,9 +7,12 @@ public:
 	ANApi(ANCore* pCore);
 	~ANApi();
 
+	bool ConnectToScene(IANGameScene* pGameScene) override;
+
 	anVec2 GetScreenSize() override;
 
 	bool CreateImage(const char* pszPath, ANImageID* pImageID) override;
+	anVec2 GetImageSize(ANImageID ImageID) override;
 	void FreeImage(ANImageID* pImageIDPtr) override;
 	bool DrawImage(ANImageID pImageID, anVec2 Pos, anVec2 Size, float Opacity) override;
 	bool DrawLine(anVec2 From, anVec2 To, anColor Color, float LineThickness = 1.f) override;
@@ -28,7 +31,7 @@ public:
 	bool BeginGuiWindow(ANGuiWindowID GuiWindow, anVec2 Pos) override;
 	void EndGuiWindow() override;
 
-	bool GetGuiWindowSize(ANGuiWindowID GuiWindow, anVec2* pSize) override;
+	anVec2 GetGuiWindowSize(ANGuiWindowID GuiWindow) override;
 	bool ResizeGuiWindow(ANGuiWindowID* pGuiWindow, anVec2 Size) override;
 
 	bool AddButton(const char* pszName, anVec2 Pos, anVec2 Size, IANGuiButtonSkin* pButtonSkin = nullptr) override;

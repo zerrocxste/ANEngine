@@ -24,6 +24,18 @@ public:
 	anVec2& operator-=(float o);
 	anVec2 operator-(float o);
 
+	anVec2 operator*(anVec2 o);
+	anVec2& operator*=(anVec2 o);
+	anVec2& operator*=(float o);
+	anVec2 operator*(float o);
+
+	anVec2 operator/(anVec2 o);
+	anVec2& operator/=(anVec2 o);
+	anVec2& operator/=(float o);
+	anVec2 operator/(float o);
+
+	anVec2 Inverse();
+
 	void Clear();
 	
 	float x, y;

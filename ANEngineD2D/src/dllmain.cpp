@@ -27,6 +27,7 @@ extern "C" __declspec(dllexport) bool __stdcall ClearScene(HWND hWnd);
 extern "C" __declspec(dllexport) bool __stdcall ResetScene(HWND hWnd, anVec2 ScreenSize);
 extern "C" __declspec(dllexport) bool __stdcall GetScreenSize(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2 * pAnvec2Out);
 extern "C" __declspec(dllexport) bool __stdcall CreateImageFromMemory(HWND hWnd, void* pImageSrc, std::uint32_t iImageSize, ANImageID * pImageIDPtr);
+extern "C" __declspec(dllexport) bool __stdcall GetImageSize(ANImageID ImageID, anVec2 * pSize);
 extern "C" __declspec(dllexport) void __stdcall FreeImage(ANImageID* pImageIDPtr);
 extern "C" __declspec(dllexport) bool __stdcall DrawImage(HWND hWnd, ANInternalGuiWindowID GuiWindow, ANImageID pImageID, anRect Pos, float Opacity);
 extern "C" __declspec(dllexport) bool __stdcall DrawLine(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2 From, anVec2 To, anColor Color, float LineThickness);
@@ -51,45 +52,6 @@ extern "C" __declspec(dllexport) bool __stdcall DrawGuiWindow(HWND hWnd, ANInter
 D2DWindowContextRenderInformation& GetWindowContextRenderInformation(HWND hWnd)
 {
 	return g_mD2DWindowContextRenderInformation[hWnd];
-}
-
-bool CreateBitmapFromMemory(ID2D1RenderTarget* pRenderTarget, IWICImagingFactory* pWICFactory, void* pSource, std::uint32_t iSourceSize, ID2D1Bitmap** pOutBitmap)
-{
-	IWICStream* pWICStream = nullptr;
-	IWICBitmapDecoder* pWICDecoder = nullptr;
-	IWICBitmapFrameDecode* pWICFrameDecode = nullptr;
-	IWICFormatConverter* pWICFormatConverter = nullptr;
-
-	if (!pRenderTarget || !pWICFactory || !pSource || !iSourceSize)
-		return false;
-
-	if (!SUCCEEDED(pWICFactory->CreateStream(&pWICStream)))
-		return false;
-
-	if (!SUCCEEDED(pWICStream->InitializeFromMemory((WICInProcPointer)pSource, iSourceSize)))
-		return false;
-
-	if (!SUCCEEDED(pWICFactory->CreateDecoderFromStream(pWICStream, 0, WICDecodeOptions::WICDecodeMetadataCacheOnLoad, &pWICDecoder)))
-		return false;
-
-	if (!SUCCEEDED(pWICDecoder->GetFrame(0, &pWICFrameDecode)))
-		return false;
-
-	if (!SUCCEEDED(pWICFactory->CreateFormatConverter(&pWICFormatConverter)))
-		return false;
-
-	if (!SUCCEEDED(pWICFormatConverter->Initialize(pWICFrameDecode, GUID_WICPixelFormat32bppPBGRA, WICBitmapDitherType::WICBitmapDitherTypeNone, nullptr, 0., WICBitmapPaletteType::WICBitmapPaletteTypeMedianCut)))
-		return false;
-
-	if (!SUCCEEDED(pRenderTarget->CreateBitmapFromWicBitmap(pWICFormatConverter, pOutBitmap)))
-		return false;
-
-	pWICStream->Release();
-	pWICDecoder->Release();
-	pWICFrameDecode->Release();
-	pWICFormatConverter->Release();
-
-	return true;
 }
 
 bool CreateD2D1Factory()
@@ -162,6 +124,7 @@ bool CreateRendererFunctionsTable()
 	g_ANRendererFuncionsTable.GetScreenSize = GetScreenSize;
 	g_ANRendererFuncionsTable.CreateImageFromMemory = CreateImageFromMemory;
 	g_ANRendererFuncionsTable.FreeImage = FreeImage;
+	g_ANRendererFuncionsTable.GetImageSize = GetImageSize;
 	g_ANRendererFuncionsTable.DrawImage = DrawImage;
 	g_ANRendererFuncionsTable.DrawRectangle = DrawRectangle;
 	g_ANRendererFuncionsTable.DrawLine = DrawLine;
@@ -304,6 +267,45 @@ extern "C" __declspec(dllexport) bool __stdcall GetScreenSize(HWND hWnd, ANInter
 	return true;
 }
 
+bool CreateBitmapFromMemory(ID2D1RenderTarget* pRenderTarget, IWICImagingFactory* pWICFactory, void* pSource, std::uint32_t iSourceSize, ID2D1Bitmap** pOutBitmap)
+{
+	IWICStream* pWICStream = nullptr;
+	IWICBitmapDecoder* pWICDecoder = nullptr;
+	IWICBitmapFrameDecode* pWICFrameDecode = nullptr;
+	IWICFormatConverter* pWICFormatConverter = nullptr;
+
+	if (!pRenderTarget || !pWICFactory || !pSource || !iSourceSize)
+		return false;
+
+	if (!SUCCEEDED(pWICFactory->CreateStream(&pWICStream)))
+		return false;
+
+	if (!SUCCEEDED(pWICStream->InitializeFromMemory((WICInProcPointer)pSource, iSourceSize)))
+		return false;
+
+	if (!SUCCEEDED(pWICFactory->CreateDecoderFromStream(pWICStream, 0, WICDecodeOptions::WICDecodeMetadataCacheOnLoad, &pWICDecoder)))
+		return false;
+
+	if (!SUCCEEDED(pWICDecoder->GetFrame(0, &pWICFrameDecode)))
+		return false;
+
+	if (!SUCCEEDED(pWICFactory->CreateFormatConverter(&pWICFormatConverter)))
+		return false;
+
+	if (!SUCCEEDED(pWICFormatConverter->Initialize(pWICFrameDecode, GUID_WICPixelFormat32bppPBGRA, WICBitmapDitherType::WICBitmapDitherTypeNone, nullptr, 0., WICBitmapPaletteType::WICBitmapPaletteTypeMedianCut)))
+		return false;
+
+	if (!SUCCEEDED(pRenderTarget->CreateBitmapFromWicBitmap(pWICFormatConverter, pOutBitmap)))
+		return false;
+
+	pWICStream->Release();
+	pWICDecoder->Release();
+	pWICFrameDecode->Release();
+	pWICFormatConverter->Release();
+
+	return true;
+}
+
 extern "C" __declspec(dllexport) bool __stdcall CreateImageFromMemory(HWND hWnd, void* pImageSrc, std::uint32_t iImageSize, ANImageID * pImageIDPtr)
 {
 	auto& ri = GetWindowContextRenderInformation(hWnd);
@@ -321,6 +323,19 @@ extern "C" __declspec(dllexport) bool __stdcall CreateImageFromMemory(HWND hWnd,
 	return true;
 }
 
+extern "C" __declspec(dllexport) bool __stdcall GetImageSize(ANImageID ImageID, anVec2* pSize)
+{
+	if (!ImageID)
+		return false;
+
+	auto Size = ((ID2D1Bitmap*)(ImageID))->GetSize();
+
+	pSize->x = Size.width;
+	pSize->y = Size.height;
+
+	return true;
+}
+
 extern "C" __declspec(dllexport) void __stdcall FreeImage(ANImageID * pImageIDPtr)
 {
 	if (!*pImageIDPtr)
@@ -332,6 +347,9 @@ extern "C" __declspec(dllexport) void __stdcall FreeImage(ANImageID * pImageIDPt
 
 extern "C" __declspec(dllexport) bool __stdcall DrawImage(HWND hWnd, ANInternalGuiWindowID GuiWindow, ANImageID pImageID, anRect Pos, float Opacity)
 {
+	if (!pImageID)
+		return false;
+
 	auto& ri = GetWindowContextRenderInformation(hWnd);
 
 	if (!ri.m_pRenderTarget)

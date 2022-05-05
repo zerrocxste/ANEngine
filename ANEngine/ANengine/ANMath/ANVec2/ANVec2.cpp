@@ -97,6 +97,63 @@ anVec2 anVec2::operator-(float o)
 	return anVec2(this->x - o, this->y - o);
 }
 
+anVec2 anVec2::operator*(anVec2 o)
+{
+	return anVec2(this->x * o.x, this->y * o.y);
+}
+
+anVec2& anVec2::operator*=(anVec2 o)
+{
+	this->x *= o.x;
+	this->y *= o.y;
+
+	return *this;
+}
+
+anVec2& anVec2::operator*=(float o)
+{
+	this->x *= o;
+	this->y *= o;
+
+	return *this;
+}
+
+anVec2 anVec2::operator*(float o)
+{
+	return anVec2(this->x * o, this->y * o);
+}
+
+anVec2 anVec2::operator/(anVec2 o)
+{
+	return anVec2(this->x / o.x, this->y / o.y);
+}
+
+anVec2& anVec2::operator/=(anVec2 o)
+{
+	this->x /= o.x;
+	this->y /= o.y;
+
+	return *this;
+}
+
+anVec2& anVec2::operator/=(float o)
+{
+	this->x /= o;
+	this->y /= o;
+
+	return *this;
+}
+
+anVec2 anVec2::operator/(float o)
+{
+	return anVec2(this->x / o, this->y / o);
+}
+
+anVec2 anVec2::Inverse()
+{
+	return anVec2(-this->x, -this->y);
+}
+
 void anVec2::Clear()
 {
 	this->x = this->y = 0.f;

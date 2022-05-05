@@ -1,8 +1,20 @@
 ﻿#include "includes.h"
 
+#define FULLSCREEN 0
+
 int main()
 {
-	auto Loader = CreateEngineInstance(RenderTypes::D2D, "GameExample", anVec2(100.f, 100.f), anVec2(700.f, 700.f), true);
+#if FULLSCREEN == 1
+	anVec2 Pos = anVec2();
+	anVec2 Size = anVec2(GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
+	bool HasWindowFrame = false;
+#else
+	anVec2 Pos = anVec2(10.f, 10.f);
+	anVec2 Size = anVec2(984.f, 611.f);
+	bool HasWindowFrame = true;
+#endif // FULLSCREEN ==1
+
+	auto Loader = CreateEngineInstance(RenderTypes::D2D, "GameExample", Pos, Size, HasWindowFrame);
 
 	if (!Loader->InitializeLoader())
 	{

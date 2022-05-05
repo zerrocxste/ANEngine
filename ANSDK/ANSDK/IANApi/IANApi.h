@@ -6,9 +6,12 @@ public:
 	int FPS;
 	double Frametime;
 
+	virtual bool ConnectToScene(IANGameScene* pGameScene) = 0;
+
 	virtual anVec2 GetScreenSize() = 0;
 
 	virtual bool CreateImage(const char* pszPath, ANImageID* pImageID) = 0;
+	virtual anVec2 GetImageSize(ANImageID ImageID) = 0;
 	virtual void FreeImage(ANImageID* pImageID) = 0;
 	virtual bool DrawImage(ANImageID ImageID, anVec2 Pos, anVec2 Size, float Opacity) = 0;
 	virtual bool DrawLine(anVec2 From, anVec2 To, anColor Color, float LineThickness = 1.f) = 0;
@@ -27,7 +30,7 @@ public:
 	virtual bool BeginGuiWindow(ANGuiWindowID GuiWindow, anVec2 Pos) = 0;
 	virtual void EndGuiWindow() = 0;
 
-	virtual bool GetGuiWindowSize(ANGuiWindowID GuiWindow, anVec2* pSize) = 0;
+	virtual anVec2 GetGuiWindowSize(ANGuiWindowID GuiWindow) = 0;
 	virtual bool ResizeGuiWindow(ANGuiWindowID* pGuiWindow, anVec2 Size) = 0;
 
 	virtual bool AddButton(const char* pszName, anVec2 Pos, anVec2 Size, IANGuiButtonSkin* pButtonSkin = nullptr) = 0;

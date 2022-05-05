@@ -31,6 +31,7 @@ struct ANRendererFuncionsTable
 	bool(__stdcall* ResetScene)(HWND hWnd, anVec2 ScreenSize);
 	bool(__stdcall* GetScreenSize)(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2* pAnvec2Out);
 	bool(__stdcall* CreateImageFromMemory)(HWND hWnd, void* pImageSrc, std::uint32_t iImageSize, ANImageID* pImageIDPtr);
+	bool(__stdcall* GetImageSize)(ANImageID ImageID, anVec2* pSize);
 	void(__stdcall* FreeImage)(ANImageID* pImageIDPtr);
 	bool(__stdcall* DrawImage)(HWND hWnd, ANInternalGuiWindowID GuiWindow, ANImageID pImageID, anRect Pos, float Opacity);
 	bool(__stdcall* DrawLine)(HWND hWnd, ANInternalGuiWindowID GuiWindow, anVec2 From, anVec2 To, anColor Color, float LineThickness);

@@ -155,7 +155,6 @@
     <ClCompile Include="ANengine\ANMemory\ANMemory.cpp" />
     <ClCompile Include="ANengine\ANPerfomance\ANPerfomance.cpp" />
     <ClCompile Include="ANengine\ANRenderer\ANRenderer.cpp" />
-    <ClCompile Include="ANengine\ANScene\ANScene.cpp" />
     <ClCompile Include="ANengine\ANWindow\ANWindow.cpp" />
     <ClCompile Include="ANengine\Gui\ANGuiWindow\ANGuiWindow.cpp" />
     <ClCompile Include="ANengine\Gui\ANGui\ANGui.cpp" />
@@ -178,7 +177,6 @@
     <ClInclude Include="ANengine\ANMemory\ANMemory.h" />
     <ClInclude Include="ANengine\ANPerfomance\ANPerfomance.h" />
     <ClInclude Include="ANengine\ANRenderer\ANRenderer.h" />
-    <ClInclude Include="ANengine\ANScene\ANScene.h" />
     <ClInclude Include="ANengine\ANTypes.h" />
     <ClInclude Include="ANengine\ANWindow\ANWindow.h" />
     <ClInclude Include="ANengine\Gui\ANGuiWindow\ANGuiWindow.h" />
