@@ -13,7 +13,7 @@ namespace ANMathUtils
 
 		return v;
 	}
-	
+
 	double Interpolation(double t, double start, double end);
 	double LinearInterpolation(double t_start, double floating_t, double t_end, double start, double end);
 	anVec2 CalcDegDifferentBetweenParties(anVec2 SourceSize);
@@ -26,4 +26,5 @@ namespace ANMathUtils
 	anVec2 CameraToScreen(anVec2 WorldSize, anVec2 WorldScreenPos, anVec2 WorldScreenSize, anVec2 PointWorld);
 	anVec2 WorldToScreen(anVec2 WorldSize, anVec2 WorldScreenPos, anVec2 WorldScreenSize, anVec2 CameraWorld, anVec2 PointWorld);
 	void ApplyZoom(anVec2& From, anVec2& To, float Zoom);
+	void ClampCamera(anVec2 ScreenSize, anVec2 WorldSize, anVec2 WorldScreenPos, anVec2 WorldScreenSize, anVec2& CameraWorld);
 }

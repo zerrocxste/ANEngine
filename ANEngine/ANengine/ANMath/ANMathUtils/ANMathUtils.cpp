@@ -122,3 +122,20 @@ void ANMathUtils::ApplyZoom(anVec2& From, anVec2& To, float Zoom)
 {
 	ZoomVerticalAligment(From, To, Zoom);
 }
+
+void ANMathUtils::ClampCamera(anVec2 ScreenSize, anVec2 WorldSize, anVec2 WorldScreenPos, anVec2 WorldScreenSize, anVec2& CameraWorld)
+{
+	if (WorldScreenSize.x < ScreenSize.x && WorldScreenSize.y < ScreenSize.y) //fix chtobi ne kosoebilo
+		return;
+
+	auto CameraScreen = CameraToScreen(WorldSize, WorldScreenPos, WorldScreenSize, CameraWorld);
+
+	if (CameraScreen.x > 0.f)
+		CameraWorld.x += LinearInterpolation(0.f, CameraScreen.x, WorldScreenSize.x, 0.f, WorldSize.x);
+	if (CameraScreen.y > 0.f)
+		CameraWorld.y += LinearInterpolation(0.f, CameraScreen.y, WorldScreenSize.y, 0.f, WorldSize.y);
+	if (CameraScreen.x - ScreenSize.x < -WorldScreenSize.x)
+		CameraWorld.x -= LinearInterpolation(0.f, -(CameraScreen.x - ScreenSize.x - -(WorldScreenSize.x)), WorldScreenSize.x, 0.f, WorldSize.x);
+	if (CameraScreen.y - ScreenSize.y < -WorldScreenSize.y)
+		CameraWorld.y -= LinearInterpolation(0.f, -(CameraScreen.y - ScreenSize.y - -(WorldScreenSize.y)), WorldScreenSize.y, 0.f, WorldSize.y);
+}

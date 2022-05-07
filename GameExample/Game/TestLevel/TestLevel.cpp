@@ -197,8 +197,6 @@ void ApplyZoom(anVec2& From, anVec2& To, float Zoom)
 	ZoomVerticalAligment(From, To, Zoom);
 }
 
-float Step = 0.3f;
-
 void ClampCamera(anVec2 ScreenSize, anVec2 WorldSize, anVec2 WorldScreenPos, anVec2 WorldScreenSize, anVec2& CameraWorld)
 {
 	if (WorldScreenSize.x < ScreenSize.x && WorldScreenSize.y < ScreenSize.y) //fix chtobi ne kosoebilo
@@ -227,22 +225,15 @@ void CTestLevel::Entry(IANApi* pApi)
 	static anVec2 CameraWorld = anVec2(WorldSize * 0.5f);
 	static anVec2 ActorWorld;
 
-	if (GetAsyncKeyState('W'))
-		CameraWorld.y -= Step;
-	if (GetAsyncKeyState('S'))
-		CameraWorld.y += Step;
-	if (GetAsyncKeyState('A'))
-		CameraWorld.x -= Step;
-	if (GetAsyncKeyState('D'))
-		CameraWorld.x += Step;
+	float Step = 0.3f;
 
-	if (GetAsyncKeyState(VK_UP))
+	if (GetAsyncKeyState('W'))
 		ActorWorld.y -= Step;
-	if (GetAsyncKeyState(VK_DOWN))
+	if (GetAsyncKeyState('S'))
 		ActorWorld.y += Step;
-	if (GetAsyncKeyState(VK_LEFT))
+	if (GetAsyncKeyState('A'))
 		ActorWorld.x -= Step;
-	if (GetAsyncKeyState(VK_RIGHT))
+	if (GetAsyncKeyState('D'))
 		ActorWorld.x += Step;
 
 	auto WorldScreenSize = CalcSizeAtImageAspectRatio(ScreenSize, WorldSize);
