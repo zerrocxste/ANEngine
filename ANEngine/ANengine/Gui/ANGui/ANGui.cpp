@@ -1,7 +1,8 @@
 #include "../../ANEngine.h"
 
 ANGui::ANGui(ANCore* pCore) : 
-	m_pCore(pCore)
+	m_pCore(pCore),
+	m_TextColor(anColor::Black())
 {
 	
 }
@@ -72,6 +73,11 @@ bool ANGui::WindowResize(ANGuiWindowID* pGuiWindow, anVec2 Size)
 	return true;
 }
 
+void ANGui::SetFontColor(anColor Color)
+{
+	this->m_TextColor = Color;
+}
+
 bool ANGui::Button(const char* pszName, anVec2 Pos, anVec2 Size, IANGuiButtonSkin* pButtonSkin)
 {
 	auto LineWidth = 5;
@@ -101,7 +107,7 @@ bool ANGui::Button(const char* pszName, anVec2 Pos, anVec2 Size, IANGuiButtonSki
 	anVec2 TextSize;
 	r->TextCalcSize(pszName, &TextSize);
 
-	r->TextDraw(pszName, anVec2(Pos.x + (Size.x / 2.f) - (TextSize.x / 2.f), Pos.y + (Size.y / 2.f) - (TextSize.y / 2.f)), anColor::Black());
+	r->TextDraw(pszName, anVec2(Pos.x + (Size.x / 2.f) - (TextSize.x / 2.f), Pos.y + (Size.y / 2.f) - (TextSize.y / 2.f)), this->m_TextColor);
 
 	auto ret = IsHovered && IsClicked;
 
@@ -148,7 +154,7 @@ bool ANGui::Checkbox(const char* pszName, anVec2 Pos, anVec2 Size, bool* pVar, I
 
 	anVec2 TextSize;
 	r->TextCalcSize(pszName, &TextSize);
-	r->TextDraw(pszName, anVec2(Pos.x + Size.x + 5.f, Pos.y + ((Size.y * 0.5f) - (TextSize.y * 0.5f))), anColor::Black());
+	r->TextDraw(pszName, anVec2(Pos.x + Size.x + 5.f, Pos.y + ((Size.y * 0.5f) - (TextSize.y * 0.5f))), this->m_TextColor);
 
 	auto ret = IsHovered && IsClicked;
 		
@@ -213,7 +219,7 @@ bool ANGui::SliderInt(const char* pszName, anVec2 Pos, anVec2 Size, int iMin, in
 	else
 		r->DrawImage(ImageMark, markRect, bgColor.a / 255.f);
 
-	r->TextDraw(pszName, anVec2(TextPos.x + 5.f, TextPos.y), anColor::Black());
+	r->TextDraw(pszName, anVec2(TextPos.x + 5.f, TextPos.y), this->m_TextColor);
 
 	return ret;
 }
@@ -273,7 +279,7 @@ bool ANGui::SliderFloat(const char* pszName, anVec2 Pos, anVec2 Size, float flMi
 	else
 		r->DrawImage(ImageMark, markRect, bgColor.a / 255.f);
 
-	r->TextDraw(pszName, anVec2(TextPos.x + 5.f, TextPos.y), anColor::Black());
+	r->TextDraw(pszName, anVec2(TextPos.x + 5.f, TextPos.y), this->m_TextColor);
 
 	return ret;
 }

@@ -23,7 +23,10 @@ public:
 	void FreeFont(ANFontID* pFontIDPtr) override;
 	void PushFont(ANFontID FontID) override;
 	void PopFont() override;
+	void PushFontColor(anColor Color) override;
+	void PopFontColor() override;
 	bool TextDraw(const char* pszText, anVec2 Pos, anColor Color) override;
+	anVec2 TextCalcSize(const char* pszText) override;
 
 	bool RegGuiWindow(ANGuiWindowID* pGuiWindowID, anVec2 Size) override;
 	bool UnregGuiWindow(ANGuiWindowID* pGuiWindowID) override;

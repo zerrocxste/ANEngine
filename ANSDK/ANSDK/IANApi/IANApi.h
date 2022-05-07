@@ -22,7 +22,10 @@ public:
 	virtual void FreeFont(ANFontID* pFontID) = 0;
 	virtual void PushFont(ANFontID FontID) = 0;
 	virtual void PopFont() = 0;
+	virtual void PushFontColor(anColor Color) = 0;
+	virtual void PopFontColor() = 0;
 	virtual bool TextDraw(const char* pszText, anVec2 Pos, anColor Color) = 0;
+	virtual anVec2 TextCalcSize(const char* pszText) = 0;
 
 	virtual bool RegGuiWindow(ANGuiWindowID* pGuiWindowID, anVec2 Size) = 0;
 	virtual bool UnregGuiWindow(ANGuiWindowID* pGuiWindowID) = 0;
@@ -38,3 +41,4 @@ public:
 	virtual bool AddSliderInt(const char* pszName, anVec2 Pos, anVec2 Size, int iMin, int iMax, int* pVar, IANSliderSkin* pSliderSkin = nullptr) = 0;
 	virtual bool AddSliderFloat(const char* pszName, anVec2 Pos, anVec2 Size, float flMin, float flMax, float* pVar, IANSliderSkin* pSliderSkin = nullptr) = 0;
 };
+

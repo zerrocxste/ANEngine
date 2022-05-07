@@ -199,34 +199,32 @@ void ApplyZoom(anVec2& From, anVec2& To, float Zoom)
 
 float Step = 0.3f;
 
-void ClampCamera(anVec2 ScreenSize, anVec2 WorldScreenSize, anVec2 CameraScreen, anVec2& CameraWorld)
+void ClampCamera(anVec2 ScreenSize, anVec2 WorldSize, anVec2 WorldScreenPos, anVec2 WorldScreenSize, anVec2& CameraWorld)
 {
+	if (WorldScreenSize.x < ScreenSize.x && WorldScreenSize.y < ScreenSize.y) //fix chtobi ne kosoebilo
+		return;
+
+	auto CameraScreen = CameraToScreen(WorldSize, WorldScreenPos, WorldScreenSize, CameraWorld);
+
 	if (CameraScreen.x > 0.f)
-		printf("INTERSECTED 1\n", CameraWorld.x);
+		CameraWorld.x += LinearInterpolation(0.f, CameraScreen.x, WorldScreenSize.x, 0.f, WorldSize.x);
 	if (CameraScreen.y > 0.f)
-		printf("INTERSECTED 2\n");
+		CameraWorld.y += LinearInterpolation(0.f, CameraScreen.y, WorldScreenSize.y, 0.f, WorldSize.y);
 	if (CameraScreen.x - ScreenSize.x < -WorldScreenSize.x)
-		printf("INTERSECTED 3\n");
+		CameraWorld.x -= LinearInterpolation(0.f, -(CameraScreen.x - ScreenSize.x - -(WorldScreenSize.x)), WorldScreenSize.x, 0.f, WorldSize.x);
 	if (CameraScreen.y - ScreenSize.y < -WorldScreenSize.y)
-		printf("INTERSECTED 4\n");
+		CameraWorld.y -= LinearInterpolation(0.f, -(CameraScreen.y - ScreenSize.y - -(WorldScreenSize.y)), WorldScreenSize.y, 0.f, WorldSize.y);
 }
 
 void CTestLevel::Entry(IANApi* pApi)
 {
+	static float Zoom = 500.f;
+
 	auto ScreenSize = pApi->GetScreenSize();
 
 	auto WorldSize = pApi->GetImageSize(this->LevelBG);
 
-	auto WorldScreenSize = CalcSizeAtImageAspectRatio(ScreenSize, WorldSize);
-	auto WorldScreenPos = CalcPosToCenter(ScreenSize, WorldScreenSize);
-
-	CorrectSizeToOutRect(ScreenSize, WorldScreenPos, WorldScreenSize);
-
 	static anVec2 CameraWorld = anVec2(WorldSize * 0.5f);
-
-	if (GetAsyncKeyState(VK_RBUTTON))
-		ApplyZoom(WorldScreenPos, WorldScreenSize, 700.f);
-
 	static anVec2 ActorWorld;
 
 	if (GetAsyncKeyState('W'))
@@ -247,29 +245,37 @@ void CTestLevel::Entry(IANApi* pApi)
 	if (GetAsyncKeyState(VK_RIGHT))
 		ActorWorld.x += Step;
 
-	if (GetAsyncKeyState('V'))
-		CameraWorld = ActorWorld;
+	auto WorldScreenSize = CalcSizeAtImageAspectRatio(ScreenSize, WorldSize);
+	auto WorldScreenPos = CalcPosToCenter(ScreenSize, WorldScreenSize);
+
+	CorrectSizeToOutRect(ScreenSize, WorldScreenPos, WorldScreenSize);
+
+	ApplyZoom(WorldScreenPos, WorldScreenSize, Zoom);
+
+	CameraWorld = ActorWorld;
+
+	ClampCamera(ScreenSize, WorldSize, WorldScreenPos, WorldScreenSize, CameraWorld);
 
 	auto CameraScreen = CameraToScreen(WorldSize, WorldScreenPos, WorldScreenSize, CameraWorld);
 
-	auto ActorScreen = WorldToScreen(WorldSize, WorldScreenPos, WorldScreenSize, CameraWorld, ActorWorld);
-
 	pApi->DrawImage(this->LevelBG, CameraScreen, WorldScreenSize, 1.f);
+
+	auto ActorScreen = WorldToScreen(WorldSize, WorldScreenPos, WorldScreenSize, CameraWorld, ActorWorld);
 
 	pApi->DrawRectangle(ActorScreen, anVec2(50.f, 50.f), anColor::Red(), 50.f, 1.f, true);
 
 	char buff[512] = { 0 };
-	sprintf_s(buff, "FPS: %d\nFrametime: %lf\nScreen size: %.1f:%.1f\nWorld Size: %.1f:%.1f\nWorld screen size: %.1f:%.1f\nCamera world: %.1f:%.1f\nCamera screen: %.1f:%.1f\nActor world: %.1f:%.1f\nActor screen: %.1f:%.1f",
+	sprintf_s(buff, "FPS: %d\nFrametime: %lf\nScreen size: %.1f:%.1f\nWorld Size: %.1f:%.1f\nWorld pos: %.1f:%.1f\nWorld screen size: %.1f:%.1f\nCamera world: %.1f:%.1f\nCamera screen: %.1f:%.1f\nActor world: %.1f:%.1f\nActor screen: %.1f:%.1f",
 		pApi->FPS, 
 		pApi->Frametime, 
 		ScreenSize.x, ScreenSize.y, 
 		WorldSize.x, WorldSize.y,
+		WorldScreenPos.x, WorldScreenPos.y,
 		WorldScreenSize.x, WorldScreenSize.y,
 		CameraWorld.x, CameraWorld.y,
 		CameraScreen.x, CameraScreen.y,
 		ActorWorld.x, ActorWorld.y,
 		ActorScreen.x, ActorScreen.y);
-
 	pApi->TextDraw(buff, anVec2(10.f, 20.f), anColor::White());
 
 	if (pApi->AddButton("Go to menu", anVec2(ScreenSize.x - 130.f - 5.f, ScreenSize.y - 50.f - 5.f), anVec2(130.f, 50.f)))
@@ -278,5 +284,9 @@ void CTestLevel::Entry(IANApi* pApi)
 	pApi->DrawLine(anVec2(ScreenSize.x * 0.5f, 0.f), anVec2(ScreenSize.x * 0.5f, ScreenSize.y), anColor::White(), 5.f);
 	pApi->DrawLine(anVec2(0.f, ScreenSize.y * 0.5f), anVec2(ScreenSize.x, ScreenSize.y * 0.5f), anColor::White(), 5.f);
 
-	ClampCamera(ScreenSize, WorldScreenSize, CameraScreen, CameraWorld);
+	pApi->PushFontColor(anColor::White());
+
+	pApi->AddSliderFloat("Map zoom", anVec2(10.f, ScreenSize.y - 70.f), anVec2(300.f, 30.f), -1000.f, 1000.f, &Zoom);
+
+	pApi->PopFontColor();
 }

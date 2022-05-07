@@ -94,9 +94,30 @@ void ANApi::PopFont()
 	this->m_pCore->GetRenderer()->PopFont();
 }
 
+void ANApi::PushFontColor(anColor Color)
+{
+	this->m_pCore->GetGui()->SetFontColor(Color);
+}
+
+void ANApi::PopFontColor()
+{
+	this->m_pCore->GetGui()->SetFontColor(anColor::Black());
+}
+
+
 bool ANApi::TextDraw(const char* pszText, anVec2 Pos, anColor Color)
 {
 	return this->m_pCore->GetRenderer()->TextDraw(pszText, Pos, Color);
+}
+
+anVec2 ANApi::TextCalcSize(const char* pszText)
+{
+	anVec2 Size;
+
+	if (!this->m_pCore->GetRenderer()->TextCalcSize(pszText, &Size))
+		return anVec2();
+
+	return Size;
 }
 
 bool ANApi::RegGuiWindow(ANGuiWindowID* pGuiWindowID, anVec2 Size)
