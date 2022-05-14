@@ -4,9 +4,10 @@ ANLoader::ANLoader(RenderTypes RenderType,
 	const char* pszWindowName,
 	anVec2 vWindowPosition,
 	anVec2 vWindowSize,
-	bool bHasWindowFrame)
+	bool bHasWindowFrame,
+	bool bVerticalSync)
 {
-	this->m_pInstance = new ANCore(RenderType, pszWindowName, vWindowPosition, vWindowSize, bHasWindowFrame);
+	this->m_pInstance = new ANCore(RenderType, pszWindowName, vWindowPosition, vWindowSize, bHasWindowFrame, bVerticalSync);
 }
 
 ANLoader::~ANLoader()

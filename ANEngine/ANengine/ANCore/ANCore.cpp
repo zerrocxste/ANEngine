@@ -5,11 +5,12 @@ ANCore::ANCore(
 	const char* pszWindowName,
 	anVec2 vWindowPosition, 
 	anVec2 vWindowSize, 
-	bool bHasWindowFrame) : m_bIsInitialized(false)
+	bool bHasWindowFrame,
+	bool bVerticalSync) : m_bIsInitialized(false)
 {
 	m_EngineComponents.m_pANWindow = ANMemory::GetInstance()->Allocate<ANWindow>(this, pszWindowName, vWindowPosition, vWindowSize, bHasWindowFrame);
 	m_EngineComponents.m_pANInput = ANMemory::GetInstance()->Allocate<ANInput>(this);
-	m_EngineComponents.m_ANRenderer = ANMemory::GetInstance()->Allocate<ANRenderer>(this, RenderType);
+	m_EngineComponents.m_ANRenderer = ANMemory::GetInstance()->Allocate<ANRenderer>(this, RenderType, bVerticalSync);
 	m_EngineComponents.m_pANGame = ANMemory::GetInstance()->Allocate<ANGame>(this);
 	m_EngineComponents.m_pANResourceManager = ANMemory::GetInstance()->Allocate<ANResourceManager>();
 	m_EngineComponents.m_ANApi = ANMemory::GetInstance()->Allocate<ANApi>(this);
@@ -106,13 +107,9 @@ bool ANCore::Run()
 
 	w->WindowShow();
 
-	while (w->ProcessWindow())
+	while (!w->ProcessWindow())
 	{
-		if (!w->IsAllowRender())
-			continue;
-
-		if (!p->PrepareScene())
-			continue;
+		p->Update();
 
 		r->BeginFrame();
 
@@ -120,11 +117,10 @@ bool ANCore::Run()
 
 		i->Update();
 
-		g->RunScene();
+		if (!g->RunScene())
+			break;
 
 		r->EndFrame();
-
-		p->Update();
 	}
 
 	return true;

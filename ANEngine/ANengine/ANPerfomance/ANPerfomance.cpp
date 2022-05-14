@@ -21,9 +21,12 @@ ANPerfomance::~ANPerfomance()
 
 ANPerfomanceTick ANPerfomance::GetTick()
 {
-	ANPerfomanceTick T = 0;
-	QueryPerformanceCounter((LARGE_INTEGER*)&T);
-	return T;
+	return this->m_BeginFrameTick;
+}
+
+ANPerfomanceTick ANPerfomance::GetPrevFrameTick()
+{
+	return this->m_PrevFrameTick;
 }
 
 int ANPerfomance::GetFramePerSecond()
@@ -31,7 +34,7 @@ int ANPerfomance::GetFramePerSecond()
 	return this->m_iFpsCounter;
 }
 
-double ANPerfomance::GetFrameTime()
+float ANPerfomance::GetFrameTime()
 {
 	return this->m_MaxFpsFrameTime;
 }
@@ -41,40 +44,16 @@ void ANPerfomance::SetMaxFps(int iMaxFps)
 	this->m_iMaxFps = iMaxFps;
 }
 
-bool ANPerfomance::PrepareScene()
-{
-	if (this->m_iMaxFps > 0)
-	{
-		if (this->m_iCurrentSkippedFrame > 0)
-		{
-			if (!this->m_bFrameTimeIsGrabbed)
-			{
-				this->m_bFrameTimeIsGrabbed = true;
-				this->m_BeginFrameTick = GetTick();
-			}
-			this->m_iCurrentSkippedFrame--;
-			return false;
-		}
-
-		this->m_iCurrentSkippedFrame = ((1000000 * 2.5f) / this->m_iMaxFps) + ((this->m_EndFrameTick - this->m_BeginFrameTick) / 10);
-		this->m_bFrameTimeIsGrabbed = false;
-	}
-	else
-	{
-		this->m_BeginFrameTick = GetTick();
-	}
-
-	if (!this->m_FpsSecondTimer)
-		this->m_FpsSecondTimer = this->m_BeginFrameTick;
-
-	return true;
-}
-
 void ANPerfomance::Update()
 {
-	this->m_iCurrentFpsCounter++;
+	QueryPerformanceCounter((LARGE_INTEGER*)&this->m_BeginFrameTick);
 
-	this->m_EndFrameTick = GetTick();
+	this->m_MaxFpsFrameTime = (float)(this->m_BeginFrameTick - this->m_EndFrameTick) / 10000000.f;
+
+	this->m_PrevFrameTick = this->m_EndFrameTick;
+	this->m_EndFrameTick = this->m_BeginFrameTick;
+
+	this->m_iCurrentFpsCounter++;
 
 	if ((this->m_EndFrameTick - this->m_FpsSecondTimer) / 10000 >= 1000)
 	{
@@ -83,5 +62,6 @@ void ANPerfomance::Update()
 		this->m_iCurrentFpsCounter = 0;
 	}
 
-	this->m_MaxFpsFrameTime = (double)(this->m_EndFrameTick - this->m_BeginFrameTick) / 10000000;
+	if (!this->m_FpsSecondTimer)
+		this->m_FpsSecondTimer = this->m_BeginFrameTick;
 }

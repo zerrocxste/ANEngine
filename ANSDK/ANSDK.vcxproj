@@ -153,11 +153,17 @@
     <ClInclude Include="ANSDK\ANMath\ANVec2\ANVec2.h" />
     <ClInclude Include="ANSDK\ANMath\ANVec3\ANVec3.h" />
     <ClInclude Include="ANSDK\ANSDK.h" />
+    <ClInclude Include="ANSDK\GameEntity\Components\IANActionController\IANActionController.h" />
+    <ClInclude Include="ANSDK\GameEntity\Components\IANAnimationController\IANAnimationController.h" />
+    <ClInclude Include="ANSDK\GameEntity\Components\IANBasicEntity\IANBasicEntity.h" />
+    <ClInclude Include="ANSDK\GameEntity\Components\IANMovementController\IANMovementController.h" />
+    <ClInclude Include="ANSDK\GameEntity\IANEntity\IANEntity.h" />
     <ClInclude Include="ANSDK\Gui\GuiSkin.h" />
     <ClInclude Include="ANSDK\IANApi\IANApi.h" />
     <ClInclude Include="ANSDK\IANError\IANError.h" />
     <ClInclude Include="ANSDK\IANGameScene\IANGameScene.h" />
     <ClInclude Include="ANSDK\IANLoader\IANLoader.h" />
+    <ClInclude Include="ANSDK\IANWorld\IANWorld.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

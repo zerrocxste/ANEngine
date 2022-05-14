@@ -46,6 +46,30 @@
     <Filter Include="ANSDK\Gui">
       <UniqueIdentifier>{85f8ff43-1d27-41b8-aa55-13a498e24379}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ANSDK\GameEntity">
+      <UniqueIdentifier>{50382c6f-f06d-4604-b06a-102d415b09d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\GameEntity\Components">
+      <UniqueIdentifier>{8db6804c-b8f9-4e16-ae8a-26110499280c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\GameEntity\IANEntity">
+      <UniqueIdentifier>{dfc6ba49-2372-4202-a9a5-311c3ce45d5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\GameEntity\Components\IANActionController">
+      <UniqueIdentifier>{279d9917-d28c-460a-8c0b-90793f16b7ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\GameEntity\Components\IANAnimationController">
+      <UniqueIdentifier>{dd2a9ea1-24e3-4b8e-82e4-a9399a0bbc30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\GameEntity\Components\IANBasicEntity">
+      <UniqueIdentifier>{bda56b06-79d7-4d1d-b8cf-c9e0325a82f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\GameEntity\Components\IANMovementController">
+      <UniqueIdentifier>{cbc5a3c5-7304-40ed-8b9b-d6ae7747d522}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\IANWorld">
+      <UniqueIdentifier>{f031e2ad-b525-4407-9c10-074941c22eeb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ANSDK\ANMath\ANColor\ANColor.cpp">
@@ -97,6 +121,24 @@
     </ClInclude>
     <ClInclude Include="ANSDK\Gui\GuiSkin.h">
       <Filter>ANSDK\Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\GameEntity\IANEntity\IANEntity.h">
+      <Filter>ANSDK\GameEntity\IANEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\GameEntity\Components\IANActionController\IANActionController.h">
+      <Filter>ANSDK\GameEntity\Components\IANActionController</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\GameEntity\Components\IANAnimationController\IANAnimationController.h">
+      <Filter>ANSDK\GameEntity\Components\IANAnimationController</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\GameEntity\Components\IANBasicEntity\IANBasicEntity.h">
+      <Filter>ANSDK\GameEntity\Components\IANBasicEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\GameEntity\Components\IANMovementController\IANMovementController.h">
+      <Filter>ANSDK\GameEntity\Components\IANMovementController</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\IANWorld\IANWorld.h">
+      <Filter>ANSDK\IANWorld</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

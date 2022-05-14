@@ -21,6 +21,8 @@ ANRendererFuncionsTable g_ANRendererFuncionsTable;
 
 CRITICAL_SECTION g_csInitializeRenderer;
 
+bool g_EnabledVerticalSync = false;
+
 extern "C" __declspec(dllexport) bool __stdcall BeginFrame(HWND hWnd);
 extern "C" __declspec(dllexport) bool __stdcall EndFrame(HWND hWnd);
 extern "C" __declspec(dllexport) bool __stdcall ClearScene(HWND hWnd);
@@ -97,10 +99,12 @@ bool CreateRenderTarget(HWND hWnd)
 	renderTargetProperties.usage = D2D1_RENDER_TARGET_USAGE_NONE;
 	renderTargetProperties.minLevel = D2D1_FEATURE_LEVEL_DEFAULT;
 
+	printf("%d\n", g_EnabledVerticalSync);
+
 	D2D1_HWND_RENDER_TARGET_PROPERTIES hwndRenderTargetProperties{};
 	hwndRenderTargetProperties.hwnd = hWnd;
 	hwndRenderTargetProperties.pixelSize = D2D1::Size(static_cast<UINT32>(0), static_cast<UINT32>(0));
-	hwndRenderTargetProperties.presentOptions = D2D1_PRESENT_OPTIONS_IMMEDIATELY; //VERTYCAL SYNC
+	hwndRenderTargetProperties.presentOptions = g_EnabledVerticalSync ? D2D1_PRESENT_OPTIONS_RETAIN_CONTENTS : D2D1_PRESENT_OPTIONS_IMMEDIATELY; //VERTYCAL SYNC
 
 	return SUCCEEDED(g_D2DInterfaces.m_pFactory->CreateHwndRenderTarget(renderTargetProperties, hwndRenderTargetProperties, &ri.m_pRenderTarget));
 }
@@ -181,6 +185,8 @@ extern "C" __declspec(dllexport) bool __stdcall InitializeRenderer(HINSTANCE hIn
 	CoInitialize(nullptr);
 
 	EnterCriticalSection(&g_csInitializeRenderer);
+
+	g_EnabledVerticalSync = pReversed;
 
 	auto ret = Initialize(hWnd);
 

@@ -1,8 +1,9 @@
 #include "../ANEngine.h"
 
-ANRenderer::ANRenderer(ANCore* pCore, RenderTypes RenderType) :
+ANRenderer::ANRenderer(ANCore* pCore, RenderTypes RenderType, bool bVerticalSync) :
 	IANError(),
 	m_pCore(pCore),
+	m_bEnableVerticalSync(bVerticalSync),
 	m_pANRendererFuncionsTable(nullptr),
 	m_RenderType(RenderType),
 	m_hWnd(0),
@@ -74,7 +75,7 @@ bool ANRenderer::InvokeInitRender()
 		return false;
 	}
 
-	auto RenderInitStatus = pfInitializeRenderer(GetModuleHandle(nullptr), this->m_hWnd, nullptr);
+	auto RenderInitStatus = pfInitializeRenderer(GetModuleHandle(nullptr), this->m_hWnd, (void*)this->m_bEnableVerticalSync);
 
 	if (!RenderInitStatus)
 	{
@@ -133,7 +134,7 @@ const char* ANRenderer::RenderTypeToStr(RenderTypes RenderType)
 		return "OpenGL";
 	}
 
-	return nullptr;
+	return "Remember, No Russian.";
 }
 
 bool ANRenderer::CheckObjectIsGuiWindowScoped(anVec2 Pos)

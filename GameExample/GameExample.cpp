@@ -14,7 +14,7 @@ int main()
 	bool HasWindowFrame = true;
 #endif // FULLSCREEN ==1
 
-	auto Loader = CreateEngineInstance(RenderTypes::D2D, "GameExample", Pos, Size, HasWindowFrame);
+	auto Loader = CreateEngineInstance(RenderTypes::D2D, "GameExample", Pos, Size, HasWindowFrame, true);
 
 	if (!Loader->InitializeLoader())
 	{
@@ -29,6 +29,8 @@ int main()
 		MessageBox(0, Loader->What(), "Error", MB_ICONERROR);
 		return 1;
 	}
+
+	std::cin.get();
 
 	return 0;
 }

@@ -2,6 +2,8 @@
 
 WNDCLASS ANWindow::WndClass{};
 
+#define WNDPROC_GET_ANWINDOW(hWnd) ((ANWindow*)GetWindowLongPtr(hWnd, GWLP_USERDATA))
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	if (Msg == WM_NCCREATE)
@@ -10,15 +12,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 	}
 	else
 	{
-		auto pANWindow = (ANWindow*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
-
 		switch (Msg)
 		{
 		case WM_SIZE:
 			if (wParam == SIZE_MINIMIZED)
 				break;
 
-			pANWindow->m_pCore->GetRenderer()->ResetScene(pANWindow->GetWindow()->m_vWindowSize = anVec2(LOWORD(lParam), HIWORD(lParam)));
+			WNDPROC_GET_ANWINDOW(hWnd)->m_pCore->GetRenderer()->ResetScene(WNDPROC_GET_ANWINDOW(hWnd)->GetWindow()->m_vWindowSize = anVec2(LOWORD(lParam), HIWORD(lParam)));
 			break;
 		case WM_DESTROY:
 			PostQuitMessage(0);
@@ -31,7 +31,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 			if (Msg == WM_LBUTTONDOWN || Msg == WM_LBUTTONDBLCLK) button = 0;
 			if (Msg == WM_RBUTTONDOWN || Msg == WM_RBUTTONDBLCLK) button = 1;
 			if (Msg == WM_MBUTTONDOWN || Msg == WM_MBUTTONDBLCLK) button = 2;
-			pANWindow->m_pCore->GetInput()->SetCursorKey(button, true);
+
+			WNDPROC_GET_ANWINDOW(hWnd)->m_pCore->GetInput()->SetCursorKey(button, true);
 			break;
 		}
 		case WM_LBUTTONUP:
@@ -42,15 +43,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 			if (Msg == WM_LBUTTONUP) button = 0;
 			if (Msg == WM_RBUTTONUP) button = 1;
 			if (Msg == WM_MBUTTONUP) button = 2;
-			pANWindow->m_pCore->GetInput()->SetCursorKey(button, false);
+			WNDPROC_GET_ANWINDOW(hWnd)->m_pCore->GetInput()->SetCursorKey(button, false);
 			break;
 		}
 		case WM_MOUSEMOVE:
-			pANWindow->m_pCore->GetInput()->SetCursorPos(anVec2(LOWORD(lParam), HIWORD(lParam)));
+			WNDPROC_GET_ANWINDOW(hWnd)->m_pCore->GetInput()->SetCursorPos(anVec2(LOWORD(lParam), HIWORD(lParam)));
 			break;
 		case WM_KEYDOWN:
 		case WM_KEYUP:
-			pANWindow->m_pCore->GetInput()->SetStateKey(wParam, Msg == WM_KEYDOWN);
+			WNDPROC_GET_ANWINDOW(hWnd)->m_pCore->GetInput()->SetStateKey(wParam, Msg == WM_KEYDOWN);
 			break;
 		default:
 			break;
@@ -125,23 +126,13 @@ bool ANWindow::MakeWindow()
 
 bool ANWindow::ProcessWindow()
 {
-	this->m_bAllowRender = true;
-
-	auto ret = this->m_WindowMSG.message != WM_QUIT;
-
 	if (PeekMessage(&this->m_WindowMSG, 0, 0, 0, PM_REMOVE))
 	{
 		TranslateMessage(&this->m_WindowMSG);
 		DispatchMessage(&this->m_WindowMSG);
-		this->m_bAllowRender = false;
 	}
 
-	return ret;
-}
-
-bool ANWindow::IsAllowRender()
-{
-	return this->m_bAllowRender;
+	return this->m_WindowMSG.message == WM_QUIT;
 }
 
 void ANWindow::WindowShow()

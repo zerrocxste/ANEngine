@@ -30,7 +30,6 @@ private:
 
 	anVec2 m_CursorPos;
 	KeyInformation m_kiCursorKeyMap[5];
-
 	KeyInformation m_kiKeyMap[255];
 
 	anVec2 m_CorrectWindowStartPos;

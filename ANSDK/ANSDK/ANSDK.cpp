@@ -5,7 +5,8 @@ IANLoader* CreateEngineInstance(
 	const char* pszWindowName,
 	anVec2 vWindowPosition,
 	anVec2 vWindowSize,
-	bool bHasWindowFrame)
+	bool bHasWindowFrame,
+	bool bVerticalSync)
 {
 	static auto hANEngineModule = LoadLibrary("ANEngine.dll");
 
@@ -21,5 +22,5 @@ IANLoader* CreateEngineInstance(
 		return nullptr;
 	}
 
-	return pfCreateEngineInstance(RenderType, pszWindowName, vWindowPosition, vWindowSize, bHasWindowFrame);
+	return pfCreateEngineInstance(RenderType, pszWindowName, vWindowPosition, vWindowSize, bHasWindowFrame, bVerticalSync);
 }

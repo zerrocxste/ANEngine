@@ -156,6 +156,9 @@
     <ClCompile Include="ANengine\ANPerfomance\ANPerfomance.cpp" />
     <ClCompile Include="ANengine\ANRenderer\ANRenderer.cpp" />
     <ClCompile Include="ANengine\ANWindow\ANWindow.cpp" />
+    <ClCompile Include="ANengine\ANWorld\ANWorld.cpp" />
+    <ClCompile Include="ANengine\GameEntity\ANEntityList\ANEntityList.cpp" />
+    <ClCompile Include="ANengine\GameEntity\ANEntity\ANEntity.cpp" />
     <ClCompile Include="ANengine\Gui\ANGuiWindow\ANGuiWindow.cpp" />
     <ClCompile Include="ANengine\Gui\ANGui\ANGui.cpp" />
     <ClCompile Include="ANengine\Interfaces\IANError\IANError.cpp" />
@@ -179,8 +182,17 @@
     <ClInclude Include="ANengine\ANRenderer\ANRenderer.h" />
     <ClInclude Include="ANengine\ANTypes.h" />
     <ClInclude Include="ANengine\ANWindow\ANWindow.h" />
+    <ClInclude Include="ANengine\ANWorld\ANWorld.h" />
+    <ClInclude Include="ANengine\GameEntity\ANEntityList\ANEntityList.h" />
+    <ClInclude Include="ANengine\GameEntity\ANEntity\ANEntity.h" />
     <ClInclude Include="ANengine\Gui\ANGuiWindow\ANGuiWindow.h" />
     <ClInclude Include="ANengine\Gui\ANGui\ANGui.h" />
+    <ClInclude Include="ANengine\Interfaces\Game\GameEntity\Components\IANActionController\IANActionController.h" />
+    <ClInclude Include="ANengine\Interfaces\Game\GameEntity\Components\IANAnimationController\IANAnimationController.h" />
+    <ClInclude Include="ANengine\Interfaces\Game\GameEntity\Components\IANBasicEntity\IANBasicEntity.h" />
+    <ClInclude Include="ANengine\Interfaces\Game\GameEntity\Components\IANMovementController\IANMovementController.h" />
+    <ClInclude Include="ANengine\Interfaces\Game\GameEntity\IANEntity\IANEntity.h" />
+    <ClInclude Include="ANengine\Interfaces\Game\World\IANWorld.h" />
     <ClInclude Include="ANengine\Interfaces\GuiSkin\GuiSkin.h" />
     <ClInclude Include="ANengine\Interfaces\IANApi\IANApi.h" />
     <ClInclude Include="ANengine\Interfaces\IANError\IANError.h" />

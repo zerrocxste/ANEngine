@@ -7,7 +7,8 @@ public:
 		const char* pszWindowName,
 		anVec2 vWindowPosition,
 		anVec2 vWindowSize,
-		bool bHasWindowFrame);
+		bool bHasWindowFrame, 
+		bool bVerticalSync);
 
 	~ANCore();
 

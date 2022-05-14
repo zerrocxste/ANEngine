@@ -32,7 +32,14 @@ class IANGameScene;
 
 #include "ANTypes.h"
 
+#include "Interfaces/Game/GameEntity/Components/IANBasicEntity/IANBasicEntity.h"
+#include "Interfaces/Game/GameEntity/Components/IANMovementController/IANMovementController.h"
+#include "Interfaces/Game/GameEntity/Components/IANActionController/IANActionController.h"
+#include "Interfaces/Game/GameEntity/Components/IANAnimationController/IANAnimationController.h"
+#include "Interfaces/Game/GameEntity/IANEntity/IANEntity.h"
+
 #include "Interfaces/IANError/IANError.h"
+#include "Interfaces/Game/World/IANWorld.h"
 #include "Interfaces/IANGameScene/IANGameScene.h"
 #include "Interfaces/GuiSkin/GuiSkin.h"
 #include "Interfaces/IANApi/IANApi.h"
@@ -46,6 +53,9 @@ class IANGameScene;
 #include "ANRenderer/ANRenderer.h"
 #include "ANInput/ANInput.h"
 #include "ANWindow/ANWindow.h"
+#include "ANWorld/ANWorld.h"
+#include "GameEntity/ANEntityList/ANEntityList.h"
+#include "GameEntity/ANEntity/ANEntity.h"
 #include "ANGame/ANGame.h"
 #include "ANApi/ANApi.h"
 #include "Gui/ANGuiWindow/ANGuiWindow.h"

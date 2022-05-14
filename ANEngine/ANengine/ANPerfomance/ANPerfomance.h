@@ -6,20 +6,21 @@ public:
 	ANPerfomance();
 	~ANPerfomance();
 
+	ANPerfomanceTick GetTick();
+	ANPerfomanceTick GetPrevFrameTick();
+
 	int GetFramePerSecond();
-	double GetFrameTime();
+	float GetFrameTime();
 	void SetMaxFps(int iMaxFps);
-	bool PrepareScene();
 	void Update();
 private:
-	ANPerfomanceTick GetTick();
-
 	ANPerfomanceTick m_FpsSecondTimer;
 	int m_iCurrentFpsCounter;
 	int m_iFpsCounter;
 	ANPerfomanceTick m_BeginFrameTick;
 	ANPerfomanceTick m_EndFrameTick;
-	double m_MaxFpsFrameTime;
+	ANPerfomanceTick m_PrevFrameTick;
+	float m_MaxFpsFrameTime;
 
 	bool m_bFrameTimeIsGrabbed;
 	int m_iCurrentSkippedFrame;

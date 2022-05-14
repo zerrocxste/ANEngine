@@ -11,7 +11,9 @@ public:
 	void Entry(IANApi* pApi) override;
 
 private:
+	float m_WorldZoom;
 	ANImageID LevelBG;
-
+	IANWorld* m_pWorld;
+	IANEntity* m_pMainActor;
 	ANGuiWindowID m_GuiWindow;
 };

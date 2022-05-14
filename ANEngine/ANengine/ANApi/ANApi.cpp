@@ -13,9 +13,34 @@ ANApi::~ANApi()
 
 }
 
+void ANApi::LeaveApp()
+{
+	this->m_pCore->GetGame()->LeaveGame();
+}
+
 bool ANApi::ConnectToScene(IANGameScene* pGameScene)
 {
 	return this->m_pCore->GetGame()->ConnectScene(pGameScene);
+}
+
+bool ANApi::GetKeyIsDowned(int k)
+{
+	return this->m_pCore->GetInput()->IsKeyDowned(k);
+}
+
+bool ANApi::GetKeyIsClicked(int k)
+{
+	return this->m_pCore->GetInput()->IsKeyClicked(k);
+}
+
+bool ANApi::GetKeyIsReleased(int k)
+{
+	return this->m_pCore->GetInput()->IsKeyReleased(k);
+}
+
+float ANApi::GetKeyDownTime(int k)
+{
+	return this->m_pCore->GetInput()->GetKeyDownTime(k);
 }
 
 anVec2 ANApi::GetScreenSize()
@@ -104,7 +129,6 @@ void ANApi::PopFontColor()
 	this->m_pCore->GetGui()->SetFontColor(anColor::Black());
 }
 
-
 bool ANApi::TextDraw(const char* pszText, anVec2 Pos, anColor Color)
 {
 	return this->m_pCore->GetRenderer()->TextDraw(pszText, Pos, Color);
@@ -118,6 +142,41 @@ anVec2 ANApi::TextCalcSize(const char* pszText)
 		return anVec2();
 
 	return Size;
+}
+
+ANPerfomanceTick ANApi::GetTickMicroseconds()
+{
+	return this->m_pCore->GetPerfomance()->GetTick();
+}
+
+ANPerfomanceTick ANApi::GetPrevFrameTickMicroseconds()
+{
+	return this->m_pCore->GetPerfomance()->GetPrevFrameTick();
+}
+
+void ANApi::RegWorld(IANWorld** ppWorld)
+{
+	this->m_pCore->GetGame()->RegWorld(ppWorld);
+}
+
+void ANApi::UnregWorld(IANWorld** ppWorld)
+{
+	this->m_pCore->GetGame()->UnregWorld(ppWorld);
+}
+
+void ANApi::RegEntity(IANEntity** ppEntity)
+{
+	this->m_pCore->GetGame()->RegEntity(ppEntity);
+}
+
+void ANApi::UnregEntity(IANEntity** ppEntity)
+{
+	this->m_pCore->GetGame()->UnregEntity(ppEntity);
+}
+
+IANEntity* ANApi::GetEntityByName(const char* pszEntName)
+{
+	return nullptr;
 }
 
 bool ANApi::RegGuiWindow(ANGuiWindowID* pGuiWindowID, anVec2 Size)
@@ -173,6 +232,26 @@ bool ANApi::AddSliderInt(const char* pszName, anVec2 Pos, anVec2 Size, int iMin,
 bool ANApi::AddSliderFloat(const char* pszName, anVec2 Pos, anVec2 Size, float flMin, float flMax, float* pVar, IANSliderSkin* pSliderSkin)
 {
 	return this->m_pCore->GetGui()->SliderFloat(pszName, Pos, Size, flMin, flMax, pVar, pSliderSkin);
+}
+
+anVec2 ANApi::WorldToScreen(IANWorld* pWorld, anVec2 PointWorld)
+{
+	auto wm = pWorld->GetMetrics();
+
+	return ANMathUtils::PointToScreen(
+		wm.m_WorldSize,
+		anRect(wm.m_WorldScreenPos, wm.m_WorldScreenPos + wm.m_WorldScreenSize),
+		PointWorld - wm.m_CameraWorld) + (wm.m_WorldScreenSize * 0.5f);
+}
+
+anVec2 ANApi::WorldToScreen(IANWorld* pWorld, IANEntity* pEntity)
+{
+	auto wm = pWorld->GetMetrics();
+
+	return ANMathUtils::PointToScreen(
+		wm.m_WorldSize,
+		anRect(wm.m_WorldScreenPos, wm.m_WorldScreenPos + wm.m_WorldScreenSize),
+		pEntity->GetOrigin() - wm.m_CameraWorld) + (wm.m_WorldScreenSize * 0.5f);
 }
 
 void ANApi::Update()

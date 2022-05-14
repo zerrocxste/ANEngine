@@ -7,7 +7,13 @@ public:
 	ANApi(ANCore* pCore);
 	~ANApi();
 
+	void LeaveApp() override;
 	bool ConnectToScene(IANGameScene* pGameScene) override;
+
+	bool GetKeyIsDowned(int k) override;
+	bool GetKeyIsClicked(int k) override;
+	bool GetKeyIsReleased(int k) override;
+	float GetKeyDownTime(int k) override;
 
 	anVec2 GetScreenSize() override;
 
@@ -27,6 +33,20 @@ public:
 	void PopFontColor() override;
 	bool TextDraw(const char* pszText, anVec2 Pos, anColor Color) override;
 	anVec2 TextCalcSize(const char* pszText) override;
+
+	ANPerfomanceTick GetTickMicroseconds() override;
+	ANPerfomanceTick GetPrevFrameTickMicroseconds() override;
+
+	void RegWorld(IANWorld** ppWorld) override;
+	void UnregWorld(IANWorld** ppWorld) override;
+
+	anVec2 WorldToScreen(IANWorld* pWorld, anVec2 PointWorld) override;
+	anVec2 WorldToScreen(IANWorld* pWorld, IANEntity* pEntity) override;
+
+	void RegEntity(IANEntity** ppEntity) override;
+	void UnregEntity(IANEntity** ppEntity) override;
+
+	IANEntity* GetEntityByName(const char* pszEntName) override;
 
 	bool RegGuiWindow(ANGuiWindowID* pGuiWindowID, anVec2 Size) override;
 	bool UnregGuiWindow(ANGuiWindowID* pGuiWindowID) override;

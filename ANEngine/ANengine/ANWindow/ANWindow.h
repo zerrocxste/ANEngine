@@ -17,7 +17,6 @@ public:
 	bool MakeWindow();
 
 	bool ProcessWindow();
-	bool IsAllowRender();
 
 	void WindowShow();
 	void WindowMinimize();
@@ -32,8 +31,6 @@ private:
 	HWND m_hWnd;
 	MSG m_WindowMSG;
 	ANWindowData m_WindowData;
-
-	bool m_bAllowRender;
 
 	bool CreateWindowClass();
 	bool CreateNewWindow(ANWindowData* wd);

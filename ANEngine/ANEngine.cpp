@@ -7,9 +7,10 @@ extern "C" __declspec(dllexport) IANLoader * __stdcall CreateEngineInstance(
 	const char* pszWindowName,
 	anVec2 vWindowPosition,
 	anVec2 vWindowSize,
-	bool bHasWindowFrame)
+	bool bHasWindowFrame,
+	bool bVerticalSync)
 {
-	return new ANLoader(RenderType, pszWindowName, vWindowPosition, vWindowSize, bHasWindowFrame);
+	return new ANLoader(RenderType, pszWindowName, vWindowPosition, vWindowSize, bHasWindowFrame, bVerticalSync);
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule,

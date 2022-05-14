@@ -3,7 +3,8 @@
 ANInput::ANInput(ANCore* pCore) :
 	m_pCore(pCore)
 {
-	m_CursorPos.Clear();
+	memset(&this->m_kiCursorKeyMap, 0, sizeof(this->m_kiCursorKeyMap));
+	memset(&this->m_kiKeyMap, 0, sizeof(this->m_kiKeyMap));
 }
 
 ANInput::~ANInput()
@@ -116,7 +117,7 @@ void ANInput::UpdateKeyMap(KeyInformation* pkiKeyMap)
 	km.m_bPrevFrameIsDowned = km.m_bIsDowned;
 
 	if (km.m_bIsDowned)
-		km.m_flDownTime += 0.001f; /*DELTA?*/
+		km.m_flDownTime += this->m_pCore->GetPerfomance()->GetFrameTime(); /*DELTA?*/
 	else
 		km.m_flDownTime = 0.f;
 }

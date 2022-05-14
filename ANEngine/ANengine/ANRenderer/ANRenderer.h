@@ -3,7 +3,7 @@
 class ANRenderer : public IANError
 {
 public:
-	ANRenderer(ANCore* pCore, RenderTypes RenderType);
+	ANRenderer(ANCore* pCore, RenderTypes RenderType, bool bVerticalSync);
 	~ANRenderer();
 
 	bool Initalize();
@@ -49,6 +49,8 @@ public:
 	ANFontID GetFont();
 private:
 	ANCore* m_pCore;
+
+	bool m_bEnableVerticalSync;
 
 	ANRendererFuncionsTable* m_pANRendererFuncionsTable;
 

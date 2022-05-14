@@ -11,10 +11,17 @@
 typedef void* ANImageID;
 typedef void* ANFontID;
 typedef void* ANGuiWindowID;
+typedef __int64 ANPerfomanceTick;
 
 class IANApi;
 class IANGameScene;
 
+#include "GameEntity/Components/IANBasicEntity/IANBasicEntity.h"
+#include "GameEntity/Components/IANMovementController/IANMovementController.h"
+#include "GameEntity/Components/IANActionController/IANActionController.h"
+#include "GameEntity/Components/IANAnimationController/IANAnimationController.h"
+#include "GameEntity/IANEntity/IANEntity.h"
+#include "IANWorld/IANWorld.h"
 #include "IANError/IANError.h"
 #include "IANGameScene/IANGameScene.h"
 #include "Gui/GuiSkin.h"
@@ -42,11 +49,13 @@ using fCreateEngineInstance = IANLoader * (__stdcall*)(
 	const char* pszWindowName,
 	anVec2 vWindowPosition,
 	anVec2 vWindowSize,
-	bool bHasWindowFrame);
+	bool bHasWindowFrame,
+	bool bVerticalSync);
 
 IANLoader* CreateEngineInstance(
 	RenderTypes RenderType,
 	const char* pszWindowName,
 	anVec2 vWindowPosition,
 	anVec2 vWindowSize,
-	bool bHasWindowFrame);
+	bool bHasWindowFrame,
+	bool bVerticalSync);

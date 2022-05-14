@@ -4,9 +4,15 @@ class IANApi
 {
 public:
 	int FPS;
-	double Frametime;
+	float Frametime;
 
+	virtual void LeaveApp() = 0;
 	virtual bool ConnectToScene(IANGameScene* pGameScene) = 0;
+
+	virtual bool GetKeyIsDowned(int k) = 0;
+	virtual bool GetKeyIsClicked(int k) = 0;
+	virtual bool GetKeyIsReleased(int k) = 0;
+	virtual float GetKeyDownTime(int k) = 0;
 
 	virtual anVec2 GetScreenSize() = 0;
 
@@ -26,6 +32,20 @@ public:
 	virtual void PopFontColor() = 0;
 	virtual bool TextDraw(const char* pszText, anVec2 Pos, anColor Color) = 0;
 	virtual anVec2 TextCalcSize(const char* pszText) = 0;
+
+	virtual ANPerfomanceTick GetTickMicroseconds() = 0;
+	virtual ANPerfomanceTick GetPrevFrameTickMicroseconds() = 0;
+
+	virtual void RegWorld(IANWorld** ppWorld) = 0;
+	virtual void UnregWorld(IANWorld** ppWorld) = 0;
+
+	virtual anVec2 WorldToScreen(IANWorld* pWorld, anVec2 PointWorld) = 0;
+	virtual anVec2 WorldToScreen(IANWorld* pWorld, IANEntity* pEntity) = 0;
+
+	virtual void RegEntity(IANEntity** ppEntity) = 0;
+	virtual void UnregEntity(IANEntity** ppEntity) = 0;
+
+	virtual IANEntity* GetEntityByName(const char* pszEntName) = 0;
 	
 	virtual bool RegGuiWindow(ANGuiWindowID* pGuiWindowID, anVec2 Size) = 0;
 	virtual bool UnregGuiWindow(ANGuiWindowID* pGuiWindowID) = 0;

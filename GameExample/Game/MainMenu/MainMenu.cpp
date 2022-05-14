@@ -123,4 +123,8 @@ void CTestGameScene::Entry(IANApi* pApi)
 		printf("PEPEGA\n");
 		pApi->ConnectToScene(new CTestLevel());
 	}
+
+	anVec2 SizeQuitButton(150.f, 50.f);
+	if (pApi->AddButton("Quit", ScreenSize - SizeQuitButton - anVec2(10.f), SizeQuitButton))
+		pApi->LeaveApp();
 }
