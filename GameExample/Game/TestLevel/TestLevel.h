@@ -12,8 +12,15 @@ public:
 
 private:
 	float m_WorldZoom;
-	ANImageID LevelBG;
+
 	IANWorld* m_pWorld;
+	ANImageID LevelBG;
+
 	IANEntity* m_pMainActor;
-	ANGuiWindowID m_GuiWindow;
+	ANAnimationComposition m_WoodyComposition;
+	ANAnimationComposition m_WoodyCompositionLeft;
+	ANAnimationComposition m_WoodyCompositionRight;
+
+	IANEntity* m_pDoorEntity;
+	ANAnimationComposition m_DoorComposition;
 };

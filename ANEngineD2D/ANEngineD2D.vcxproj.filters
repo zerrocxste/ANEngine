@@ -56,6 +56,5 @@
     <ClInclude Include="src\ANMath\ANColor\ANColor.h">
       <Filter>src\ANMath\ANColor</Filter>
     </ClInclude>
-    <ClInclude Include="minhook.h" />
   </ItemGroup>
 </Project>

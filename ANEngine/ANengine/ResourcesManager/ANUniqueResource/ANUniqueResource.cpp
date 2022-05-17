@@ -5,7 +5,7 @@ ANUniqueResource::ANUniqueResource() :
 	m_pResourceLocation(nullptr),
 	m_iResourceSize(0)
 {
-	
+
 }
 
 ANUniqueResource::~ANUniqueResource()

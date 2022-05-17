@@ -43,10 +43,13 @@ public:
 	anVec2 WorldToScreen(IANWorld* pWorld, anVec2 PointWorld) override;
 	anVec2 WorldToScreen(IANWorld* pWorld, IANEntity* pEntity) override;
 
-	void RegEntity(IANEntity** ppEntity) override;
+	void RegEntity(IANEntity** ppEntity, const char* pszEntityClassID) override;
 	void UnregEntity(IANEntity** ppEntity) override;
-
+	ANPointer<IANEntityGroup> FindEntityByGroupID(const char* pszGroupID) override;
 	IANEntity* GetEntityByName(const char* pszEntName) override;
+
+	bool CreateAnimationComposition(const char** pszAnimationLabelsArr, int iAnimationLabelsArrSize, ANAnimationComposition* pAnimationComposition) override;
+	void DeleteAnimationComposition(ANAnimationComposition* pAnimationComposition) override;
 
 	bool RegGuiWindow(ANGuiWindowID* pGuiWindowID, anVec2 Size) override;
 	bool UnregGuiWindow(ANGuiWindowID* pGuiWindowID) override;

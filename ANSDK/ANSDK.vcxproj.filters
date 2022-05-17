@@ -70,6 +70,12 @@
     <Filter Include="ANSDK\IANWorld">
       <UniqueIdentifier>{f031e2ad-b525-4407-9c10-074941c22eeb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ANSDK\GameEntity\IANEntityGroup">
+      <UniqueIdentifier>{22fa78cc-8e1f-48c6-82d7-b9547876277d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\ANPointer">
+      <UniqueIdentifier>{77a670ff-ac70-4d37-88f7-a7ea0628405e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ANSDK\ANMath\ANColor\ANColor.cpp">
@@ -139,6 +145,12 @@
     </ClInclude>
     <ClInclude Include="ANSDK\IANWorld\IANWorld.h">
       <Filter>ANSDK\IANWorld</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\GameEntity\IANEntityGroup\IANEntityGroup.h">
+      <Filter>ANSDK\GameEntity\IANEntityGroup</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\ANPointer\ANPointer.h">
+      <Filter>ANSDK\ANPointer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

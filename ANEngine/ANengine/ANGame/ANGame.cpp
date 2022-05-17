@@ -6,12 +6,12 @@ ANGame::ANGame(ANCore* pCore) :
 	m_pCurrentScene(nullptr),
 	m_bNeedLeaveGame(false)
 {
-
+	this->m_pEntityList = ANMemory::GetInstance()->Allocate<ANEntityList>();
 }
 
 ANGame::~ANGame()
 {
-
+	ANMemory::GetInstance()->Delete(this->m_pEntityList);
 }
 
 bool ANGame::ConnectScene(IANGameScene* pScene)
@@ -32,6 +32,8 @@ void ANGame::DisconnectScene()
 {
 	if (!this->m_pCurrentScene)
 		return;
+
+	GetEntityList()->Clear();
 
 	this->m_pCurrentScene->OnUnloadScene(this->m_pCore->GetApi());
 }
@@ -77,9 +79,17 @@ void ANGame::UnregWorld(IANWorld** ppWorld)
 	*ppWorld = nullptr;
 }
 
-void ANGame::RegEntity(IANEntity** ppEntity)
+void ANGame::RegEntity(IANEntity** ppEntity, const char* pszEntityClassID)
 {
 	*ppEntity = ANMemory::GetInstance()->Allocate<ANEntity>();
+
+	if (pszEntityClassID)
+	{
+		auto LengthEntityName = strlen(pszEntityClassID) + 1;
+		memcpy(((ANEntity*)(*ppEntity))->m_szEntityClassID = new char[LengthEntityName], pszEntityClassID, LengthEntityName);
+	}
+
+	GetEntityList()->Add(*ppEntity);
 }
 
 void ANGame::UnregEntity(IANEntity** ppEntity)
@@ -87,7 +97,14 @@ void ANGame::UnregEntity(IANEntity** ppEntity)
 	if (!*ppEntity)
 		return;
 
+	GetEntityList()->Remove(*ppEntity);
+
 	ANMemory::GetInstance()->Delete(*ppEntity);
 
 	*ppEntity = nullptr;
+}
+
+ANEntityList* ANGame::GetEntityList()
+{
+	return this->m_pEntityList;
 }

@@ -152,11 +152,13 @@
     <ClInclude Include="ANSDK\ANMath\ANRect\ANRect.h" />
     <ClInclude Include="ANSDK\ANMath\ANVec2\ANVec2.h" />
     <ClInclude Include="ANSDK\ANMath\ANVec3\ANVec3.h" />
+    <ClInclude Include="ANSDK\ANPointer\ANPointer.h" />
     <ClInclude Include="ANSDK\ANSDK.h" />
     <ClInclude Include="ANSDK\GameEntity\Components\IANActionController\IANActionController.h" />
     <ClInclude Include="ANSDK\GameEntity\Components\IANAnimationController\IANAnimationController.h" />
     <ClInclude Include="ANSDK\GameEntity\Components\IANBasicEntity\IANBasicEntity.h" />
     <ClInclude Include="ANSDK\GameEntity\Components\IANMovementController\IANMovementController.h" />
+    <ClInclude Include="ANSDK\GameEntity\IANEntityGroup\IANEntityGroup.h" />
     <ClInclude Include="ANSDK\GameEntity\IANEntity\IANEntity.h" />
     <ClInclude Include="ANSDK\Gui\GuiSkin.h" />
     <ClInclude Include="ANSDK\IANApi\IANApi.h" />

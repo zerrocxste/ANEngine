@@ -1,6 +1,6 @@
 #pragma once
 
-class IANEntity : 
+class IANEntity :
 	public IANBasicEntity,
 	public IANMovementController,
 	public IANAnimationController,

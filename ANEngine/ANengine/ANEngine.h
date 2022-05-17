@@ -26,18 +26,26 @@ class ANResourceManager;
 class ANApi;
 class ANGui;
 class ANPerfomance;
+class ANEntity;
+class ANEntityList;
+class ANEntityGroup;
 
 class IANApi;
 class IANGameScene;
+class IANWorld;
+class IANEntity;
+class IANEntityGroup;
 
 #include "ANTypes.h"
+
+#include "ANPointer/ANPointer.h"
 
 #include "Interfaces/Game/GameEntity/Components/IANBasicEntity/IANBasicEntity.h"
 #include "Interfaces/Game/GameEntity/Components/IANMovementController/IANMovementController.h"
 #include "Interfaces/Game/GameEntity/Components/IANActionController/IANActionController.h"
 #include "Interfaces/Game/GameEntity/Components/IANAnimationController/IANAnimationController.h"
 #include "Interfaces/Game/GameEntity/IANEntity/IANEntity.h"
-
+#include "Interfaces/Game/GameEntity/IANEntityGroup/IANEntityGroup.h"
 #include "Interfaces/IANError/IANError.h"
 #include "Interfaces/Game/World/IANWorld.h"
 #include "Interfaces/IANGameScene/IANGameScene.h"
@@ -56,6 +64,7 @@ class IANGameScene;
 #include "ANWorld/ANWorld.h"
 #include "GameEntity/ANEntityList/ANEntityList.h"
 #include "GameEntity/ANEntity/ANEntity.h"
+#include "GameEntity/ANEntityGroup/ANEntityGroup.h"
 #include "ANGame/ANGame.h"
 #include "ANApi/ANApi.h"
 #include "Gui/ANGuiWindow/ANGuiWindow.h"

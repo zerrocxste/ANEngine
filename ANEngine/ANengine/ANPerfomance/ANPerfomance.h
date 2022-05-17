@@ -11,6 +11,7 @@ public:
 
 	int GetFramePerSecond();
 	float GetFrameTime();
+	double GetTotalRenderTime();
 	void SetMaxFps(int iMaxFps);
 	void Update();
 private:
@@ -26,5 +27,7 @@ private:
 	int m_iCurrentSkippedFrame;
 
 	int m_iMaxFps;
+
+	double m_TotalRenderTime;
 };
 

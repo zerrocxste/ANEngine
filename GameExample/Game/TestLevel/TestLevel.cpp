@@ -12,20 +12,32 @@ CTestLevel::~CTestLevel()
 
 void CTestLevel::OnLoadScene(IANApi* pApi)
 {
-	pApi->CreateImage("XMHf4PJ.jpg", &this->LevelBG);
+	pApi->CreateImage("house15.bmp", &this->LevelBG);
 
 	pApi->RegWorld(&this->m_pWorld);
-
 	this->m_pWorld->SetWorldSize(pApi->GetImageSize(this->LevelBG));
 
-	pApi->RegEntity(&this->m_pMainActor);
+	const char* pszWoody[] = { "w_ms2_0004.png", "w_ms2_0005.png", "w_ms2_0006.png" };
+	pApi->CreateAnimationComposition(pszWoody, 3, &this->m_WoodyComposition);
+	const char* pszWoodyLeft[] = { "W_mg3_0000.png", "W_mg3_0001.png", "W_mg3_0002.png", "W_mg3_0003.png", "W_mg3_0004.png", "W_mg3_0005.png", "W_mg3_0006.png", "W_mg3_0007.png" };
+	pApi->CreateAnimationComposition(pszWoodyLeft, 8, &this->m_WoodyCompositionLeft);
+	const char* pszWoodyRight[] = { "W_mg1_0000.png", "W_mg1_0001.png", "W_mg1_0002.png", "W_mg1_0003.png", "W_mg1_0004.png", "W_mg1_0005.png", "W_mg1_0006.png", "W_mg1_0007.png" };
+	pApi->CreateAnimationComposition(pszWoodyRight, 8, &this->m_WoodyCompositionRight);
+	pApi->RegEntity(&this->m_pMainActor, "CLASSID_Player");
+	this->m_pMainActor->SetOrigin(this->m_pWorld->GetMetrics().m_WorldSize * 0.5f);
 
-	pApi->RegGuiWindow(&this->m_GuiWindow, anVec2(500.f));
+	pApi->RegEntity(&this->m_pDoorEntity, "CLASSID_WorldEntity");
+	this->m_pDoorEntity->SetOrigin(anVec2(1111.f, 550.f));
+	const char* pszDoorAnim[] = { "N_leave_0000.png" };
+	pApi->CreateAnimationComposition(pszDoorAnim, 1, &this->m_DoorComposition);
+	this->m_pDoorEntity->SetAnimationComposition(this->m_DoorComposition);
 }
 
 void CTestLevel::OnUnloadScene(IANApi* pApi)
 {
 	pApi->FreeImage(&this->LevelBG);
+
+	pApi->DeleteAnimationComposition(&this->m_WoodyComposition);
 
 	pApi->UnregWorld(&this->m_pWorld);
 
@@ -36,34 +48,48 @@ void CTestLevel::Entry(IANApi* pApi)
 {
 	auto ScreenSize = pApi->GetScreenSize();
 
+	this->m_pMainActor->SetAnimationComposition(this->m_WoodyComposition);
+	this->m_pMainActor->SetAnimationDuration(0.2f);
+
 	float Step = 0.3f;
 	if (pApi->GetKeyIsDowned('W'))
-		this->m_pMainActor->MoveUp(pApi, 300.f);
+		this->m_pMainActor->MoveUp(pApi, 250.f);
 	if (pApi->GetKeyIsDowned('S'))
-		this->m_pMainActor->MoveDown(pApi, 300.f);
+		this->m_pMainActor->MoveDown(pApi, 250.f);
 	if (pApi->GetKeyIsDowned('A'))
-		this->m_pMainActor->MoveLeft(pApi, 300.f);
+	{
+		this->m_pMainActor->MoveLeft(pApi, 250.f);
+		this->m_pMainActor->SetAnimationComposition(this->m_WoodyCompositionLeft);
+		this->m_pMainActor->SetAnimationDuration(0.1f);
+	}
 	if (pApi->GetKeyIsDowned('D'))
-		this->m_pMainActor->MoveRight(pApi, 300.f);
+	{
+		this->m_pMainActor->MoveRight(pApi, 250.f);
+		this->m_pMainActor->SetAnimationComposition(this->m_WoodyCompositionRight);
+		this->m_pMainActor->SetAnimationDuration(0.1f);
+	}
 
 	this->m_pWorld->SetZoom(this->m_WorldZoom);
-		
 	this->m_pWorld->SetCameraToEntity(this->m_pMainActor);
-
-	
-
+	this->m_pWorld->Update(pApi);
 	this->m_pWorld->Draw(pApi, this->LevelBG);
 
-	this->m_pWorld->Update(pApi);
-
-	auto ActorScreen = pApi->WorldToScreen(this->m_pWorld, this->m_pMainActor);
-
-	pApi->DrawRectangle(ActorScreen, anVec2(50.f, 50.f), anColor::Red(), 50.f, 1.f, true);
+	pApi->FindEntityByGroupID("CLASSID_WorldEntity")->Draw(pApi, this->m_pWorld);
+	pApi->FindEntityByGroupID("CLASSID_Player")->Draw(pApi, this->m_pWorld);
 
 	auto WorldMetrics = this->m_pWorld->GetMetrics();
-
+	auto ActorScreen = pApi->WorldToScreen(this->m_pWorld, this->m_pMainActor);
 	char buff[512] = { 0 };
-	sprintf_s(buff, "FPS: %d\nFrametime: %lf\nScreen size: %.1f:%.1f\nWorld Size: %.1f:%.1f\nWorld pos: %.1f:%.1f\nWorld screen size: %.1f:%.1f\nCamera world: %.1f:%.1f\nCamera screen: %.1f:%.1f\nActor world: %f:%f\nActor screen: %.1f:%.1f",
+	sprintf_s(buff, "FPS: %d\n"
+		"Frametime: %lf\n"
+		"Screen size: %.1f:%.1f\n"
+		"World Size: %.1f:%.1f\n"
+		"World pos: %.1f:%.1f\n"
+		"World screen size: %.1f:%.1f\n"
+		"Camera world: %.1f:%.1f\n"
+		"Camera screen: %.1f:%.1f\n"
+		"Actor world: %f:%f\n"
+		"Actor screen: %.1f:%.1f",
 		pApi->FPS,
 		pApi->Frametime,
 		ScreenSize.x, ScreenSize.y,
@@ -83,8 +109,6 @@ void CTestLevel::Entry(IANApi* pApi)
 	pApi->DrawLine(anVec2(0.f, ScreenSize.y * 0.5f), anVec2(ScreenSize.x, ScreenSize.y * 0.5f), anColor::White(), 5.f);
 
 	pApi->PushFontColor(anColor::White());
-
-	pApi->AddSliderFloat("Map zoom", anVec2(10.f, ScreenSize.y - 70.f), anVec2(300.f, 30.f), -1000.f, 1000.f, &this->m_WorldZoom);
-
+	pApi->AddSliderFloat("Map zoom", anVec2(10.f, ScreenSize.y - 70.f), anVec2(300.f, 30.f), 0.f, 10000.f, &this->m_WorldZoom);
 	pApi->PopFontColor();
 }

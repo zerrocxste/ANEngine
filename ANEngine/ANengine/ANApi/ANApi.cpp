@@ -164,9 +164,9 @@ void ANApi::UnregWorld(IANWorld** ppWorld)
 	this->m_pCore->GetGame()->UnregWorld(ppWorld);
 }
 
-void ANApi::RegEntity(IANEntity** ppEntity)
+void ANApi::RegEntity(IANEntity** ppEntity, const char* pszEntityClassID)
 {
-	this->m_pCore->GetGame()->RegEntity(ppEntity);
+	this->m_pCore->GetGame()->RegEntity(ppEntity, pszEntityClassID);
 }
 
 void ANApi::UnregEntity(IANEntity** ppEntity)
@@ -174,9 +174,58 @@ void ANApi::UnregEntity(IANEntity** ppEntity)
 	this->m_pCore->GetGame()->UnregEntity(ppEntity);
 }
 
+ANPointer<IANEntityGroup> ANApi::FindEntityByGroupID(const char* pszGroupID)
+{
+	ANPointer<ANEntityGroup> EntityGroup;
+	this->m_pCore->GetGame()->GetEntityList()->FindFromClassID(pszGroupID, &EntityGroup->m_EntityGroup);
+	return EntityGroup;
+}
+
 IANEntity* ANApi::GetEntityByName(const char* pszEntName)
 {
-	return nullptr;
+	return this->m_pCore->GetGame()->GetEntityList()->FindFromName(pszEntName);
+}
+
+bool ANApi::CreateAnimationComposition(const char** pszAnimationLabelsArr, int iAnimationLabelsArrSize, ANAnimationComposition* pAnimationComposition)
+{
+	if (iAnimationLabelsArrSize == 0)
+		return false;
+
+	*pAnimationComposition = (ANAnimationComposition)ANMemory::GetInstance()->ResourceAllocate(sizeof(int) + (sizeof(ANAnimationComposition) * iAnimationLabelsArrSize));
+
+	if (!*pAnimationComposition)
+		return false;
+
+	*(int*)*pAnimationComposition = iAnimationLabelsArrSize;
+
+	auto AnimationComposition = (ANAnimationComposition**)((std::uintptr_t)*pAnimationComposition + sizeof(int));
+
+	for (auto i = 0; i < iAnimationLabelsArrSize; i++)
+	{
+		ANImageID Image = 0;
+
+		ANUniqueResource ImageResource;
+
+		if (!this->m_pCore->GetResourceManager()->ReadBinFile(pszAnimationLabelsArr[i], &ImageResource))
+			return false;
+
+		if (!this->m_pCore->GetRenderer()->CreateImageFromResource(&ImageResource, &Image))
+			return false;
+
+		AnimationComposition[i] = (ANAnimationComposition*)Image;
+	}
+
+	return true;
+}
+
+void ANApi::DeleteAnimationComposition(ANAnimationComposition* pAnimationComposition)
+{
+	auto AnimationComposition = (ANAnimationComposition**)((std::uintptr_t)*pAnimationComposition + sizeof(int));
+
+	for (auto i = 0; i < *(int*)*pAnimationComposition; i++)
+		this->m_pCore->GetRenderer()->FreeImage((ANImageID*)((std::uintptr_t)AnimationComposition + (sizeof(ANAnimationComposition) * i)));
+		
+	ANMemory::GetInstance()->FreeResource(*pAnimationComposition);
 }
 
 bool ANApi::RegGuiWindow(ANGuiWindowID* pGuiWindowID, anVec2 Size)
@@ -238,20 +287,14 @@ anVec2 ANApi::WorldToScreen(IANWorld* pWorld, anVec2 PointWorld)
 {
 	auto wm = pWorld->GetMetrics();
 
-	return ANMathUtils::PointToScreen(
-		wm.m_WorldSize,
-		anRect(wm.m_WorldScreenPos, wm.m_WorldScreenPos + wm.m_WorldScreenSize),
-		PointWorld - wm.m_CameraWorld) + (wm.m_WorldScreenSize * 0.5f);
+	return ANMathUtils::WorldToScreen(wm.m_WorldSize, wm.m_WorldScreenPos, wm.m_WorldScreenSize, wm.m_CameraWorld, PointWorld);
 }
 
 anVec2 ANApi::WorldToScreen(IANWorld* pWorld, IANEntity* pEntity)
 {
 	auto wm = pWorld->GetMetrics();
 
-	return ANMathUtils::PointToScreen(
-		wm.m_WorldSize,
-		anRect(wm.m_WorldScreenPos, wm.m_WorldScreenPos + wm.m_WorldScreenSize),
-		pEntity->GetOrigin() - wm.m_CameraWorld) + (wm.m_WorldScreenSize * 0.5f);
+	return ANMathUtils::WorldToScreen(wm.m_WorldSize, wm.m_WorldScreenPos, wm.m_WorldScreenSize, wm.m_CameraWorld, pEntity->GetOrigin());
 }
 
 void ANApi::Update()
@@ -260,4 +303,5 @@ void ANApi::Update()
 
 	this->FPS = p->GetFramePerSecond();
 	this->Frametime = p->GetFrameTime();
+	this->TotalRenderTime = p->GetTotalRenderTime();
 }

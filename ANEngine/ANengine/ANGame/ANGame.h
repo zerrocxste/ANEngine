@@ -13,13 +13,17 @@ public:
 	void RegWorld(IANWorld** ppWorld);
 	void UnregWorld(IANWorld** ppWorld);
 
-	void RegEntity(IANEntity** ppEntity);
+	void RegEntity(IANEntity** ppEntity, const char* pszEntityClassID);
 	void UnregEntity(IANEntity** ppEntity);
+
+	ANEntityList* GetEntityList();
 private:
 	ANCore* m_pCore;
 
-	IANGameScene* m_pCurrentScene;
 	void DisconnectScene();
-
 	bool m_bNeedLeaveGame;
+
+	ANEntityList* m_pEntityList;
+
+	IANGameScene* m_pCurrentScene;
 };

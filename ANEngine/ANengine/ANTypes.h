@@ -7,6 +7,7 @@ typedef void* ANFontID;
 typedef void* ANInternalGuiWindowID;
 typedef void* ANGuiWindowID;
 typedef __int64 ANPerfomanceTick;
+typedef void** ANAnimationComposition;
 
 using fRenderInitialize = bool(__stdcall*)(HINSTANCE hInstance, HWND hWnd, void* pReversed);
 using fGetRendererFunctionTable = void*(__stdcall*)();

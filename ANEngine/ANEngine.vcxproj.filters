@@ -145,6 +145,15 @@
     <Filter Include="ANEngine\GamEntity\ANEntity">
       <UniqueIdentifier>{1e1a8cd3-fa80-47f7-8b5c-a8ab4f55da75}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ANEngine\Interfaces\Game\GameEntity\IANEntityGroup">
+      <UniqueIdentifier>{094f6b05-e502-42a3-9d39-976f99784bb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\GamEntity\ANEntityGroup">
+      <UniqueIdentifier>{ceae0870-1fc5-4829-8254-8ca8d4c3fd4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\ANPointer">
+      <UniqueIdentifier>{2904bed7-6bed-49c1-8c31-dbd24bff6e80}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ANEngine.cpp">
@@ -215,6 +224,9 @@
     </ClCompile>
     <ClCompile Include="ANengine\GameEntity\ANEntity\ANEntity.cpp">
       <Filter>ANEngine\GamEntity\ANEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\GameEntity\ANEntityGroup\ANEntityGroup.cpp">
+      <Filter>ANEngine\GamEntity\ANEntityGroup</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -319,6 +331,15 @@
     </ClInclude>
     <ClInclude Include="ANengine\GameEntity\ANEntity\ANEntity.h">
       <Filter>ANEngine\GamEntity\ANEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Interfaces\Game\GameEntity\IANEntityGroup\IANEntityGroup.h">
+      <Filter>ANEngine\Interfaces\Game\GameEntity\IANEntityGroup</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\GameEntity\ANEntityGroup\ANEntityGroup.h">
+      <Filter>ANEngine\GamEntity\ANEntityGroup</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\ANPointer\ANPointer.h">
+      <Filter>ANEngine\ANPointer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

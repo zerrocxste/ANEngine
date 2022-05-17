@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 #include <iostream>
+#include <vector>
 
 #include "ANMath/ANVec2/ANVec2.h"
 #include "ANMath/ANVec3/ANVec3.h"
@@ -12,15 +13,21 @@ typedef void* ANImageID;
 typedef void* ANFontID;
 typedef void* ANGuiWindowID;
 typedef __int64 ANPerfomanceTick;
+typedef void** ANAnimationComposition;
 
 class IANApi;
 class IANGameScene;
+class IANWorld;
+class IANEntity;
+class IANEntityGroup;
 
+#include "ANPointer/ANPointer.h"
 #include "GameEntity/Components/IANBasicEntity/IANBasicEntity.h"
 #include "GameEntity/Components/IANMovementController/IANMovementController.h"
 #include "GameEntity/Components/IANActionController/IANActionController.h"
 #include "GameEntity/Components/IANAnimationController/IANAnimationController.h"
 #include "GameEntity/IANEntity/IANEntity.h"
+#include "GameEntity/IANEntityGroup/IANEntityGroup.h"
 #include "IANWorld/IANWorld.h"
 #include "IANError/IANError.h"
 #include "IANGameScene/IANGameScene.h"

@@ -83,8 +83,6 @@ anVec2 ANMathUtils::CorrectSizeToOutRect(anVec2 OutRectSize, anVec2& SourcePos, 
 {
 	anVec2 ret;
 
-	auto DegOfSidesDifferent = CalcDegDifferentBetweenParties(SourceSize);
-
 	if (SourceSize.x < OutRectSize.x)
 	{
 		auto FreeSegments = (OutRectSize.x - SourceSize.x) * 0.5f;

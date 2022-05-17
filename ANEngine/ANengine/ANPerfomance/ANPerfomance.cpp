@@ -6,10 +6,12 @@ ANPerfomance::ANPerfomance() :
 	m_iFpsCounter(0),
 	m_BeginFrameTick(0),
 	m_EndFrameTick(0),
+	m_PrevFrameTick(0),
 	m_MaxFpsFrameTime(0),
 	m_bFrameTimeIsGrabbed(false),
 	m_iCurrentSkippedFrame(0),
-	m_iMaxFps(0)
+	m_iMaxFps(0),
+	m_TotalRenderTime(0.)
 {
 
 }
@@ -39,6 +41,11 @@ float ANPerfomance::GetFrameTime()
 	return this->m_MaxFpsFrameTime;
 }
 
+double ANPerfomance::GetTotalRenderTime()
+{
+	return this->m_TotalRenderTime;
+}
+
 void ANPerfomance::SetMaxFps(int iMaxFps)
 {
 	this->m_iMaxFps = iMaxFps;
@@ -49,6 +56,9 @@ void ANPerfomance::Update()
 	QueryPerformanceCounter((LARGE_INTEGER*)&this->m_BeginFrameTick);
 
 	this->m_MaxFpsFrameTime = (float)(this->m_BeginFrameTick - this->m_EndFrameTick) / 10000000.f;
+
+	if (this->m_EndFrameTick != 0)
+		this->m_TotalRenderTime += this->m_MaxFpsFrameTime;
 
 	this->m_PrevFrameTick = this->m_EndFrameTick;
 	this->m_EndFrameTick = this->m_BeginFrameTick;

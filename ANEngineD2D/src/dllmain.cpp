@@ -99,8 +99,6 @@ bool CreateRenderTarget(HWND hWnd)
 	renderTargetProperties.usage = D2D1_RENDER_TARGET_USAGE_NONE;
 	renderTargetProperties.minLevel = D2D1_FEATURE_LEVEL_DEFAULT;
 
-	printf("%d\n", g_EnabledVerticalSync);
-
 	D2D1_HWND_RENDER_TARGET_PROPERTIES hwndRenderTargetProperties{};
 	hwndRenderTargetProperties.hwnd = hWnd;
 	hwndRenderTargetProperties.pixelSize = D2D1::Size(static_cast<UINT32>(0), static_cast<UINT32>(0));

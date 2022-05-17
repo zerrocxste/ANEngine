@@ -5,6 +5,7 @@ class IANApi
 public:
 	int FPS;
 	float Frametime;
+	double TotalRenderTime;
 
 	virtual void LeaveApp() = 0;
 	virtual bool ConnectToScene(IANGameScene* pGameScene) = 0;
@@ -42,11 +43,14 @@ public:
 	virtual anVec2 WorldToScreen(IANWorld* pWorld, anVec2 PointWorld) = 0;
 	virtual anVec2 WorldToScreen(IANWorld* pWorld, IANEntity* pEntity) = 0;
 
-	virtual void RegEntity(IANEntity** ppEntity) = 0;
+	virtual void RegEntity(IANEntity** ppEntity, const char* pszEntityClassID) = 0;
 	virtual void UnregEntity(IANEntity** ppEntity) = 0;
-
+	virtual ANPointer<IANEntityGroup> FindEntityByGroupID(const char* pszGroupID) = 0;
 	virtual IANEntity* GetEntityByName(const char* pszEntName) = 0;
-	
+
+	virtual bool CreateAnimationComposition(const char** pszAnimationLabelsArr, int iAnimationLabelsArrSize, ANAnimationComposition* pAnimationComposition) = 0;
+	virtual void DeleteAnimationComposition(ANAnimationComposition* pAnimationComposition) = 0;
+
 	virtual bool RegGuiWindow(ANGuiWindowID* pGuiWindowID, anVec2 Size) = 0;
 	virtual bool UnregGuiWindow(ANGuiWindowID* pGuiWindowID) = 0;
 

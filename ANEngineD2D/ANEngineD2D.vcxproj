@@ -26,7 +26,6 @@
     <ClCompile Include="src\dllmain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="minhook.h" />
     <ClInclude Include="src\ANMath\ANColor\ANColor.h" />
     <ClInclude Include="src\ANMath\ANRect\ANRect.h" />
     <ClInclude Include="src\ANMath\ANVec2\ANVec2.h" />
