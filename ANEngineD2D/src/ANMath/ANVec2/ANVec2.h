@@ -8,6 +8,8 @@ public:
 	anVec2(float X, float Y);
 	~anVec2();
 
+	bool operator!();
+
 	bool operator==(anVec2 o);
 	bool operator!=(anVec2 o);
 
@@ -37,9 +39,8 @@ public:
 	anVec2 Inverse();
 
 	void Clear();
-	
+
 	float x, y;
 private:
 
 };
-

@@ -20,7 +20,9 @@ private:
 	ANAnimationComposition m_WoodyComposition;
 	ANAnimationComposition m_WoodyCompositionLeft;
 	ANAnimationComposition m_WoodyCompositionRight;
+	ANAnimationComposition m_WoodyDoorLeave;
 
-	IANEntity* m_pDoorEntity;
+	IANEntity* m_pDoorEntityHallwayKitchen;
+	IANEntity* m_pDoorEntityHallwayHall;
 	ANAnimationComposition m_DoorComposition;
 };

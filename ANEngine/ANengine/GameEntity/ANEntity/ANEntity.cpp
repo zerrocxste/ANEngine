@@ -17,7 +17,27 @@ void ANEntity::SetOrigin(anVec2 Origin)
 
 void ANEntity::MovePoint(IANApi* pApi, float Speed, anVec2 Origin)
 {
-	this->m_Origin += Origin * (Speed * pApi->Frametime);
+	anVec2 Way(Speed * pApi->Frametime);
+
+	if (this->m_Origin.x > Origin.x)
+		Way.x = -Way.y;
+
+	if (this->m_Origin.y > Origin.y)
+		Way.y = -Way.y;
+
+	auto DifferenceFromCenter = this->m_Origin - Origin;
+
+	if (DifferenceFromCenter.x > 0.f ? DifferenceFromCenter.x + Way.x < 0.f : DifferenceFromCenter.x + Way.x > 0.f)
+		this->m_Origin.x = Origin.x;
+
+	if (DifferenceFromCenter.y > 0.f ? DifferenceFromCenter.y + Way.y < 0.f : DifferenceFromCenter.y + Way.y > 0.f)
+		this->m_Origin.y = Origin.y;
+
+	if (this->m_Origin.x != Origin.x)
+		this->m_Origin.x += Way.x;
+
+	if (this->m_Origin.y != Origin.y)
+		this->m_Origin.y += Way.y;
 }
 
 void ANEntity::MoveLeft(IANApi* pApi, float Speed)
@@ -50,6 +70,11 @@ void ANEntity::SetVisible(bool IsVisible)
 	this->m_bIsOccluded = IsVisible;
 }
 
+void ANEntity::SetEntitySize(anVec2 EntitySize)
+{
+	this->m_EntitySize = EntitySize;
+}
+
 void ANEntity::DrawFromComposition(IANApi* pApi, IANWorld* pWorld)
 {
 	if (this->m_bIsOccluded)
@@ -60,7 +85,7 @@ void ANEntity::DrawFromComposition(IANApi* pApi, IANWorld* pWorld)
 	if (!AnimationCompositionFrame)
 		return;
 
-	auto FrameSize = pApi->GetImageSize(AnimationCompositionFrame);
+	auto FrameSize = !this->m_EntitySize ? pApi->GetImageSize(AnimationCompositionFrame) : this->m_EntitySize;
 
 	auto wm = pWorld->GetMetrics();
 
@@ -75,6 +100,36 @@ void ANEntity::DrawFromComposition(IANApi* pApi, IANWorld* pWorld)
 		ScreenPos,
 		FrameSize,
 		1.f);
+}
+
+bool ANEntity::IsScreenPointIntersected(IANApi* pApi, IANWorld* pWorld, anVec2 ScreenPoint)
+{
+	auto ScreenPointActor = pApi->WorldToScreen(pWorld, this->m_Origin);
+
+	auto CustomFrameSizeInvalid = !this->m_EntitySize;
+
+	anVec2 FrameSize;
+
+	if (CustomFrameSizeInvalid)
+	{
+		auto AnimationCompositionFrame = this->m_pIANAnimationCompositionController->GetCurrentAnimationCompositionFrame(pApi);
+
+		if (!AnimationCompositionFrame)
+			return false;
+
+		FrameSize = pApi->GetImageSize(AnimationCompositionFrame);
+	}
+	else
+		FrameSize = this->m_EntitySize;
+
+	auto wm = pWorld->GetMetrics();
+
+	FrameSize = ANMathUtils::WorldToScreen(wm.m_WorldSize, wm.m_WorldScreenPos, wm.m_WorldScreenSize, wm.m_CameraWorld, this->m_Origin + FrameSize) - ScreenPointActor;
+
+	ScreenPointActor.x -= (FrameSize.x * 0.5f);
+	ScreenPointActor.y -= FrameSize.y;
+
+	return anRect(ScreenPointActor, ScreenPointActor + FrameSize).IsIntersected(ScreenPoint);
 }
 
 void ANEntity::SetEntityName(const char* szEntityName)

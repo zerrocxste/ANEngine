@@ -53,6 +53,15 @@ enum RGBA
 	RGBA_MAX_SIZE
 };
 
+enum CursorKey
+{
+	MAIN_FIRST,
+	MAIN_SECOND,
+	SECONDARY,
+	ADDITIONAL_1,
+	ADDITIONAL_2
+};
+
 using fCreateEngineInstance = IANLoader * (__stdcall*)(
 	RenderTypes RenderType,
 	const char* pszWindowName,

@@ -3,20 +3,30 @@
 class IANApi
 {
 public:
+	//FRAME | RUNTIME STATISTICS
 	int FPS;
 	float Frametime;
 	double TotalRenderTime;
 
+	//MAIN
 	virtual void LeaveApp() = 0;
 	virtual bool ConnectToScene(IANGameScene* pGameScene) = 0;
 
+	//INPUT
+	virtual bool GetCursorKeyIsDowned(int k) = 0;
+	virtual bool GetCursorKeyIsClicked(int k) = 0;
+	virtual bool GetCursorKeyIsReleased(int k) = 0;
+	virtual float GetCursorKeyDownTime(int k) = 0;
+	virtual anVec2 GetCursorPos() = 0;
 	virtual bool GetKeyIsDowned(int k) = 0;
 	virtual bool GetKeyIsClicked(int k) = 0;
 	virtual bool GetKeyIsReleased(int k) = 0;
 	virtual float GetKeyDownTime(int k) = 0;
 
+	//SCREEN
 	virtual anVec2 GetScreenSize() = 0;
 
+	//DRAWING
 	virtual bool CreateImage(const char* pszPath, ANImageID* pImageID) = 0;
 	virtual anVec2 GetImageSize(ANImageID ImageID) = 0;
 	virtual void FreeImage(ANImageID* pImageID) = 0;
@@ -34,9 +44,11 @@ public:
 	virtual bool TextDraw(const char* pszText, anVec2 Pos, anColor Color) = 0;
 	virtual anVec2 TextCalcSize(const char* pszText) = 0;
 
+	//PERFOMANCE
 	virtual ANPerfomanceTick GetTickMicroseconds() = 0;
 	virtual ANPerfomanceTick GetPrevFrameTickMicroseconds() = 0;
 
+	//GAME UTILITY
 	virtual void RegWorld(IANWorld** ppWorld) = 0;
 	virtual void UnregWorld(IANWorld** ppWorld) = 0;
 
@@ -48,11 +60,13 @@ public:
 	virtual ANPointer<IANEntityGroup> FindEntityByGroupID(const char* pszGroupID) = 0;
 	virtual IANEntity* GetEntityByName(const char* pszEntName) = 0;
 
+	//DRAWING HELPERS
 	virtual bool CreateAnimationComposition(const char** pszAnimationLabelsArr, int iAnimationLabelsArrSize, ANAnimationComposition* pAnimationComposition) = 0;
 	virtual void DeleteAnimationComposition(ANAnimationComposition* pAnimationComposition) = 0;
 	virtual int GetAnimationCompositionSize(ANAnimationComposition AnimationComposition) = 0;
 	virtual ANImageID GetAnimationCompositionFrameFromID(ANAnimationComposition AnimationComposition, int ID) = 0;
 
+	//GUI WINDOW
 	virtual bool RegGuiWindow(ANGuiWindowID* pGuiWindowID, anVec2 Size) = 0;
 	virtual bool UnregGuiWindow(ANGuiWindowID* pGuiWindowID) = 0;
 
@@ -62,6 +76,7 @@ public:
 	virtual anVec2 GetGuiWindowSize(ANGuiWindowID GuiWindow) = 0;
 	virtual bool ResizeGuiWindow(ANGuiWindowID* pGuiWindow, anVec2 Size) = 0;
 
+	//GUI HELPERS
 	virtual bool AddButton(const char* pszName, anVec2 Pos, anVec2 Size, IANGuiButtonSkin* pButtonSkin = nullptr) = 0;
 	virtual bool AddCheckbox(const char* pszName, anVec2 Pos, anVec2 Size, bool* pVar, IANCheckboxSkin* pCheckboxSkin = nullptr) = 0;
 	virtual bool AddSliderInt(const char* pszName, anVec2 Pos, anVec2 Size, int iMin, int iMax, int* pVar, IANSliderSkin* pSliderSkin = nullptr) = 0;

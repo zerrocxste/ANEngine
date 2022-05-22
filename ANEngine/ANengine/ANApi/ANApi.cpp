@@ -23,6 +23,31 @@ bool ANApi::ConnectToScene(IANGameScene* pGameScene)
 	return this->m_pCore->GetGame()->ConnectScene(pGameScene);
 }
 
+bool ANApi::GetCursorKeyIsDowned(int k)
+{
+	return this->m_pCore->GetInput()->IsCursorKeyDowned(k);
+}
+
+bool ANApi::GetCursorKeyIsClicked(int k)
+{
+	return this->m_pCore->GetInput()->IsCursorKeyClicked(k);
+}
+
+bool ANApi::GetCursorKeyIsReleased(int k)
+{
+	return this->m_pCore->GetInput()->IsCursorKeyReleased(k);
+}
+
+float ANApi::GetCursorKeyDownTime(int k)
+{
+	return this->m_pCore->GetInput()->GetCursorKeyDownTime(k);
+}
+
+anVec2 ANApi::GetCursorPos()
+{
+	return this->m_pCore->GetInput()->GetCursorPos();
+}
+
 bool ANApi::GetKeyIsDowned(int k)
 {
 	return this->m_pCore->GetInput()->IsKeyDowned(k);

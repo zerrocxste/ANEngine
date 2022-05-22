@@ -9,6 +9,7 @@ public:
 	void SetCursorKey(int k, bool State);
 
 	bool IsCursorKeyDowned(int k);
+	bool IsCursorKeyClicked(int k);
 	bool IsCursorKeyReleased(int k);
 	bool GetCursorKeyDownTime(int k);
 

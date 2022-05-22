@@ -10,6 +10,11 @@ public:
 	void LeaveApp() override;
 	bool ConnectToScene(IANGameScene* pGameScene) override;
 
+	bool GetCursorKeyIsDowned(int k) override;
+	bool GetCursorKeyIsClicked(int k) override;
+	bool GetCursorKeyIsReleased(int k) override;
+	float GetCursorKeyDownTime(int k) override;
+	anVec2 GetCursorPos() override;
 	bool GetKeyIsDowned(int k) override;
 	bool GetKeyIsClicked(int k) override;
 	bool GetKeyIsReleased(int k) override;

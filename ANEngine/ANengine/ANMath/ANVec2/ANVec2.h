@@ -8,6 +8,8 @@ public:
 	anVec2(float X, float Y);
 	~anVec2();
 
+	bool operator!();
+
 	bool operator==(anVec2 o);
 	bool operator!=(anVec2 o);
 

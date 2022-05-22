@@ -28,6 +28,14 @@ bool ANInput::IsCursorKeyDowned(int k)
 	return this->m_kiCursorKeyMap[k].m_bIsDowned;
 }
 
+bool ANInput::IsCursorKeyClicked(int k)
+{
+	if (!IsInArrayRange(k, ARRSIZE(this->m_kiCursorKeyMap)))
+		return false;
+
+	return this->m_kiCursorKeyMap[k].m_bIsClicked;
+}
+
 bool ANInput::IsCursorKeyReleased(int k)
 {
 	if (!IsInArrayRange(k, ARRSIZE(this->m_kiCursorKeyMap)))
@@ -117,7 +125,7 @@ void ANInput::UpdateKeyMap(KeyInformation* pkiKeyMap)
 	km.m_bPrevFrameIsDowned = km.m_bIsDowned;
 
 	if (km.m_bIsDowned)
-		km.m_flDownTime += this->m_pCore->GetPerfomance()->GetFrameTime(); /*DELTA?*/
+		km.m_flDownTime += this->m_pCore->GetPerfomance()->GetFrameTime();
 	else
 		km.m_flDownTime = 0.f;
 }
