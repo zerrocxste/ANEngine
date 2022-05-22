@@ -20,8 +20,10 @@ class IANGameScene;
 class IANWorld;
 class IANEntity;
 class IANEntityGroup;
+class IANAnimationCompositionController;
 
 #include "ANPointer/ANPointer.h"
+#include "IANAnimationCompositionController/IANAnimationCompositionController.h"
 #include "GameEntity/Components/IANBasicEntity/IANBasicEntity.h"
 #include "GameEntity/Components/IANMovementController/IANMovementController.h"
 #include "GameEntity/Components/IANActionController/IANActionController.h"

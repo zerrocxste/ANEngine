@@ -51,9 +51,14 @@ void ANWorld::Update(IANApi* pApi)
 	wm->m_CameraScreen = ANMathUtils::CameraToScreen(wm->m_WorldSize, wm->m_WorldScreenPos, wm->m_WorldScreenSize, wm->m_CameraWorld);
 }
 
-void ANWorld::Draw(IANApi* pApi, ANImageID pImageID)
+void ANWorld::Draw(IANApi* pApi)
 {
+	auto AnimationCompositionFrame = this->m_pIANAnimationCompositionController->GetCurrentAnimationCompositionFrame(pApi);
+
+	if (!AnimationCompositionFrame)
+		return;
+
 	auto wm = &this->m_WorldMetrics;
 
-	pApi->DrawImage(pImageID, wm->m_CameraScreen, wm->m_WorldScreenSize, 1.f);
+	pApi->DrawImage(AnimationCompositionFrame, wm->m_CameraScreen, wm->m_WorldScreenSize, 1.f);
 }

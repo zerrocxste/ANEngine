@@ -1,5 +1,11 @@
 #include "../../includes.h"
 
+const char* pszWorld[] = { "house15.bmp" };
+const char* pszWoody[] = { "w_ms2_0004.png", "w_ms2_0005.png", "w_ms2_0006.png" };
+const char* pszWoodyLeft[] = { "W_mg3_0000.png", "W_mg3_0001.png", "W_mg3_0002.png", "W_mg3_0003.png", "W_mg3_0004.png", "W_mg3_0005.png", "W_mg3_0006.png", "W_mg3_0007.png" };
+const char* pszWoodyRight[] = { "W_mg1_0000.png", "W_mg1_0001.png", "W_mg1_0002.png", "W_mg1_0003.png", "W_mg1_0004.png", "W_mg1_0005.png", "W_mg1_0006.png", "W_mg1_0007.png" };
+const char* pszDoorAnim[] = { "N_leave_0000.png" };
+
 CTestLevel::CTestLevel()
 {
 	this->m_WorldZoom = 700.f;
@@ -12,33 +18,33 @@ CTestLevel::~CTestLevel()
 
 void CTestLevel::OnLoadScene(IANApi* pApi)
 {
-	pApi->CreateImage("house15.bmp", &this->LevelBG);
+	pApi->CreateAnimationComposition(pszWorld, 1, &this->m_WorldComposition);
+	pApi->CreateAnimationComposition(pszWoody, 3, &this->m_WoodyComposition);
+	pApi->CreateAnimationComposition(pszWoodyLeft, 8, &this->m_WoodyCompositionLeft);
+	pApi->CreateAnimationComposition(pszWoodyRight, 8, &this->m_WoodyCompositionRight);
+	pApi->CreateAnimationComposition(pszDoorAnim, 1, &this->m_DoorComposition);
 
 	pApi->RegWorld(&this->m_pWorld);
-	this->m_pWorld->SetWorldSize(pApi->GetImageSize(this->LevelBG));
+	this->m_pWorld->SetWorldSize(pApi->GetImageSize(pApi->GetAnimationCompositionFrameFromID(this->m_WorldComposition, 0)));
+	this->m_pWorld->m_pIANAnimationCompositionController->SetAnimationComposition(this->m_WorldComposition);
 
-	const char* pszWoody[] = { "w_ms2_0004.png", "w_ms2_0005.png", "w_ms2_0006.png" };
-	pApi->CreateAnimationComposition(pszWoody, 3, &this->m_WoodyComposition);
-	const char* pszWoodyLeft[] = { "W_mg3_0000.png", "W_mg3_0001.png", "W_mg3_0002.png", "W_mg3_0003.png", "W_mg3_0004.png", "W_mg3_0005.png", "W_mg3_0006.png", "W_mg3_0007.png" };
-	pApi->CreateAnimationComposition(pszWoodyLeft, 8, &this->m_WoodyCompositionLeft);
-	const char* pszWoodyRight[] = { "W_mg1_0000.png", "W_mg1_0001.png", "W_mg1_0002.png", "W_mg1_0003.png", "W_mg1_0004.png", "W_mg1_0005.png", "W_mg1_0006.png", "W_mg1_0007.png" };
-	pApi->CreateAnimationComposition(pszWoodyRight, 8, &this->m_WoodyCompositionRight);
 	pApi->RegEntity(&this->m_pMainActor, "CLASSID_Player");
 	this->m_pMainActor->SetOrigin(this->m_pWorld->GetMetrics().m_WorldSize * 0.5f);
 
 	pApi->RegEntity(&this->m_pDoorEntity, "CLASSID_WorldEntity");
 	this->m_pDoorEntity->SetOrigin(anVec2(1111.f, 550.f));
-	const char* pszDoorAnim[] = { "N_leave_0000.png" };
-	pApi->CreateAnimationComposition(pszDoorAnim, 1, &this->m_DoorComposition);
-	this->m_pDoorEntity->SetAnimationComposition(this->m_DoorComposition);
+	
+	this->m_pDoorEntity->m_pIANAnimationCompositionController->SetAnimationComposition(this->m_DoorComposition);
 }
 
 void CTestLevel::OnUnloadScene(IANApi* pApi)
 {
-	pApi->FreeImage(&this->LevelBG);
-
+	pApi->DeleteAnimationComposition(&this->m_WorldComposition);
+	pApi->DeleteAnimationComposition(&this->m_DoorComposition);
 	pApi->DeleteAnimationComposition(&this->m_WoodyComposition);
-
+	pApi->DeleteAnimationComposition(&this->m_WoodyCompositionLeft);
+	pApi->DeleteAnimationComposition(&this->m_WoodyCompositionRight);
+	
 	pApi->UnregWorld(&this->m_pWorld);
 
 	pApi->UnregEntity(&this->m_pMainActor);
@@ -48,31 +54,31 @@ void CTestLevel::Entry(IANApi* pApi)
 {
 	auto ScreenSize = pApi->GetScreenSize();
 
-	this->m_pMainActor->SetAnimationComposition(this->m_WoodyComposition);
-	this->m_pMainActor->SetAnimationDuration(0.2f);
+	this->m_pMainActor->m_pIANAnimationCompositionController->SetAnimationComposition(this->m_WoodyComposition);
+	this->m_pMainActor->m_pIANAnimationCompositionController->SetAnimationDuration(0.3f);
 
-	float Step = 0.3f;
+	float Step = 250.f;
 	if (pApi->GetKeyIsDowned('W'))
-		this->m_pMainActor->MoveUp(pApi, 250.f);
+		this->m_pMainActor->MoveUp(pApi, Step);
 	if (pApi->GetKeyIsDowned('S'))
-		this->m_pMainActor->MoveDown(pApi, 250.f);
+		this->m_pMainActor->MoveDown(pApi, Step);
 	if (pApi->GetKeyIsDowned('A'))
 	{
-		this->m_pMainActor->MoveLeft(pApi, 250.f);
-		this->m_pMainActor->SetAnimationComposition(this->m_WoodyCompositionLeft);
-		this->m_pMainActor->SetAnimationDuration(0.1f);
+		this->m_pMainActor->MoveLeft(pApi, Step);
+		this->m_pMainActor->m_pIANAnimationCompositionController->SetAnimationComposition(this->m_WoodyCompositionLeft);
+		this->m_pMainActor->m_pIANAnimationCompositionController->SetAnimationDuration(0.1f);
 	}
 	if (pApi->GetKeyIsDowned('D'))
 	{
-		this->m_pMainActor->MoveRight(pApi, 250.f);
-		this->m_pMainActor->SetAnimationComposition(this->m_WoodyCompositionRight);
-		this->m_pMainActor->SetAnimationDuration(0.1f);
+		this->m_pMainActor->MoveRight(pApi, Step);
+		this->m_pMainActor->m_pIANAnimationCompositionController->SetAnimationComposition(this->m_WoodyCompositionRight);
+		this->m_pMainActor->m_pIANAnimationCompositionController->SetAnimationDuration(0.1f);
 	}
 
 	this->m_pWorld->SetZoom(this->m_WorldZoom);
 	this->m_pWorld->SetCameraToEntity(this->m_pMainActor);
 	this->m_pWorld->Update(pApi);
-	this->m_pWorld->Draw(pApi, this->LevelBG);
+	this->m_pWorld->Draw(pApi);
 
 	pApi->FindEntityByGroupID("CLASSID_WorldEntity")->Draw(pApi, this->m_pWorld);
 	pApi->FindEntityByGroupID("CLASSID_Player")->Draw(pApi, this->m_pWorld);

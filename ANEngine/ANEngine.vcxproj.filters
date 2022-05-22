@@ -136,23 +136,29 @@
     <Filter Include="ANEngine\ANWorld">
       <UniqueIdentifier>{3aa109ee-bb3d-41c2-b3e1-7b9d3088258a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\GamEntity">
-      <UniqueIdentifier>{a38d4630-13d2-41e6-9c6c-45945381e485}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ANEngine\GamEntity\ANEntityList">
-      <UniqueIdentifier>{5387053a-7ee3-4f44-9705-1dca2bd8b336}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ANEngine\GamEntity\ANEntity">
-      <UniqueIdentifier>{1e1a8cd3-fa80-47f7-8b5c-a8ab4f55da75}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ANEngine\Interfaces\Game\GameEntity\IANEntityGroup">
       <UniqueIdentifier>{094f6b05-e502-42a3-9d39-976f99784bb7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\GamEntity\ANEntityGroup">
-      <UniqueIdentifier>{ceae0870-1fc5-4829-8254-8ca8d4c3fd4c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ANEngine\ANPointer">
       <UniqueIdentifier>{2904bed7-6bed-49c1-8c31-dbd24bff6e80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\Game\IANAnimationCompositionController">
+      <UniqueIdentifier>{7b56b900-5937-4706-afea-efd0fb894862}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\GameEntity">
+      <UniqueIdentifier>{a38d4630-13d2-41e6-9c6c-45945381e485}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\GameEntity\ANEntityList">
+      <UniqueIdentifier>{5387053a-7ee3-4f44-9705-1dca2bd8b336}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\GameEntity\ANEntity">
+      <UniqueIdentifier>{1e1a8cd3-fa80-47f7-8b5c-a8ab4f55da75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\GameEntity\ANEntityGroup">
+      <UniqueIdentifier>{ceae0870-1fc5-4829-8254-8ca8d4c3fd4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\GameEntity\ANAnimationCompositionController">
+      <UniqueIdentifier>{95ab472f-c035-490f-814c-9c989b15a100}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -220,13 +226,16 @@
       <Filter>ANEngine\ANWorld</Filter>
     </ClCompile>
     <ClCompile Include="ANengine\GameEntity\ANEntityList\ANEntityList.cpp">
-      <Filter>ANEngine\GamEntity\ANEntityList</Filter>
+      <Filter>ANEngine\GameEntity\ANEntityList</Filter>
     </ClCompile>
     <ClCompile Include="ANengine\GameEntity\ANEntity\ANEntity.cpp">
-      <Filter>ANEngine\GamEntity\ANEntity</Filter>
+      <Filter>ANEngine\GameEntity\ANEntity</Filter>
     </ClCompile>
     <ClCompile Include="ANengine\GameEntity\ANEntityGroup\ANEntityGroup.cpp">
-      <Filter>ANEngine\GamEntity\ANEntityGroup</Filter>
+      <Filter>ANEngine\GameEntity\ANEntityGroup</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\GameEntity\ANAnimationCompositionController\ANAnimationCompositionController.cpp">
+      <Filter>ANEngine\GameEntity\ANAnimationCompositionController</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -327,19 +336,25 @@
       <Filter>ANEngine\ANWorld</Filter>
     </ClInclude>
     <ClInclude Include="ANengine\GameEntity\ANEntityList\ANEntityList.h">
-      <Filter>ANEngine\GamEntity\ANEntityList</Filter>
+      <Filter>ANEngine\GameEntity\ANEntityList</Filter>
     </ClInclude>
     <ClInclude Include="ANengine\GameEntity\ANEntity\ANEntity.h">
-      <Filter>ANEngine\GamEntity\ANEntity</Filter>
+      <Filter>ANEngine\GameEntity\ANEntity</Filter>
     </ClInclude>
     <ClInclude Include="ANengine\Interfaces\Game\GameEntity\IANEntityGroup\IANEntityGroup.h">
       <Filter>ANEngine\Interfaces\Game\GameEntity\IANEntityGroup</Filter>
     </ClInclude>
     <ClInclude Include="ANengine\GameEntity\ANEntityGroup\ANEntityGroup.h">
-      <Filter>ANEngine\GamEntity\ANEntityGroup</Filter>
+      <Filter>ANEngine\GameEntity\ANEntityGroup</Filter>
     </ClInclude>
     <ClInclude Include="ANengine\ANPointer\ANPointer.h">
       <Filter>ANEngine\ANPointer</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Interfaces\Game\IANAnimationCompositionController\IANAnimationCompositionController.h">
+      <Filter>ANEngine\Interfaces\Game\IANAnimationCompositionController</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\GameEntity\ANAnimationCompositionController\ANAnimationCompositionController.h">
+      <Filter>ANEngine\GameEntity\ANAnimationCompositionController</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

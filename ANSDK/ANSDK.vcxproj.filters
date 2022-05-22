@@ -76,6 +76,9 @@
     <Filter Include="ANSDK\ANPointer">
       <UniqueIdentifier>{77a670ff-ac70-4d37-88f7-a7ea0628405e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ANSDK\IANAnimationCompositionController">
+      <UniqueIdentifier>{bbe9a6ac-35a0-48e9-963a-36adfcbbe4b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ANSDK\ANMath\ANColor\ANColor.cpp">
@@ -151,6 +154,9 @@
     </ClInclude>
     <ClInclude Include="ANSDK\ANPointer\ANPointer.h">
       <Filter>ANSDK\ANPointer</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\IANAnimationCompositionController\IANAnimationCompositionController.h">
+      <Filter>ANSDK\IANAnimationCompositionController</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

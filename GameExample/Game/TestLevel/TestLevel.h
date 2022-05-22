@@ -14,7 +14,7 @@ private:
 	float m_WorldZoom;
 
 	IANWorld* m_pWorld;
-	ANImageID LevelBG;
+	ANAnimationComposition m_WorldComposition;
 
 	IANEntity* m_pMainActor;
 	ANAnimationComposition m_WoodyComposition;

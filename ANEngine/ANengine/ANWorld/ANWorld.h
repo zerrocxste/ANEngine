@@ -11,5 +11,5 @@ public:
 	void SetCameraToPos(anVec2 Pos) override;
 	void SetZoom(float flZoom) override;
 	void Update(IANApi* pApi) override;
-	void Draw(IANApi* pApi, ANImageID pImageID) override;
+	void Draw(IANApi* pApi) override;
 };

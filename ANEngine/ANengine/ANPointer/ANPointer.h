@@ -5,7 +5,6 @@ class ANPointer
 {
 public:
 	T* m_Pointer;
-	bool m_IsCopied;
 
 	ANPointer();
 	~ANPointer();
@@ -28,7 +27,7 @@ ANPointer<T>::ANPointer()
 template <class T>
 ANPointer<T>::~ANPointer()
 {
-	if (!this->m_IsCopied)
+	if (this->m_Pointer != nullptr)
 		delete this->m_Pointer;
 }
 
@@ -37,7 +36,7 @@ template<class O>
 ANPointer<T>::ANPointer(ANPointer<O>& o)
 {
 	this->m_Pointer = o.m_Pointer;
-	o.m_IsCopied = true;
+	o.m_Pointer = nullptr;
 }
 
 template<class T>
@@ -51,6 +50,6 @@ template<class O>
 ANPointer<T>& ANPointer<T>::operator=(ANPointer<O>& o)
 {
 	this->m_Pointer = o.m_Pointer;
-	o.m_IsCopied = true;
+	o.m_Pointer = nullptr;
 	return *this;
 }

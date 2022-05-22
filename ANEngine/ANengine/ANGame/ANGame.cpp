@@ -66,27 +66,39 @@ void ANGame::LeaveGame()
 
 void ANGame::RegWorld(IANWorld** ppWorld)
 {
-	*ppWorld = ANMemory::GetInstance()->Allocate<ANWorld>();
+	auto& pWorld = *ppWorld;
+
+	pWorld = ANMemory::GetInstance()->Allocate<ANWorld>();
+
+	pWorld->m_pIANAnimationCompositionController = ANMemory::GetInstance()->Allocate<ANAnimationCompositionController>();
 }
 
 void ANGame::UnregWorld(IANWorld** ppWorld)
 {
-	if (!*ppWorld)
+	auto& pWorld = *ppWorld;
+
+	if (!pWorld)
 		return;
 
-	ANMemory::GetInstance()->Delete(*ppWorld);
+	ANMemory::GetInstance()->Delete(pWorld->m_pIANAnimationCompositionController);
 
-	*ppWorld = nullptr;
+	ANMemory::GetInstance()->Delete(pWorld);
+
+	pWorld = nullptr;
 }
 
 void ANGame::RegEntity(IANEntity** ppEntity, const char* pszEntityClassID)
 {
-	*ppEntity = ANMemory::GetInstance()->Allocate<ANEntity>();
+	auto& pEntity = *ppEntity;
+
+	pEntity = ANMemory::GetInstance()->Allocate<ANEntity>();
+
+	pEntity->m_pIANAnimationCompositionController = ANMemory::GetInstance()->Allocate<ANAnimationCompositionController>();
 
 	if (pszEntityClassID)
 	{
 		auto LengthEntityName = strlen(pszEntityClassID) + 1;
-		memcpy(((ANEntity*)(*ppEntity))->m_szEntityClassID = new char[LengthEntityName], pszEntityClassID, LengthEntityName);
+		memcpy(((ANEntity*)pEntity)->m_szEntityClassID = new char[LengthEntityName], pszEntityClassID, LengthEntityName);
 	}
 
 	GetEntityList()->Add(*ppEntity);
@@ -94,14 +106,18 @@ void ANGame::RegEntity(IANEntity** ppEntity, const char* pszEntityClassID)
 
 void ANGame::UnregEntity(IANEntity** ppEntity)
 {
-	if (!*ppEntity)
+	auto& pEntity = *ppEntity;
+
+	if (!pEntity)
 		return;
 
-	GetEntityList()->Remove(*ppEntity);
+	GetEntityList()->Remove(pEntity);
 
-	ANMemory::GetInstance()->Delete(*ppEntity);
+	ANMemory::GetInstance()->Delete(pEntity->m_pIANAnimationCompositionController);
 
-	*ppEntity = nullptr;
+	ANMemory::GetInstance()->Delete(pEntity);
+
+	pEntity = nullptr;
 }
 
 ANEntityList* ANGame::GetEntityList()

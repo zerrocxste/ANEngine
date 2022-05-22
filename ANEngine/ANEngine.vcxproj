@@ -157,6 +157,7 @@
     <ClCompile Include="ANengine\ANRenderer\ANRenderer.cpp" />
     <ClCompile Include="ANengine\ANWindow\ANWindow.cpp" />
     <ClCompile Include="ANengine\ANWorld\ANWorld.cpp" />
+    <ClCompile Include="ANengine\GameEntity\ANAnimationCompositionController\ANAnimationCompositionController.cpp" />
     <ClCompile Include="ANengine\GameEntity\ANEntityGroup\ANEntityGroup.cpp" />
     <ClCompile Include="ANengine\GameEntity\ANEntityList\ANEntityList.cpp" />
     <ClCompile Include="ANengine\GameEntity\ANEntity\ANEntity.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="ANengine\ANTypes.h" />
     <ClInclude Include="ANengine\ANWindow\ANWindow.h" />
     <ClInclude Include="ANengine\ANWorld\ANWorld.h" />
+    <ClInclude Include="ANengine\GameEntity\ANAnimationCompositionController\ANAnimationCompositionController.h" />
     <ClInclude Include="ANengine\GameEntity\ANEntityGroup\ANEntityGroup.h" />
     <ClInclude Include="ANengine\GameEntity\ANEntityList\ANEntityList.h" />
     <ClInclude Include="ANengine\GameEntity\ANEntity\ANEntity.h" />
@@ -196,6 +198,7 @@
     <ClInclude Include="ANengine\Interfaces\Game\GameEntity\Components\IANMovementController\IANMovementController.h" />
     <ClInclude Include="ANengine\Interfaces\Game\GameEntity\IANEntityGroup\IANEntityGroup.h" />
     <ClInclude Include="ANengine\Interfaces\Game\GameEntity\IANEntity\IANEntity.h" />
+    <ClInclude Include="ANengine\Interfaces\Game\IANAnimationCompositionController\IANAnimationCompositionController.h" />
     <ClInclude Include="ANengine\Interfaces\Game\World\IANWorld.h" />
     <ClInclude Include="ANengine\Interfaces\GuiSkin\GuiSkin.h" />
     <ClInclude Include="ANengine\Interfaces\IANApi\IANApi.h" />

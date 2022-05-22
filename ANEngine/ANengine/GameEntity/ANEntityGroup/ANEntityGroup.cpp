@@ -9,7 +9,7 @@ void ANEntityGroup::SetVisible(bool IsVisible)
 void ANEntityGroup::SetAnimationDuration(float flDuration)
 {
 	for (auto& entity : this->m_EntityGroup)
-		entity->SetAnimationDuration(flDuration);
+		entity->m_pIANAnimationCompositionController->SetAnimationDuration(flDuration);
 }
 
 void ANEntityGroup::SetOrigin(anVec2 Origin)
@@ -54,7 +54,6 @@ void ANEntityGroup::Draw(IANApi* pApi, IANWorld* pWorld)
 	{
 		auto EntList = this->m_EntityGroup;
 
-		int i = 0;
 		for (auto it = EntList.begin(); it < EntList.end() - 1; it++)
 		{
 			std::vector<IANEntity*>::iterator EntityIter;
@@ -79,8 +78,6 @@ void ANEntityGroup::Draw(IANApi* pApi, IANWorld* pWorld)
 			auto Save = *EntityIter;
 			*EntityIter = *it;
 			*it = Save;
-
-			i++;
 		}
 
 		for (auto& entity : EntList)

@@ -50,6 +50,8 @@ public:
 
 	bool CreateAnimationComposition(const char** pszAnimationLabelsArr, int iAnimationLabelsArrSize, ANAnimationComposition* pAnimationComposition) override;
 	void DeleteAnimationComposition(ANAnimationComposition* pAnimationComposition) override;
+	int GetAnimationCompositionSize(ANAnimationComposition AnimationComposition) override;
+	ANImageID GetAnimationCompositionFrameFromID(ANAnimationComposition AnimationComposition, int ID) override;
 
 	bool RegGuiWindow(ANGuiWindowID* pGuiWindowID, anVec2 Size) override;
 	bool UnregGuiWindow(ANGuiWindowID* pGuiWindowID) override;

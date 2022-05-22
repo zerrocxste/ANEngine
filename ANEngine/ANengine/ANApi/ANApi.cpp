@@ -228,6 +228,16 @@ void ANApi::DeleteAnimationComposition(ANAnimationComposition* pAnimationComposi
 	ANMemory::GetInstance()->FreeResource(*pAnimationComposition);
 }
 
+int ANApi::GetAnimationCompositionSize(ANAnimationComposition AnimationComposition)
+{
+	return *(int*)AnimationComposition;
+}
+
+ANImageID ANApi::GetAnimationCompositionFrameFromID(ANAnimationComposition AnimationComposition, int ID)
+{
+	return *(ANImageID*)(((std::uintptr_t)AnimationComposition + sizeof(int)) + (sizeof(ANAnimationComposition) * ID));
+}
+
 bool ANApi::RegGuiWindow(ANGuiWindowID* pGuiWindowID, anVec2 Size)
 {
 	return this->m_pCore->GetGui()->WindowCreate(pGuiWindowID, Size);

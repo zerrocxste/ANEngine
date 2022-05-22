@@ -50,6 +50,8 @@ public:
 
 	virtual bool CreateAnimationComposition(const char** pszAnimationLabelsArr, int iAnimationLabelsArrSize, ANAnimationComposition* pAnimationComposition) = 0;
 	virtual void DeleteAnimationComposition(ANAnimationComposition* pAnimationComposition) = 0;
+	virtual int GetAnimationCompositionSize(ANAnimationComposition AnimationComposition) = 0;
+	virtual ANImageID GetAnimationCompositionFrameFromID(ANAnimationComposition AnimationComposition, int ID) = 0;
 
 	virtual bool RegGuiWindow(ANGuiWindowID* pGuiWindowID, anVec2 Size) = 0;
 	virtual bool UnregGuiWindow(ANGuiWindowID* pGuiWindowID) = 0;
