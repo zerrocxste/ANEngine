@@ -77,6 +77,33 @@ void ANEntity::SetEntitySize(anVec2 EntitySize)
 
 void ANEntity::DrawFromComposition(IANApi* pApi, IANWorld* pWorld)
 {
+	if (this->m_pIANInteractionController != nullptr)
+	{
+		auto iml = pApi->GetInteractionMessagesList();
+
+		for (auto& e : iml->m_InteractionMessagesList)
+		{
+			if (e.m_pszEntityName == nullptr && e.m_pszClassIDName == nullptr)
+				this->m_pIANInteractionController->ActionHandler(e.m_pszEventMessage, e.m_pRemoteEntity);
+		}
+
+		if (this->m_szEntityName)
+		{
+			for (auto& e : iml->GetInteractionFromEntityName(this->m_szEntityName))
+			{
+				this->m_pIANInteractionController->ActionHandler(e->m_pszEventMessage, e->m_pRemoteEntity);
+			}
+		}
+		
+		if (this->m_szEntityClassID)
+		{
+			for (auto& e : iml->GetInteractionFromEntityClassID(this->m_szEntityClassID))
+			{
+				this->m_pIANInteractionController->ActionHandler(e->m_pszEventMessage, e->m_pRemoteEntity);
+			}
+		}
+	}
+
 	if (this->m_bIsOccluded)
 		return;
 
@@ -111,6 +138,11 @@ bool ANEntity::IsScreenPointIntersected(IANApi* pApi, IANWorld* pWorld, anVec2 S
 	auto Screen = ANMathUtils::CalcBBox(pWorld->GetMetrics(), this->m_Origin, FrameSize);
 
 	return Screen.MakeSwapPoints().MakeSizeToDest().IsIntersected(ScreenPoint);
+}
+
+void ANEntity::SetInteractionController(IANInteractionController* pIANInteractionController)
+{
+	this->m_pIANInteractionController = pIANInteractionController;
 }
 
 void ANEntity::SetEntityName(const char* szEntityName)

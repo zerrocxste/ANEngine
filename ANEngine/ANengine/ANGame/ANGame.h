@@ -17,6 +17,7 @@ public:
 	void UnregEntity(IANEntity** ppEntity);
 
 	ANEntityList* GetEntityList();
+	ANInteractionMessagesList* GetInteractionList();
 private:
 	ANCore* m_pCore;
 
@@ -24,6 +25,6 @@ private:
 	bool m_bNeedLeaveGame;
 
 	ANEntityList* m_pEntityList;
-
+	ANInteractionMessagesList* m_pInteractionMessagesList;
 	IANGameScene* m_pCurrentScene;
 };

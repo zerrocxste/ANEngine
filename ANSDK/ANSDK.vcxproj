@@ -160,6 +160,7 @@
     <ClInclude Include="ANSDK\GameEntity\Components\IANMovementController\IANMovementController.h" />
     <ClInclude Include="ANSDK\GameEntity\IANEntityGroup\IANEntityGroup.h" />
     <ClInclude Include="ANSDK\GameEntity\IANEntity\IANEntity.h" />
+    <ClInclude Include="ANSDK\GameEntity\IANInteractionController\IANInteractionController.h" />
     <ClInclude Include="ANSDK\Gui\GuiSkin.h" />
     <ClInclude Include="ANSDK\IANAnimationCompositionController\IANAnimationCompositionController.h" />
     <ClInclude Include="ANSDK\IANApi\IANApi.h" />

@@ -124,3 +124,8 @@ ANEntityList* ANGame::GetEntityList()
 {
 	return this->m_pEntityList;
 }
+
+ANInteractionMessagesList* ANGame::GetInteractionList()
+{
+	return this->m_pInteractionMessagesList;
+}

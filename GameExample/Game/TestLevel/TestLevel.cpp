@@ -1,9 +1,30 @@
 #include "../../includes.h"
 
-const char* pszWorld[] = { "house15.bmp" };
-const char* pszWoody[] = { "w_ms2_0004.png", "w_ms2_0005.png", "w_ms2_0006.png" };
-const char* pszWoodyLeft[] = { "W_mg3_0000.png", "W_mg3_0001.png", "W_mg3_0002.png", "W_mg3_0003.png", "W_mg3_0004.png", "W_mg3_0005.png", "W_mg3_0006.png", "W_mg3_0007.png" };
-const char* pszWoodyRight[] = { "W_mg1_0000.png", "W_mg1_0001.png", "W_mg1_0002.png", "W_mg1_0003.png", "W_mg1_0004.png", "W_mg1_0005.png", "W_mg1_0006.png", "W_mg1_0007.png" };
+const char* pszWorld[] = { 
+	"house15.bmp" 
+};
+const char* pszWoody[] = { 
+	"w_ms2_0004.png", 
+	"w_ms2_0005.png", 
+	"w_ms2_0006.png" };
+const char* pszWoodyLeft[] = { 
+	"W_mg3_0000.png", 
+	"W_mg3_0001.png", 
+	"W_mg3_0002.png", 
+	"W_mg3_0003.png", 
+	"W_mg3_0004.png", 
+	"W_mg3_0005.png", 
+	"W_mg3_0006.png", 
+	"W_mg3_0007.png" };
+const char* pszWoodyRight[] = { 
+	"W_mg1_0000.png", 
+	"W_mg1_0001.png", 
+	"W_mg1_0002.png", 
+	"W_mg1_0003.png", 
+	"W_mg1_0004.png", 
+	"W_mg1_0005.png", 
+	"W_mg1_0006.png", 
+	"W_mg1_0007.png" };
 const char* pszWoodyDoor[] = { 
 	"W_leave_0000.png", 
 	"W_leave_0001.png", 
@@ -15,7 +36,9 @@ const char* pszWoodyDoor[] = {
 	"W_leave_0007.png", 
 	"W_leave_0008.png", 
 	"W_leave_0009.png", };
-const char* pszDoorAnim[] = { "N_leave_0000.png" };
+const char* pszDoorAnim[] = { 
+	"N_leave_0000.png"
+};
 
 CTestLevel::CTestLevel()
 {
@@ -106,9 +129,6 @@ void CTestLevel::Entry(IANApi* pApi)
 	this->m_pWorld->SetCameraToEntity(this->m_pMainActor);
 	this->m_pWorld->Update(pApi);
 	this->m_pWorld->Draw(pApi);
-
-	if (this->m_pDoorEntityHallwayHall->IsScreenPointIntersected(pApi, this->m_pWorld, pApi->GetCursorPos()))
-		printf("dsad\n");
 
 	pApi->FindEntityByGroupID("CLASSID_WorldEntity")->Draw(pApi, this->m_pWorld);
 	pApi->FindEntityByGroupID("CLASSID_Player")->SortByYOrder().Draw(pApi, this->m_pWorld);

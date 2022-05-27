@@ -31,9 +31,11 @@ class IANWorld;
 class IANEntity;
 class IANEntityGroup;
 class IANAnimationCompositionController;
+class IANInteractionController;
 
 #include "ANInterfacePointer/ANInterfacePointer.h"
 #include "IANAnimationCompositionController/IANAnimationCompositionController.h"
+#include "GameEntity/IANInteractionController/IANInteractionController.h"
 #include "GameEntity/Components/IANBasicEntity/IANBasicEntity.h"
 #include "GameEntity/Components/IANMovementController/IANMovementController.h"
 #include "GameEntity/Components/IANActionController/IANActionController.h"

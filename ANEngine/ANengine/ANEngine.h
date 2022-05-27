@@ -30,6 +30,8 @@ class IANWorld;
 class IANEntity;
 class IANEntityGroup;
 class IANAnimationCompositionController;
+class IANInteractionController;
+class IANInteractionMessagesList;
 
 #include "ANMath/ANVec2/ANVec2.h"
 #include "ANMath/ANVec3/ANVec3.h"
@@ -46,11 +48,13 @@ class IANAnimationCompositionController;
 #include "Interfaces/Game/GameEntity/Components/IANMovementController/IANMovementController.h"
 #include "Interfaces/Game/GameEntity/Components/IANActionController/IANActionController.h"
 #include "Interfaces/Game/GameEntity/Components/IANAnimationController/IANAnimationController.h"
+#include "Interfaces/Game/GameEntity/IANInteractionController/IANInteractionController.h"
+#include "Interfaces/Game/IANInteractionMessagesList/IANInteractionMessagesList.h"
 #include "Interfaces/Game/GameEntity/IANEntity/IANEntity.h"
 #include "Interfaces/Game/GameEntity/IANEntityGroup/IANEntityGroup.h"
 #include "Interfaces/Game/IANAnimationCompositionController/IANAnimationCompositionController.h"
 #include "Interfaces/IANError/IANError.h"
-#include "Interfaces/Game/World/IANWorld.h"
+#include "Interfaces/Game/IANWorld/IANWorld.h"
 #include "Interfaces/IANGameScene/IANGameScene.h"
 #include "Interfaces/GuiSkin/GuiSkin.h"
 #include "Interfaces/IANApi/IANApi.h"
@@ -66,6 +70,7 @@ class IANAnimationCompositionController;
 #include "ANWindow/ANWindow.h"
 #include "ANWorld/ANWorld.h"
 #include "GameEntity/ANEntityList/ANEntityList.h"
+#include "GameEntity/ANInteractionMessagesList/ANInteractionMessagesList.h"
 #include "GameEntity/ANEntity/ANEntity.h"
 #include "GameEntity/ANEntityGroup/ANEntityGroup.h"
 #include "GameEntity/ANAnimationCompositionController/ANAnimationCompositionController.h"

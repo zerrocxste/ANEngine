@@ -21,6 +21,8 @@ public:
 
 	bool IsScreenPointIntersected(IANApi* pApi, IANWorld* pWorld, anVec2 ScreenPoint) override;
 
+	void SetInteractionController(IANInteractionController* pIANInteractionController) override;
+
 	void SetEntityName(const char* szEntityName) override;
 	char* GetEntityName() override;
 };

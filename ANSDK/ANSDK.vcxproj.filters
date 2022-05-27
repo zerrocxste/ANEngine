@@ -79,6 +79,9 @@
     <Filter Include="ANSDK\ANInterfacePointer">
       <UniqueIdentifier>{ac510ec0-eb67-434a-ad49-e0fb923c24d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ANSDK\GameEntity\IANInteractionController">
+      <UniqueIdentifier>{90d0504a-b843-445d-b577-49276a99b2f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ANSDK\ANMath\ANColor\ANColor.cpp">
@@ -157,6 +160,9 @@
     </ClInclude>
     <ClInclude Include="ANSDK\ANInterfacePointer\ANInterfacePointer.h">
       <Filter>ANSDK\ANInterfacePointer</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\GameEntity\IANInteractionController\IANInteractionController.h">
+      <Filter>ANSDK\GameEntity\IANInteractionController</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -130,9 +130,6 @@
     <Filter Include="ANEngine\Interfaces\Game\GameEntity\Components\IANBasicEntity">
       <UniqueIdentifier>{9eb35d45-a6ff-4f6e-8025-b27742b99881}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\Interfaces\Game\World">
-      <UniqueIdentifier>{08d558b5-53f0-48ce-8ee3-cf19380cbf9c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ANEngine\ANWorld">
       <UniqueIdentifier>{3aa109ee-bb3d-41c2-b3e1-7b9d3088258a}</UniqueIdentifier>
     </Filter>
@@ -159,6 +156,18 @@
     </Filter>
     <Filter Include="ANEngine\ANInterfacePointer">
       <UniqueIdentifier>{0de6b5fa-2355-4972-aef0-acc36d345697}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\Game\GameEntity\IANInteractionController">
+      <UniqueIdentifier>{753041a8-ea31-4e17-8045-3b398c7a1488}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\Game\IANInteractionMessagesList">
+      <UniqueIdentifier>{d5b912cf-5d90-4b21-8655-596ea4c911f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\Game\IANWorld">
+      <UniqueIdentifier>{536191d5-1832-4f99-a088-3badac8b7fe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\GameEntity\ANInteractionMessagesList">
+      <UniqueIdentifier>{9149e909-02c5-45c9-9cd1-c8d630f9a95a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -236,6 +245,9 @@
     </ClCompile>
     <ClCompile Include="ANengine\GameEntity\ANAnimationCompositionController\ANAnimationCompositionController.cpp">
       <Filter>ANEngine\GameEntity\ANAnimationCompositionController</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\GameEntity\ANInteractionMessagesList\ANInteractionMessagesList.cpp">
+      <Filter>ANEngine\GameEntity\ANInteractionMessagesList</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -329,9 +341,6 @@
     <ClInclude Include="ANengine\Interfaces\Game\GameEntity\Components\IANMovementController\IANMovementController.h">
       <Filter>ANEngine\Interfaces\Game\GameEntity\Components\IANMovementController</Filter>
     </ClInclude>
-    <ClInclude Include="ANengine\Interfaces\Game\World\IANWorld.h">
-      <Filter>ANEngine\Interfaces\Game\World</Filter>
-    </ClInclude>
     <ClInclude Include="ANengine\ANWorld\ANWorld.h">
       <Filter>ANEngine\ANWorld</Filter>
     </ClInclude>
@@ -355,6 +364,18 @@
     </ClInclude>
     <ClInclude Include="ANengine\ANInterfacePointer\ANInterfacePointer.h">
       <Filter>ANEngine\ANInterfacePointer</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Interfaces\Game\GameEntity\IANInteractionController\IANInteractionController.h">
+      <Filter>ANEngine\Interfaces\Game\GameEntity\IANInteractionController</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Interfaces\Game\IANInteractionMessagesList\IANInteractionMessagesList.h">
+      <Filter>ANEngine\Interfaces\Game\IANInteractionMessagesList</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Interfaces\Game\IANWorld\IANWorld.h">
+      <Filter>ANEngine\Interfaces\Game\IANWorld</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\GameEntity\ANInteractionMessagesList\ANInteractionMessagesList.h">
+      <Filter>ANEngine\GameEntity\ANInteractionMessagesList</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
