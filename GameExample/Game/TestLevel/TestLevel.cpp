@@ -107,11 +107,11 @@ void CTestLevel::Entry(IANApi* pApi)
 	this->m_pWorld->Update(pApi);
 	this->m_pWorld->Draw(pApi);
 
-	//if (this->m_pDoorEntityHallwayHall->IsScreenPointIntersected(pApi, this->m_pWorld, pApi->GetCursorPos()))
-
+	if (this->m_pDoorEntityHallwayHall->IsScreenPointIntersected(pApi, this->m_pWorld, pApi->GetCursorPos()))
+		printf("dsad\n");
 
 	pApi->FindEntityByGroupID("CLASSID_WorldEntity")->Draw(pApi, this->m_pWorld);
-	pApi->FindEntityByGroupID("CLASSID_Player")->Draw(pApi, this->m_pWorld);
+	pApi->FindEntityByGroupID("CLASSID_Player")->SortByYOrder().Draw(pApi, this->m_pWorld);
 
 	auto WorldMetrics = this->m_pWorld->GetMetrics();
 	auto ActorScreen = pApi->WorldToScreen(this->m_pWorld, this->m_pMainActor);

@@ -13,5 +13,6 @@ public:
 	virtual void MoveRight(IANApi* pApi, float Speed) = 0;
 	virtual void MoveUp(IANApi* pApi, float Speed) = 0;
 	virtual void MoveDown(IANApi* pApi, float Speed) = 0;
+	virtual IANEntityGroup& SortByYOrder() = 0;
 	virtual void Draw(IANApi* pApi, IANWorld* pWorld) = 0;
 };

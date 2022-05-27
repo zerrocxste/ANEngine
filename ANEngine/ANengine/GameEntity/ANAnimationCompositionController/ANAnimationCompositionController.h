@@ -4,7 +4,7 @@ class ANAnimationCompositionController : public IANAnimationCompositionControlle
 {
 public:
 	void SetAnimationDuration(float flDuration) override;
-	bool IsNeedUpdateAnimation(IANApi* pApi) override;
+	int GetNeedUpdateAnimationCounter(IANApi* pApi) override;
 	void SetAnimationComposition(ANAnimationComposition AnimationComposition) override;
 	ANImageID GetCurrentAnimationCompositionFrame(IANApi* pApi) override;
 	int GetCurrentAnimationCompositionCount() override;

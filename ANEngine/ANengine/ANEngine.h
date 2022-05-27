@@ -10,13 +10,6 @@
 #include <direct.h>
 #include <thread>
 
-#include "ANMath/ANVec2/ANVec2.h"
-#include "ANMath/ANVec3/ANVec3.h"
-#include "ANMath/ANRect/ANRect.h"
-#include "ANMath/ANColor/ANColor.h"
-
-#include "ANMath/ANMathUtils/ANMathUtils.h"
-
 class ANCore;
 class ANWindow;
 class ANInput;
@@ -38,9 +31,16 @@ class IANEntity;
 class IANEntityGroup;
 class IANAnimationCompositionController;
 
+#include "ANMath/ANVec2/ANVec2.h"
+#include "ANMath/ANVec3/ANVec3.h"
+#include "ANMath/ANRect/ANRect.h"
+#include "ANMath/ANColor/ANColor.h"
+
 #include "ANTypes.h"
 
-#include "ANPointer/ANPointer.h"
+#include "ANMath/ANMathUtils/ANMathUtils.h"
+
+#include "ANInterfacePointer/ANInterfacePointer.h"
 
 #include "Interfaces/Game/GameEntity/Components/IANBasicEntity/IANBasicEntity.h"
 #include "Interfaces/Game/GameEntity/Components/IANMovementController/IANMovementController.h"

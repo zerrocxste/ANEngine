@@ -57,7 +57,7 @@ public:
 
 	virtual void RegEntity(IANEntity** ppEntity, const char* pszEntityClassID) = 0;
 	virtual void UnregEntity(IANEntity** ppEntity) = 0;
-	virtual ANPointer<IANEntityGroup> FindEntityByGroupID(const char* pszGroupID) = 0;
+	virtual ANInterfacePointer<IANEntityGroup> FindEntityByGroupID(const char* pszGroupID) = 0;
 	virtual IANEntity* GetEntityByName(const char* pszEntName) = 0;
 
 	//DRAWING HELPERS

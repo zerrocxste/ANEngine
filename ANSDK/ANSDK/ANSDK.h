@@ -9,6 +9,16 @@
 #include "ANMath/ANRect/ANRect.h"
 #include "ANMath/ANColor/ANColor.h"
 
+struct ANWorldMetrics
+{
+	anVec2 m_WorldSize;
+	anVec2 m_WorldScreenPos;
+	anVec2 m_WorldScreenSize;
+	anVec2 m_CameraWorld;
+	anVec2 m_CameraScreen;
+	float m_flMapZoom;
+};
+
 typedef void* ANImageID;
 typedef void* ANFontID;
 typedef void* ANGuiWindowID;
@@ -22,7 +32,7 @@ class IANEntity;
 class IANEntityGroup;
 class IANAnimationCompositionController;
 
-#include "ANPointer/ANPointer.h"
+#include "ANInterfacePointer/ANInterfacePointer.h"
 #include "IANAnimationCompositionController/IANAnimationCompositionController.h"
 #include "GameEntity/Components/IANBasicEntity/IANBasicEntity.h"
 #include "GameEntity/Components/IANMovementController/IANMovementController.h"
@@ -57,7 +67,7 @@ enum CursorKey
 {
 	MAIN_FIRST,
 	MAIN_SECOND,
-	SECONDARY,
+	SECONDARY, 
 	ADDITIONAL_1,
 	ADDITIONAL_2
 };

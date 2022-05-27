@@ -46,6 +46,16 @@ struct KeyInformation
 	float m_flDownTime;
 };
 
+struct ANWorldMetrics
+{
+	anVec2 m_WorldSize;
+	anVec2 m_WorldScreenPos;
+	anVec2 m_WorldScreenSize;
+	anVec2 m_CameraWorld;
+	anVec2 m_CameraScreen;
+	float m_flMapZoom;
+};
+
 struct ANComponents
 {
 	ANWindow* m_pANWindow;

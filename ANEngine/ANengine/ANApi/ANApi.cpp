@@ -199,9 +199,9 @@ void ANApi::UnregEntity(IANEntity** ppEntity)
 	this->m_pCore->GetGame()->UnregEntity(ppEntity);
 }
 
-ANPointer<IANEntityGroup> ANApi::FindEntityByGroupID(const char* pszGroupID)
+ANInterfacePointer<IANEntityGroup> ANApi::FindEntityByGroupID(const char* pszGroupID)
 {
-	ANPointer<ANEntityGroup> EntityGroup;
+	ANInterfacePointer<ANEntityGroup> EntityGroup;
 	this->m_pCore->GetGame()->GetEntityList()->FindFromClassID(pszGroupID, &EntityGroup->m_EntityGroup);
 	return EntityGroup;
 }

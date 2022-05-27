@@ -73,11 +73,11 @@
     <Filter Include="ANSDK\GameEntity\IANEntityGroup">
       <UniqueIdentifier>{22fa78cc-8e1f-48c6-82d7-b9547876277d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANSDK\ANPointer">
-      <UniqueIdentifier>{77a670ff-ac70-4d37-88f7-a7ea0628405e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ANSDK\IANAnimationCompositionController">
       <UniqueIdentifier>{bbe9a6ac-35a0-48e9-963a-36adfcbbe4b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANSDK\ANInterfacePointer">
+      <UniqueIdentifier>{ac510ec0-eb67-434a-ad49-e0fb923c24d8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -152,11 +152,11 @@
     <ClInclude Include="ANSDK\GameEntity\IANEntityGroup\IANEntityGroup.h">
       <Filter>ANSDK\GameEntity\IANEntityGroup</Filter>
     </ClInclude>
-    <ClInclude Include="ANSDK\ANPointer\ANPointer.h">
-      <Filter>ANSDK\ANPointer</Filter>
-    </ClInclude>
     <ClInclude Include="ANSDK\IANAnimationCompositionController\IANAnimationCompositionController.h">
       <Filter>ANSDK\IANAnimationCompositionController</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\ANInterfacePointer\ANInterfacePointer.h">
+      <Filter>ANSDK\ANInterfacePointer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

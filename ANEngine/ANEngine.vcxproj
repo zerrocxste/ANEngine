@@ -173,6 +173,7 @@
     <ClInclude Include="ANengine\ANEngine.h" />
     <ClInclude Include="ANengine\ANGame\ANGame.h" />
     <ClInclude Include="ANengine\ANInput\ANInput.h" />
+    <ClInclude Include="ANengine\ANInterfacePointer\ANInterfacePointer.h" />
     <ClInclude Include="ANengine\ANLoader\ANLoader.h" />
     <ClInclude Include="ANengine\ANMath\ANColor\ANColor.h" />
     <ClInclude Include="ANengine\ANMath\ANMathUtils\ANMathUtils.h" />
@@ -181,7 +182,6 @@
     <ClInclude Include="ANengine\ANMath\ANVec3\ANVec3.h" />
     <ClInclude Include="ANengine\ANMemory\ANMemory.h" />
     <ClInclude Include="ANengine\ANPerfomance\ANPerfomance.h" />
-    <ClInclude Include="ANengine\ANPointer\ANPointer.h" />
     <ClInclude Include="ANengine\ANRenderer\ANRenderer.h" />
     <ClInclude Include="ANengine\ANTypes.h" />
     <ClInclude Include="ANengine\ANWindow\ANWindow.h" />

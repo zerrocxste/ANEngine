@@ -11,6 +11,7 @@ public:
 	void MoveRight(IANApi* pApi, float Speed) override;
 	void MoveUp(IANApi* pApi, float Speed) override;
 	void MoveDown(IANApi* pApi, float Speed) override;
+	IANEntityGroup& SortByYOrder() override;
 	void Draw(IANApi* pApi, IANWorld* pWorld) override;
 };
 

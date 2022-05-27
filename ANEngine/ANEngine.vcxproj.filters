@@ -139,9 +139,6 @@
     <Filter Include="ANEngine\Interfaces\Game\GameEntity\IANEntityGroup">
       <UniqueIdentifier>{094f6b05-e502-42a3-9d39-976f99784bb7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\ANPointer">
-      <UniqueIdentifier>{2904bed7-6bed-49c1-8c31-dbd24bff6e80}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ANEngine\Interfaces\Game\IANAnimationCompositionController">
       <UniqueIdentifier>{7b56b900-5937-4706-afea-efd0fb894862}</UniqueIdentifier>
     </Filter>
@@ -159,6 +156,9 @@
     </Filter>
     <Filter Include="ANEngine\GameEntity\ANAnimationCompositionController">
       <UniqueIdentifier>{95ab472f-c035-490f-814c-9c989b15a100}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\ANInterfacePointer">
+      <UniqueIdentifier>{0de6b5fa-2355-4972-aef0-acc36d345697}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -347,14 +347,14 @@
     <ClInclude Include="ANengine\GameEntity\ANEntityGroup\ANEntityGroup.h">
       <Filter>ANEngine\GameEntity\ANEntityGroup</Filter>
     </ClInclude>
-    <ClInclude Include="ANengine\ANPointer\ANPointer.h">
-      <Filter>ANEngine\ANPointer</Filter>
-    </ClInclude>
     <ClInclude Include="ANengine\Interfaces\Game\IANAnimationCompositionController\IANAnimationCompositionController.h">
       <Filter>ANEngine\Interfaces\Game\IANAnimationCompositionController</Filter>
     </ClInclude>
     <ClInclude Include="ANengine\GameEntity\ANAnimationCompositionController\ANAnimationCompositionController.h">
       <Filter>ANEngine\GameEntity\ANAnimationCompositionController</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\ANInterfacePointer\ANInterfacePointer.h">
+      <Filter>ANEngine\ANInterfacePointer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

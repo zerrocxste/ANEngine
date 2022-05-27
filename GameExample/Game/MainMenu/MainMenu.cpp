@@ -103,7 +103,7 @@ void CTestGameScene::Entry(IANApi* pApi)
 	{
 		anVec2 WindowSize = pApi->GetGuiWindowSize(this->m_AnotherWindow);
 
-		if (GetAsyncKeyState('V'))
+		if (pApi->GetKeyIsReleased('V'))
 			pApi->ResizeGuiWindow(&this->m_AnotherWindow, anVec2(500.f, 500.f));
 
 		pApi->DrawImage(this->m_imgImageKrolik, anVec2(), WindowSize, 0.5f);
@@ -119,10 +119,7 @@ void CTestGameScene::Entry(IANApi* pApi)
 	pApi->PopFont();
 
 	if (pApi->AddButton("Run test level", anVec2(400.f, 500.f), anVec2(150.f, 50.f)))
-	{
-		printf("PEPEGA\n");
 		pApi->ConnectToScene(new CTestLevel());
-	}
 
 	anVec2 SizeQuitButton(150.f, 50.f);
 	if (pApi->AddButton("Quit", ScreenSize - SizeQuitButton - anVec2(10.f), SizeQuitButton))

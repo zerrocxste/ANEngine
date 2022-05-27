@@ -85,32 +85,20 @@ void ANEntity::DrawFromComposition(IANApi* pApi, IANWorld* pWorld)
 	if (!AnimationCompositionFrame)
 		return;
 
-	auto FrameSize = !this->m_EntitySize ? pApi->GetImageSize(AnimationCompositionFrame) : this->m_EntitySize;
-
-	auto wm = pWorld->GetMetrics();
-
-	auto ScreenPos = ANMathUtils::WorldToScreen(wm.m_WorldSize, wm.m_WorldScreenPos, wm.m_WorldScreenSize, wm.m_CameraWorld, this->m_Origin);
-	FrameSize = ANMathUtils::WorldToScreen(wm.m_WorldSize, wm.m_WorldScreenPos, wm.m_WorldScreenSize, wm.m_CameraWorld, this->m_Origin + FrameSize) - ScreenPos;
-
-	ScreenPos.x -= (FrameSize.x * 0.5f);
-	ScreenPos.y -= FrameSize.y;
+	auto Screen = ANMathUtils::CalcBBox(pWorld->GetMetrics(), this->m_Origin, !this->m_EntitySize ? pApi->GetImageSize(AnimationCompositionFrame) : this->m_EntitySize);
 
 	pApi->DrawImage(
 		AnimationCompositionFrame,
-		ScreenPos,
-		FrameSize,
+		Screen.second,
+		Screen.first,
 		1.f);
 }
 
 bool ANEntity::IsScreenPointIntersected(IANApi* pApi, IANWorld* pWorld, anVec2 ScreenPoint)
 {
-	auto ScreenPointActor = pApi->WorldToScreen(pWorld, this->m_Origin);
+	anVec2 FrameSize = this->m_EntitySize;
 
-	auto CustomFrameSizeInvalid = !this->m_EntitySize;
-
-	anVec2 FrameSize;
-
-	if (CustomFrameSizeInvalid)
+	if (!FrameSize)
 	{
 		auto AnimationCompositionFrame = this->m_pIANAnimationCompositionController->GetCurrentAnimationCompositionFrame(pApi);
 
@@ -119,17 +107,10 @@ bool ANEntity::IsScreenPointIntersected(IANApi* pApi, IANWorld* pWorld, anVec2 S
 
 		FrameSize = pApi->GetImageSize(AnimationCompositionFrame);
 	}
-	else
-		FrameSize = this->m_EntitySize;
 
-	auto wm = pWorld->GetMetrics();
+	auto Screen = ANMathUtils::CalcBBox(pWorld->GetMetrics(), this->m_Origin, FrameSize);
 
-	FrameSize = ANMathUtils::WorldToScreen(wm.m_WorldSize, wm.m_WorldScreenPos, wm.m_WorldScreenSize, wm.m_CameraWorld, this->m_Origin + FrameSize) - ScreenPointActor;
-
-	ScreenPointActor.x -= (FrameSize.x * 0.5f);
-	ScreenPointActor.y -= FrameSize.y;
-
-	return anRect(ScreenPointActor, ScreenPointActor + FrameSize).IsIntersected(ScreenPoint);
+	return Screen.MakeSwapPoints().MakeSizeToDest().IsIntersected(ScreenPoint);
 }
 
 void ANEntity::SetEntityName(const char* szEntityName)

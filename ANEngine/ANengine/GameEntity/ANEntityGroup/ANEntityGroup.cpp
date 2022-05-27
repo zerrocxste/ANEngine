@@ -48,44 +48,34 @@ void ANEntityGroup::MoveDown(IANApi* pApi, float Speed)
 		entity->MoveDown(pApi, Speed);
 }
 
-void ANEntityGroup::Draw(IANApi* pApi, IANWorld* pWorld)
+IANEntityGroup& ANEntityGroup::SortByYOrder()
 {
-	if (this->m_EntityGroup.size() > 1)
+	for (auto it = this->m_EntityGroup.begin(); it < this->m_EntityGroup.end() - 1; it++)
 	{
-		auto EntList = this->m_EntityGroup;
+		auto ThisY = (*it)->GetOrigin().y;
 
-		for (auto it = EntList.begin(); it < EntList.end() - 1; it++)
+		float SmallestY = FLT_MAX;
+		decltype(it) ScopedIter;
+		for (auto itt = it; itt < this->m_EntityGroup.end() - 1; itt++)
 		{
-			std::vector<IANEntity*>::iterator EntityIter;
-			float D = -FLT_MAX;
+			auto Y = (*itt)->GetOrigin().y;
 
-			for (auto iter = it; iter < EntList.end() - 1; iter++)
+			if (Y < SmallestY)
 			{
-				auto Current = (*iter)->GetOrigin().y;
-				auto Next = (*(iter + 1))->GetOrigin().y;
-
-				if (Current < Next)
-				{
-					D = Current;
-					EntityIter = iter;
-					continue;
-				}
-
-				D = Next;
-				EntityIter = iter + 1;
+				SmallestY = Y;
+				ScopedIter = itt;
 			}
-
-			auto Save = *EntityIter;
-			*EntityIter = *it;
-			*it = Save;
 		}
 
-		for (auto& entity : EntList)
-			entity->DrawFromComposition(pApi, pWorld);
-
-		return;
+		if (SmallestY < ThisY)
+			std::swap(*it, *ScopedIter);
 	}
-	
-	for (auto& entity : this->m_EntityGroup)
+
+	return *this;
+}
+
+void ANEntityGroup::Draw(IANApi* pApi, IANWorld* pWorld)
+{
+	for (auto entity : this->m_EntityGroup)
 		entity->DrawFromComposition(pApi, pWorld);
 }

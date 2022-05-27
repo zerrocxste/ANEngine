@@ -137,3 +137,14 @@ void ANMathUtils::ClampCamera(anVec2 ScreenSize, anVec2 WorldSize, anVec2 WorldS
 	if (CameraScreen.y - ScreenSize.y < -WorldScreenSize.y)
 		CameraWorld.y -= LinearInterpolation(0.f, -(CameraScreen.y - ScreenSize.y - -(WorldScreenSize.y)), WorldScreenSize.y, 0.f, WorldSize.y);
 }
+
+anRect ANMathUtils::CalcBBox(ANWorldMetrics WorldMetrics, anVec2 Origin, anVec2 ObjectSize)
+{
+	auto ScreenBot = ANMathUtils::WorldToScreen(WorldMetrics.m_WorldSize, WorldMetrics.m_WorldScreenPos, WorldMetrics.m_WorldScreenSize, WorldMetrics.m_CameraWorld, Origin);
+	auto ScreenTop = ANMathUtils::WorldToScreen(WorldMetrics.m_WorldSize, WorldMetrics.m_WorldScreenPos, WorldMetrics.m_WorldScreenSize, WorldMetrics.m_CameraWorld, Origin + ObjectSize) - ScreenBot;
+
+	ScreenBot.x -= (ScreenTop.x * 0.5f);
+	ScreenBot.y -= ScreenTop.y;
+
+	return anRect(ScreenTop, ScreenBot);
+}

@@ -44,6 +44,12 @@ public:
 
 	bool IsIntersected(anVec2 p);
 
+	anRect& MakeSizeToDest();
+	anRect SizeToDest();
+
+	anRect& MakeSwapPoints();
+	anRect SwapPoints();
+
 	void Clear();
 
 	anVec2 first;

@@ -148,11 +148,11 @@
     <ClCompile Include="ANSDK\IANError\IANError.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ANSDK\ANInterfacePointer\ANInterfacePointer.h" />
     <ClInclude Include="ANSDK\ANMath\ANColor\ANColor.h" />
     <ClInclude Include="ANSDK\ANMath\ANRect\ANRect.h" />
     <ClInclude Include="ANSDK\ANMath\ANVec2\ANVec2.h" />
     <ClInclude Include="ANSDK\ANMath\ANVec3\ANVec3.h" />
-    <ClInclude Include="ANSDK\ANPointer\ANPointer.h" />
     <ClInclude Include="ANSDK\ANSDK.h" />
     <ClInclude Include="ANSDK\GameEntity\Components\IANActionController\IANActionController.h" />
     <ClInclude Include="ANSDK\GameEntity\Components\IANAnimationController\IANAnimationController.h" />

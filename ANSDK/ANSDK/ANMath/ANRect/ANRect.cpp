@@ -214,6 +214,32 @@ bool anRect::IsIntersected(anVec2 p)
 	return p.x > first.x && p.y > first.y && p.x <= second.x && p.y <= second.y;
 }
 
+anRect& anRect::MakeSizeToDest()
+{
+	this->second += this->first;
+	return *this;
+}
+
+anRect anRect::SizeToDest()
+{
+	return anRect(this->first, this->first + this->second);
+}
+
+anRect& anRect::MakeSwapPoints()
+{
+	auto T_first = this->first;
+
+	this->first = this->second;
+	this->second = T_first;
+
+	return *this;
+}
+
+anRect anRect::SwapPoints()
+{
+	return anRect(this->second, this->first);
+}
+
 void anRect::Clear()
 {
 	this->first = this->second = anVec2();
