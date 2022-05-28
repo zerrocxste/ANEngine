@@ -15,7 +15,7 @@ void ANEntity::SetOrigin(anVec2 Origin)
 	this->m_Origin = Origin;
 }
 
-void ANEntity::MovePoint(IANApi* pApi, float Speed, anVec2 Origin)
+anVec2 ANEntity::MovePoint(IANApi* pApi, float Speed, anVec2 Origin)
 {
 	anVec2 Way(Speed * pApi->Frametime);
 
@@ -38,26 +38,36 @@ void ANEntity::MovePoint(IANApi* pApi, float Speed, anVec2 Origin)
 
 	if (this->m_Origin.y != Origin.y)
 		this->m_Origin.y += Way.y;
+
+	return this->m_Origin;
 }
 
-void ANEntity::MoveLeft(IANApi* pApi, float Speed)
+anVec2 ANEntity::MoveLeft(IANApi* pApi, float Speed)
 {
 	this->m_Origin.x -= Speed * pApi->Frametime;
+	
+	return this->m_Origin;
 }
 
-void ANEntity::MoveRight(IANApi* pApi, float Speed)
+anVec2 ANEntity::MoveRight(IANApi* pApi, float Speed)
 {
 	this->m_Origin.x += Speed * pApi->Frametime;
+
+	return this->m_Origin;
 }
 
-void ANEntity::MoveUp(IANApi* pApi, float Speed)
+anVec2 ANEntity::MoveUp(IANApi* pApi, float Speed)
 {
 	this->m_Origin.y -= Speed * pApi->Frametime;
+
+	return this->m_Origin;
 }
 
-void ANEntity::MoveDown(IANApi* pApi, float Speed)
+anVec2 ANEntity::MoveDown(IANApi* pApi, float Speed)
 {
 	this->m_Origin.y += Speed * pApi->Frametime;
+
+	return this->m_Origin;
 }
 
 anVec2 ANEntity::GetOrigin()
@@ -81,25 +91,16 @@ void ANEntity::DrawFromComposition(IANApi* pApi, IANWorld* pWorld)
 	{
 		auto iml = pApi->GetInteractionMessagesList();
 
-		for (auto& e : iml->m_InteractionMessagesList)
+		for (auto it = iml->m_InteractionMessagesList.begin(); it < iml->m_InteractionMessagesList.end(); it++)
 		{
-			if (e.m_pszEntityName == nullptr && e.m_pszClassIDName == nullptr)
-				this->m_pIANInteractionController->ActionHandler(e.m_pszEventMessage, e.m_pRemoteEntity);
-		}
+			auto& e = *it;
 
-		if (this->m_szEntityName)
-		{
-			for (auto& e : iml->GetInteractionFromEntityName(this->m_szEntityName))
+			if ((e.m_pszEntityName == nullptr && e.m_pszEntityClassIDName == nullptr)
+				|| (this->m_szEntityName != nullptr && e.m_pszEntityName != nullptr && !strcmp(e.m_pszEntityName, this->m_szEntityName))
+				|| (this->m_szEntityClassID != nullptr && e.m_pszEntityClassIDName != nullptr && !strcmp(e.m_pszEntityClassIDName, this->m_szEntityClassID)))
 			{
-				this->m_pIANInteractionController->ActionHandler(e->m_pszEventMessage, e->m_pRemoteEntity);
-			}
-		}
-		
-		if (this->m_szEntityClassID)
-		{
-			for (auto& e : iml->GetInteractionFromEntityClassID(this->m_szEntityClassID))
-			{
-				this->m_pIANInteractionController->ActionHandler(e->m_pszEventMessage, e->m_pRemoteEntity);
+				if (this->m_pIANInteractionController->ActionHandler(pApi, e.m_pszEventClassID, e.m_pszEventMessage, this, e.m_pRemoteEntity, e.m_pReversedUserData))
+					iml->m_InteractionMessagesList.erase(it);
 			}
 		}
 	}

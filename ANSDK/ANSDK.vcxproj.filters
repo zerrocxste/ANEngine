@@ -82,6 +82,9 @@
     <Filter Include="ANSDK\GameEntity\IANInteractionController">
       <UniqueIdentifier>{90d0504a-b843-445d-b577-49276a99b2f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ANSDK\GameEntity\IANInteractionMessagesList">
+      <UniqueIdentifier>{63a19950-fc55-437c-9079-6e7a5cb42827}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ANSDK\ANMath\ANColor\ANColor.cpp">
@@ -163,6 +166,9 @@
     </ClInclude>
     <ClInclude Include="ANSDK\GameEntity\IANInteractionController\IANInteractionController.h">
       <Filter>ANSDK\GameEntity\IANInteractionController</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\GameEntity\IANInteractionMessagesList\IANInteractionMessagesList.h">
+      <Filter>ANSDK\GameEntity\IANInteractionMessagesList</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

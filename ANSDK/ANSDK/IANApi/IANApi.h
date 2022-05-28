@@ -60,6 +60,8 @@ public:
 	virtual ANInterfacePointer<IANEntityGroup> FindEntityByGroupID(const char* pszGroupID) = 0;
 	virtual IANEntity* GetEntityByName(const char* pszEntName) = 0;
 
+	virtual IANInteractionMessagesList* GetInteractionMessagesList() = 0;
+
 	//DRAWING HELPERS
 	virtual bool CreateAnimationComposition(const char** pszAnimationLabelsArr, int iAnimationLabelsArrSize, ANAnimationComposition* pAnimationComposition) = 0;
 	virtual void DeleteAnimationComposition(ANAnimationComposition* pAnimationComposition) = 0;

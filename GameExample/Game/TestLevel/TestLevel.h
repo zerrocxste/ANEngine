@@ -1,7 +1,13 @@
 #pragma once
 
+class DoorEntityInteractionController : public IANInteractionController
+{
+	bool ActionHandler(IANApi* pApi, const char* pszEventClassID, const char* pszEventMessage, IANEntity* pThisEntity, IANEntity* pRemoteEntity, void* pReversedUserData) override;
+};
+
 class CTestLevel : public IANGameScene
 {
+	friend DoorEntityInteractionController;
 public:
 	CTestLevel();
 	~CTestLevel();

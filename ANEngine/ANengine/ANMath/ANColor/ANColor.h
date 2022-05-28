@@ -1,5 +1,14 @@
 #pragma once
 
+enum RGBA
+{
+	RED,
+	GREEN,
+	BLUE,
+	ALPHA,
+	RGBA_MAX_SIZE
+};
+
 class anColor
 {
 public:

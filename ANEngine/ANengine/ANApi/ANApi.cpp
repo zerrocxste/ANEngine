@@ -211,21 +211,6 @@ IANEntity* ANApi::GetEntityByName(const char* pszEntName)
 	return this->m_pCore->GetGame()->GetEntityList()->FindFromName(pszEntName);
 }
 
-void ANApi::SendInteractionMessage(const char* pszMessageType, IANEntity* pRemoteEntity)
-{
-	this->m_pCore->GetGame()->GetInteractionList()->AddInteractionMessage(pszMessageType, pRemoteEntity);
-}
-
-void ANApi::SendInteractionMessageToEntityByClassID(const char* pszClassID, const char* pszMessageType, IANEntity* pRemoteEntity)
-{
-	this->m_pCore->GetGame()->GetInteractionList()->AddInteractionMessageForEntityClassID(pszMessageType, pszClassID, pRemoteEntity);
-}
-
-void ANApi::SendInteractionMessageToEntityByName(const char* pszEntityName, const char* pszMessageType, IANEntity* pRemoteEntity)
-{
-	this->m_pCore->GetGame()->GetInteractionList()->AddInteractionMessageForEntityName(pszMessageType, pszEntityName, pRemoteEntity);
-}
-
 IANInteractionMessagesList* ANApi::GetInteractionMessagesList()
 {
 	return this->m_pCore->GetGame()->GetInteractionList();

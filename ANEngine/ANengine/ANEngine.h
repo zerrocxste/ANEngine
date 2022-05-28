@@ -33,6 +33,16 @@ class IANAnimationCompositionController;
 class IANInteractionController;
 class IANInteractionMessagesList;
 
+enum RenderTypes;
+
+enum RGBA;
+
+enum CursorKey;
+struct KeyInformation;
+
+struct ANWorldMetrics;
+struct ANUniqueInteractionMesssage;
+
 #include "ANMath/ANVec2/ANVec2.h"
 #include "ANMath/ANVec3/ANVec3.h"
 #include "ANMath/ANRect/ANRect.h"

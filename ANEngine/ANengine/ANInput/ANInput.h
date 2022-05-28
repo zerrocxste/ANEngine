@@ -1,5 +1,23 @@
 #pragma once
 
+enum CursorKey
+{
+	MAIN_FIRST,
+	MAIN_SECOND,
+	SECONDARY,
+	ADDITIONAL_1,
+	ADDITIONAL_2
+};
+
+struct KeyInformation
+{
+	bool m_bIsDowned;
+	bool m_bPrevFrameIsDowned;
+	bool m_bIsReleased;
+	bool m_bIsClicked;
+	float m_flDownTime;
+};
+
 class ANInput
 {
 public:

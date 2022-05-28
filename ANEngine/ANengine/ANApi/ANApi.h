@@ -53,10 +53,6 @@ public:
 	ANInterfacePointer<IANEntityGroup> FindEntityByGroupID(const char* pszGroupID) override;
 	IANEntity* GetEntityByName(const char* pszEntName) override;
 
-	void SendInteractionMessage(const char* pszMessageType, IANEntity* pRemoteEntity) override;
-	void SendInteractionMessageToEntityByClassID(const char* pszClassID, const char* pszMessageType, IANEntity* pRemoteEntity) override;
-	void SendInteractionMessageToEntityByName(const char* pszEntityName, const char* pszMessageType, IANEntity* pRemoteEntity) override;
-
 	IANInteractionMessagesList* GetInteractionMessagesList() override;
 
 	bool CreateAnimationComposition(const char** pszAnimationLabelsArr, int iAnimationLabelsArrSize, ANAnimationComposition* pAnimationComposition) override;

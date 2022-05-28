@@ -8,11 +8,11 @@ public:
 	char* GetEntityClassID() override;
 
 	void SetOrigin(anVec2 Origin) override;
-	void MovePoint(IANApi* pApi, float Speed, anVec2 Origin) override;
-	void MoveLeft(IANApi* pApi, float Speed) override;
-	void MoveRight(IANApi* pApi, float Speed) override;
-	void MoveUp(IANApi* pApi, float Speed) override;
-	void MoveDown(IANApi* pApi, float Speed) override;
+	anVec2 MovePoint(IANApi* pApi, float Speed, anVec2 Origin) override;
+	anVec2 MoveLeft(IANApi* pApi, float Speed) override;
+	anVec2 MoveRight(IANApi* pApi, float Speed) override;
+	anVec2 MoveUp(IANApi* pApi, float Speed) override;
+	anVec2 MoveDown(IANApi* pApi, float Speed) override;
 	anVec2 GetOrigin() override;
 
 	void SetVisible(bool IsVisible) override;

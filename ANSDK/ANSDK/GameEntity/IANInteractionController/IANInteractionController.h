@@ -3,5 +3,5 @@
 class IANInteractionController
 {
 public:
-	virtual void ActionHandler(const char* pszEventMessage, IANEntity* pRemoteEntity) = 0;
+	virtual bool ActionHandler(IANApi* pApi, const char* pszEventClassID, const char* pszEventMessage, IANEntity* pThisEntity, IANEntity* pRemoteEntity, void* pReversedUserData) = 0;
 };

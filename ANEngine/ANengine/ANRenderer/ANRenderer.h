@@ -1,5 +1,12 @@
 #pragma once
 
+enum RenderTypes
+{
+	D2D,
+	D3D9,
+	OPENGL
+};
+
 class ANRenderer : public IANError
 {
 public:

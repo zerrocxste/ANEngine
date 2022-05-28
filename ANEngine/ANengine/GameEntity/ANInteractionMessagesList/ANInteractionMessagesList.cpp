@@ -1,36 +1,51 @@
 #include "../../ANEngine.h"
 
-void ANInteractionMessagesList::AddInteractionMessage(const char* pszEventMessage, IANEntity* pRemoteEntity)
+void ANInteractionMessagesList::AddInteractionMessage(const char* pszEventClassID, const char* pszEventMessage, IANEntity* pRemoteEntity, void* pReversedUserData)
 {
 	ANUniqueInteractionMesssage im{};
 	im.m_pszEntityName = nullptr;
-	im.m_pszClassIDName = nullptr;
+	im.m_pszEntityClassIDName = nullptr;
+	im.m_pszEventClassID = pszEventClassID;
 	im.m_pszEventMessage = pszEventMessage;
 	im.m_pRemoteEntity = pRemoteEntity;
+	im.m_pReversedUserData = pReversedUserData;
 
 	this->m_InteractionMessagesList.push_back(im);
 }
 
-void ANInteractionMessagesList::AddInteractionMessageForEntityName(const char* pszEventMessage, const char* pszEntityName, IANEntity* pRemoteEntity)
+void ANInteractionMessagesList::AddInteractionMessageForEntityName(const char* pszEventClassID, const char* pszEventMessage, const char* pszEntityName, IANEntity* pRemoteEntity, void* pReversedUserData)
 {
 	ANUniqueInteractionMesssage im{};
 	im.m_pszEntityName = pszEntityName;
-	im.m_pszClassIDName = nullptr;
+	im.m_pszEntityClassIDName = nullptr;
+	im.m_pszEventClassID = pszEventClassID;
 	im.m_pszEventMessage = pszEventMessage;
 	im.m_pRemoteEntity = pRemoteEntity;
+	im.m_pReversedUserData = pReversedUserData;
 
 	this->m_InteractionMessagesList.push_back(im);
 }
 
-void ANInteractionMessagesList::AddInteractionMessageForEntityClassID(const char* pszEventMessage, const char* pszClassID, IANEntity* pRemoteEntity)
+void ANInteractionMessagesList::AddInteractionMessageForEntityClassID(const char* pszEventClassID, const char* pszEventMessage, const char* pszClassID, IANEntity* pRemoteEntity, void* pReversedUserData)
 {
 	ANUniqueInteractionMesssage im{};
 	im.m_pszEntityName = nullptr;
-	im.m_pszClassIDName = pszClassID;
+	im.m_pszEntityClassIDName = pszClassID;
+	im.m_pszEventClassID = pszEventClassID;
 	im.m_pszEventMessage = pszEventMessage;
 	im.m_pRemoteEntity = pRemoteEntity;
+	im.m_pReversedUserData = pReversedUserData;
 
 	this->m_InteractionMessagesList.push_back(im);
+}
+
+void ANInteractionMessagesList::RemoveInteractionMessageForClassID(const char* pszEventClassID)
+{
+	for (auto it = this->m_InteractionMessagesList.begin(); it < this->m_InteractionMessagesList.end(); it++)
+	{
+		if (!strcmp((*it).m_pszEventClassID, pszEventClassID))
+			this->m_InteractionMessagesList.erase(it);
+	}
 }
 
 void ANInteractionMessagesList::RemoveInteractionMessage(const char* pszEventMessage)
@@ -63,7 +78,7 @@ std::vector<ANUniqueInteractionMesssage*> ANInteractionMessagesList::GetInteract
 
 	auto it = std::find_if(this->m_InteractionMessagesList.begin(), this->m_InteractionMessagesList.end(), [&](const ANUniqueInteractionMesssage& im) 
 		{
-			if (im.m_pszEntityName && !strcmp(im.m_pszClassIDName, pszClassIDName))
+			if (im.m_pszEntityName && !strcmp(im.m_pszEntityClassIDName, pszClassIDName))
 				ret.push_back((ANUniqueInteractionMesssage*)&im);
 
 			return false;

@@ -7,11 +7,13 @@ ANGame::ANGame(ANCore* pCore) :
 	m_bNeedLeaveGame(false)
 {
 	this->m_pEntityList = ANMemory::GetInstance()->Allocate<ANEntityList>();
+	this->m_pInteractionMessagesList = ANMemory::GetInstance()->Allocate<ANInteractionMessagesList>();
 }
 
 ANGame::~ANGame()
 {
 	ANMemory::GetInstance()->Delete(this->m_pEntityList);
+	ANMemory::GetInstance()->Delete(this->m_pInteractionMessagesList);
 }
 
 bool ANGame::ConnectScene(IANGameScene* pScene)

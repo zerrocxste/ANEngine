@@ -60,10 +60,6 @@ public:
 	virtual ANInterfacePointer<IANEntityGroup> FindEntityByGroupID(const char* pszGroupID) = 0;
 	virtual IANEntity* GetEntityByName(const char* pszEntName) = 0;
 
-	virtual void SendInteractionMessage(const char* pszMessageType, IANEntity* pRemoteEntity) = 0;
-	virtual void SendInteractionMessageToEntityByClassID(const char* pszClassID, const char* pszMessageType, IANEntity* pRemoteEntity) = 0;
-	virtual void SendInteractionMessageToEntityByName(const char* pszEntityName, const char* pszMessageType, IANEntity* pRemoteEntity) = 0;
-
 	virtual IANInteractionMessagesList* GetInteractionMessagesList() = 0;
 
 	//DRAWING HELPERS

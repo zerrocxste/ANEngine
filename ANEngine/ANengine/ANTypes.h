@@ -12,50 +12,6 @@ typedef void** ANAnimationComposition;
 using fRenderInitialize = bool(__stdcall*)(HINSTANCE hInstance, HWND hWnd, void* pReversed);
 using fGetRendererFunctionTable = void*(__stdcall*)();
 
-enum RenderTypes
-{
-	D2D,
-	D3D9,
-	OPENGL
-};
-
-enum RGBA
-{
-	RED,
-	GREEN,
-	BLUE,
-	ALPHA,
-	RGBA_MAX_SIZE
-};
-
-enum CursorKey
-{
-	MAIN_FIRST,
-	MAIN_SECOND,
-	SECONDARY,
-	ADDITIONAL_1,
-	ADDITIONAL_2
-};
-
-struct KeyInformation
-{
-	bool m_bIsDowned;
-	bool m_bPrevFrameIsDowned;
-	bool m_bIsReleased;
-	bool m_bIsClicked;
-	float m_flDownTime;
-};
-
-struct ANWorldMetrics
-{
-	anVec2 m_WorldSize;
-	anVec2 m_WorldScreenPos;
-	anVec2 m_WorldScreenSize;
-	anVec2 m_CameraWorld;
-	anVec2 m_CameraScreen;
-	float m_flMapZoom;
-};
-
 struct ANComponents
 {
 	ANWindow* m_pANWindow;

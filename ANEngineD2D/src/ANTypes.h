@@ -14,14 +14,7 @@ enum RenderTypes
 	OPENGL
 };
 
-enum RGBA
-{
-	RED,
-	GREEN,
-	BLUE,
-	ALPHA,
-	RGBA_MAX_SIZE
-};
+enum RGBA;
 
 struct ANRendererFuncionsTable
 {
