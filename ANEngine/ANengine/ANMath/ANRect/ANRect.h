@@ -50,6 +50,9 @@ public:
 	anRect& MakeSwapPoints();
 	anRect SwapPoints();
 
+	anRect RecalcWithRelativeDistance();
+	anVec2 GetRelativeDistanceBetweenFirstAndSecond();
+
 	void Clear();
 
 	anVec2 first;

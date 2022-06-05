@@ -141,10 +141,13 @@ void ANMathUtils::ClampCamera(anVec2 ScreenSize, anVec2 WorldSize, anVec2 WorldS
 anRect ANMathUtils::CalcBBox(ANWorldMetrics WorldMetrics, anVec2 Origin, anVec2 ObjectSize)
 {
 	auto ScreenBot = ANMathUtils::WorldToScreen(WorldMetrics.m_WorldSize, WorldMetrics.m_WorldScreenPos, WorldMetrics.m_WorldScreenSize, WorldMetrics.m_CameraWorld, Origin);
-	auto ScreenTop = ANMathUtils::WorldToScreen(WorldMetrics.m_WorldSize, WorldMetrics.m_WorldScreenPos, WorldMetrics.m_WorldScreenSize, WorldMetrics.m_CameraWorld, Origin + ObjectSize) - ScreenBot;
+	auto RelativeToTop = ANMathUtils::WorldToScreen(WorldMetrics.m_WorldSize, WorldMetrics.m_WorldScreenPos, WorldMetrics.m_WorldScreenSize, WorldMetrics.m_CameraWorld, Origin + ObjectSize) - ScreenBot;
 
-	ScreenBot.x -= (ScreenTop.x * 0.5f);
-	ScreenBot.y -= ScreenTop.y;
+	auto ret = anRect(ScreenBot - RelativeToTop, ScreenBot) + (RelativeToTop * 0.5f);
 
-	return anRect(ScreenTop, ScreenBot);
+	auto HalfOfRelativeTop = RelativeToTop.y * 0.5f;
+	ret.first.y -= HalfOfRelativeTop;
+	ret.second.y -= HalfOfRelativeTop;
+
+	return ret;
 }

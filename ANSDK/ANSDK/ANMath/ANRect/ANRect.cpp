@@ -6,13 +6,13 @@ anRect::anRect()
 }
 
 anRect::anRect(float all) :
-	first(anVec2(all)), 
+	first(anVec2(all)),
 	second(anVec2(all))
 {
 
 }
 
-anRect::anRect(anVec2 First, anVec2 Second) : 
+anRect::anRect(anVec2 First, anVec2 Second) :
 	first(First), second(Second)
 {
 
@@ -240,7 +240,17 @@ anRect anRect::SwapPoints()
 	return anRect(this->second, this->first);
 }
 
+anRect anRect::RecalcWithRelativeDistance()
+{
+	return anRect(this->first, this->GetRelativeDistanceBetweenFirstAndSecond());
+}
+
+anVec2 anRect::GetRelativeDistanceBetweenFirstAndSecond()
+{
+	return this->second - this->first;
+}
+
 void anRect::Clear()
 {
-	this->first = this->second = anVec2();
+	this->first = this->second = 0;
 }

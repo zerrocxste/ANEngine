@@ -77,7 +77,7 @@ anVec2 ANEntity::GetOrigin()
 
 void ANEntity::SetVisible(bool IsVisible)
 {
-	this->m_bIsOccluded = IsVisible;
+	this->m_bIsOccluded = !IsVisible;
 }
 
 void ANEntity::SetEntitySize(anVec2 EntitySize)
@@ -85,7 +85,69 @@ void ANEntity::SetEntitySize(anVec2 EntitySize)
 	this->m_EntitySize = EntitySize;
 }
 
+void ANEntity::PlayAnimation(int iCountOfIterations, int iMaxFramesOfCompositionInIteration)
+{
+
+}
+
+void ANEntity::StopRunningAnimation()
+{
+
+}
+
 void ANEntity::DrawFromComposition(IANApi* pApi, IANWorld* pWorld)
+{
+	if (this->m_bIsOccluded)
+		return;
+
+	auto AnimationCompositionFrame = this->m_pIANAnimationCompositionController->GetCurrentAnimationCompositionFrame(pApi);
+
+	if (!AnimationCompositionFrame)
+		return;
+
+	auto Screen = ANMathUtils::CalcBBox(pWorld->GetMetrics(), this->m_Origin, !this->m_EntitySize ? pApi->GetImageSize(AnimationCompositionFrame) : this->m_EntitySize);
+
+	pApi->DrawImage(
+		AnimationCompositionFrame,
+		Screen.first,
+		Screen.GetRelativeDistanceBetweenFirstAndSecond(),
+		1.f);
+}
+
+bool ANEntity::IsScreenPointIntersected(IANApi* pApi, IANWorld* pWorld, anVec2 ScreenPoint)
+{
+	anVec2 FrameSize = this->m_EntitySize;
+
+	if (!FrameSize)
+	{
+		auto AnimationCompositionFrame = this->m_pIANAnimationCompositionController->GetCurrentAnimationCompositionFrame(pApi);
+
+		if (!AnimationCompositionFrame)
+			return false;
+
+		FrameSize = pApi->GetImageSize(AnimationCompositionFrame);
+	}
+
+	return ANMathUtils::CalcBBox(pWorld->GetMetrics(), this->m_Origin, FrameSize).IsIntersected(ScreenPoint);
+}
+
+void ANEntity::SetInteractionController(IANInteractionController* pIANInteractionController)
+{
+	this->m_pIANInteractionController = pIANInteractionController;
+}
+
+void ANEntity::SetEntityName(const char* szEntityName)
+{
+	auto LengthEntityName = strlen(szEntityName) + 1;
+	memcpy(this->m_szEntityName = new char[LengthEntityName], szEntityName, LengthEntityName);
+}
+
+char* ANEntity::GetEntityName()
+{
+	return this->m_szEntityName;
+}
+
+IANEntity& ANEntity::Update(IANApi* pApi)
 {
 	if (this->m_pIANInteractionController != nullptr)
 	{
@@ -105,55 +167,5 @@ void ANEntity::DrawFromComposition(IANApi* pApi, IANWorld* pWorld)
 		}
 	}
 
-	if (this->m_bIsOccluded)
-		return;
-
-	auto AnimationCompositionFrame = this->m_pIANAnimationCompositionController->GetCurrentAnimationCompositionFrame(pApi);
-
-	if (!AnimationCompositionFrame)
-		return;
-
-	auto Screen = ANMathUtils::CalcBBox(pWorld->GetMetrics(), this->m_Origin, !this->m_EntitySize ? pApi->GetImageSize(AnimationCompositionFrame) : this->m_EntitySize);
-
-	pApi->DrawImage(
-		AnimationCompositionFrame,
-		Screen.second,
-		Screen.first,
-		1.f);
+	return *this;
 }
-
-bool ANEntity::IsScreenPointIntersected(IANApi* pApi, IANWorld* pWorld, anVec2 ScreenPoint)
-{
-	anVec2 FrameSize = this->m_EntitySize;
-
-	if (!FrameSize)
-	{
-		auto AnimationCompositionFrame = this->m_pIANAnimationCompositionController->GetCurrentAnimationCompositionFrame(pApi);
-
-		if (!AnimationCompositionFrame)
-			return false;
-
-		FrameSize = pApi->GetImageSize(AnimationCompositionFrame);
-	}
-
-	auto Screen = ANMathUtils::CalcBBox(pWorld->GetMetrics(), this->m_Origin, FrameSize);
-
-	return Screen.MakeSwapPoints().MakeSizeToDest().IsIntersected(ScreenPoint);
-}
-
-void ANEntity::SetInteractionController(IANInteractionController* pIANInteractionController)
-{
-	this->m_pIANInteractionController = pIANInteractionController;
-}
-
-void ANEntity::SetEntityName(const char* szEntityName)
-{
-	auto LengthEntityName = strlen(szEntityName) + 1;
-	memcpy(this->m_szEntityName = new char[LengthEntityName], szEntityName, LengthEntityName);
-}
-
-char* ANEntity::GetEntityName()
-{
-	return this->m_szEntityName;
-}
-

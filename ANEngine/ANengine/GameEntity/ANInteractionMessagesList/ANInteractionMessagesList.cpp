@@ -1,6 +1,10 @@
 #include "../../ANEngine.h"
 
-void ANInteractionMessagesList::AddInteractionMessage(const char* pszEventClassID, const char* pszEventMessage, IANEntity* pRemoteEntity, void* pReversedUserData)
+void ANInteractionMessagesList::AddInteractionMessage(
+	const char* pszEventClassID, 
+	const char* pszEventMessage, 
+	IANEntity** pRemoteEntity, 
+	void* pReversedUserData)
 {
 	ANUniqueInteractionMesssage im{};
 	im.m_pszEntityName = nullptr;
@@ -13,7 +17,12 @@ void ANInteractionMessagesList::AddInteractionMessage(const char* pszEventClassI
 	this->m_InteractionMessagesList.push_back(im);
 }
 
-void ANInteractionMessagesList::AddInteractionMessageForEntityName(const char* pszEventClassID, const char* pszEventMessage, const char* pszEntityName, IANEntity* pRemoteEntity, void* pReversedUserData)
+void ANInteractionMessagesList::AddInteractionMessageForEntityName(
+	const char* pszEventClassID,
+	const char* pszEventMessage, 
+	const char* pszEntityName, 
+	IANEntity** pRemoteEntity, 
+	void* pReversedUserData)
 {
 	ANUniqueInteractionMesssage im{};
 	im.m_pszEntityName = pszEntityName;
@@ -26,7 +35,12 @@ void ANInteractionMessagesList::AddInteractionMessageForEntityName(const char* p
 	this->m_InteractionMessagesList.push_back(im);
 }
 
-void ANInteractionMessagesList::AddInteractionMessageForEntityClassID(const char* pszEventClassID, const char* pszEventMessage, const char* pszClassID, IANEntity* pRemoteEntity, void* pReversedUserData)
+void ANInteractionMessagesList::AddInteractionMessageForEntityClassID(
+	const char* pszEventClassID, 
+	const char* pszEventMessage, 
+	const char* pszClassID, 
+	IANEntity** pRemoteEntity, 
+	void* pReversedUserData)
 {
 	ANUniqueInteractionMesssage im{};
 	im.m_pszEntityName = nullptr;

@@ -74,6 +74,14 @@ IANEntityGroup& ANEntityGroup::SortByYOrder()
 	return *this;
 }
 
+IANEntityGroup& ANEntityGroup::Update(IANApi* pApi)
+{
+	for (auto entity : this->m_EntityGroup)
+		entity->Update(pApi);
+
+	return *this;
+}
+
 void ANEntityGroup::Draw(IANApi* pApi, IANWorld* pWorld)
 {
 	for (auto entity : this->m_EntityGroup)
