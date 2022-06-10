@@ -25,6 +25,25 @@ void ANEntityList::Remove(IANEntity* pEntity)
 	this->m_vEntityList.erase(it);
 }
 
+void ANEntityList::Unreg(IANEntity* ppEntity)
+{
+	auto& pIEntity = ppEntity;
+	auto pEntity = (ANEntity*)pIEntity;
+
+	if (!pIEntity)
+		return;
+
+	if (pEntity->m_szEntityClassID)
+		delete[] pEntity->m_szEntityClassID;
+
+	if (pEntity->m_szEntityName)
+		delete[] pEntity->m_szEntityName;
+
+	ANMemory::GetInstance()->Delete(pIEntity->m_pAnimCompositionController);
+
+	ANMemory::GetInstance()->Delete(pIEntity);
+}
+
 void ANEntityList::FindFromClassID(const char* pszClassID, std::vector<IANEntity*>* pEntityList)
 {
 	for (auto it = this->m_vEntityList.begin(); it < this->m_vEntityList.end(); it++)
@@ -48,7 +67,26 @@ IANEntity* ANEntityList::FindFromName(const char* pszName)
 	return *it;
 }
 
-void ANEntityList::Clear()
+ANEntityList* ANEntityList::UnregAll()
+{
+	for (auto it = this->m_vEntityList.begin(); it < this->m_vEntityList.end(); it++)
+	{
+		auto& entity = *it;
+
+		if (!entity)
+			continue;
+
+		Unreg(entity);
+
+		this->m_vEntityList.erase(it);
+	}
+
+	return this;
+}
+
+ANEntityList* ANEntityList::Clear()
 {
 	this->m_vEntityList.clear();
+
+	return this;
 }

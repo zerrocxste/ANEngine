@@ -35,8 +35,6 @@ void ANGame::DisconnectScene()
 	if (!this->m_pCurrentScene)
 		return;
 
-	GetEntityList()->Clear();
-
 	this->m_pCurrentScene->OnUnloadScene(this->m_pCore->GetApi());
 }
 
@@ -95,7 +93,7 @@ void ANGame::RegEntity(IANEntity** ppEntity, const char* pszEntityClassID)
 
 	pEntity = ANMemory::GetInstance()->Allocate<ANEntity>();
 
-	pEntity->m_pIANAnimationCompositionController = ANMemory::GetInstance()->Allocate<ANAnimationCompositionController>();
+	pEntity->m_pAnimCompositionController = ANMemory::GetInstance()->Allocate<ANAnimationCompositionController>();
 
 	if (pszEntityClassID)
 	{
@@ -108,18 +106,17 @@ void ANGame::RegEntity(IANEntity** ppEntity, const char* pszEntityClassID)
 
 void ANGame::UnregEntity(IANEntity** ppEntity)
 {
-	auto& pEntity = *ppEntity;
+	auto& pIEntity = *ppEntity;
+	auto pEntity = (ANEntity*)pIEntity;
 
-	if (!pEntity)
+	if (!pIEntity)
 		return;
 
-	GetEntityList()->Remove(pEntity);
+	GetEntityList()->Unreg(pIEntity);
 
-	ANMemory::GetInstance()->Delete(pEntity->m_pIANAnimationCompositionController);
+	GetEntityList()->Remove(pIEntity);
 
-	ANMemory::GetInstance()->Delete(pEntity);
-
-	pEntity = nullptr;
+	pIEntity = nullptr;
 }
 
 ANEntityList* ANGame::GetEntityList()

@@ -50,6 +50,7 @@ public:
 
 	void RegEntity(IANEntity** ppEntity, const char* pszEntityClassID) override;
 	void UnregEntity(IANEntity** ppEntity) override;
+	void UnregAndDeleteAllEntity() override;
 	ANInterfacePointer<IANEntityGroup> FindEntityByGroupID(const char* pszGroupID) override;
 	IANEntity* GetEntityByName(const char* pszEntName) override;
 

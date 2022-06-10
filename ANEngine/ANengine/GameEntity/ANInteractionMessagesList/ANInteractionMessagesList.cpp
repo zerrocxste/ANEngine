@@ -53,6 +53,28 @@ void ANInteractionMessagesList::AddInteractionMessageForEntityClassID(
 	this->m_InteractionMessagesList.push_back(im);
 }
 
+void ANInteractionMessagesList::SendCancelInteractionMessageForClassID(const char* pszEventClassID)
+{
+	for (auto it = this->m_InteractionMessagesList.begin(); it < this->m_InteractionMessagesList.end(); it++)
+	{
+		auto& data = *it;
+
+		if (!strcmp(data.m_pszEventClassID, pszEventClassID))
+			data.m_bNeedCancelEvent = true;
+	}
+}
+
+void ANInteractionMessagesList::SendCancelInteractionMessage(const char* pszEventMessage)
+{
+	for (auto it = this->m_InteractionMessagesList.begin(); it < this->m_InteractionMessagesList.end(); it++)
+	{
+		auto& data = *it;
+
+		if (!strcmp(data.m_pszEventMessage, pszEventMessage))
+			data.m_bNeedCancelEvent = true;
+	}
+}
+
 void ANInteractionMessagesList::RemoveInteractionMessageForClassID(const char* pszEventClassID)
 {
 	for (auto it = this->m_InteractionMessagesList.begin(); it < this->m_InteractionMessagesList.end(); it++)
@@ -69,6 +91,50 @@ void ANInteractionMessagesList::RemoveInteractionMessage(const char* pszEventMes
 		if (!strcmp((*it).m_pszEventMessage, pszEventMessage))
 			this->m_InteractionMessagesList.erase(it);
 	}
+}
+
+bool ANInteractionMessagesList::IsEventCanceledByEventName(const char* pszEventName, IANEntity* pExcludeForEntity, bool bSearchForEntityClassID)
+{
+	auto ret = true;
+
+	for (auto it = this->m_InteractionMessagesList.begin(); it < this->m_InteractionMessagesList.end(); it++)
+	{
+		auto& data = *it;
+
+		if (!strcmp(data.m_pszEventMessage, pszEventName) && data.m_bNeedCancelEvent)
+		{
+			if (pExcludeForEntity != nullptr && !strcmp(
+				bSearchForEntityClassID ? pExcludeForEntity->GetEntityClassID() : pExcludeForEntity->GetEntityName(), 
+				data.m_pszEntityName))
+				continue;
+
+			ret = false;
+		}
+	}
+
+	return ret;
+}
+
+bool ANInteractionMessagesList::IsEventCanceledByClassID(const char* pszEventClassID, IANEntity* pExcludeForEntity, bool bSearchForEntityClassID)
+{
+	auto ret = true;
+
+	for (auto it = this->m_InteractionMessagesList.begin(); it < this->m_InteractionMessagesList.end(); it++)
+	{
+		auto& data = *it;
+
+		if (!strcmp(data.m_pszEventClassID, pszEventClassID) && data.m_bNeedCancelEvent)
+		{
+			if (pExcludeForEntity != nullptr && !strcmp(
+				bSearchForEntityClassID ? pExcludeForEntity->GetEntityClassID() : pExcludeForEntity->GetEntityName(), 
+				data.m_pszEntityName))
+				continue;
+
+			ret = false;
+		}
+	}
+
+	return ret;
 }
 
 std::vector<ANUniqueInteractionMesssage*> ANInteractionMessagesList::GetInteractionFromEntityName(const char* pszName)

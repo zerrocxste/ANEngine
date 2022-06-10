@@ -85,24 +85,14 @@ void ANEntity::SetEntitySize(anVec2 EntitySize)
 	this->m_EntitySize = EntitySize;
 }
 
-void ANEntity::PlayAnimation(int iCountOfIterations, int iMaxFramesOfCompositionInIteration)
-{
-
-}
-
-void ANEntity::StopRunningAnimation()
-{
-
-}
-
 void ANEntity::DrawFromComposition(IANApi* pApi, IANWorld* pWorld)
 {
-	if (this->m_bIsOccluded)
-		return;
-
-	auto AnimationCompositionFrame = this->m_pIANAnimationCompositionController->GetCurrentAnimationCompositionFrame(pApi);
+	auto AnimationCompositionFrame = this->m_pAnimCompositionController->GetCurrentAnimationCompositionFrame(pApi);
 
 	if (!AnimationCompositionFrame)
+		return;
+
+	if (this->m_bIsOccluded)
 		return;
 
 	auto Screen = ANMathUtils::CalcBBox(pWorld->GetMetrics(), this->m_Origin, !this->m_EntitySize ? pApi->GetImageSize(AnimationCompositionFrame) : this->m_EntitySize);
@@ -120,11 +110,11 @@ bool ANEntity::IsScreenPointIntersected(IANApi* pApi, IANWorld* pWorld, anVec2 S
 
 	if (!FrameSize)
 	{
-		auto AnimationCompositionFrame = this->m_pIANAnimationCompositionController->GetCurrentAnimationCompositionFrame(pApi);
+		auto AnimationCompositionFrame = this->m_pAnimCompositionController->GetCurrentAnimationCompositionFrame(pApi);
 
 		if (!AnimationCompositionFrame)
 			return false;
-
+			
 		FrameSize = pApi->GetImageSize(AnimationCompositionFrame);
 	}
 
@@ -156,12 +146,18 @@ IANEntity& ANEntity::Update(IANApi* pApi)
 		for (auto it = iml->m_InteractionMessagesList.begin(); it < iml->m_InteractionMessagesList.end(); it++)
 		{
 			auto& e = *it;
-
+			
 			if ((e.m_pszEntityName == nullptr && e.m_pszEntityClassIDName == nullptr)
 				|| (this->m_szEntityName != nullptr && e.m_pszEntityName != nullptr && !strcmp(e.m_pszEntityName, this->m_szEntityName))
 				|| (this->m_szEntityClassID != nullptr && e.m_pszEntityClassIDName != nullptr && !strcmp(e.m_pszEntityClassIDName, this->m_szEntityClassID)))
 			{
-				if (this->m_pIANInteractionController->ActionHandler(pApi, e.m_pszEventClassID, e.m_pszEventMessage, this, e.m_pRemoteEntity, e.m_pReversedUserData))
+				if (!e.m_pRemoteEntity || !*e.m_pRemoteEntity)
+				{
+					iml->m_InteractionMessagesList.erase(it);
+					continue;
+				}
+
+				if (this->m_pIANInteractionController->ActionHandler(pApi, e.m_pszEventClassID, e.m_pszEventMessage, this, e.m_pRemoteEntity, e.m_pReversedUserData, e.m_bNeedCancelEvent))
 					iml->m_InteractionMessagesList.erase(it);
 			}
 		}

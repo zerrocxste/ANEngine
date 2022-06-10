@@ -2,8 +2,18 @@
 
 class DoorEntityInteractionController : public IANInteractionController
 {
+private:
+	bool m_bNextDoor;
 public:
-	bool ActionHandler(IANApi* pApi, const char* pszEventClassID, const char* pszEventMessage, IANEntity* pThisEntity, IANEntity** pRemoteEntity, void* pReversedUserData) override;
+	DoorEntityInteractionController();
+
+	bool ActionHandler(IANApi* pApi, 
+		const char* pszEventClassID, 
+		const char* pszEventMessage, 
+		IANEntity* pThisEntity, 
+		IANEntity** pRemoteEntity, 
+		void* pReversedUserData, 
+		bool bNeedCancelEvent) override;
 };
 
 class CTestLevel : public IANGameScene
@@ -16,8 +26,6 @@ public:
 	void OnLoadScene(IANApi* pApi) override;
 	void OnUnloadScene(IANApi* pApi) override;
 	void Entry(IANApi* pApi) override;
-
-	void ClearDoorInteractions(IANApi* pApi);
 private:
 	float m_WorldZoom;
 
@@ -38,5 +46,7 @@ private:
 	IANEntity* m_pDoorEntityHallHallway;
 	ANAnimationComposition m_DoorComposition;
 
-	IANEntity* MovePoint;
+	void ProcessDoorInteraction(IANApi* pApi, IANEntity*& ppEntity, const char* pszEventName);
+
+	void CreateDoorEntity(IANApi* pApi, IANEntity*& ppEntity, const char* pszDoorName, anVec2 Origin);
 };

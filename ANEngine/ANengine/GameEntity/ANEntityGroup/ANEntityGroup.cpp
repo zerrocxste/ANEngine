@@ -9,7 +9,7 @@ void ANEntityGroup::SetVisible(bool IsVisible)
 void ANEntityGroup::SetAnimationDuration(float flDuration)
 {
 	for (auto& entity : this->m_EntityGroup)
-		entity->m_pIANAnimationCompositionController->SetAnimationDuration(flDuration);
+		entity->m_pAnimCompositionController->SetAnimationDuration(flDuration);
 }
 
 void ANEntityGroup::SetOrigin(anVec2 Origin)

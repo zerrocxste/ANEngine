@@ -199,6 +199,11 @@ void ANApi::UnregEntity(IANEntity** ppEntity)
 	this->m_pCore->GetGame()->UnregEntity(ppEntity);
 }
 
+void ANApi::UnregAndDeleteAllEntity()
+{
+	this->m_pCore->GetGame()->GetEntityList()->UnregAll()->Clear();
+}
+
 ANInterfacePointer<IANEntityGroup> ANApi::FindEntityByGroupID(const char* pszGroupID)
 {
 	ANInterfacePointer<ANEntityGroup> EntityGroup;
