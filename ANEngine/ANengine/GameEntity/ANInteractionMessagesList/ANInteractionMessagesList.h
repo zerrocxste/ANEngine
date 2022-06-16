@@ -18,4 +18,10 @@ public:
 	std::vector<ANUniqueInteractionMesssage*> GetInteractionFromEntityClassID(const char* pszClassIDName) override;
 
 	void Clear() override;
+
+	bool m_CurrentIsIterable;
+	std::vector<ANUniqueInteractionMesssage> m_TempCollectionIML;
+
+	void LockList();
+	void UnlockList();
 };

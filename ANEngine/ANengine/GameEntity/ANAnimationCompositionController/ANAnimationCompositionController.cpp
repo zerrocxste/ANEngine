@@ -5,6 +5,11 @@ void ANAnimationCompositionController::SetAnimationDuration(float flDuration)
 	this->m_flNewAnimationDuration = flDuration;
 }
 
+void ANAnimationCompositionController::SetAnimationMode(bool bReversePlay)
+{
+	this->m_bIsPlayInversed = bReversePlay;
+}
+
 int ANAnimationCompositionController::GetNeedUpdateAnimationCounter(IANApi* pApi)
 {
 	if (this->m_flNewAnimationDuration <= 0.f)
@@ -68,7 +73,7 @@ ANImageID ANAnimationCompositionController::GetCurrentAnimationCompositionFrame(
 	auto MaxFramesOnComposition = *(int*)ViewedComposition;
 
 	auto PrevAnimNotSame = this->m_PrevAnimationComposition != ViewedComposition;
-	auto CounterIsOut = this->m_iCurrentAnimationCompositionFrameCount >= MaxFramesOnComposition;
+	auto CounterIsOut = this->m_bIsPlayInversed ? this->m_iCurrentAnimationCompositionFrameCount < 0 : this->m_iCurrentAnimationCompositionFrameCount >= MaxFramesOnComposition;
 
 	if (this->m_lflCurrentRenderTime == pApi->TotalRenderTime)
 		this->m_bAnimationCycleOnThisFrameIsComplete = CounterIsOut && !PrevAnimNotSame;
@@ -77,13 +82,18 @@ ANImageID ANAnimationCompositionController::GetCurrentAnimationCompositionFrame(
 		this->m_iCountOfIterationsPlayingComposition--;
 
 	if (PrevAnimNotSame || CounterIsOut)
-		this->m_iCurrentAnimationCompositionFrameCount = 0;
+		this->m_iCurrentAnimationCompositionFrameCount = this->m_bIsPlayInversed ? MaxFramesOnComposition - 1 : 0;
 
 	auto AnimationCompositionFrame = (ANImageID)((ANAnimationComposition)((std::uintptr_t)ViewedComposition + sizeof(int)))[this->m_iCurrentAnimationCompositionFrameCount];
 
 	this->m_PrevAnimationComposition = ViewedComposition;
 
-	this->m_iCurrentAnimationCompositionFrameCount += GetNeedUpdateAnimationCounter(pApi);
+	auto NextFrameIncFrameCount = GetNeedUpdateAnimationCounter(pApi);
+
+	if (this->m_bIsPlayInversed)
+		NextFrameIncFrameCount = -NextFrameIncFrameCount;
+
+	this->m_iCurrentAnimationCompositionFrameCount += NextFrameIncFrameCount;
 
 	if (IsPlayingComposition && this->m_iCountOfIterationsPlayingComposition <= 0)
 		StopRunningAnimation();
@@ -96,6 +106,11 @@ ANImageID ANAnimationCompositionController::GetCurrentAnimationCompositionFrame(
 int ANAnimationCompositionController::GetCurrentAnimationCompositionCount()
 {
 	return this->m_iCurrentAnimationCompositionFrameCount;
+}
+
+void ANAnimationCompositionController::SetCurrentAnimationCompositionCount(int Count)
+{
+	this->m_iCurrentAnimationCompositionFrameCount = Count;
 }
 
 void ANAnimationCompositionController::PlayAnimation(ANAnimationComposition AnimationComposition, bool bLockState, int iCountOfIterations, int iMaxFramesOfCompositionInIteration)

@@ -55,6 +55,8 @@ public:
 	virtual anVec2 WorldToScreen(IANWorld* pWorld, anVec2 PointWorld) = 0;
 	virtual anVec2 WorldToScreen(IANWorld* pWorld, IANEntity* pEntity) = 0;
 
+	virtual anVec2 ScreenPointToWorld(IANWorld* pWorld, anVec2 ScreenPoint) = 0;
+
 	virtual void RegEntity(IANEntity** ppEntity, const char* pszEntityClassID) = 0;
 	virtual void UnregEntity(IANEntity** ppEntity) = 0;
 	virtual void UnregAndDeleteAllEntity() = 0;

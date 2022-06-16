@@ -14,6 +14,12 @@ void ANInteractionMessagesList::AddInteractionMessage(
 	im.m_pRemoteEntity = pRemoteEntity;
 	im.m_pReversedUserData = pReversedUserData;
 
+	if (this->m_CurrentIsIterable)
+	{
+		this->m_TempCollectionIML.push_back(im);
+		return;
+	}
+
 	this->m_InteractionMessagesList.push_back(im);
 }
 
@@ -32,6 +38,12 @@ void ANInteractionMessagesList::AddInteractionMessageForEntityName(
 	im.m_pRemoteEntity = pRemoteEntity;
 	im.m_pReversedUserData = pReversedUserData;
 
+	if (this->m_CurrentIsIterable)
+	{
+		this->m_TempCollectionIML.push_back(im);
+		return;
+	}
+
 	this->m_InteractionMessagesList.push_back(im);
 }
 
@@ -49,6 +61,12 @@ void ANInteractionMessagesList::AddInteractionMessageForEntityClassID(
 	im.m_pszEventMessage = pszEventMessage;
 	im.m_pRemoteEntity = pRemoteEntity;
 	im.m_pReversedUserData = pReversedUserData;
+
+	if (this->m_CurrentIsIterable)
+	{
+		this->m_TempCollectionIML.push_back(im);
+		return;
+	}
 
 	this->m_InteractionMessagesList.push_back(im);
 }
@@ -170,4 +188,16 @@ std::vector<ANUniqueInteractionMesssage*> ANInteractionMessagesList::GetInteract
 void ANInteractionMessagesList::Clear()
 {
 	this->m_InteractionMessagesList.clear();
+}
+
+void ANInteractionMessagesList::LockList()
+{
+	this->m_CurrentIsIterable = true;
+}
+
+void ANInteractionMessagesList::UnlockList()
+{
+	this->m_InteractionMessagesList.insert(this->m_InteractionMessagesList.end(), this->m_TempCollectionIML.begin(), this->m_TempCollectionIML.end());
+	this->m_TempCollectionIML.clear();
+	this->m_CurrentIsIterable = false;
 }

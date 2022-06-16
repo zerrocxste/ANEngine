@@ -116,6 +116,14 @@ anVec2 ANMathUtils::WorldToScreen(anVec2 WorldSize, anVec2 WorldScreenPos, anVec
 	return PointToScreen(WorldSize, anRect(WorldScreenPos, WorldScreenPos + WorldScreenSize), PointWorld - CameraWorld) + (WorldScreenSize * 0.5f);
 }
 
+anVec2 ANMathUtils::ScreenPointToWorld(anVec2 CameraScreen, anVec2 WorldScreenSize, anVec2 WorldSize, anVec2 ScreenPos)
+{
+	return anVec2(
+		LinearInterpolation(0.f, ScreenPos.x + -CameraScreen.x, WorldScreenSize.x, 0.f, WorldSize.x),
+		LinearInterpolation(0.f, ScreenPos.y + -CameraScreen.y, WorldScreenSize.y, 0.f, WorldSize.y)
+	);
+}
+
 void ANMathUtils::ApplyZoom(anVec2& From, anVec2& To, float Zoom)
 {
 	ZoomVerticalAligment(From, To, Zoom);

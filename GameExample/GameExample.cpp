@@ -30,7 +30,5 @@ int main()
 		return 1;
 	}
 
-	std::cin.get();
-
 	return 0;
 }

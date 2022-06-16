@@ -27,10 +27,9 @@ void ANEntityList::Remove(IANEntity* pEntity)
 
 void ANEntityList::Unreg(IANEntity* ppEntity)
 {
-	auto& pIEntity = ppEntity;
-	auto pEntity = (ANEntity*)pIEntity;
+	auto pEntity = (ANEntity*)ppEntity;
 
-	if (!pIEntity)
+	if (!pEntity)
 		return;
 
 	if (pEntity->m_szEntityClassID)
@@ -39,9 +38,9 @@ void ANEntityList::Unreg(IANEntity* ppEntity)
 	if (pEntity->m_szEntityName)
 		delete[] pEntity->m_szEntityName;
 
-	ANMemory::GetInstance()->Delete(pIEntity->m_pAnimCompositionController);
+	ANMemory::GetInstance()->Delete(pEntity->m_pAnimCompositionController);
 
-	ANMemory::GetInstance()->Delete(pIEntity);
+	ANMemory::GetInstance()->Delete(pEntity);
 }
 
 void ANEntityList::FindFromClassID(const char* pszClassID, std::vector<IANEntity*>* pEntityList)

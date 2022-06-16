@@ -9,6 +9,7 @@
 #include <fstream>
 #include <direct.h>
 #include <thread>
+#include <mutex>
 
 class ANCore;
 class ANWindow;

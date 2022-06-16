@@ -45,6 +45,8 @@ public:
 	void RegWorld(IANWorld** ppWorld) override;
 	void UnregWorld(IANWorld** ppWorld) override;
 
+	anVec2 ScreenPointToWorld(IANWorld* pWorld, anVec2 ScreenPoint) override;
+
 	anVec2 WorldToScreen(IANWorld* pWorld, anVec2 PointWorld) override;
 	anVec2 WorldToScreen(IANWorld* pWorld, IANEntity* pEntity) override;
 

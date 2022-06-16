@@ -189,6 +189,13 @@ void ANApi::UnregWorld(IANWorld** ppWorld)
 	this->m_pCore->GetGame()->UnregWorld(ppWorld);
 }
 
+anVec2 ANApi::ScreenPointToWorld(IANWorld* pWorld, anVec2 ScreenPoint)
+{
+	auto WorldMetrics = pWorld->GetMetrics();
+
+	return ANMathUtils::ScreenPointToWorld(WorldMetrics.m_CameraScreen, WorldMetrics.m_WorldScreenSize, WorldMetrics.m_WorldSize, ScreenPoint);
+}
+
 void ANApi::RegEntity(IANEntity** ppEntity, const char* pszEntityClassID)
 {
 	this->m_pCore->GetGame()->RegEntity(ppEntity, pszEntityClassID);
