@@ -18,6 +18,8 @@ private:
 	char* m_szEntityName;
 
 	IANAnimationCompositionController* m_pAnimCompositionController;
+
+	void* m_pUserData;
 public:
 	int GetEntityID() override;
 	char* GetEntityClassID() override;
@@ -37,7 +39,9 @@ public:
 	anVec2 GetOrigin() override;
 
 	void SetVisible(bool IsVisible) override;
+	bool GetVisible() override;
 	void SetEntitySize(anVec2 EntitySize) override;
+	anVec2 GetEntitySize() override;
 	void DrawFromComposition(IANApi* pApi, IANWorld* pWorld) override;
 
 	bool IsScreenPointIntersected(IANApi* pApi, IANWorld* pWorld, anVec2 ScreenPoint) override;
@@ -47,4 +51,7 @@ public:
 	char* GetEntityName() override;
 	IANAnimationCompositionController* GetAnimCompositionController() override;
 	IANEntity& Update(IANApi* pApi) override;
+
+	void SetUserDataPointer(void* pUserData) override;
+	void* GetUserDataPointer() override;
 };

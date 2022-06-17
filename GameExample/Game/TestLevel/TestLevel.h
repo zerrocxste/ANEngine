@@ -30,6 +30,12 @@ enum HOUSE_ROOM
 	HALL
 };
 
+enum DOOR_TYPE
+{
+	VERTICAL,
+	HORIZONTAL
+};
+
 enum DOOR_INTERACTIONS
 {
 	DOOR_EMPTY,
@@ -37,6 +43,28 @@ enum DOOR_INTERACTIONS
 	DOOR_HALLWAY_HALL,
 	DOOR_KITCHEN_HALLWAY,
 	DOOR_HALL_HALLWAY
+};
+
+class CRoomZoneEntityData
+{
+public:
+	CRoomZoneEntityData(HOUSE_ROOM HouseRoom) :
+		m_HouseRoom(HouseRoom) {}
+
+	HOUSE_ROOM m_HouseRoom;
+};
+
+class CDoorEntityData
+{
+public:
+	CDoorEntityData(HOUSE_ROOM HouseRoom, DOOR_TYPE DoorType, DOOR_INTERACTIONS DoorInteraction) : 
+		m_HouseRoom(HouseRoom),
+		m_DoorType(DoorType),
+		m_DoorInteraction(DoorInteraction) {}
+
+	HOUSE_ROOM m_HouseRoom;
+	DOOR_TYPE m_DoorType;
+	DOOR_INTERACTIONS m_DoorInteraction;
 };
 
 class CTestLevel : public IANGameScene
@@ -62,13 +90,17 @@ private:
 	ANAnimationComposition m_WoodyDoorLeave;
 	ANAnimationComposition m_WoodyDoorEnter;
 
+	IANEntity* m_pEntityDoorZoneHallway;
+	IANEntity* m_pEntityDoorZoneBathroom;
+	IANEntity* m_pEntityDoorZoneKitchen;
+	IANEntity* m_pEntityDoorZoneHall;
+
 	IANEntity* m_pDoorEntityHallwayKitchen;
 	IANEntity* m_pDoorEntityKitchenHallway;
 	IANEntity* m_pDoorEntityHallwayHall;
 	IANEntity* m_pDoorEntityHallHallway;
 
 	DOOR_INTERACTIONS m_CurrentDoorTarget;
-	HOUSE_ROOM m_WoodyLocationRoomTarget;
 	HOUSE_ROOM m_HouseRoomTarget;
 	anVec2 m_MovePoint;
 
@@ -86,7 +118,9 @@ private:
 
 	bool ProcessDoorInteraction(IANApi* pApi, IANEntity*& pEntity);
 	void ProcessActorMove(IANApi* pApi);
-	void CreateDoorEntity(IANApi* pApi, IANEntity*& ppEntity, const char* pszDoorName, anVec2 Origin);
+
+	void CreateRoomZoneEntity(IANApi* pApi, IANEntity*& pEntity, anVec2 RoomPos, anVec2 RoomSize, HOUSE_ROOM HouseRoom);
+	void CreateDoorEntity(IANApi* pApi, IANEntity*& pEntity, const char* pszDoorName, anVec2 Origin, DOOR_TYPE DoorType, HOUSE_ROOM HouseRoom, DOOR_INTERACTIONS DoorInteraction);
 
 	void KeyboardMoveInput(IANApi* pApi);
 

@@ -55,10 +55,6 @@ struct ANUniqueInteractionMesssage;
 
 #include "ANInterfacePointer/ANInterfacePointer.h"
 
-#include "Interfaces/Game/GameEntity/Components/IANBasicEntity/IANBasicEntity.h"
-#include "Interfaces/Game/GameEntity/Components/IANMovementController/IANMovementController.h"
-#include "Interfaces/Game/GameEntity/Components/IANActionController/IANActionController.h"
-#include "Interfaces/Game/GameEntity/Components/IANAnimationController/IANAnimationController.h"
 #include "Interfaces/Game/GameEntity/IANInteractionController/IANInteractionController.h"
 #include "Interfaces/Game/IANInteractionMessagesList/IANInteractionMessagesList.h"
 #include "Interfaces/Game/GameEntity/IANEntity/IANEntity.h"

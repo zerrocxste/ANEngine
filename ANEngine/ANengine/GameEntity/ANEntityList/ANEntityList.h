@@ -6,6 +6,7 @@ public:
 	ANEntityList();
 	~ANEntityList();
 
+	void Reg(IANEntity** ppEntity, const char* pszEntityClassID);
 	void Add(IANEntity* pEntity);
 	void Remove(IANEntity* pEntity);
 	void Unreg(IANEntity* ppEntity);

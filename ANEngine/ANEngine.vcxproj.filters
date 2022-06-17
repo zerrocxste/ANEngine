@@ -115,21 +115,6 @@
     <Filter Include="ANEngine\Interfaces\Game\GameEntity\IANEntity">
       <UniqueIdentifier>{6fd5d644-8913-4f3a-b714-25954d34ab0a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\Interfaces\Game\GameEntity\Components">
-      <UniqueIdentifier>{f1c8a632-5640-41b7-9c8d-6a6b28670321}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ANEngine\Interfaces\Game\GameEntity\Components\IANActionController">
-      <UniqueIdentifier>{45a6d700-7c20-4a83-8e8b-17b259592f75}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ANEngine\Interfaces\Game\GameEntity\Components\IANAnimationController">
-      <UniqueIdentifier>{fcdd2451-7fd7-412b-bcf7-9a4a77e25b7b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ANEngine\Interfaces\Game\GameEntity\Components\IANMovementController">
-      <UniqueIdentifier>{b47dc9a3-9475-4312-88b0-721bfe3f064a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ANEngine\Interfaces\Game\GameEntity\Components\IANBasicEntity">
-      <UniqueIdentifier>{9eb35d45-a6ff-4f6e-8025-b27742b99881}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ANEngine\ANWorld">
       <UniqueIdentifier>{3aa109ee-bb3d-41c2-b3e1-7b9d3088258a}</UniqueIdentifier>
     </Filter>
@@ -328,18 +313,6 @@
     </ClInclude>
     <ClInclude Include="ANengine\Interfaces\Game\GameEntity\IANEntity\IANEntity.h">
       <Filter>ANEngine\Interfaces\Game\GameEntity\IANEntity</Filter>
-    </ClInclude>
-    <ClInclude Include="ANengine\Interfaces\Game\GameEntity\Components\IANActionController\IANActionController.h">
-      <Filter>ANEngine\Interfaces\Game\GameEntity\Components\IANActionController</Filter>
-    </ClInclude>
-    <ClInclude Include="ANengine\Interfaces\Game\GameEntity\Components\IANAnimationController\IANAnimationController.h">
-      <Filter>ANEngine\Interfaces\Game\GameEntity\Components\IANAnimationController</Filter>
-    </ClInclude>
-    <ClInclude Include="ANengine\Interfaces\Game\GameEntity\Components\IANBasicEntity\IANBasicEntity.h">
-      <Filter>ANEngine\Interfaces\Game\GameEntity\Components\IANBasicEntity</Filter>
-    </ClInclude>
-    <ClInclude Include="ANengine\Interfaces\Game\GameEntity\Components\IANMovementController\IANMovementController.h">
-      <Filter>ANEngine\Interfaces\Game\GameEntity\Components\IANMovementController</Filter>
     </ClInclude>
     <ClInclude Include="ANengine\ANWorld\ANWorld.h">
       <Filter>ANEngine\ANWorld</Filter>

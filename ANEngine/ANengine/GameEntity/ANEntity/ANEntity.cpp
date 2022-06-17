@@ -184,9 +184,19 @@ void ANEntity::SetVisible(bool IsVisible)
 	this->m_bIsOccluded = !IsVisible;
 }
 
+bool ANEntity::GetVisible()
+{
+	return !this->m_bIsOccluded;
+}
+
 void ANEntity::SetEntitySize(anVec2 EntitySize)
 {
 	this->m_EntitySize = EntitySize;
+}
+
+anVec2 ANEntity::GetEntitySize()
+{
+	return this->m_EntitySize;
 }
 
 void ANEntity::DrawFromComposition(IANApi* pApi, IANWorld* pWorld)
@@ -284,4 +294,14 @@ IANEntity& ANEntity::Update(IANApi* pApi)
 	}
 
 	return *this;
+}
+
+void ANEntity::SetUserDataPointer(void* pUserData)
+{
+	this->m_pUserData = pUserData;
+}
+
+void* ANEntity::GetUserDataPointer()
+{
+	return this->m_pUserData;
 }

@@ -194,10 +194,6 @@
     <ClInclude Include="ANengine\GameEntity\ANInteractionMessagesList\ANInteractionMessagesList.h" />
     <ClInclude Include="ANengine\Gui\ANGuiWindow\ANGuiWindow.h" />
     <ClInclude Include="ANengine\Gui\ANGui\ANGui.h" />
-    <ClInclude Include="ANengine\Interfaces\Game\GameEntity\Components\IANActionController\IANActionController.h" />
-    <ClInclude Include="ANengine\Interfaces\Game\GameEntity\Components\IANAnimationController\IANAnimationController.h" />
-    <ClInclude Include="ANengine\Interfaces\Game\GameEntity\Components\IANBasicEntity\IANBasicEntity.h" />
-    <ClInclude Include="ANengine\Interfaces\Game\GameEntity\Components\IANMovementController\IANMovementController.h" />
     <ClInclude Include="ANengine\Interfaces\Game\GameEntity\IANEntityGroup\IANEntityGroup.h" />
     <ClInclude Include="ANengine\Interfaces\Game\GameEntity\IANEntity\IANEntity.h" />
     <ClInclude Include="ANengine\Interfaces\Game\GameEntity\IANInteractionController\IANInteractionController.h" />

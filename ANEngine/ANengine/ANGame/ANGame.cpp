@@ -89,15 +89,7 @@ void ANGame::UnregWorld(IANWorld** ppWorld)
 
 void ANGame::RegEntity(IANEntity** ppEntity, const char* pszEntityClassID)
 {
-	auto pEntity = (ANEntity*)((*ppEntity) = ANMemory::GetInstance()->Allocate<ANEntity>());
-
-	pEntity->m_pAnimCompositionController = ANMemory::GetInstance()->Allocate<ANAnimationCompositionController>();
-
-	if (pszEntityClassID)
-	{
-		auto LengthEntityName = strlen(pszEntityClassID) + 1;
-		memcpy(pEntity->m_szEntityClassID = new char[LengthEntityName], pszEntityClassID, LengthEntityName);
-	}
+	GetEntityList()->Reg(ppEntity, pszEntityClassID);
 
 	GetEntityList()->Add(*ppEntity);
 }
@@ -105,7 +97,6 @@ void ANGame::RegEntity(IANEntity** ppEntity, const char* pszEntityClassID)
 void ANGame::UnregEntity(IANEntity** ppEntity)
 {
 	auto& pIEntity = *ppEntity;
-	auto pEntity = (ANEntity*)pIEntity;
 
 	if (!pIEntity)
 		return;

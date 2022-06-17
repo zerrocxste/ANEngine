@@ -10,6 +10,21 @@ ANEntityList::~ANEntityList()
 
 }
 
+void ANEntityList::Reg(IANEntity** ppEntity, const char* pszEntityClassID)
+{
+	auto pANEntity = (ANEntity*)((*ppEntity) = ANMemory::GetInstance()->Allocate<ANEntity>());
+
+	pANEntity->m_pAnimCompositionController = ANMemory::GetInstance()->Allocate<ANAnimationCompositionController>();
+
+	if (pszEntityClassID)
+	{
+		auto LengthEntityName = strlen(pszEntityClassID) + 1;
+		memcpy(pANEntity->m_szEntityClassID = new char[LengthEntityName], pszEntityClassID, LengthEntityName);
+	}
+
+	pANEntity->m_pUserData = nullptr;
+}
+
 void ANEntityList::Add(IANEntity* pEntity)
 {
 	this->m_vEntityList.push_back(pEntity);
@@ -41,6 +56,12 @@ void ANEntityList::Unreg(IANEntity* ppEntity)
 	ANMemory::GetInstance()->Delete(pEntity->m_pAnimCompositionController);
 
 	ANMemory::GetInstance()->Delete(pEntity);
+
+	if (pEntity->m_pUserData != nullptr)
+	{
+		delete pEntity->m_pUserData;
+		pEntity->m_pUserData = nullptr;
+	}
 }
 
 void ANEntityList::FindFromClassID(const char* pszClassID, std::vector<IANEntity*>* pEntityList)
