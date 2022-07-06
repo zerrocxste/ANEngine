@@ -1,5 +1,7 @@
 #pragma once
 
+#define DEBUG_LEVEL_1 1
+
 class DoorEntityInteractionController;
 class CTestLevel;
 
@@ -126,6 +128,6 @@ private:
 
 	void DrawWorld(IANApi* pApi);
 	void DrawEntities(IANApi* pApi);
-	void DrawStatistics(IANApi* pApi);
 	void DrawUI(IANApi* pApi);
+	void DrawStatistics(IANApi* pApi);
 };

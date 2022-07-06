@@ -62,3 +62,8 @@ void ANWorld::Draw(IANApi* pApi)
 
 	pApi->DrawImage(AnimationCompositionFrame, wm->m_CameraScreen, wm->m_WorldScreenSize, 1.f);
 }
+
+IANAnimationCompositionController* ANWorld::GetAnimCompositionController()
+{
+	return this->m_pIANAnimationCompositionController;
+}

@@ -66,11 +66,9 @@ void ANGame::LeaveGame()
 
 void ANGame::RegWorld(IANWorld** ppWorld)
 {
-	auto& pWorld = *ppWorld;
+	auto& pWorld = (*ppWorld) = ANMemory::GetInstance()->Allocate<ANWorld>();
 
-	pWorld = ANMemory::GetInstance()->Allocate<ANWorld>();
-
-	pWorld->m_pIANAnimationCompositionController = ANMemory::GetInstance()->Allocate<ANAnimationCompositionController>();
+	((ANWorld*)pWorld)->m_pIANAnimationCompositionController = ANMemory::GetInstance()->Allocate<ANAnimationCompositionController>();
 }
 
 void ANGame::UnregWorld(IANWorld** ppWorld)
@@ -80,7 +78,7 @@ void ANGame::UnregWorld(IANWorld** ppWorld)
 	if (!pWorld)
 		return;
 
-	ANMemory::GetInstance()->Delete(pWorld->m_pIANAnimationCompositionController);
+	ANMemory::GetInstance()->Delete(((ANWorld*)pWorld)->m_pIANAnimationCompositionController);
 
 	ANMemory::GetInstance()->Delete(pWorld);
 
