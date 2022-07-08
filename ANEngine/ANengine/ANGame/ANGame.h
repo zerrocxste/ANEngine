@@ -26,5 +26,7 @@ private:
 
 	ANEntityList* m_pEntityList;
 	ANInteractionMessagesList* m_pInteractionMessagesList;
+
+	IANGameScene* m_pNewGameScene;
 	IANGameScene* m_pCurrentScene;
 };

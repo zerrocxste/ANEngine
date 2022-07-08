@@ -286,7 +286,7 @@ IANEntity& ANEntity::Update(IANApi* pApi)
 					continue;
 				}
 
-				iml->m_InteractionMessagesList.erase(it);
+				iml->m_InteractionMessagesList.erase(it--);
 			}
 		}
 

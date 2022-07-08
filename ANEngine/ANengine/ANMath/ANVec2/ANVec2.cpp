@@ -25,6 +25,11 @@ bool anVec2::operator!()
 	return this->x == 0.f && this->y == 0.f;
 }
 
+bool anVec2::IsValid()
+{
+	return !!*this;
+}
+
 bool anVec2::operator==(anVec2 o)
 {
 	return this->x == o.x && this->y == o.y;

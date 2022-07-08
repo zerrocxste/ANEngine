@@ -98,7 +98,7 @@ void ANInteractionMessagesList::RemoveInteractionMessageForClassID(const char* p
 	for (auto it = this->m_InteractionMessagesList.begin(); it < this->m_InteractionMessagesList.end(); it++)
 	{
 		if (!strcmp((*it).m_pszEventClassID, pszEventClassID))
-			this->m_InteractionMessagesList.erase(it);
+			this->m_InteractionMessagesList.erase(it--);
 	}
 }
 
@@ -107,7 +107,7 @@ void ANInteractionMessagesList::RemoveInteractionMessage(const char* pszEventMes
 	for (auto it = this->m_InteractionMessagesList.begin(); it < this->m_InteractionMessagesList.end(); it++)
 	{
 		if (!strcmp((*it).m_pszEventMessage, pszEventMessage))
-			this->m_InteractionMessagesList.erase(it);
+			this->m_InteractionMessagesList.erase(it--);
 	}
 }
 

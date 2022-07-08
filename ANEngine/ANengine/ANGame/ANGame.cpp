@@ -21,11 +21,13 @@ bool ANGame::ConnectScene(IANGameScene* pScene)
 	if (!pScene)
 		return false;
 
-	DisconnectScene();
-
-	this->m_pCurrentScene = pScene;
-
-	this->m_pCurrentScene->OnLoadScene(this->m_pCore->GetApi());
+	if (!this->m_pCurrentScene)
+	{
+		this->m_pCurrentScene = pScene;
+		this->m_pCurrentScene->OnLoadScene(this->m_pCore->GetApi());
+	}
+	else
+		this->m_pNewGameScene = pScene;
 
 	return true;
 }
@@ -53,6 +55,14 @@ bool ANGame::RunScene()
 	}
 
 	this->m_pCurrentScene->Entry(this->m_pCore->GetApi());
+
+	if (this->m_pNewGameScene != nullptr)
+	{
+		DisconnectScene();
+		this->m_pCurrentScene = this->m_pNewGameScene;
+		this->m_pCurrentScene->OnLoadScene(this->m_pCore->GetApi());
+		this->m_pNewGameScene = nullptr;
+	}
 
 	this->m_pCore->GetApi()->Update();
 

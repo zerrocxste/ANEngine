@@ -98,7 +98,7 @@ ANEntityList* ANEntityList::UnregAll()
 
 		Unreg(entity);
 
-		this->m_vEntityList.erase(it);
+		this->m_vEntityList.erase(it--);
 	}
 
 	return this;

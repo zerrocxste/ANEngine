@@ -9,6 +9,7 @@ public:
 	~anVec2();
 
 	bool operator!();
+	bool IsValid();
 
 	bool operator==(anVec2 o);
 	bool operator!=(anVec2 o);
