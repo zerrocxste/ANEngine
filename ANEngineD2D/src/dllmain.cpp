@@ -13,6 +13,7 @@ struct D2DWindowContextRenderInformation
 {
 	ID2D1HwndRenderTarget* m_pRenderTarget;
 	ID2D1SolidColorBrush* m_pColorBrush;
+	ID2D1SolidColorBrush* m_pColorBrushFontShadow;
 };
 
 D2DInterfaces g_D2DInterfaces;
@@ -42,7 +43,7 @@ extern "C" __declspec(dllexport) bool __stdcall DrawFilledCircle(HWND hWnd, ANIn
 extern "C" __declspec(dllexport) bool __stdcall CreateFontFromFile(const char* pszPath, float FontSize, ANFontID * pFontIDPtr);
 extern "C" __declspec(dllexport) void __stdcall FreeFont(ANFontID* pFontIDPtr);
 extern "C" __declspec(dllexport) bool __stdcall TextCalcSize(HWND hWnd, const char* pszText, ANFontID FontID, anVec2 * pTextSize);
-extern "C" __declspec(dllexport) bool __stdcall TextDraw(HWND hWnd, ANInternalGuiWindowID GuiWindow, const char* pszText, anVec2 Pos, anColor Color, ANFontID FontID);
+extern "C" __declspec(dllexport) bool __stdcall TextDraw(HWND hWnd, ANInternalGuiWindowID GuiWindow, const char* pszText, anVec2 Pos, anColor Color, ANFontID FontID, FontAppierence Appierence);
 extern "C" __declspec(dllexport) bool __stdcall CreateGuiWindow(HWND hWnd, ANInternalGuiWindowID * pGuiWindow, anVec2 Size);
 extern "C" __declspec(dllexport) bool __stdcall DeleteGuiWindow(ANInternalGuiWindowID * GuiWindow);
 extern "C" __declspec(dllexport) bool __stdcall BeginGuiWindow(ANInternalGuiWindowID GuiWindow);
@@ -92,7 +93,7 @@ bool CreateRenderTarget(HWND hWnd)
 	pixelFormat.alphaMode = D2D1_ALPHA_MODE_UNKNOWN;
 
 	D2D1_RENDER_TARGET_PROPERTIES renderTargetProperties{};
-	renderTargetProperties.type = D2D1_RENDER_TARGET_TYPE_DEFAULT;
+	renderTargetProperties.type = D2D1_RENDER_TARGET_TYPE_HARDWARE;
 	renderTargetProperties.pixelFormat = pixelFormat;
 	renderTargetProperties.dpiX = 0.0;
 	renderTargetProperties.dpiY = 0.0;
@@ -114,7 +115,8 @@ bool CreateGlobalBrush(HWND hWnd)
 	if (!ri.m_pRenderTarget)
 		return false;
 
-	return SUCCEEDED(ri.m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black), &ri.m_pColorBrush));
+	return SUCCEEDED(ri.m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black), &ri.m_pColorBrush)) && 
+		SUCCEEDED(ri.m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black), &ri.m_pColorBrushFontShadow));
 }
 
 bool CreateRendererFunctionsTable()
@@ -837,6 +839,9 @@ bool ProcessTextCache(const char* pszText, ANFontID FontID, DWriteTextCache* pCa
 
 		if (FAILED(e.m_pDWriteTextLayout->GetMetrics(&e.m_dwrTextMetrics)))
 			return false;
+
+		/*printf("%p\n", e.m_pDWriteTextLayout);
+		system("pause");*/
 	}
 
 	*pCachedTextElement = e;
@@ -857,7 +862,7 @@ extern "C" __declspec(dllexport) bool __stdcall TextCalcSize(HWND hWnd, const ch
 	return true;
 }
 
-extern "C" __declspec(dllexport) bool __stdcall TextDraw(HWND hWnd, ANInternalGuiWindowID GuiWindow, const char* pszText, anVec2 Pos, anColor Color, ANFontID FontID)
+extern "C" __declspec(dllexport) bool __stdcall TextDraw(HWND hWnd, ANInternalGuiWindowID GuiWindow, const char* pszText, anVec2 Pos, anColor Color, ANFontID FontID, FontAppierence Appierence)
 {
 	DWriteTextCache TextElement;
 
@@ -871,12 +876,24 @@ extern "C" __declspec(dllexport) bool __stdcall TextDraw(HWND hWnd, ANInternalGu
 
 	SetBrushColor(ri.m_pColorBrush, hWnd, Color);
 
+	//(wchar_t*)TextElement.m_pDWriteTextLayout + 0x20 = Text data
+
 	if (GuiWindow == 0)
 	{	
+		if (Appierence & FontAppierence::FONT_SHADOW)
+		{
+			ri.m_pRenderTarget->DrawTextLayout(D2D1::Point2F(Pos.x + 1.f, Pos.y + 1.f), TextElement.m_pDWriteTextLayout, ri.m_pColorBrushFontShadow);
+			ri.m_pRenderTarget->DrawTextLayout(D2D1::Point2F(Pos.x - 1.f, Pos.y - 1.f), TextElement.m_pDWriteTextLayout, ri.m_pColorBrushFontShadow);
+		}
 		ri.m_pRenderTarget->DrawTextLayout(D2D1::Point2F(Pos.x, Pos.y), TextElement.m_pDWriteTextLayout, ri.m_pColorBrush);
 	}
 	else
 	{
+		if (Appierence & FontAppierence::FONT_SHADOW)
+		{
+			((ID2D1BitmapRenderTarget*)GuiWindow)->DrawTextLayout(D2D1::Point2F(Pos.x + 1.f, Pos.y + 1.f), TextElement.m_pDWriteTextLayout, ri.m_pColorBrushFontShadow);
+			((ID2D1BitmapRenderTarget*)GuiWindow)->DrawTextLayout(D2D1::Point2F(Pos.x - 1.f, Pos.y - 1.f), TextElement.m_pDWriteTextLayout, ri.m_pColorBrushFontShadow);
+		}
 		((ID2D1BitmapRenderTarget*)GuiWindow)->DrawTextLayout(D2D1::Point2F(Pos.x, Pos.y), TextElement.m_pDWriteTextLayout, ri.m_pColorBrush);
 	}
 
@@ -922,7 +939,7 @@ extern "C" __declspec(dllexport) bool __stdcall BeginGuiWindow(ANInternalGuiWind
 
 	BitmapRenderTarget->BeginDraw();
 	BitmapRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
-	BitmapRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
+	BitmapRenderTarget->Clear(D2D1::ColorF(1.f, 1.f, 1.f, 0.f));
 
 	return true;
 }
@@ -1017,7 +1034,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 	case DLL_PROCESS_ATTACH:
 		InitializeCriticalSection(&g_csInitializeRenderer);
 		memset(&g_D2DInterfaces, 0, sizeof(decltype(g_D2DInterfaces)));
-		printf("%s() -> %s\n", __FUNCTION__, MODULE_DESC);
+		printf("[+] " __FUNCTION__ " > %s\n", MODULE_DESC);
 		break;
 	case DLL_THREAD_ATTACH:
 		break;

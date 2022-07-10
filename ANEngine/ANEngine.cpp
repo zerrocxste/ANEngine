@@ -1,6 +1,6 @@
 ﻿#include "ANengine/ANEngine.h"
 
-constexpr auto MODULE_DESC = "AlterNative engine (ANEngine). Timestamp: " __DATE__;
+constexpr auto MODULE_DESC = "AlterNative engine (ANEngine) Engine module. Timestamp: " __DATE__;
 
 extern "C" __declspec(dllexport) IANLoader * __stdcall CreateEngineInstance(
 	RenderTypes RenderType,
@@ -21,7 +21,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
-		printf("%s() -> %s\n", __FUNCTION__, MODULE_DESC);
+		printf("[+] " __FUNCTION__ " > %s\n", MODULE_DESC);
 		break;
 	case DLL_THREAD_ATTACH:
 		break;

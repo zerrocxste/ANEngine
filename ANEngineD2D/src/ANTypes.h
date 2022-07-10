@@ -4,6 +4,12 @@ typedef void* ANImageID;
 typedef void* ANFontID;
 typedef void* ANInternalGuiWindowID;
 
+enum FontAppierence
+{
+	FONT_NONE = 0,
+	FONT_SHADOW = 1 << 0,
+};
+
 using fRenderInitialize = bool(__stdcall*)(HINSTANCE hInstance, HWND hWnd, void* pReversed);
 using fGetRendererFunctionTable = void* (__stdcall*)();
 
@@ -37,7 +43,7 @@ struct ANRendererFuncionsTable
 	bool(__stdcall* CreateFontFromFile)(const char* pszPath, float FontSize, ANFontID* pFontIDPtr);
 	void(__stdcall* FreeFont)(ANFontID* pFontIDPtr);
 	bool(__stdcall* TextCalcSize)(HWND hWnd, const char* pszText, ANFontID FontID, anVec2* pTextSize);
-	bool(__stdcall* TextDraw)(HWND hWnd, ANInternalGuiWindowID GuiWindow, const char* pszText, anVec2 Pos, anColor Color, ANFontID FontID);
+	bool(__stdcall* TextDraw)(HWND hWnd, ANInternalGuiWindowID GuiWindow, const char* pszText, anVec2 Pos, anColor Color, ANFontID FontID, FontAppierence Appierence);
 	bool(__stdcall* CreateGuiWindow)(HWND hWnd, ANInternalGuiWindowID* pGuiWindow, anVec2 Size);
 	bool(__stdcall* DeleteGuiWindow)(ANInternalGuiWindowID* pGuiWindow);
 	bool(__stdcall* BeginGuiWindow)(ANInternalGuiWindowID GuiWindow);

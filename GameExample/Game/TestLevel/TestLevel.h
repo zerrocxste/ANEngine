@@ -95,6 +95,8 @@ public:
 	void Entry(IANApi* pApi) override;
 
 	static CDoorEntityData* GetRoomZoneEntityData(IANEntity* ptr);
+
+	DOOR_INTERACTIONS m_CurrentActorIntercationDoor;
 private:
 	float m_WorldZoom;
 
@@ -121,6 +123,7 @@ private:
 	DOOR_INTERACTIONS m_CurrentDoorTarget;
 	HOUSE_ROOM m_HouseRoomTarget;
 	anVec2 m_MovePoint;
+	anVec2 m_NewMovePoint;
 
 	ANAnimationComposition m_DoorComposition;
 
@@ -130,6 +133,7 @@ private:
 	bool m_bNextDoor;
 	bool m_bWayback;
 	DOOR_INTERACTIONS m_LeaveDoorEntity, m_EnterDoorEntity;
+	
 	int m_LastAnimCount;
 
 	const char* GetDoorEventTypeFromEntity(IANEntity* pEntity);

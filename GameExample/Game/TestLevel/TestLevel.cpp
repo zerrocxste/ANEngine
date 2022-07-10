@@ -97,10 +97,7 @@ bool DoorEntityInteractionController::ActionHandler(IANApi* pApi,
 	if (!strcmp(pszEventClassID, szDoorIntercationClassID))
 	{
 		if (!pApi->GetInteractionMessagesList()->IsEventCanceledByClassID("CLASSID_EVENT_Door", pThisEntity))
-		{
-			printf("BLYAT\n");
 			return false;
-		}
 
 		auto& pActorEntity = *ppRemoteEntity;
 
@@ -122,6 +119,8 @@ bool DoorEntityInteractionController::ActionHandler(IANApi* pApi,
 		{
 			if (pActorEntity->GetOrigin() == pThisEntity->GetOrigin() || pTestLevel->m_bNextDoor)
 			{
+				pTestLevel->m_CurrentActorIntercationDoor = CTestLevel::GetRoomZoneEntityData(pThisEntity)->m_DoorInteraction;
+
 				pTestLevel->m_bProcessDoor = true;
 
 				pActorEntity->SetVisible(false);
@@ -141,7 +140,6 @@ bool DoorEntityInteractionController::ActionHandler(IANApi* pApi,
 					pTestLevel->m_bNextDoor = false;
 					pTestLevel->m_bProcessDoor = false;
 					pTestLevel->m_LeaveDoorEntity = pTestLevel->m_EnterDoorEntity = DOOR_INTERACTIONS::DOOR_EMPTY;
-					printf("LOL\n");
 					return true;
 				}
 			}
@@ -165,24 +163,23 @@ bool DoorEntityInteractionController::ActionHandler(IANApi* pApi,
 
 				pTestLevel->m_LastAnimCount = pDestEntity->GetAnimCompositionController()->GetCurrentAnimationCompositionCount();
 				pTestLevel->m_HouseRoomTarget = HOUSE_ROOM::ROOM_EMPTY;
-				printf("WAYBACK\n");
 			}
 			else
 			{
 				if (!TargetEntity->GetAnimCompositionController()->IsAnimationCycleComplete())
-					return false;
+					return false;;
 
-				printf("SET NEXT, %d %d\n", pTestLevel->m_bWayback, pTestLevel->m_bNextDoor);
-
-				/*pTestLevel->m_LeaveDoorEntity = pTestLevel->m_EnterDoorEntity = DOOR_INTERACTIONS::DOOR_EMPTY;
-				pTestLevel->m_bWayback = false;*/
+				if (pTestLevel->m_CurrentActorIntercationDoor == pTestLevel->m_LeaveDoorEntity)
+				{
+					pTestLevel->m_LeaveDoorEntity = pTestLevel->m_EnterDoorEntity = DOOR_INTERACTIONS::DOOR_EMPTY;
+					pTestLevel->m_CurrentActorIntercationDoor = DOOR_INTERACTIONS::DOOR_EMPTY;
+				}
 			}
 			
 			ResetDoorState(pThisEntity, pDestEntity, pActorEntity);
 			pTestLevel->m_bNextDoor = false;
 			pTestLevel->m_bProcessDoor = false;
 			pTestLevel->m_bWayback = false;
-			printf("CLEAR\n");
 			return true;
 		}
 	}
@@ -320,14 +317,14 @@ void CTestLevel::DrawWorld(IANApi* pApi)
 void CTestLevel::DrawEntities(IANApi* pApi)
 {
 #if DEBUG_LEVEL_1 == 1
-	auto Zone = pApi->FindEntityByGroupID(szWorldEntityClassID_RoomZone);
+	/*auto Zone = pApi->FindEntityByGroupID(szWorldEntityClassID_RoomZone);
 
 	for (auto& e : Zone->m_EntityGroup)
 	{
 		auto ScreenF = pApi->WorldToScreen(this->m_pWorld, e->GetOrigin());
 		auto ScreenS = pApi->WorldToScreen(this->m_pWorld, e->GetOrigin() + e->GetEntitySize());
-		pApi->DrawRectangle(ScreenF, ScreenS - ScreenF, anColor::Red(), 3.f);
-	}
+		pApi->DrawRectangle(ScreenF, ScreenS - ScreenF, anRect(e->GetOrigin(), e->GetOrigin() + e->GetEntitySize()).IsIntersected(this->m_pMainActor->GetOrigin()) ? anColor::Blue() : anColor::Red(), 3.f);
+	}*/
 #endif
 	pApi->FindEntityByGroupID(szWorldEntityClassID_Door)->Update(pApi).Draw(pApi, this->m_pWorld);
 	pApi->FindEntityByGroupID("CLASSID_WorldEntity")->Update(pApi).Draw(pApi, this->m_pWorld);
@@ -349,7 +346,8 @@ void CTestLevel::DrawStatistics(IANApi* pApi)
 	auto WorldMetrics = this->m_pWorld->GetMetrics();
 	auto ActorScreen = pApi->WorldToScreen(this->m_pWorld, this->m_pMainActor);
 	char buff[512] = { 0 };
-	/*sprintf_s(buff, 
+	sprintf_s(buff,
+		"ENGINE:\n"
 		"FPS: %d\n"
 		"Frametime: %f\n"
 		"Screen size: %.1f:%.1f\n"
@@ -360,7 +358,13 @@ void CTestLevel::DrawStatistics(IANApi* pApi)
 		"Camera screen: %.1f:%.1f\n"
 		"Actor world: %f:%f\n"
 		"Actor screen: %.1f:%.1f\n"
-		"Cursor screen: %.1f:%.1f",
+		"Cursor screen: %.1f:%.1f\n\n"
+		"GAME DATA:\n"
+		"m_bProcessDoor: %d\n"
+		"m_bNextDoor: %d\n"
+		"m_bWayback: %d\n"
+		"m_LeaveDoorEntity: %d\n"
+		"m_EnterDoorEntity: %d\n",
 		pApi->FPS,
 		pApi->Frametime,
 		ScreenSize.x, ScreenSize.y,
@@ -371,17 +375,16 @@ void CTestLevel::DrawStatistics(IANApi* pApi)
 		WorldMetrics.m_CameraScreen.x, WorldMetrics.m_CameraScreen.y,
 		this->m_pMainActor->GetOrigin().x, this->m_pMainActor->GetOrigin().y,
 		ActorScreen.x, ActorScreen.y,
-		pApi->GetCursorPos().x, pApi->GetCursorPos().y);*/
-
-	sprintf_s(buff,
-		"m_bProcessDoor: %d\n"
-		"m_bNextDoor: %d\n"
-		"m_bWayback: %d\n",
+		pApi->GetCursorPos().x, pApi->GetCursorPos().y,
 		this->m_bProcessDoor,
 		this->m_bNextDoor,
-		this->m_bWayback);
+		this->m_bWayback,
+		this->m_LeaveDoorEntity,
+		this->m_EnterDoorEntity);
 
+	pApi->PushFontAppierence(FontAppierence::FONT_SHADOW);
 	pApi->TextDraw(buff, anVec2(10.f, 20.f), anColor::White());
+	pApi->PopFontAppierence();
 
 	pApi->PushFontColor(anColor::White());
 	pApi->AddSliderFloat("Map zoom", anVec2(10.f, ScreenSize.y - 70.f), anVec2(300.f, 30.f), 0.f, 10000.f, &this->m_WorldZoom);
@@ -405,7 +408,6 @@ bool CTestLevel::ProcessDoorInteraction(IANApi* pApi, IANEntity*& pEntity)
 		if (ThisDoorSelected || IsWayback)
 		{
 			this->m_bWayback = true;
-			printf("KEK %d %d | %d %d\n", this->m_EnterDoorEntity == DoorIntercation, this->m_LeaveDoorEntity == DoorIntercation, this->m_EnterDoorEntity, this->m_LeaveDoorEntity);
 			return true;
 		}
 
@@ -415,7 +417,6 @@ bool CTestLevel::ProcessDoorInteraction(IANApi* pApi, IANEntity*& pEntity)
 		this->m_LeaveDoorEntity = DoorIntercation;
 		this->m_EnterDoorEntity = CTestLevel::GetRoomZoneEntityData(pEntity)->m_InvertedDoorInteraction;
 
-		printf("NEW DOOR, %d %d | %d %d | %d\n", ThisDoorSelected, IsWayback, this->m_EnterDoorEntity, this->m_LeaveDoorEntity, this->m_bProcessDoor);
 		return true;
 	}
 
@@ -424,33 +425,37 @@ bool CTestLevel::ProcessDoorInteraction(IANApi* pApi, IANEntity*& pEntity)
 
 void CTestLevel::ProcessActorMove(IANApi* pApi)
 {
-	/*if (pApi->GetCursorKeyIsReleased(CursorKey::MAIN_FIRST))
-	{
-		auto RoomZoneSections = pApi->FindEntityByGroupID(szWorldEntityClassID_RoomZone);
+	auto RoomZoneSections = pApi->FindEntityByGroupID(szWorldEntityClassID_RoomZone);
 
+	RoomZoneSections = pApi->FindEntityByGroupID(szWorldEntityClassID_RoomZone);
+
+	if (pApi->GetCursorKeyIsReleased(CursorKey::MAIN_FIRST))
+	{
 		for (auto& e : RoomZoneSections->m_EntityGroup)
 		{
+			if (anRect(e->GetOrigin(), e->GetOrigin() + e->GetEntitySize()).IsIntersected(this->m_pMainActor->GetOrigin()))
+				printf("CRINGE\n");
+
 			if (anRect(
 				pApi->WorldToScreen(this->m_pWorld, e->GetOrigin()),
 				pApi->WorldToScreen(this->m_pWorld, e->GetOrigin() + e->GetEntitySize())).IsIntersected(pApi->GetCursorPos()))
 			{
-				for (auto d : ((CRoomZoneEntityData*)e->GetUserDataPointer())->m_RoomDoorsEntity)
-				{
-					if (!d->IsScreenPointIntersected(pApi, this->m_pWorld, pApi->GetCursorPos()))
-						continue;
+				if (!this->m_bProcessDoor)
+					this->m_LeaveDoorEntity = this->m_EnterDoorEntity = DOOR_INTERACTIONS::DOOR_EMPTY;
 
-
-				}
-
-				if (this->m_bProcessDoor)
-					pApi->GetInteractionMessagesList()->SendCancelInteractionMessageForClassID(szDoorIntercationClassID);
-					
 				this->m_CurrentDoorTarget = DOOR_INTERACTIONS::DOOR_EMPTY;
 				this->m_HouseRoomTarget = ((CRoomZoneEntityData*)e->GetUserDataPointer())->m_HouseRoom;
 				this->m_MovePoint = pApi->ScreenPointToWorld(this->m_pWorld, pApi->GetCursorPos());
 			}
 		}
-	}*/
+	}
+
+	for (auto& e : RoomZoneSections->m_EntityGroup)
+	{
+		auto ScreenF = pApi->WorldToScreen(this->m_pWorld, e->GetOrigin());
+		auto ScreenS = pApi->WorldToScreen(this->m_pWorld, e->GetOrigin() + e->GetEntitySize());
+		pApi->DrawRectangle(ScreenF, ScreenS - ScreenF, anRect(e->GetOrigin(), e->GetOrigin() + e->GetEntitySize()).IsIntersected(this->m_pMainActor->GetOrigin()) ? anColor::Blue() : anColor::Red(), 3.f);
+	}
 
 	ProcessDoorInteraction(pApi, this->m_pDoorEntityHallwayKitchen);
 	ProcessDoorInteraction(pApi, this->m_pDoorEntityKitchenHallway);

@@ -54,6 +54,8 @@ public:
 	void PushFont(ANFontID Font);
 	void PopFont();
 	ANFontID GetFont();
+	void PushFontAppierence(FontAppierence Appierence);
+	void PopFontAppierence();
 private:
 	ANCore* m_pCore;
 
@@ -72,6 +74,7 @@ private:
 
 	ANFontID m_FontIDDefault;
 	ANFontID m_FontID;
+	FontAppierence m_FontAppierence;
 
 	bool LoadRendererModule();
 	bool InvokeInitRender();

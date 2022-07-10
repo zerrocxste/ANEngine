@@ -36,6 +36,8 @@ public:
 	void PopFont() override;
 	void PushFontColor(anColor Color) override;
 	void PopFontColor() override;
+	void PushFontAppierence(FontAppierence Appierence) override;
+	void PopFontAppierence() override;
 	bool TextDraw(const char* pszText, anVec2 Pos, anColor Color) override;
 	anVec2 TextCalcSize(const char* pszText) override;
 

@@ -41,6 +41,8 @@ public:
 	virtual void PopFont() = 0;
 	virtual void PushFontColor(anColor Color) = 0;
 	virtual void PopFontColor() = 0;
+	virtual void PushFontAppierence(FontAppierence Appierence) = 0;
+	virtual void PopFontAppierence() = 0;
 	virtual bool TextDraw(const char* pszText, anVec2 Pos, anColor Color) = 0;
 	virtual anVec2 TextCalcSize(const char* pszText) = 0;
 

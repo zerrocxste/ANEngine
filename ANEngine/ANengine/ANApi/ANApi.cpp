@@ -154,6 +154,16 @@ void ANApi::PopFontColor()
 	this->m_pCore->GetGui()->SetFontColor(anColor::Black());
 }
 
+void ANApi::PushFontAppierence(FontAppierence Appierence)
+{
+	this->m_pCore->GetRenderer()->PushFontAppierence(Appierence);
+}
+
+void ANApi::PopFontAppierence()
+{
+	this->m_pCore->GetRenderer()->PopFontAppierence();
+}
+
 bool ANApi::TextDraw(const char* pszText, anVec2 Pos, anColor Color)
 {
 	return this->m_pCore->GetRenderer()->TextDraw(pszText, Pos, Color);

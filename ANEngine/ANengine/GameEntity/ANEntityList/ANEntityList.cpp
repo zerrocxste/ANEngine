@@ -89,16 +89,22 @@ IANEntity* ANEntityList::FindFromName(const char* pszName)
 
 ANEntityList* ANEntityList::UnregAll()
 {
-	for (auto it = this->m_vEntityList.begin(); it < this->m_vEntityList.end(); it++)
+	for (auto it = this->m_vEntityList.begin(); it < this->m_vEntityList.end(); )
 	{
 		auto& entity = *it;
 
 		if (!entity)
+		{
+			it++;
 			continue;
+		}
 
 		Unreg(entity);
 
-		this->m_vEntityList.erase(it--);
+		it = it = this->m_vEntityList.erase(it);
+
+		if (this->m_vEntityList.size() == 0)
+			break;
 	}
 
 	return this;

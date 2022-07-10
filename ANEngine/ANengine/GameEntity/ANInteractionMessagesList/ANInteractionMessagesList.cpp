@@ -95,19 +95,35 @@ void ANInteractionMessagesList::SendCancelInteractionMessage(const char* pszEven
 
 void ANInteractionMessagesList::RemoveInteractionMessageForClassID(const char* pszEventClassID)
 {
-	for (auto it = this->m_InteractionMessagesList.begin(); it < this->m_InteractionMessagesList.end(); it++)
+	for (auto it = this->m_InteractionMessagesList.begin(); it < this->m_InteractionMessagesList.end(); )
 	{
-		if (!strcmp((*it).m_pszEventClassID, pszEventClassID))
-			this->m_InteractionMessagesList.erase(it--);
+		if (!(strcmp((*it).m_pszEventClassID, pszEventClassID) == 0))
+		{
+			it++;
+			continue;
+		}
+
+		it = this->m_InteractionMessagesList.erase(it);
+
+		if (this->m_InteractionMessagesList.size() == 0)
+			break;
 	}
 }
 
 void ANInteractionMessagesList::RemoveInteractionMessage(const char* pszEventMessage)
 {
-	for (auto it = this->m_InteractionMessagesList.begin(); it < this->m_InteractionMessagesList.end(); it++)
+	for (auto it = this->m_InteractionMessagesList.begin(); it < this->m_InteractionMessagesList.end(); )
 	{
-		if (!strcmp((*it).m_pszEventMessage, pszEventMessage))
-			this->m_InteractionMessagesList.erase(it--);
+		if (!(strcmp((*it).m_pszEventMessage, pszEventMessage) == 0))
+		{
+			it++;
+			continue;
+		}
+
+		it = this->m_InteractionMessagesList.erase(it);
+
+		if (this->m_InteractionMessagesList.size() == 0)
+			break;
 	}
 }
 

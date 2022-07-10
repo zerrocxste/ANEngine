@@ -106,12 +106,18 @@ void CTestGameScene::Entry(IANApi* pApi)
 		if (pApi->GetKeyIsReleased('V'))
 			pApi->ResizeGuiWindow(&this->m_AnotherWindow, anVec2(500.f, 500.f));
 
-		pApi->DrawImage(this->m_imgImageKrolik, anVec2(), WindowSize, 0.5f);
-		pApi->AddSliderInt("Test slider", anVec2(10.f, 10.f), anVec2(250.f, 30.f), 10, 68, &iVar);
-		pApi->TextDraw("TEST", anVec2(10.f, 90.f), anColor::Red());
-		pApi->TextDraw("TEST2", anVec2(10.f, 120.f), anColor::Red());
-		pApi->TextDraw("TEST3", anVec2(10.f, 150.f), anColor::Red());
+		pApi->DrawRectangle(anVec2(), WindowSize, anColor::Blue(), 0.f, 0.f, true);
+
+		//pApi->DrawImage(this->m_imgImageKrolik, anVec2(), WindowSize, 0.5f);
+		pApi->DrawRectangle(anVec2(), anVec2(WindowSize.x, 30.f), anColor::Red(), 0.f, 0.f, true);
+		pApi->TextDraw("New window", anVec2(10.f, 0.f), anColor::Black());
+
+		pApi->AddSliderInt("Test slider", anVec2(10.f, 35.f), anVec2(250.f, 30.f), 10, 68, &iVar);
+
+		pApi->TextDraw("TEST", anVec2(10.f, 120.f), anColor::Red());
+		pApi->TextDraw("TEST2", anVec2(10.f, 150.f), anColor::Red());
 		pApi->TextDraw("TEST3", anVec2(10.f, 180.f), anColor::Red());
+		pApi->TextDraw("TEST3", anVec2(10.f, 210.f), anColor::Red());
 
 		pApi->EndGuiWindow();
 	}

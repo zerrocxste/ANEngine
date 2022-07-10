@@ -28,6 +28,12 @@ class IANAnimationCompositionController;
 class IANInteractionController;
 class IANInteractionMessagesList;
 
+enum FontAppierence
+{
+	FONT_NONE = 0,
+	FONT_SHADOW = 1 << 0,
+};
+
 #include "ANInterfacePointer/ANInterfacePointer.h"
 #include "IANAnimationCompositionController/IANAnimationCompositionController.h"
 #include "GameEntity/IANInteractionController/IANInteractionController.h"

@@ -258,39 +258,48 @@ IANAnimationCompositionController* ANEntity::GetAnimCompositionController()
 
 IANEntity& ANEntity::Update(IANApi* pApi)
 {
-	if (!!this->m_pIANInteractionControllerUserCallback)
+	if (this->m_pIANInteractionControllerUserCallback != nullptr)
 	{
 		auto iml = (ANInteractionMessagesList*)pApi->GetInteractionMessagesList();
 
-		iml->LockList();
-
-		for (auto it = iml->m_InteractionMessagesList.begin(); it < iml->m_InteractionMessagesList.end(); it++)
+		if (iml->m_InteractionMessagesList.size() != 0)
 		{
-			auto& e = *it;
-			
-			if ((e.m_pszEntityName == nullptr && e.m_pszEntityClassIDName == nullptr)
-				|| (this->m_szEntityName != nullptr && e.m_pszEntityName != nullptr && !strcmp(e.m_pszEntityName, this->m_szEntityName))
-				|| (this->m_szEntityClassID != nullptr && e.m_pszEntityClassIDName != nullptr && !strcmp(e.m_pszEntityClassIDName, this->m_szEntityClassID)))
+			iml->LockList();
+
+			for (auto it = iml->m_InteractionMessagesList.begin(); it < iml->m_InteractionMessagesList.end(); )
 			{
-				if (!!e.m_pRemoteEntity && 
-					!!*e.m_pRemoteEntity && 
-					!this->m_pIANInteractionControllerUserCallback->ActionHandler(
-						pApi, 
-						e.m_pszEventClassID,
-						e.m_pszEventMessage, 
-						this, 
-						e.m_pRemoteEntity, 
-						e.m_pReversedUserData, 
-						e.m_bNeedCancelEvent))
+				auto& e = *it;
+
+				if ((e.m_pszEntityName == nullptr && e.m_pszEntityClassIDName == nullptr)
+					|| (this->m_szEntityName != nullptr && e.m_pszEntityName != nullptr && !strcmp(e.m_pszEntityName, this->m_szEntityName))
+					|| (this->m_szEntityClassID != nullptr && e.m_pszEntityClassIDName != nullptr && !strcmp(e.m_pszEntityClassIDName, this->m_szEntityClassID)))
 				{
-					continue;
+					if (e.m_pRemoteEntity != nullptr && *e.m_pRemoteEntity != nullptr)
+					{
+						if (this->m_pIANInteractionControllerUserCallback->ActionHandler(
+							pApi,
+							e.m_pszEventClassID,
+							e.m_pszEventMessage,
+							this,
+							e.m_pRemoteEntity,
+							e.m_pReversedUserData,
+							e.m_bNeedCancelEvent))
+						{
+							it = iml->m_InteractionMessagesList.erase(it);
+
+							if (iml->m_InteractionMessagesList.size() == 0)
+								break;
+
+							continue;
+						}
+					}
 				}
 
-				iml->m_InteractionMessagesList.erase(it--);
+				it++;
 			}
-		}
 
-		iml->UnlockList();
+			iml->UnlockList();
+		}
 	}
 
 	return *this;

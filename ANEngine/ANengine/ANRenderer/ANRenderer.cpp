@@ -12,7 +12,8 @@ ANRenderer::ANRenderer(ANCore* pCore, RenderTypes RenderType, bool bVerticalSync
 	m_CurrentWindowIDPos(anVec2()),
 	m_CurrentWindowIDSize(anVec2()),
 	m_FontIDDefault(0),
-	m_FontID(0)
+	m_FontID(0),
+	m_FontAppierence(FontAppierence::FONT_NONE)
 {
 	
 }
@@ -277,7 +278,7 @@ bool ANRenderer::TextCalcSize(const char* pszText, anVec2* pTextSize)
 
 bool ANRenderer::TextDraw(const char* pszText, anVec2 Pos, anColor Color)
 {
-	return this->m_pANRendererFuncionsTable->TextDraw(this->m_hWnd, this->m_CurrentWindowID, pszText, Pos, Color, GetFont());
+	return this->m_pANRendererFuncionsTable->TextDraw(this->m_hWnd, this->m_CurrentWindowID, pszText, Pos, Color, GetFont(), this->m_FontAppierence);
 }
 
 bool ANRenderer::CreateGuiWindow(ANInternalGuiWindowID* pGuiWindow, anVec2 Size)
@@ -351,4 +352,14 @@ void ANRenderer::PopFont()
 ANFontID ANRenderer::GetFont()
 {
 	return this->m_FontID != 0 ? this->m_FontID : this->m_FontIDDefault;
+}
+
+void ANRenderer::PushFontAppierence(FontAppierence Appierence)
+{
+	this->m_FontAppierence = Appierence;
+}
+
+void ANRenderer::PopFontAppierence()
+{
+	this->m_FontAppierence = FontAppierence::FONT_NONE;
 }
