@@ -359,6 +359,11 @@ anVec2 ANApi::WorldToScreen(IANWorld* pWorld, IANEntity* pEntity)
 	return ANMathUtils::WorldToScreen(wm.m_WorldSize, wm.m_WorldScreenPos, wm.m_WorldScreenSize, wm.m_CameraWorld, pEntity->GetOrigin());
 }
 
+anRect ANApi::CalcBBox(IANWorld* pWorld, anVec2 Origin, anVec2 ObjectSize)
+{
+	return ANMathUtils::CalcBBox(pWorld->GetMetrics(), Origin, ObjectSize);
+}
+
 void ANApi::Update()
 {
 	auto p = this->m_pCore->GetPerfomance();

@@ -56,6 +56,7 @@ public:
 
 	virtual anVec2 WorldToScreen(IANWorld* pWorld, anVec2 PointWorld) = 0;
 	virtual anVec2 WorldToScreen(IANWorld* pWorld, IANEntity* pEntity) = 0;
+	virtual anRect CalcBBox(IANWorld* pWorld, anVec2 Origin, anVec2 ObjectSize) = 0;
 
 	virtual anVec2 ScreenPointToWorld(IANWorld* pWorld, anVec2 ScreenPoint) = 0;
 

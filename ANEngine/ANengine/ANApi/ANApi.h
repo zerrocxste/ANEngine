@@ -51,6 +51,7 @@ public:
 
 	anVec2 WorldToScreen(IANWorld* pWorld, anVec2 PointWorld) override;
 	anVec2 WorldToScreen(IANWorld* pWorld, IANEntity* pEntity) override;
+	anRect CalcBBox(IANWorld* pWorld, anVec2 Origin, anVec2 ObjectSize) override;
 
 	void RegEntity(IANEntity** ppEntity, const char* pszEntityClassID) override;
 	void UnregEntity(IANEntity** ppEntity) override;

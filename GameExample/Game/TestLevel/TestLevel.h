@@ -51,17 +51,13 @@ class CRoomZoneEntityData
 {
 public:
 	CRoomZoneEntityData(
-		HOUSE_ROOM HouseRoom, 
-		int LevelFloor,
-		std::initializer_list<IANEntity*> ZoneDoorData) :
-		m_HouseRoom(HouseRoom), 
-		m_LevelFloor(LevelFloor) {
-		this->m_RoomDoorsEntity = ZoneDoorData;
-	}
+		HOUSE_ROOM HouseRoom,
+		int LevelFloor) :
+		m_HouseRoom(HouseRoom),
+		m_LevelFloor(LevelFloor) { }
 
-	HOUSE_ROOM m_HouseRoom;
 	int m_LevelFloor;
-	std::vector<IANEntity*> m_RoomDoorsEntity;
+	HOUSE_ROOM m_HouseRoom;
 };
 
 class CDoorEntityData
@@ -71,16 +67,19 @@ public:
 		HOUSE_ROOM HouseRoom, 
 		DOOR_TYPE DoorType,
 		DOOR_INTERACTIONS DoorInteraction,
-		DOOR_INTERACTIONS InvertedDoorInteraction) :
+		DOOR_INTERACTIONS InvertedDoorInteraction,
+		int LevelFloor) :
 		m_HouseRoom(HouseRoom),
 		m_DoorType(DoorType),
 		m_DoorInteraction(DoorInteraction), 
-		m_InvertedDoorInteraction(InvertedDoorInteraction) {}
+		m_InvertedDoorInteraction(InvertedDoorInteraction),
+		m_LevelFloor(LevelFloor) {}
 
 	HOUSE_ROOM m_HouseRoom;
 	DOOR_TYPE m_DoorType;
 	DOOR_INTERACTIONS m_DoorInteraction;
 	DOOR_INTERACTIONS m_InvertedDoorInteraction;
+	int m_LevelFloor;
 };
 
 class CTestLevel : public IANGameScene
@@ -94,9 +93,10 @@ public:
 	void OnUnloadScene(IANApi* pApi) override;
 	void Entry(IANApi* pApi) override;
 
-	static CDoorEntityData* GetRoomZoneEntityData(IANEntity* ptr);
-
-	DOOR_INTERACTIONS m_CurrentActorIntercationDoor;
+	template <class T> static T* GetUserData(IANEntity* pEntity)
+	{
+		return (T*)pEntity->GetUserDataPointer();
+	}
 private:
 	float m_WorldZoom;
 
@@ -132,7 +132,11 @@ private:
 	bool m_bProcessDoor;
 	bool m_bNextDoor;
 	bool m_bWayback;
+	DOOR_INTERACTIONS m_CurrentActorInteractionDoorEnter, m_CurrentActorInteractionDoorLeave;
+	DOOR_INTERACTIONS m_LastEnterActorIntercationDoor, m_LastLeaveActorIntercationDoor;
 	DOOR_INTERACTIONS m_LeaveDoorEntity, m_EnterDoorEntity;
+	int m_iCurrentActorFloor;
+	int m_iTargetFloor;
 	
 	int m_LastAnimCount;
 
@@ -141,8 +145,8 @@ private:
 	bool ProcessDoorInteraction(IANApi* pApi, IANEntity*& pEntity);
 	void ProcessActorMove(IANApi* pApi);
 
-	void CreateRoomZoneEntity(IANApi* pApi, IANEntity*& pEntity, anVec2 RoomPos, anVec2 RoomSize, HOUSE_ROOM HouseRoom, int iLevelFloor, std::initializer_list<IANEntity*> ZoneDoorData);
-	void CreateDoorEntity(IANApi* pApi, IANEntity*& pEntity, const char* pszDoorName, anVec2 Origin, DOOR_TYPE DoorType, HOUSE_ROOM HouseRoom, DOOR_INTERACTIONS DoorInteraction, DOOR_INTERACTIONS InvertedDoorInteraction);
+	void CreateRoomZoneEntity(IANApi* pApi, IANEntity*& pEntity, anVec2 RoomPos, anVec2 RoomSize, HOUSE_ROOM HouseRoom, int iLevelFloor);
+	void CreateDoorEntity(IANApi* pApi, IANEntity*& pEntity, const char* pszDoorName, anVec2 Origin, DOOR_TYPE DoorType, HOUSE_ROOM HouseRoom, DOOR_INTERACTIONS DoorInteraction, DOOR_INTERACTIONS InvertedDoorInteraction, int iLevelFloor);
 
 	void KeyboardMoveInput(IANApi* pApi);
 

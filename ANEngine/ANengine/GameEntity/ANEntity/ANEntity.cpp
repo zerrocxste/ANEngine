@@ -199,6 +199,23 @@ anVec2 ANEntity::GetEntitySize()
 	return this->m_EntitySize;
 }
 
+anVec2 ANEntity::CalcEntitySize(IANApi* pApi)
+{
+	anVec2 FrameSize = this->m_EntitySize;
+
+	if (!FrameSize)
+	{
+		auto AnimationCompositionFrame = this->m_pAnimCompositionController->GetCurrentAnimationCompositionFrame(pApi);
+
+		if (!AnimationCompositionFrame)
+			return false;
+
+		FrameSize = pApi->GetImageSize(AnimationCompositionFrame);
+	}
+
+	return FrameSize;
+}
+
 void ANEntity::DrawFromComposition(IANApi* pApi, IANWorld* pWorld)
 {
 	auto AnimationCompositionFrame = this->m_pAnimCompositionController->GetCurrentAnimationCompositionFrame(pApi);
@@ -220,19 +237,7 @@ void ANEntity::DrawFromComposition(IANApi* pApi, IANWorld* pWorld)
 
 bool ANEntity::IsScreenPointIntersected(IANApi* pApi, IANWorld* pWorld, anVec2 ScreenPoint)
 {
-	anVec2 FrameSize = this->m_EntitySize;
-
-	if (!FrameSize)
-	{
-		auto AnimationCompositionFrame = this->m_pAnimCompositionController->GetCurrentAnimationCompositionFrame(pApi);
-
-		if (!AnimationCompositionFrame)
-			return false;
-			
-		FrameSize = pApi->GetImageSize(AnimationCompositionFrame);
-	}
-
-	return ANMathUtils::CalcBBox(pWorld->GetMetrics(), this->m_Origin, FrameSize).IsIntersected(ScreenPoint);
+	return ANMathUtils::CalcBBox(pWorld->GetMetrics(), this->m_Origin, CalcEntitySize(pApi)).IsIntersected(ScreenPoint);
 }
 
 void ANEntity::SetInteractionController(IANInteractionController* pIANInteractionController)

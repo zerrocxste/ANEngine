@@ -42,6 +42,7 @@ public:
 	bool GetVisible() override;
 	void SetEntitySize(anVec2 EntitySize) override;
 	anVec2 GetEntitySize() override;
+	anVec2 CalcEntitySize(IANApi* pApi) override;
 	void DrawFromComposition(IANApi* pApi, IANWorld* pWorld) override;
 
 	bool IsScreenPointIntersected(IANApi* pApi, IANWorld* pWorld, anVec2 ScreenPoint) override;
