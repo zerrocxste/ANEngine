@@ -142,14 +142,15 @@ private:
 
 	const char* GetDoorEventTypeFromEntity(IANEntity* pEntity);
 
-	bool ProcessDoorInteraction(IANApi* pApi, IANEntity*& pEntity);
-	void ProcessActorMove(IANApi* pApi);
-
+	void CreateActorEntity(IANApi* pApi, const char* pszActorName);
 	void CreateRoomZoneEntity(IANApi* pApi, IANEntity*& pEntity, anVec2 RoomPos, anVec2 RoomSize, HOUSE_ROOM HouseRoom, int iLevelFloor);
 	void CreateDoorEntity(IANApi* pApi, IANEntity*& pEntity, const char* pszDoorName, anVec2 Origin, DOOR_TYPE DoorType, HOUSE_ROOM HouseRoom, DOOR_INTERACTIONS DoorInteraction, DOOR_INTERACTIONS InvertedDoorInteraction, int iLevelFloor);
 
-	void KeyboardMoveInput(IANApi* pApi);
+	bool ProcessDoorInteraction(IANApi* pApi, IANEntity*& pEntity);
+	void ProcessActorMove(IANApi* pApi);
 
+	void PreFrame(IANApi* pApi);
+	void KeyboardMoveInput(IANApi* pApi);
 	void DrawWorld(IANApi* pApi);
 	void DrawEntities(IANApi* pApi);
 	void DrawUI(IANApi* pApi);

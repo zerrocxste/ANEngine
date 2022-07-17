@@ -87,5 +87,6 @@ void ANInterfacePointer<T>::release()
 	if (this->m_Pointer != nullptr)
 	{
 		delete this->m_Pointer;
+		this->m_Pointer = nullptr;
 	}
 }
