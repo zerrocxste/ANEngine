@@ -119,8 +119,11 @@ bool DoorEntityInteractionController::ActionHandler(IANApi* pApi,
 		{
 			if (pActorEntity->GetOrigin() == pThisEntity->GetOrigin() || pTestLevel->m_bNextDoor)
 			{
-				pTestLevel->m_LastLeaveActorIntercationDoor = CTestLevel::GetUserData<CDoorEntityData>(pThisEntity)->m_DoorInteraction;
-				pTestLevel->m_LastEnterActorIntercationDoor = CTestLevel::GetUserData<CDoorEntityData>(pThisEntity)->m_InvertedDoorInteraction;
+				pTestLevel->m_CurrentActorInteractionDoorLeave = CTestLevel::GetUserData<CDoorEntityData>(pThisEntity)->m_DoorInteraction;
+				pTestLevel->m_CurrentActorInteractionDoorEnter = CTestLevel::GetUserData<CDoorEntityData>(pDestEntity)->m_DoorInteraction;
+
+				pTestLevel->m_LastLeaveActorIntercationDoor = pTestLevel->m_CurrentActorInteractionDoorLeave;
+				pTestLevel->m_LastEnterActorIntercationDoor = pTestLevel->m_CurrentActorInteractionDoorEnter;
 
 				pTestLevel->m_bProcessDoor = true;
 
@@ -130,20 +133,12 @@ bool DoorEntityInteractionController::ActionHandler(IANApi* pApi,
 
 				if (!pTestLevel->m_bNextDoor)
 				{
-					pTestLevel->m_CurrentActorInteractionDoorLeave = CTestLevel::GetUserData<CDoorEntityData>(pThisEntity)->m_DoorInteraction;
-					pTestLevel->m_CurrentActorInteractionDoorEnter = CTestLevel::GetUserData<CDoorEntityData>(pDestEntity)->m_DoorInteraction;
-
 					if (pThisEntity->GetAnimCompositionController()->IsAnimationCycleComplete())
 					{
 						pActorEntity->SetOrigin(pDestEntity->GetOrigin());
 						pDestEntity->GetAnimCompositionController()->PlayAnimation(pTestLevel->m_WoodyDoorEnter, true);
 						pTestLevel->m_bNextDoor = true;
 					}
-				}
-				else
-				{
-					pTestLevel->m_CurrentActorInteractionDoorLeave = CTestLevel::GetUserData<CDoorEntityData>(pDestEntity)->m_DoorInteraction;
-					pTestLevel->m_CurrentActorInteractionDoorEnter = CTestLevel::GetUserData<CDoorEntityData>(pThisEntity)->m_DoorInteraction;
 				}
 
 				if (pTestLevel->m_bNextDoor && pDestEntity->GetAnimCompositionController()->IsAnimationCycleComplete())
@@ -182,7 +177,7 @@ bool DoorEntityInteractionController::ActionHandler(IANApi* pApi,
 					return false;
 
 				if (pTestLevel->m_LastLeaveActorIntercationDoor == pTestLevel->m_LeaveDoorEntity || 
-					pTestLevel->m_LastEnterActorIntercationDoor == pTestLevel->m_LeaveDoorEntity)
+					pTestLevel->m_LastEnterActorIntercationDoor == pTestLevel->m_EnterDoorEntity)
 				{
 					pTestLevel->m_LeaveDoorEntity = pTestLevel->m_EnterDoorEntity = DOOR_INTERACTIONS::DOOR_EMPTY;
 					pTestLevel->m_LastLeaveActorIntercationDoor = pTestLevel->m_LastEnterActorIntercationDoor = DOOR_INTERACTIONS::DOOR_EMPTY;
@@ -353,6 +348,9 @@ void CTestLevel::DrawStatistics(IANApi* pApi)
 {
 	auto ScreenSize = pApi->GetScreenSize();
 
+	pApi->DrawLine(anVec2(ScreenSize.x * 0.5f, 0.f), anVec2(ScreenSize.x * 0.5f, ScreenSize.y), anColor::White(), 5.f);
+	pApi->DrawLine(anVec2(0.f, ScreenSize.y * 0.5f), anVec2(ScreenSize.x, ScreenSize.y * 0.5f), anColor::White(), 5.f);
+
 	auto WorldMetrics = this->m_pWorld->GetMetrics();
 	auto ActorScreen = pApi->WorldToScreen(this->m_pWorld, this->m_pMainActor);
 	char buff[1024] = { 0 };
@@ -403,9 +401,6 @@ void CTestLevel::DrawStatistics(IANApi* pApi)
 	pApi->PushFontColor(anColor::White());
 	pApi->AddSliderFloat("Map zoom", anVec2(10.f, ScreenSize.y - 70.f), anVec2(300.f, 30.f), 0.f, 10000.f, &this->m_WorldZoom);
 	pApi->PopFontColor();
-
-	pApi->DrawLine(anVec2(ScreenSize.x * 0.5f, 0.f), anVec2(ScreenSize.x * 0.5f, ScreenSize.y), anColor::White(), 5.f);
-	pApi->DrawLine(anVec2(0.f, ScreenSize.y * 0.5f), anVec2(ScreenSize.x, ScreenSize.y * 0.5f), anColor::White(), 5.f);
 }
 
 bool CTestLevel::ProcessDoorInteraction(IANApi* pApi, IANEntity*& pEntity)
@@ -414,19 +409,21 @@ bool CTestLevel::ProcessDoorInteraction(IANApi* pApi, IANEntity*& pEntity)
 	{
 		auto DoorEntData = CTestLevel::GetUserData<CDoorEntityData>(pEntity);
 
-		if (this->m_bProcessDoor && this->m_LeaveDoorEntity == DoorEntData->m_DoorInteraction && 
-			(this->m_LastLeaveActorIntercationDoor == this->m_LeaveDoorEntity || (this->m_LastEnterActorIntercationDoor == this->m_LeaveDoorEntity)))
+		if (this->m_bProcessDoor && (this->m_LastLeaveActorIntercationDoor == DoorEntData->m_DoorInteraction || (this->m_LastEnterActorIntercationDoor == DoorEntData->m_DoorInteraction)))
 		{
 			pApi->GetInteractionMessagesList()->SendCancelInteractionMessageForClassID(szDoorIntercationClassID);
 			this->m_MovePoint = NULL;
 			this->m_bWayback = true;
+			this->m_LeaveDoorEntity = DoorEntData->m_DoorInteraction;
 			return true;
 		}
 
 		if (this->m_CurrentActorInteractionDoorLeave != DOOR_INTERACTIONS::DOOR_EMPTY && this->m_LeaveDoorEntity != DoorEntData->m_DoorInteraction)
 		{
 			pApi->GetInteractionMessagesList()->SendCancelInteractionMessageForClassID(szDoorIntercationClassID);
-			this->m_bWayback = true;
+
+			if (DoorEntData->m_LevelFloor != this->m_iCurrentActorFloor)
+				this->m_bWayback = true;
 		}
 
 		this->m_CurrentDoorTarget = DoorEntData->m_DoorInteraction;

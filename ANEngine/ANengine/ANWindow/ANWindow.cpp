@@ -9,6 +9,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 	if (Msg == WM_NCCREATE)
 	{
 		SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)((CREATESTRUCT*)lParam)->lpCreateParams);
+		SetCapture(WNDPROC_GET_ANWINDOW(hWnd)->GetHWND());
 	}
 	else
 	{
@@ -48,12 +49,34 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 		}
 		case WM_MOUSEMOVE:
 			WNDPROC_GET_ANWINDOW(hWnd)->m_pCore->GetInput()->SetCursorPos(anVec2(LOWORD(lParam), HIWORD(lParam)));
+
+			TRACKMOUSEEVENT tme;
+			tme.cbSize = sizeof(tme);
+			tme.hwndTrack = hWnd;
+			tme.dwFlags = TME_LEAVE;
+			TrackMouseEvent(&tme);
+
+			WNDPROC_GET_ANWINDOW(hWnd)->m_bMouseInWindowArea = TRUE;
+			break;
+		case WM_MOUSELEAVE:
+			WNDPROC_GET_ANWINDOW(hWnd)->m_bMouseInWindowArea = FALSE;
 			break;
 		case WM_KEYDOWN:
 		case WM_KEYUP:
 			WNDPROC_GET_ANWINDOW(hWnd)->m_pCore->GetInput()->SetStateKey(wParam, Msg == WM_KEYDOWN);
 			break;
-		default:
+		break;
+		case WM_KILLFOCUS:
+		case WM_SETFOCUS:
+			if (Msg == WM_KILLFOCUS)
+			{
+				WNDPROC_GET_ANWINDOW(hWnd)->m_pCore->GetInput()->ClearData();
+				WNDPROC_GET_ANWINDOW(hWnd)->m_bFocusLost = true;
+			}
+			else
+			{
+				WNDPROC_GET_ANWINDOW(hWnd)->m_bFocusLost = false;
+			}
 			break;
 		}
 	}
@@ -63,7 +86,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 
 ANWindow::ANWindow(ANCore* pCore, const char* szWindowTitle, anVec2 vPosition, anVec2 vSize, bool bHasWindowFrame) :
 	m_pCore(pCore),
-	IANError()
+	IANError(), 
+	m_bFocusLost(false),
+	m_bMouseInWindowArea(false)
 {
 	auto pwd = GetWindow();
 	
@@ -148,6 +173,16 @@ void ANWindow::WindowMinimize()
 void ANWindow::WindowHide()
 {
 	ShowWindow(this->m_hWnd, SW_HIDE);
+}
+
+bool ANWindow::IsActivated()
+{
+	return !this->m_bFocusLost;
+}
+
+bool ANWindow::MouseInWindowArea()
+{
+	return this->m_bMouseInWindowArea;
 }
 
 HWND ANWindow::GetHWND()

@@ -3,8 +3,7 @@
 ANInput::ANInput(ANCore* pCore) :
 	m_pCore(pCore)
 {
-	memset(&this->m_kiCursorKeyMap, 0, sizeof(this->m_kiCursorKeyMap));
-	memset(&this->m_kiKeyMap, 0, sizeof(this->m_kiKeyMap));
+	ClearData();
 }
 
 ANInput::~ANInput()
@@ -109,20 +108,48 @@ void ANInput::SetCorrectWindowStartPos(anVec2 Pos)
 
 void ANInput::Update()
 {
+	if (!this->m_pCore->GetWindow()->IsActivated())
+		return;
+
+	auto MouseNoOnArea = !this->m_pCore->GetWindow()->MouseInWindowArea();
+
 	for (auto& ckm : this->m_kiCursorKeyMap)
-		UpdateKeyMap(&ckm);
+		UpdateKeyMap(&ckm, MouseNoOnArea);
 
 	for (auto& km : this->m_kiKeyMap)
 		UpdateKeyMap(&km);
 }
 
-void ANInput::UpdateKeyMap(KeyInformation* pkiKeyMap)
+void ANInput::ClearMouseData()
+{
+	memset(&this->m_kiCursorKeyMap, 0, sizeof(this->m_kiCursorKeyMap));
+}
+
+void ANInput::ClearKeyboardData()
+{
+	memset(&this->m_kiKeyMap, 0, sizeof(this->m_kiKeyMap));
+}
+
+void ANInput::ClearData()
+{
+	ClearMouseData();
+	ClearKeyboardData();
+}
+
+void ANInput::UpdateKeyMap(KeyInformation* pkiKeyMap, bool NeedDisable)
 {
 	auto& km = *pkiKeyMap;
 
-	km.m_bIsClicked = km.m_bIsDowned && !km.m_bPrevFrameIsDowned;
-	km.m_bIsReleased = !km.m_bIsDowned && km.m_bPrevFrameIsDowned;
-	km.m_bPrevFrameIsDowned = km.m_bIsDowned;
+	if (!NeedDisable)
+	{
+		km.m_bIsClicked = km.m_bIsDowned && !km.m_bPrevFrameIsDowned;
+		km.m_bIsReleased = !km.m_bIsDowned && km.m_bPrevFrameIsDowned;
+		km.m_bPrevFrameIsDowned = km.m_bIsDowned;
+	}
+	else
+	{
+		km.m_bIsClicked = km.m_bIsReleased = km.m_bPrevFrameIsDowned = km.m_bIsDowned = false;
+	}
 
 	if (km.m_bIsDowned)
 		km.m_flDownTime += this->m_pCore->GetPerfomance()->GetFrameTime();

@@ -22,6 +22,9 @@ public:
 	void WindowMinimize();
 	void WindowHide();
 
+	bool IsActivated();
+	bool MouseInWindowArea();
+
 	HWND GetHWND();
 
 	ANWindowData* GetWindow();
@@ -29,6 +32,10 @@ private:
 	ANCore* m_pCore;
 
 	HWND m_hWnd;
+
+	bool m_bFocusLost;
+	bool m_bMouseInWindowArea;
+
 	MSG m_WindowMSG;
 	ANWindowData m_WindowData;
 

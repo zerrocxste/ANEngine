@@ -44,6 +44,10 @@ public:
 	void SetCorrectWindowStartPos(anVec2 Pos);
 
 	void Update();
+
+	void ClearMouseData();
+	void ClearKeyboardData();
+	void ClearData();
 private:
 	ANCore* m_pCore;
 
@@ -53,7 +57,7 @@ private:
 
 	anVec2 m_CorrectWindowStartPos;
 
-	void UpdateKeyMap(KeyInformation* pkiKeyMap);
+	void UpdateKeyMap(KeyInformation* pkiKeyMap, bool NeedDisable = false);
 
 	static inline bool IsInArrayRange(int k, int MaxArrSize);
 };
