@@ -133,6 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -156,7 +157,6 @@
     <ClCompile Include="ANengine\ANMemory\ANMemory.cpp" />
     <ClCompile Include="ANengine\ANPerfomance\ANPerfomance.cpp" />
     <ClCompile Include="ANengine\ANRenderer\ANRenderer.cpp" />
-    <ClCompile Include="ANengine\ANWindow\ANWindow.cpp" />
     <ClCompile Include="ANengine\ANWorld\ANWorld.cpp" />
     <ClCompile Include="ANengine\GameEntity\ANAnimationCompositionController\ANAnimationCompositionController.cpp" />
     <ClCompile Include="ANengine\GameEntity\ANEntityGroup\ANEntityGroup.cpp" />
@@ -166,6 +166,8 @@
     <ClCompile Include="ANengine\Gui\ANGuiWindow\ANGuiWindow.cpp" />
     <ClCompile Include="ANengine\Gui\ANGui\ANGui.cpp" />
     <ClCompile Include="ANengine\Interfaces\IANError\IANError.cpp" />
+    <ClCompile Include="ANengine\Platforms\Direct2D\ANDirect2DPlatform.cpp" />
+    <ClCompile Include="ANengine\Platforms\Win32\ANWin32Platform.cpp" />
     <ClCompile Include="ANengine\ResourcesManager\ANResourceManager\ANResourceManager.cpp" />
     <ClCompile Include="ANengine\ResourcesManager\ANUniqueResource\ANUniqueResource.cpp" />
   </ItemGroup>
@@ -186,7 +188,6 @@
     <ClInclude Include="ANengine\ANPerfomance\ANPerfomance.h" />
     <ClInclude Include="ANengine\ANRenderer\ANRenderer.h" />
     <ClInclude Include="ANengine\ANTypes.h" />
-    <ClInclude Include="ANengine\ANWindow\ANWindow.h" />
     <ClInclude Include="ANengine\ANWorld\ANWorld.h" />
     <ClInclude Include="ANengine\GameEntity\ANAnimationCompositionController\ANAnimationCompositionController.h" />
     <ClInclude Include="ANengine\GameEntity\ANEntityGroup\ANEntityGroup.h" />
@@ -206,6 +207,8 @@
     <ClInclude Include="ANengine\Interfaces\IANError\IANError.h" />
     <ClInclude Include="ANengine\Interfaces\IANGameScene\IANGameScene.h" />
     <ClInclude Include="ANengine\Interfaces\IANLoader\IANLoader.h" />
+    <ClInclude Include="ANengine\Platforms\Direct2D\ANDirect2DPlatform.h" />
+    <ClInclude Include="ANengine\Platforms\Win32\ANWin32Platform.h" />
     <ClInclude Include="ANengine\ResourcesManager\ANResourceManager\ANResourceManager.h" />
     <ClInclude Include="ANengine\ResourcesManager\ANUniqueResource\ANUniqueResource.h" />
   </ItemGroup>

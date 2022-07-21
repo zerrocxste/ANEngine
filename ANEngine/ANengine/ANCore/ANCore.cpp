@@ -1,32 +1,25 @@
 #include "../ANEngine.h"
 
 ANCore::ANCore(
-	RenderTypes RenderType, 
 	const char* pszWindowName,
 	anVec2 vWindowPosition, 
 	anVec2 vWindowSize, 
 	bool bHasWindowFrame,
 	bool bVerticalSync) : m_bIsInitialized(false)
 {
-	m_EngineComponents.m_pANWindow = ANMemory::GetInstance()->Allocate<ANWindow>(this, pszWindowName, vWindowPosition, vWindowSize, bHasWindowFrame);
 	m_EngineComponents.m_pANInput = ANMemory::GetInstance()->Allocate<ANInput>(this);
-	m_EngineComponents.m_ANRenderer = ANMemory::GetInstance()->Allocate<ANRenderer>(this, RenderType, bVerticalSync);
+	m_EngineComponents.m_ANRenderer = ANMemory::GetInstance()->Allocate<ANRenderer>(this, bVerticalSync);
 	m_EngineComponents.m_pANGame = ANMemory::GetInstance()->Allocate<ANGame>(this);
 	m_EngineComponents.m_pANResourceManager = ANMemory::GetInstance()->Allocate<ANResourceManager>();
 	m_EngineComponents.m_ANApi = ANMemory::GetInstance()->Allocate<ANApi>(this);
 	m_EngineComponents.m_ANGui = ANMemory::GetInstance()->Allocate<ANGui>(this);
 	m_EngineComponents.m_ANPerfomance = ANMemory::GetInstance()->Allocate<ANPerfomance>();
+	m_EngineComponents.m_pANPlatform = ANMemory::GetInstance()->Allocate<ANPlatform>(this, pszWindowName, vWindowPosition, vWindowSize, bHasWindowFrame);
 }
 
 ANCore::~ANCore()
 {
 
-}
-
-ANWindow* ANCore::GetWindow()
-{
-	assert(this->m_EngineComponents.m_pANWindow != nullptr);
-	return this->m_EngineComponents.m_pANWindow;
 }
 
 ANInput* ANCore::GetInput()
@@ -71,16 +64,22 @@ ANPerfomance* ANCore::GetPerfomance()
 	return this->m_EngineComponents.m_ANPerfomance;
 }
 
+ANPlatform* ANCore::GetPlatform()
+{
+	assert(this->m_EngineComponents.m_pANPlatform != nullptr);
+	return this->m_EngineComponents.m_pANPlatform;
+}
+
 bool ANCore::Initialize()
 {
 	if (this->m_bIsInitialized)
 		return true;
 
-	auto w = this->GetWindow();
+	auto plt = this->GetPlatform();
 
-	if (!w->MakeWindow())
+	if (!plt->WindowCreate())
 	{
-		this->SetError("%s() -> Error make window\n%s", __FUNCTION__, w->What());
+		this->SetError("%s() -> Error make window\n%s", __FUNCTION__, plt->What());
 		return false;
 	}
 
@@ -99,15 +98,15 @@ bool ANCore::Initialize()
 
 bool ANCore::Run()
 {
-	auto w = this->GetWindow();
+	auto plt = this->GetPlatform();
 	auto r = this->GetRenderer();
 	auto g = this->GetGame();
 	auto i = this->GetInput();
 	auto p = this->GetPerfomance();
 
-	w->WindowShow();
+	plt->WindowShow();
 
-	while (!w->ProcessWindow())
+	while (!plt->ProcessWindow())
 	{
 		p->Update();
 

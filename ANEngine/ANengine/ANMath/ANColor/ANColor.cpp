@@ -39,7 +39,7 @@ std::uint8_t& anColor::operator[](std::uint32_t idx)
 int anColor::AtByteArr()
 {
 	int Color = 0;
-	memcpy(&Color, this, 4);
+	memcpy(&Color, &this->r, 4);
 	return Color;
 }
 

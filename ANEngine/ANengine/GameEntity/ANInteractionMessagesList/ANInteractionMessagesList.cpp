@@ -95,34 +95,28 @@ void ANInteractionMessagesList::SendCancelInteractionMessage(const char* pszEven
 
 void ANInteractionMessagesList::RemoveInteractionMessageForClassID(const char* pszEventClassID)
 {
-	for (auto it = this->m_InteractionMessagesList.begin(); it < this->m_InteractionMessagesList.end(); )
+	for (auto it = this->m_InteractionMessagesList.begin(); it < this->m_InteractionMessagesList.end(); it++)
 	{
 		if (!(strcmp((*it).m_pszEventClassID, pszEventClassID) == 0))
-		{
-			it++;
 			continue;
-		}
 
 		it = this->m_InteractionMessagesList.erase(it);
 
-		if (this->m_InteractionMessagesList.size() == 0)
+		if (it == this->m_InteractionMessagesList.end())
 			break;
 	}
 }
 
 void ANInteractionMessagesList::RemoveInteractionMessage(const char* pszEventMessage)
 {
-	for (auto it = this->m_InteractionMessagesList.begin(); it < this->m_InteractionMessagesList.end(); )
+	for (auto it = this->m_InteractionMessagesList.begin(); it < this->m_InteractionMessagesList.end(); it++)
 	{
 		if (!(strcmp((*it).m_pszEventMessage, pszEventMessage) == 0))
-		{
-			it++;
 			continue;
-		}
 
 		it = this->m_InteractionMessagesList.erase(it);
 
-		if (this->m_InteractionMessagesList.size() == 0)
+		if (it == this->m_InteractionMessagesList.end())
 			break;
 	}
 }

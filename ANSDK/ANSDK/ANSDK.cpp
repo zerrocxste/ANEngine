@@ -1,7 +1,6 @@
 #include "ANSDK.h"
 
 IANLoader* CreateEngineInstance(
-	RenderTypes RenderType,
 	const char* pszWindowName,
 	anVec2 vWindowPosition,
 	anVec2 vWindowSize,
@@ -22,5 +21,5 @@ IANLoader* CreateEngineInstance(
 		return nullptr;
 	}
 
-	return pfCreateEngineInstance(RenderType, pszWindowName, vWindowPosition, vWindowSize, bHasWindowFrame, bVerticalSync);
+	return pfCreateEngineInstance(pszWindowName, vWindowPosition, vWindowSize, bHasWindowFrame, bVerticalSync);
 }

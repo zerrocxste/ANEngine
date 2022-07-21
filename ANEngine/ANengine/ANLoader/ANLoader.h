@@ -3,8 +3,7 @@
 class ANLoader : public IANLoader
 {
 public:
-	ANLoader(RenderTypes RenderType,
-		const char* pszWindowName,
+	ANLoader(const char* pszWindowName,
 		anVec2 vWindowPosition,
 		anVec2 vWindowSize,
 		bool bHasWindowFrame,

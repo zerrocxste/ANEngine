@@ -1,5 +1,7 @@
 #pragma once
 
+#define BACKEND_DIRECT2D
+
 #include <Windows.h>
 #include <iostream>
 #include <vector>
@@ -18,8 +20,14 @@ class ANRenderer;
 class ANGame;
 class ANResourceManager;
 class ANApi;
-class ANGui;
 class ANPerfomance;
+
+#ifdef _WIN32
+class ANPlatformWin32;
+typedef ANPlatformWin32 ANPlatform;
+#endif // _WIN32
+
+class ANGui;
 class ANEntity;
 class ANEntityList;
 class ANEntityGroup;
@@ -33,16 +41,6 @@ class IANEntityGroup;
 class IANAnimationCompositionController;
 class IANInteractionController;
 class IANInteractionMessagesList;
-
-enum RenderTypes;
-
-enum RGBA;
-
-enum CursorKey;
-struct KeyInformation;
-
-struct ANWorldMetrics;
-struct ANUniqueInteractionMesssage;
 
 #include "ANMath/ANVec2/ANVec2.h"
 #include "ANMath/ANVec3/ANVec3.h"
@@ -69,12 +67,18 @@ struct ANUniqueInteractionMesssage;
 
 #include "ANMemory/ANMemory.h"
 
+#if _WIN32
+#include "Platforms/Win32/ANWin32Platform.h"
+#ifdef BACKEND_DIRECT2D
+#include "Platforms/Direct2D/ANDirect2DPlatform.h"
+#endif
+#endif
+
 #include "ResourcesManager/ANUniqueResource/ANUniqueResource.h"
 #include "ResourcesManager/ANResourceManager/ANResourceManager.h"
 #include "ANPerfomance/ANPerfomance.h"
 #include "ANRenderer/ANRenderer.h"
 #include "ANInput/ANInput.h"
-#include "ANWindow/ANWindow.h"
 #include "ANWorld/ANWorld.h"
 #include "GameEntity/ANEntityList/ANEntityList.h"
 #include "GameEntity/ANInteractionMessagesList/ANInteractionMessagesList.h"

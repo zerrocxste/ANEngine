@@ -25,9 +25,6 @@
     <Filter Include="ANEngine\ANMath\ANVec3">
       <UniqueIdentifier>{d78775c0-fe8b-431a-9e86-2a95700faab9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\ANWindow">
-      <UniqueIdentifier>{c60f5315-7750-49be-a473-6b2d12bda785}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ANEngine\Interfaces">
       <UniqueIdentifier>{1fe229af-3c00-4c5a-817b-656fbf5cfd3a}</UniqueIdentifier>
     </Filter>
@@ -154,6 +151,15 @@
     <Filter Include="ANEngine\GameEntity\ANInteractionMessagesList">
       <UniqueIdentifier>{9149e909-02c5-45c9-9cd1-c8d630f9a95a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ANEngine\Platforms">
+      <UniqueIdentifier>{2c009e78-cc6d-44ae-afaf-6c2990dc948e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Platforms\Win32">
+      <UniqueIdentifier>{d219c53a-2104-4b52-8018-1089ef8f5ad1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Platforms\Direct2D">
+      <UniqueIdentifier>{ad88a592-beef-4850-a76f-7e9d09a12764}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ANEngine.cpp">
@@ -164,9 +170,6 @@
     </ClCompile>
     <ClCompile Include="ANengine\ANMath\ANVec3\ANVec3.cpp">
       <Filter>ANEngine\ANMath\ANVec3</Filter>
-    </ClCompile>
-    <ClCompile Include="ANengine\ANWindow\ANWindow.cpp">
-      <Filter>ANEngine\ANWindow</Filter>
     </ClCompile>
     <ClCompile Include="ANengine\ANMemory\ANMemory.cpp">
       <Filter>ANEngine\ANMemory</Filter>
@@ -234,6 +237,12 @@
     <ClCompile Include="ANengine\GameEntity\ANInteractionMessagesList\ANInteractionMessagesList.cpp">
       <Filter>ANEngine\GameEntity\ANInteractionMessagesList</Filter>
     </ClCompile>
+    <ClCompile Include="ANengine\Platforms\Win32\ANWin32Platform.cpp">
+      <Filter>ANEngine\Platforms\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\Platforms\Direct2D\ANDirect2DPlatform.cpp">
+      <Filter>ANEngine\Platforms\Direct2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ANengine\ANEngine.h">
@@ -244,9 +253,6 @@
     </ClInclude>
     <ClInclude Include="ANengine\ANMath\ANVec3\ANVec3.h">
       <Filter>ANEngine\ANMath\ANVec3</Filter>
-    </ClInclude>
-    <ClInclude Include="ANengine\ANWindow\ANWindow.h">
-      <Filter>ANEngine\ANWindow</Filter>
     </ClInclude>
     <ClInclude Include="ANengine\ANMemory\ANMemory.h">
       <Filter>ANEngine\ANMemory</Filter>
@@ -349,6 +355,12 @@
     </ClInclude>
     <ClInclude Include="ANengine\GameEntity\ANInteractionMessagesList\ANInteractionMessagesList.h">
       <Filter>ANEngine\GameEntity\ANInteractionMessagesList</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Platforms\Win32\ANWin32Platform.h">
+      <Filter>ANEngine\Platforms\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Platforms\Direct2D\ANDirect2DPlatform.h">
+      <Filter>ANEngine\Platforms\Direct2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

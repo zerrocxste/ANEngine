@@ -271,7 +271,7 @@ IANEntity& ANEntity::Update(IANApi* pApi)
 		{
 			iml->LockList();
 
-			for (auto it = iml->m_InteractionMessagesList.begin(); it < iml->m_InteractionMessagesList.end(); )
+			for (auto it = iml->m_InteractionMessagesList.begin(); it < iml->m_InteractionMessagesList.end(); it++)
 			{
 				auto& e = *it;
 
@@ -292,15 +292,13 @@ IANEntity& ANEntity::Update(IANApi* pApi)
 						{
 							it = iml->m_InteractionMessagesList.erase(it);
 
-							if (iml->m_InteractionMessagesList.size() == 0)
+							if (it == iml->m_InteractionMessagesList.end())
 								break;
 
 							continue;
 						}
 					}
 				}
-
-				it++;
 			}
 
 			iml->UnlockList();

@@ -108,10 +108,12 @@ void ANInput::SetCorrectWindowStartPos(anVec2 Pos)
 
 void ANInput::Update()
 {
-	if (!this->m_pCore->GetWindow()->IsActivated())
+	auto plt = this->m_pCore->GetPlatform();
+
+	if (!plt->WindowIsActivated())
 		return;
 
-	auto MouseNoOnArea = !this->m_pCore->GetWindow()->MouseInWindowArea();
+	auto MouseNoOnArea = !plt->MouseInWindowArea();
 
 	for (auto& ckm : this->m_kiCursorKeyMap)
 		UpdateKeyMap(&ckm, MouseNoOnArea);

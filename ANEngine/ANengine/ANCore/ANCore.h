@@ -3,8 +3,7 @@
 class ANCore : public IANError
 {
 public:
-	ANCore(RenderTypes RenderType,
-		const char* pszWindowName,
+	ANCore(const char* pszWindowName,
 		anVec2 vWindowPosition,
 		anVec2 vWindowSize,
 		bool bHasWindowFrame, 
@@ -12,7 +11,6 @@ public:
 
 	~ANCore();
 
-	ANWindow* GetWindow();
 	ANInput* GetInput();
 	ANRenderer* GetRenderer();
 	ANGame* GetGame();
@@ -20,6 +18,7 @@ public:
 	ANApi* GetApi();
 	ANGui* GetGui();
 	ANPerfomance* GetPerfomance();
+	ANPlatform* GetPlatform();
 
 	bool Initialize();
 	bool Run();

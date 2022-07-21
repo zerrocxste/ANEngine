@@ -14,7 +14,7 @@ int main()
 	bool HasWindowFrame = true;
 #endif // FULLSCREEN ==1
 
-	auto Loader = CreateEngineInstance(RenderTypes::D2D, "GameExample", Pos, Size, HasWindowFrame, false);
+	auto Loader = CreateEngineInstance("GameExample", Pos, Size, HasWindowFrame, false);
 
 	if (!Loader->InitializeLoader())
 	{

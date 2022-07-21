@@ -1,13 +1,12 @@
 #include "../ANEngine.h"
 
-ANLoader::ANLoader(RenderTypes RenderType,
-	const char* pszWindowName,
+ANLoader::ANLoader(const char* pszWindowName,
 	anVec2 vWindowPosition,
 	anVec2 vWindowSize,
 	bool bHasWindowFrame,
 	bool bVerticalSync)
 {
-	this->m_pInstance = new ANCore(RenderType, pszWindowName, vWindowPosition, vWindowSize, bHasWindowFrame, bVerticalSync);
+	this->m_pInstance = new ANCore(pszWindowName, vWindowPosition, vWindowSize, bHasWindowFrame, bVerticalSync);
 }
 
 ANLoader::~ANLoader()

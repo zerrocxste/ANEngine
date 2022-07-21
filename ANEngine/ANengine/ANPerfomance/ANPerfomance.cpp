@@ -53,7 +53,7 @@ void ANPerfomance::SetMaxFps(int iMaxFps)
 
 void ANPerfomance::Update()
 {
-	QueryPerformanceCounter((LARGE_INTEGER*)&this->m_BeginFrameTick);
+	ANPlatform::GetPerfomanceTick(this->m_BeginFrameTick);
 
 	this->m_MaxFpsFrameTime = (float)(this->m_BeginFrameTick - this->m_EndFrameTick) / 10000000.f;
 

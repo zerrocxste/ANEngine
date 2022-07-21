@@ -1,16 +1,16 @@
 #pragma once
 
-enum RenderTypes
+enum FontAppierence
 {
-	D2D,
-	D3D9,
-	OPENGL
+	FONT_NONE = 0,
+	FONT_SHADOW = 1 << 0,
 };
 
 class ANRenderer : public IANError
 {
+	friend ANPlatform;
 public:
-	ANRenderer(ANCore* pCore, RenderTypes RenderType, bool bVerticalSync);
+	ANRenderer(ANCore* pCore, bool bVerticalSync);
 	~ANRenderer();
 
 	bool Initalize();
@@ -59,13 +59,11 @@ public:
 private:
 	ANCore* m_pCore;
 
-	bool m_bEnableVerticalSync;
-
 	ANRendererFuncionsTable* m_pANRendererFuncionsTable;
 
-	HMODULE m_RenderModule;
-	HWND m_hWnd;
-	RenderTypes m_RenderType;
+	ANWindowHandle m_Window;
+
+	bool m_bEnableVerticalSync;
 
 	ANInternalGuiWindowID m_CurrentWindowID;
 	anVec2 m_CurrentWindowIDPos;
@@ -76,12 +74,8 @@ private:
 	ANFontID m_FontID;
 	FontAppierence m_FontAppierence;
 
-	bool LoadRendererModule();
-	bool InvokeInitRender();
-	bool InvokeInitFunctionTable();
+	bool CreateBackendRender();
 	bool CreateDefaultFont();
-
-	const char* RenderTypeToStr(RenderTypes RenderType);
 
 	bool CheckObjectIsGuiWindowScoped(anVec2 Pos);
 };

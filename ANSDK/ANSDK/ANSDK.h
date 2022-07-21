@@ -47,13 +47,6 @@ enum FontAppierence
 #include "IANApi/IANApi.h"
 #include "IANLoader/IANLoader.h"
 
-enum RenderTypes
-{
-	D2D,
-	D3D9,
-	OPENGL
-};
-
 enum RGBA
 {
 	RED,
@@ -73,7 +66,6 @@ enum CursorKey
 };
 
 using fCreateEngineInstance = IANLoader * (__stdcall*)(
-	RenderTypes RenderType,
 	const char* pszWindowName,
 	anVec2 vWindowPosition,
 	anVec2 vWindowSize,
@@ -81,7 +73,6 @@ using fCreateEngineInstance = IANLoader * (__stdcall*)(
 	bool bVerticalSync);
 
 IANLoader* CreateEngineInstance(
-	RenderTypes RenderType,
 	const char* pszWindowName,
 	anVec2 vWindowPosition,
 	anVec2 vWindowSize,
