@@ -1,7 +1,6 @@
 #include "../ANEngine.h"
 
 ANGame::ANGame(ANCore* pCore) :
-	IANError(),
 	m_pCore(pCore),
 	m_pCurrentScene(nullptr),
 	m_bNeedLeaveGame(false)

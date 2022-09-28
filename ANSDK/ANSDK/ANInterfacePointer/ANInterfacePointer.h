@@ -1,6 +1,22 @@
 #pragma once
 
 template <class T>
+class ANImpPtr
+{
+public:
+	ANImpPtr();
+
+	T* m_Pointer;
+private:
+};
+
+template <class T>
+ANImpPtr<T>::ANImpPtr()
+{
+	this->m_Pointer = new T();
+}
+
+template <class T>
 class ANInterfacePointer
 {
 public:
@@ -10,7 +26,10 @@ public:
 	~ANInterfacePointer();
 
 	template <class O>
-	ANInterfacePointer(ANInterfacePointer<O>& o);
+	ANInterfacePointer(O* o);
+
+	template <class O>
+	ANInterfacePointer(ANImpPtr<O>& o);
 
 	T* get();
 
@@ -21,7 +40,7 @@ public:
 
 	template<class O>
 	ANInterfacePointer<T>& operator=(const ANInterfacePointer<O>& o);
-	
+
 	void release();
 private:
 };
@@ -40,10 +59,16 @@ ANInterfacePointer<T>::~ANInterfacePointer()
 
 template<class T>
 template<class O>
-ANInterfacePointer<T>::ANInterfacePointer(ANInterfacePointer<O>& o)
+ANInterfacePointer<T>::ANInterfacePointer(O* o)
+{
+	this->m_Pointer = o;
+}
+
+template <class T>
+template <class O>
+ANInterfacePointer<T>::ANInterfacePointer(ANImpPtr<O>& o)
 {
 	this->m_Pointer = o.m_Pointer;
-	o.m_Pointer = nullptr;
 }
 
 template <class T>

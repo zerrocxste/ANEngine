@@ -1,7 +1,6 @@
 #include "../ANEngine.h"
 
 ANApi::ANApi(ANCore* pCore) : 
-	IANApi(),
 	m_pCore(pCore)
 {
 	this->FPS = 0;
@@ -223,9 +222,9 @@ void ANApi::UnregAndDeleteAllEntity()
 
 ANInterfacePointer<IANEntityGroup> ANApi::FindEntityByGroupID(const char* pszGroupID)
 {
-	ANInterfacePointer<ANEntityGroup> EntityGroup;
-	this->m_pCore->GetGame()->GetEntityList()->FindFromClassID(pszGroupID, &EntityGroup->m_EntityGroup);
-	return EntityGroup;
+	auto pEntityGroup = ANImpPtr<ANEntityGroup>();
+	this->m_pCore->GetGame()->GetEntityList()->FindFromClassID(pszGroupID, &pEntityGroup.m_Pointer->m_EntityGroup);
+	return pEntityGroup;
 }
 
 IANEntity* ANApi::GetEntityByName(const char* pszEntName)

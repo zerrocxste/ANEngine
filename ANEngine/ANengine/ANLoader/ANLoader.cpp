@@ -18,7 +18,7 @@ bool ANLoader::InitializeLoader()
 {
 	if (!this->m_pInstance->Initialize())
 	{
-		this->SetError("%s() -> Initialize Loader error\n%s", __FUNCTION__, this->m_pInstance->What());
+		this->SetError(__FUNCTION__ " > Initialize Loader error\n%s", this->m_pInstance->What());
 		return false;
 	}
 
@@ -30,9 +30,9 @@ bool ANLoader::ConnectScene(IANGameScene* pGameScene)
 	return this->m_pInstance->GetGame()->ConnectScene(pGameScene);
 }
 
-bool ANLoader::RunScene()
+void ANLoader::RunScene()
 {
-	return this->m_pInstance->Run();
+	this->m_pInstance->Run();
 }
 
 bool ANLoader::DestroyContext()

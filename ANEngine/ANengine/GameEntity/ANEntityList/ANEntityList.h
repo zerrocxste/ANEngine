@@ -11,11 +11,11 @@ public:
 	void Remove(IANEntity* pEntity);
 	void Unreg(IANEntity* ppEntity);
 
-	void FindFromClassID(const char* pszClassID, std::vector<IANEntity*>* pEntityList);
+	void FindFromClassID(const char* pszClassID, std::deque<IANEntity*>* pEntityList);
 	IANEntity* FindFromName(const char* pszName);
 
 	ANEntityList* UnregAll();
 	ANEntityList* Clear();
 private:
-	std::vector<IANEntity*> m_vEntityList;
+	std::deque<IANEntity*> m_vEntityList;
 };

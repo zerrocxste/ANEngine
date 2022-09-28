@@ -79,7 +79,7 @@ bool ANCore::Initialize()
 
 	if (!plt->WindowCreate())
 	{
-		this->SetError("%s() -> Error make window\n%s", __FUNCTION__, plt->What());
+		this->SetError(__FUNCTION__ " > Error make window\n%s", plt->What());
 		return false;
 	}
 
@@ -87,7 +87,7 @@ bool ANCore::Initialize()
 
 	if (!r->Initalize())
 	{
-		this->SetError("%s() -> Error initialize renderer\n%s", __FUNCTION__, r->What());
+		this->SetError(__FUNCTION__ " > Error initialize renderer\n%s", r->What());
 		return false;
 	}
 

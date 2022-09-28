@@ -5,6 +5,7 @@
 #include <Windows.h>
 #include <iostream>
 #include <vector>
+#include <deque>
 #include <map>
 #include <string>
 #include <assert.h>
@@ -64,6 +65,7 @@ class IANInteractionMessagesList;
 #include "Interfaces/GuiSkin/GuiSkin.h"
 #include "Interfaces/IANApi/IANApi.h"
 #include "Interfaces/IANLoader/IANLoader.h"
+#include "Interfaces/IANRendererBackend/IANRendererBackend.h"
 
 #include "ANMemory/ANMemory.h"
 

@@ -129,7 +129,7 @@ bool ANPlatformWin32::WindowCreate()
 		ANPlatformWin32::g_WndClass.style = CS_HREDRAW | CS_VREDRAW;
 		ANPlatformWin32::g_WndClass.hCursor = LoadCursor(0, IDC_ARROW);
 		ANPlatformWin32::g_WndClass.hIcon = LoadIcon(0, 0);
-		ANPlatformWin32::g_WndClass.hbrBackground = CreateSolidBrush(RGB(255, 0, 0));
+		ANPlatformWin32::g_WndClass.hbrBackground = 0;
 		ANPlatformWin32::g_WndClass.lpszMenuName = nullptr;
 		ANPlatformWin32::g_WndClass.cbWndExtra = 0;
 

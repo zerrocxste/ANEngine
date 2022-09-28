@@ -165,34 +165,57 @@ bool ANInteractionMessagesList::IsEventCanceledByClassID(const char* pszEventCla
 	return ret;
 }
 
-std::vector<ANUniqueInteractionMesssage*> ANInteractionMessagesList::GetInteractionFromEntityName(const char* pszName)
+ANInteractionMessagesList::InteractionObjectNode ANInteractionMessagesList::First()
 {
-	std::vector<ANUniqueInteractionMesssage*> ret;
+	auto pInterfaceNode = ANImpPtr<ANInteractionMessagesNode>();
+	pInterfaceNode->iter = this->m_InteractionMessagesList.begin();
+	return pInterfaceNode;
+}
+
+ANInteractionMessagesList::InteractionObjectNode ANInteractionMessagesList::Last()
+{
+	auto pInterfaceNode = ANImpPtr<ANInteractionMessagesNode>();
+	pInterfaceNode->iter = this->m_InteractionMessagesList.end();
+	return pInterfaceNode;
+}
+
+anSize ANInteractionMessagesList::GetSize()
+{
+	return this->m_InteractionMessagesList.size() + this->m_TempCollectionIML.size();
+}
+
+ANInterfacePointer<IANInteractionMessagesList> ANInteractionMessagesList::GetInteractionFromEntityName(const char* pszName)
+{
+	auto pipInteractionMessagesList = ANImpPtr<ANInteractionMessagesList>();
 
 	auto it = std::find_if(this->m_InteractionMessagesList.begin(), this->m_InteractionMessagesList.end(), [&](const ANUniqueInteractionMesssage& im) 
 		{
 			if (im.m_pszEntityName && !strcmp(im.m_pszEntityName, pszName))
-				ret.push_back((ANUniqueInteractionMesssage*)&im);
+			{
+				pipInteractionMessagesList.m_Pointer->m_InteractionMessagesList.push_back(im);
+			}
 
 			return false;
 		});
 
-	return ret;
+	return pipInteractionMessagesList;
 }
 
-std::vector<ANUniqueInteractionMesssage*> ANInteractionMessagesList::GetInteractionFromEntityClassID(const char* pszClassIDName)
+ANInterfacePointer<IANInteractionMessagesList> ANInteractionMessagesList::GetInteractionFromEntityClassID(const char* pszClassIDName)
 {
-	std::vector<ANUniqueInteractionMesssage*> ret;
+	auto pipInteractionMessagesList = ANImpPtr<ANInteractionMessagesList>();
 
 	auto it = std::find_if(this->m_InteractionMessagesList.begin(), this->m_InteractionMessagesList.end(), [&](const ANUniqueInteractionMesssage& im) 
 		{
 			if (im.m_pszEntityName && !strcmp(im.m_pszEntityClassIDName, pszClassIDName))
-				ret.push_back((ANUniqueInteractionMesssage*)&im);
+			{
+				pipInteractionMessagesList.m_Pointer->m_InteractionMessagesList.push_back(im);
+			}
 
 			return false;
 		});
 
-	return ret;
+	return pipInteractionMessagesList;
 }
 
 void ANInteractionMessagesList::Clear()
@@ -210,4 +233,20 @@ void ANInteractionMessagesList::UnlockList()
 	this->m_InteractionMessagesList.insert(this->m_InteractionMessagesList.end(), this->m_TempCollectionIML.begin(), this->m_TempCollectionIML.end());
 	this->m_TempCollectionIML.clear();
 	this->m_CurrentIsIterable = false;
+}
+
+IANInteractionMessagesNode& ANInteractionMessagesNode::operator++(int)
+{
+	this->iter++;
+	return *this;
+}
+
+ANUniqueInteractionMesssage& ANInteractionMessagesNode::operator*()
+{
+	return *this->iter;
+}
+
+bool ANInteractionMessagesNode::operator!=(const IANInteractionMessagesList::InteractionObjectNode& Node)
+{
+	return this->iter != ((ANInteractionMessagesNode*)Node.m_Pointer)->iter;
 }

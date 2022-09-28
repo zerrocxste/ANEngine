@@ -1,5 +1,58 @@
 #include "../../ANEngine.h"
 
+IANEntity* ANEntityGroupData::Get()
+{
+	return *this->it;
+}
+
+IANEntityGroupData& ANEntityGroupData::operator=(const IANEntityGroupData& other)
+{
+	this->it = ((ANEntityGroupData&)other).it;
+	return *this;
+}
+
+IANEntityGroupData& ANEntityGroupData::operator++(int)
+{
+	this->it++;
+	return *this;
+}
+
+bool ANEntityGroupData::operator!=(const ANInterfacePointer<IANEntityGroupData>& other)
+{
+	return this->it != ((ANEntityGroupData*)other.m_Pointer)->it;
+}
+
+bool ANEntityGroupData::operator!=(const IANEntityGroupData& other)
+{
+	return this->it != ((ANEntityGroupData&)other).it;
+}
+
+ANInterfacePointer<IANEntityGroupData> ANEntityGroup::First()
+{
+	auto pEntityGroupData = ANImpPtr<ANEntityGroupData>();
+	pEntityGroupData->it = this->m_EntityGroup.begin();
+	return pEntityGroupData;
+}
+
+ANInterfacePointer<IANEntityGroupData> ANEntityGroup::Last()
+{
+	auto pEntityGroupData = ANImpPtr<ANEntityGroupData>();
+	pEntityGroupData->it = this->m_EntityGroup.end();
+	return pEntityGroupData;
+}
+
+anSize ANEntityGroup::Size()
+{
+	return this->m_EntityGroup.size();
+}
+
+ANInterfacePointer<IANEntityGroupData>& ANEntityGroup::erase(ANInterfacePointer<IANEntityGroupData>& obj)
+{
+	auto& it = ((ANEntityGroupData&)obj).it;
+	it = this->m_EntityGroup.erase(it);
+	return obj;
+}
+
 void ANEntityGroup::SetVisible(bool IsVisible)
 {
 	for (auto& entity : this->m_EntityGroup)
@@ -82,7 +135,13 @@ IANEntityGroup& ANEntityGroup::Update(IANApi* pApi)
 	return *this;
 }
 
-void ANEntityGroup::Draw(IANApi* pApi, IANWorld* pWorld)
+void ANEntityGroup::DrawRectRegion(IANApi* pApi, IANWorld* pWorld, anColor Color)
+{
+	for (auto entity : this->m_EntityGroup)
+		entity->DrawRectRegion(pApi, pWorld, Color);
+}
+
+void ANEntityGroup::DrawFromComposition(IANApi* pApi, IANWorld* pWorld)
 {
 	for (auto entity : this->m_EntityGroup)
 		entity->DrawFromComposition(pApi, pWorld);

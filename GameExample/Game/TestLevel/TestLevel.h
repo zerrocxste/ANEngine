@@ -41,10 +41,17 @@ enum DOOR_TYPE
 enum DOOR_INTERACTIONS
 {
 	DOOR_EMPTY,
+
 	DOOR_HALLWAY_KITCHEN,
 	DOOR_HALLWAY_HALL,
 	DOOR_KITCHEN_HALLWAY,
-	DOOR_HALL_HALLWAY
+	DOOR_HALL_HALLWAY,
+
+	DOOR_HALL_KITCHEN,
+	DOOR_KITCHEN_HALL,
+
+	DOOR_HALLWAY_BATHROOM,
+	DOOR_BATHROOM_HALLWAY
 };
 
 class CRoomZoneEntityData
@@ -109,6 +116,11 @@ private:
 	ANAnimationComposition m_WoodyCompositionRight;
 	ANAnimationComposition m_WoodyDoorLeave;
 	ANAnimationComposition m_WoodyDoorEnter;
+	ANAnimationComposition m_WoodyDoorSideLeftEnter;
+	ANAnimationComposition m_WoodyDoorSideRightEnter;
+	ANAnimationComposition m_DoorComposition;
+	ANAnimationComposition m_DoorCompositionLeft;
+	ANAnimationComposition m_DoorCompositionRight;
 
 	IANEntity* m_pEntityDoorZoneHallway;
 	IANEntity* m_pEntityDoorZoneBathroom;
@@ -120,33 +132,28 @@ private:
 	IANEntity* m_pDoorEntityHallwayHall;
 	IANEntity* m_pDoorEntityHallHallway;
 
-	DOOR_INTERACTIONS m_CurrentDoorTarget;
-	HOUSE_ROOM m_HouseRoomTarget;
-	anVec2 m_MovePoint;
-	anVec2 m_NewMovePoint;
+	IANEntity* m_pDoorEntityHallKitchen;
+	IANEntity* m_pDoorEntityKitchenHall;
 
-	ANAnimationComposition m_DoorComposition;
-
-	bool m_bBlockMove;
-
-	bool m_bProcessDoor;
-	bool m_bNextDoor;
-	bool m_bWayback;
-	DOOR_INTERACTIONS m_CurrentActorInteractionDoorEnter, m_CurrentActorInteractionDoorLeave;
-	DOOR_INTERACTIONS m_LastEnterActorIntercationDoor, m_LastLeaveActorIntercationDoor;
-	DOOR_INTERACTIONS m_LeaveDoorEntity, m_EnterDoorEntity;
-	int m_iCurrentActorFloor;
-	int m_iTargetFloor;
-	
-	int m_LastAnimCount;
+	IANEntity* m_pDoorEntityHallwayBathroom;
+	IANEntity* m_pDoorEntityBathroomHallway;
 
 	const char* GetDoorEventTypeFromEntity(IANEntity* pEntity);
 
 	void CreateActorEntity(IANApi* pApi, const char* pszActorName);
 	void CreateRoomZoneEntity(IANApi* pApi, IANEntity*& pEntity, anVec2 RoomPos, anVec2 RoomSize, HOUSE_ROOM HouseRoom, int iLevelFloor);
-	void CreateDoorEntity(IANApi* pApi, IANEntity*& pEntity, const char* pszDoorName, anVec2 Origin, DOOR_TYPE DoorType, HOUSE_ROOM HouseRoom, DOOR_INTERACTIONS DoorInteraction, DOOR_INTERACTIONS InvertedDoorInteraction, int iLevelFloor);
+	void CreateDoorEntity(
+		IANApi* pApi, 
+		IANEntity*& pEntity, 
+		const char* pszDoorName, 
+		anVec2 Origin, 
+		DOOR_TYPE DoorType, 
+		HOUSE_ROOM HouseRoom, 
+		DOOR_INTERACTIONS DoorInteraction, 
+		DOOR_INTERACTIONS InvertedDoorInteraction, 
+		int iLevelFloor, 
+		ANAnimationComposition pDoorComposition);
 
-	bool ProcessDoorInteraction(IANApi* pApi, IANEntity*& pEntity);
 	void ProcessActorMove(IANApi* pApi);
 
 	void PreFrame(IANApi* pApi);

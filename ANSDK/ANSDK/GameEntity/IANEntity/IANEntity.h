@@ -25,6 +25,8 @@ public:
 	virtual void SetEntitySize(anVec2 EntitySize) = 0;
 	virtual anVec2 GetEntitySize() = 0;
 	virtual anVec2 CalcEntitySize(IANApi* pApi) = 0;
+
+	virtual void DrawRectRegion(IANApi* pApi, IANWorld* pWorld, anColor Color) = 0;
 	virtual void DrawFromComposition(IANApi* pApi, IANWorld* pWorld) = 0;
 
 	virtual bool IsScreenPointIntersected(IANApi* pApi, IANWorld* pWorld, anVec2 ScreenPoint) = 0;

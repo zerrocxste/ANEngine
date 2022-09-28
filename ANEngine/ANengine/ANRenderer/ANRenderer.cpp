@@ -1,10 +1,8 @@
 #include "../ANEngine.h"
 
 ANRenderer::ANRenderer(ANCore* pCore, bool bVerticalSync) :
-	IANError(),
 	m_pCore(pCore),
 	m_bEnableVerticalSync(bVerticalSync),
-	m_pANRendererFuncionsTable(nullptr),
 	m_Window(0),
 	m_CurrentWindowID(0), 
 	m_CurrentWindowIDPos(anVec2()),
@@ -36,13 +34,15 @@ bool ANRenderer::Initalize()
 
 bool ANRenderer::CreateBackendRender()
 {
-	if (!renderBackend::InitializeRenderer(this->m_Window, nullptr))
+#ifdef BACKEND_DIRECT2D
+	this->m_pRendererBackend = ANMemory::GetInstance()->Allocate<ANRendererlatformD2D>();
+#endif // BACKEND_DIRECT2D
+
+	if (!this->m_pRendererBackend->InitializeRenderer(this->m_Window, nullptr))
 	{
-		this->SetError(__FUNCTION__ " > Error initialize render");
+		this->SetError(__FUNCTION__ " > Error initialize render\n%s", this->m_pRendererBackend->What());
 		return false;
 	}
-
-	this->m_pANRendererFuncionsTable = renderBackend::GetRendererFunctionsTable();
 
 	return true;
 }
@@ -67,32 +67,29 @@ bool ANRenderer::CheckObjectIsGuiWindowScoped(anVec2 Pos)
 
 bool ANRenderer::BeginFrame()
 {
-	return this->m_pANRendererFuncionsTable->BeginFrame(this->m_Window);
+	return this->m_pRendererBackend->BeginFrame();
 }
 
 bool ANRenderer::EndFrame()
 {
-	return this->m_pANRendererFuncionsTable->EndFrame(this->m_Window);
+	return this->m_pRendererBackend->EndFrame();
 }
 
 bool ANRenderer::ClearScene()
 {
-	return this->m_pANRendererFuncionsTable->ClearScene(this->m_Window);
+	return this->m_pRendererBackend->ClearScene();
 }
 
 bool ANRenderer::ResetScene(anVec2 ScreenSize)
 {
-	if (!this->m_pANRendererFuncionsTable)
-		return false;
-
-	return this->m_pANRendererFuncionsTable->ResetScene(this->m_Window, ScreenSize);
+	return this->m_pRendererBackend->ResetScene(ScreenSize);
 }
 
 anVec2 ANRenderer::GetScreenSize()
 {
 	anVec2 ScreenSize;
 
-	this->m_pANRendererFuncionsTable->GetScreenSize(this->m_Window, this->m_CurrentWindowID, &ScreenSize);
+	this->m_pRendererBackend->GetScreenSize(this->m_CurrentWindowID, &ScreenSize);
 
 	return ScreenSize;
 }
@@ -104,7 +101,7 @@ anRect ANRenderer::InfiniteRect()
 
 bool ANRenderer::CreateImageFromMemory(void* pImageSrc, std::uint32_t iImageSize, ANImageID* pImageIDPtr)
 {
-	return this->m_pANRendererFuncionsTable->CreateImageFromMemory(this->m_Window, pImageSrc, iImageSize, pImageIDPtr);
+	return this->m_pRendererBackend->CreateImageFromMemory(pImageSrc, iImageSize, pImageIDPtr);
 }
 
 bool ANRenderer::CreateImageFromResource(ANUniqueResource* pResource, ANImageID* pImageIDPtr)
@@ -115,102 +112,102 @@ bool ANRenderer::CreateImageFromResource(ANUniqueResource* pResource, ANImageID*
 		return false;
 	}
 		
-	return this->m_pANRendererFuncionsTable->CreateImageFromMemory(this->m_Window, pResource->GetResourceLocation(), pResource->GetResourceSize(), pImageIDPtr);
+	return this->m_pRendererBackend->CreateImageFromMemory(pResource->GetResourceLocation(), pResource->GetResourceSize(), pImageIDPtr);
 }
 
 bool ANRenderer::GetImageSize(ANImageID ImageID, anVec2* pSize)
 {
-	return this->m_pANRendererFuncionsTable->GetImageSize(ImageID, pSize);
+	return this->m_pRendererBackend->GetImageSize(ImageID, pSize);
 }
 
 void ANRenderer::FreeImage(ANImageID* pImageIDPtr)
 {
-	this->m_pANRendererFuncionsTable->FreeImage(pImageIDPtr);
+	this->m_pRendererBackend->FreeImage(pImageIDPtr);
 }
 
 bool ANRenderer::DrawImage(ANImageID pImageID, anRect Pos, float Opacity)
 {
-	return this->m_pANRendererFuncionsTable->DrawImage(this->m_Window, this->m_CurrentWindowID, pImageID, Pos, Opacity);
+	return this->m_pRendererBackend->DrawImage(this->m_CurrentWindowID, pImageID, Pos, Opacity);
 }
 
 bool ANRenderer::DrawRectangle(anRect Pos, anColor Color, float LineThickness, float Rounding)
 {
-	return this->m_pANRendererFuncionsTable->DrawRectangle(this->m_Window, this->m_CurrentWindowID, Pos, Color, LineThickness, Rounding);
+	return this->m_pRendererBackend->DrawRectangle(this->m_CurrentWindowID, Pos, Color, LineThickness, Rounding);
 }
 
 bool ANRenderer::DrawFilledRectangle(anRect Pos, anColor Color, float Rounding)
 {
-	return this->m_pANRendererFuncionsTable->DrawFilledRectangle(this->m_Window, this->m_CurrentWindowID, Pos, Color, Rounding);
+	return this->m_pRendererBackend->DrawFilledRectangle(this->m_CurrentWindowID, Pos, Color, Rounding);
 }
 
 bool ANRenderer::DrawImage(ANImageID pImageID, anVec2 Pos, anVec2 Size, float Opacity)
 {
-	return this->m_pANRendererFuncionsTable->DrawImage(this->m_Window, this->m_CurrentWindowID, pImageID, anRect(Pos, Pos + Size), Opacity);
+	return this->m_pRendererBackend->DrawImage(this->m_CurrentWindowID, pImageID, anRect(Pos, Pos + Size), Opacity);
 }
 
 bool ANRenderer::DrawLine(anVec2 From, anVec2 To, anColor Color, float LineThickness)
 {
-	return this->m_pANRendererFuncionsTable->DrawLine(this->m_Window, this->m_CurrentWindowID, From, To, Color, LineThickness);
+	return this->m_pRendererBackend->DrawLine(this->m_CurrentWindowID, From, To, Color, LineThickness);
 }
 
 bool ANRenderer::DrawRectangle(anVec2 Pos, anVec2 Size, anColor Color, float LineThickness, float Rounding)
 {
-	return this->m_pANRendererFuncionsTable->DrawRectangle(this->m_Window, this->m_CurrentWindowID, anRect(Pos, Pos + Size), Color, LineThickness, Rounding);
+	return this->m_pRendererBackend->DrawRectangle(this->m_CurrentWindowID, anRect(Pos, Pos + Size), Color, LineThickness, Rounding);
 }
 
 bool ANRenderer::DrawFilledRectangle(anVec2 Pos, anVec2 Size, anColor Color, float Rounding)
 {
-	return this->m_pANRendererFuncionsTable->DrawFilledRectangle(this->m_Window, this->m_CurrentWindowID, anRect(Pos, Pos + Size), Color, Rounding);
+	return this->m_pRendererBackend->DrawFilledRectangle(this->m_CurrentWindowID, anRect(Pos, Pos + Size), Color, Rounding);
 }
 
 bool ANRenderer::DrawTrinagle(anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color, float LineThickness)
 {
-	return this->m_pANRendererFuncionsTable->DrawTrinagle(this->m_Window, this->m_CurrentWindowID, pt1, pt2, pt3, Color, LineThickness);
+	return this->m_pRendererBackend->DrawTrinagle(this->m_CurrentWindowID, pt1, pt2, pt3, Color, LineThickness);
 }
 
 bool ANRenderer::DrawFilledTrinagle(anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color)
 {
-	return this->m_pANRendererFuncionsTable->DrawTrinagleFilled(this->m_Window, this->m_CurrentWindowID, pt1, pt2, pt3, Color);
+	return this->m_pRendererBackend->DrawTrinagleFilled(this->m_CurrentWindowID, pt1, pt2, pt3, Color);
 }
 
 bool ANRenderer::DrawCircle(anVec2 Pos, anColor Color, float Radius, float LineThickness)
 {
-	return this->m_pANRendererFuncionsTable->DrawCircle(this->m_Window, this->m_CurrentWindowID, Pos, Color, Radius, LineThickness);
+	return this->m_pRendererBackend->DrawCircle(this->m_CurrentWindowID, Pos, Color, Radius, LineThickness);
 }
 
 bool ANRenderer::DrawFilledCircle(anVec2 Pos, anColor Color, float Radius)
 {
-	return this->m_pANRendererFuncionsTable->DrawFilledCircle(this->m_Window, this->m_CurrentWindowID, Pos, Color, Radius);
+	return this->m_pRendererBackend->DrawFilledCircle(this->m_CurrentWindowID, Pos, Color, Radius);
 }
 
 bool ANRenderer::CreateFontFromFile(const char* pszPath, float FontSize, ANFontID* pFontIDPtr)
 {
-	return this->m_pANRendererFuncionsTable->CreateFontFromFile(pszPath, FontSize, pFontIDPtr);
+	return this->m_pRendererBackend->CreateFontFromFile(pszPath, FontSize, pFontIDPtr);
 }
 
 void ANRenderer::FreeFont(ANFontID* pFontIDPtr)
 {
-	this->m_pANRendererFuncionsTable->FreeFont(pFontIDPtr);
+	this->m_pRendererBackend->FreeFont(pFontIDPtr);
 }
 
 bool ANRenderer::TextCalcSize(const char* pszText, anVec2* pTextSize)
 {
-	return this->m_pANRendererFuncionsTable->TextCalcSize(this->m_Window, pszText, GetFont(), pTextSize);
+	return this->m_pRendererBackend->TextCalcSize(pszText, GetFont(), pTextSize);
 }
 
 bool ANRenderer::TextDraw(const char* pszText, anVec2 Pos, anColor Color)
 {
-	return this->m_pANRendererFuncionsTable->TextDraw(this->m_Window, this->m_CurrentWindowID, pszText, Pos, Color, GetFont(), this->m_FontAppierence);
+	return this->m_pRendererBackend->TextDraw(this->m_CurrentWindowID, pszText, Pos, Color, GetFont(), this->m_FontAppierence);
 }
 
 bool ANRenderer::CreateGuiWindow(ANInternalGuiWindowID* pGuiWindow, anVec2 Size)
 {
-	return this->m_pANRendererFuncionsTable->CreateGuiWindow(this->m_Window, pGuiWindow, Size);
+	return this->m_pRendererBackend->CreateGuiWindow(pGuiWindow, Size);
 }
 
 bool ANRenderer::DeleteGuiWindow(ANInternalGuiWindowID* pGuiWindow)
 {
-	return this->m_pANRendererFuncionsTable->DeleteGuiWindow(pGuiWindow);
+	return this->m_pRendererBackend->DeleteGuiWindow(pGuiWindow);
 }
 
 bool ANRenderer::BeginGuiWindow(ANInternalGuiWindowID GuiWindow, anVec2 Pos, anVec2 Size)
@@ -218,7 +215,7 @@ bool ANRenderer::BeginGuiWindow(ANInternalGuiWindowID GuiWindow, anVec2 Pos, anV
 	if (!GuiWindow)
 		return false;
 
-	if (!this->m_pANRendererFuncionsTable->BeginGuiWindow(GuiWindow))
+	if (!this->m_pRendererBackend->BeginGuiWindow(GuiWindow))
 		return false;
 
 	this->m_CurrentWindowID = GuiWindow;
@@ -235,7 +232,7 @@ bool ANRenderer::EndGuiWindow()
 {
 	auto ret = true;
 
-	if (!this->m_pANRendererFuncionsTable->EndGuiWindow(this->m_CurrentWindowID))
+	if (!this->m_pRendererBackend->EndGuiWindow(this->m_CurrentWindowID))
 		ret = false;
 
 	this->m_CurrentWindowID = 0;
@@ -248,17 +245,17 @@ bool ANRenderer::EndGuiWindow()
 
 bool ANRenderer::GetGuiWindowSize(ANInternalGuiWindowID GuiWindow, anVec2* pSize)
 {
-	return this->m_pANRendererFuncionsTable->GetGuiWindowSize(this->m_Window, GuiWindow, pSize);
+	return this->m_pRendererBackend->GetGuiWindowSize(GuiWindow, pSize);
 }
 
 bool ANRenderer::SetGuiWindowSize(ANInternalGuiWindowID* pGuiWindow, anVec2 Size)
 {
-	return this->m_pANRendererFuncionsTable->ResizeGuiWindow(this->m_Window, pGuiWindow, Size);
+	return this->m_pRendererBackend->ResizeGuiWindow(pGuiWindow, Size);
 }
 
 bool ANRenderer::DrawGuiWindow()
 {
-	return this->m_pANRendererFuncionsTable->DrawGuiWindow(this->m_Window, this->m_CurrentWindowID, this->m_CurrentWindowIDPos);
+	return this->m_pRendererBackend->DrawGuiWindow(this->m_CurrentWindowID, this->m_CurrentWindowIDPos);
 }
 
 void ANRenderer::PushFont(ANFontID Font)

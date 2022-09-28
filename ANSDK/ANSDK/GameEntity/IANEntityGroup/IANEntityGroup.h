@@ -1,9 +1,24 @@
 #pragma once
 
+class IANEntityGroupData
+{
+public:
+	virtual IANEntity* Get() = 0;
+	virtual IANEntityGroupData& operator=(const IANEntityGroupData& other) = 0;
+	virtual IANEntityGroupData& operator++(int) = 0;
+	virtual bool operator!=(const ANInterfacePointer<IANEntityGroupData>& other) = 0;
+	virtual bool operator!=(const IANEntityGroupData& other) = 0;
+};
+
 class IANEntityGroup
 {
 public:
-	std::vector<IANEntity*> m_EntityGroup;
+	virtual ANInterfacePointer<IANEntityGroupData> First() = 0;
+	virtual ANInterfacePointer<IANEntityGroupData> Last() = 0;
+
+	virtual anSize Size() = 0;
+
+	virtual ANInterfacePointer<IANEntityGroupData>& erase(ANInterfacePointer<IANEntityGroupData>& obj) = 0;
 
 	virtual void SetVisible(bool IsVisible) = 0;
 	virtual void SetAnimationDuration(float flDuration) = 0;
@@ -15,5 +30,7 @@ public:
 	virtual void MoveDown(IANApi* pApi, float Speed) = 0;
 	virtual IANEntityGroup& SortByYOrder() = 0;
 	virtual IANEntityGroup& Update(IANApi* pApi) = 0;
-	virtual void Draw(IANApi* pApi, IANWorld* pWorld) = 0;
+
+	virtual void DrawRectRegion(IANApi* pApi, IANWorld* pWorld, anColor Color) = 0;
+	virtual void DrawFromComposition(IANApi* pApi, IANWorld* pWorld) = 0;
 };

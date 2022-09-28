@@ -1,7 +1,6 @@
 #include "../ANEngine.h"
 
 ANMemory::ANMemory() :
-	IANError(), 
 	m_WorkingSetAllocatedMemory(0),
 	m_ResourceAllocatedMemory(0)
 {
@@ -19,7 +18,7 @@ void* ANMemory::ResourceAllocate(std::size_t Size)
 
 	if (!ret)
 	{
-		this->SetError("%s() -> Error allocate memory for: %p", __FUNCTION__, Size);
+		this->SetError(__FUNCTION__ " > Error allocate memory for: %p", Size);
 		return nullptr;
 	}
 
@@ -38,7 +37,7 @@ void* ANMemory::ResourcAllocateeOfBlocks(std::size_t BlocksCount, std::size_t Bl
 
 	if (!ret)
 	{
-		this->SetError("%s() -> Error allocate memory for: %p", __FUNCTION__, GlobalSize);
+		this->SetError(__FUNCTION__" > Error allocate memory for: %p", GlobalSize);
 		return nullptr;
 	}
 

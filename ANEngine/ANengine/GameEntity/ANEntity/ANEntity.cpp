@@ -216,6 +216,20 @@ anVec2 ANEntity::CalcEntitySize(IANApi* pApi)
 	return FrameSize;
 }
 
+void ANEntity::DrawRectRegion(IANApi* pApi, IANWorld* pWorld, anColor Color)
+{
+	auto AnimationCompositionFrame = this->m_pAnimCompositionController->GetCurrentAnimationCompositionFrame(pApi);
+
+	auto vEntitySize = !AnimationCompositionFrame ? this->m_EntitySize : pApi->GetImageSize(AnimationCompositionFrame);
+
+	if (!vEntitySize)
+		return;
+
+	auto Screen = ANMathUtils::CalcBBox(pWorld->GetMetrics(), this->m_Origin, vEntitySize);
+
+	pApi->DrawRectangle(Screen.first, Screen.GetRelativeDistanceBetweenFirstAndSecond(), Color, 3.f);
+}
+
 void ANEntity::DrawFromComposition(IANApi* pApi, IANWorld* pWorld)
 {
 	auto AnimationCompositionFrame = this->m_pAnimCompositionController->GetCurrentAnimationCompositionFrame(pApi);

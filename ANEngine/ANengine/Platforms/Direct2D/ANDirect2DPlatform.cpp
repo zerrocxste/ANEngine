@@ -3,279 +3,12 @@
 #ifdef BACKEND_DIRECT2D
 #include <corecrt_io.h> 
 
-struct D2DInterfaces
-{
-	ID2D1Factory* m_pFactory;
-	IWICImagingFactory* m_pWICFactory;
-	IDWriteFactory* pDWriteFactory;
-};
-
-struct D2DWindowContextRenderInformation
-{
-	ID2D1HwndRenderTarget* m_pRenderTarget;
-	ID2D1SolidColorBrush* m_pColorBrush;
-	ID2D1SolidColorBrush* m_pColorBrushFontShadow;
-	bool m_bEnabledVerticalSync;
-};
-
-D2DInterfaces g_D2DInterfaces;
-std::map<HWND, D2DWindowContextRenderInformation> g_mD2DWindowContextRenderInformation;
-ANRendererFuncionsTable g_ANRendererFuncionsTable;
-
-bool g_bCriticalSectionInitialized;
-CRITICAL_SECTION g_csInitializeRenderer;
-
-bool BeginFrame(ANWindowHandle WindowHandle);
-bool EndFrame(ANWindowHandle WindowHandle);
-bool ClearScene(ANWindowHandle WindowHandle);
-bool ResetScene(ANWindowHandle WindowHandle, anVec2 ScreenSize);
-bool GetScreenSize(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, anVec2 * pAnvec2Out);
-bool CreateImageFromMemory(ANWindowHandle WindowHandle, void* pImageSrc, std::uint32_t iImageSize, ANImageID * pImageIDPtr);
-bool GetImageSize(ANImageID ImageID, anVec2 * pSize);
-void FreeImage(ANImageID * pImageIDPtr);
-bool DrawImage(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, ANImageID pImageID, anRect Pos, float Opacity);
-bool DrawLine(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, anVec2 From, anVec2 To, anColor Color, float LineThickness);
-bool DrawRectangle(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, anRect Pos, anColor Color, float LineThickness, float Rounding);
-bool DrawFilledRectangle(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, anRect Pos, anColor Color, float Rounding);
-bool DrawCircle(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, anVec2 Pos, anColor Color, float Radius, float LineThickness);
-bool DrawTrinagle(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color, float LineThickness);
-bool DrawTrinagleFilled(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color);
-bool DrawFilledCircle(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, anVec2 Pos, anColor Color, float Radius);
-bool CreateFontFromFile(const char* pszPath, float FontSize, ANFontID * pFontIDPtr);
-void FreeFont(ANFontID * pFontIDPtr);
-bool TextCalcSize(ANWindowHandle WindowHandle, const char* pszText, ANFontID FontID, anVec2 * pTextSize);
-bool TextDraw(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, const char* pszText, anVec2 Pos, anColor Color, ANFontID FontID, FontAppierence Appierence);
-bool CreateGuiWindow(ANWindowHandle WindowHandle, ANInternalGuiWindowID * pGuiWindow, anVec2 Size);
-bool DeleteGuiWindow(ANInternalGuiWindowID * GuiWindow);
-bool BeginGuiWindow(ANInternalGuiWindowID GuiWindow);
-bool EndGuiWindow(ANInternalGuiWindowID GuiWindow);
-bool GetGuiWindowSize(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, anVec2 * pWindowSize);
-bool ResizeGuiWindow(ANWindowHandle WindowHandle, ANInternalGuiWindowID * GuiWindow, anVec2 WindowSize);
-bool DrawGuiWindow(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, anVec2 Pos);
-
-__forceinline D2DWindowContextRenderInformation& GetWindowContextRenderInformation(ANWindowHandle WindowHandle)
-{
-	return g_mD2DWindowContextRenderInformation[(HWND)WindowHandle];
-}
-
-bool CreateD2D1Factory()
-{
-	if (g_D2DInterfaces.m_pFactory != nullptr)
-		return true;
-
-	return SUCCEEDED(D2D1CreateFactory(D2D1_FACTORY_TYPE::D2D1_FACTORY_TYPE_MULTI_THREADED, &g_D2DInterfaces.m_pFactory));
-}
-
-bool CreateWICFactory()
-{
-	if (g_D2DInterfaces.m_pWICFactory != nullptr)
-		return true;
-
-	return SUCCEEDED(CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_IWICImagingFactory, (void**)&g_D2DInterfaces.m_pWICFactory));
-}
-
-bool CreateDirectWriteFactory()
-{
-	if (g_D2DInterfaces.pDWriteFactory != nullptr)
-		return true;
-
-	return SUCCEEDED(DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(decltype(g_D2DInterfaces.pDWriteFactory)), (IUnknown**)&g_D2DInterfaces.pDWriteFactory));
-}
-
-bool CreateRenderTarget(ANWindowHandle WindowHandle, bool bVerticalSyncEnabled)
-{
-	if (!g_D2DInterfaces.m_pFactory)
-		return false;
-
-	auto& ri = GetWindowContextRenderInformation(WindowHandle);
-
-	ri.m_bEnabledVerticalSync = bVerticalSyncEnabled;
-
-	D2D1_PIXEL_FORMAT pixelFormat{};
-	pixelFormat.format = DXGI_FORMAT_UNKNOWN;
-	pixelFormat.alphaMode = D2D1_ALPHA_MODE_UNKNOWN;
-
-	D2D1_RENDER_TARGET_PROPERTIES renderTargetProperties{};
-	renderTargetProperties.type = D2D1_RENDER_TARGET_TYPE_HARDWARE;
-	renderTargetProperties.pixelFormat = pixelFormat;
-	renderTargetProperties.dpiX = 0.0;
-	renderTargetProperties.dpiY = 0.0;
-	renderTargetProperties.usage = D2D1_RENDER_TARGET_USAGE_NONE;
-	renderTargetProperties.minLevel = D2D1_FEATURE_LEVEL_DEFAULT;
-
-	D2D1_HWND_RENDER_TARGET_PROPERTIES hwndRenderTargetProperties{};
-	hwndRenderTargetProperties.hwnd = (HWND)WindowHandle;
-	hwndRenderTargetProperties.pixelSize = D2D1::Size(static_cast<UINT32>(0), static_cast<UINT32>(0));
-	hwndRenderTargetProperties.presentOptions = ri.m_bEnabledVerticalSync ? D2D1_PRESENT_OPTIONS_RETAIN_CONTENTS : D2D1_PRESENT_OPTIONS_IMMEDIATELY; //VERTYCAL SYNC
-
-	return SUCCEEDED(g_D2DInterfaces.m_pFactory->CreateHwndRenderTarget(renderTargetProperties, hwndRenderTargetProperties, &ri.m_pRenderTarget));
-}
-
-bool CreateGlobalBrush(ANWindowHandle WindowHandle)
-{
-	auto& ri = GetWindowContextRenderInformation(WindowHandle);
-
-	if (!ri.m_pRenderTarget)
-		return false;
-
-	return SUCCEEDED(ri.m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black), &ri.m_pColorBrush)) &&
-		SUCCEEDED(ri.m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black), &ri.m_pColorBrushFontShadow));
-}
-
-bool CreateRendererFunctionsTable()
-{
-	g_ANRendererFuncionsTable.BeginFrame = BeginFrame;
-	g_ANRendererFuncionsTable.EndFrame = EndFrame;
-	g_ANRendererFuncionsTable.ClearScene = ClearScene;
-	g_ANRendererFuncionsTable.ResetScene = ResetScene;
-	g_ANRendererFuncionsTable.GetScreenSize = GetScreenSize;
-	g_ANRendererFuncionsTable.CreateImageFromMemory = CreateImageFromMemory;
-	g_ANRendererFuncionsTable.FreeImage = FreeImage;
-	g_ANRendererFuncionsTable.GetImageSize = GetImageSize;
-	g_ANRendererFuncionsTable.DrawImage = DrawImage;
-	g_ANRendererFuncionsTable.DrawRectangle = DrawRectangle;
-	g_ANRendererFuncionsTable.DrawLine = DrawLine;
-	g_ANRendererFuncionsTable.DrawFilledRectangle = DrawFilledRectangle;
-	g_ANRendererFuncionsTable.DrawTrinagle = DrawTrinagle;
-	g_ANRendererFuncionsTable.DrawTrinagleFilled = DrawTrinagleFilled;
-	g_ANRendererFuncionsTable.DrawCircle = DrawCircle;
-	g_ANRendererFuncionsTable.DrawFilledCircle = DrawFilledCircle;
-	g_ANRendererFuncionsTable.CreateFontFromFile = CreateFontFromFile;
-	g_ANRendererFuncionsTable.FreeFont = FreeFont;
-	g_ANRendererFuncionsTable.TextCalcSize = TextCalcSize;
-	g_ANRendererFuncionsTable.TextDraw = TextDraw;
-	g_ANRendererFuncionsTable.CreateGuiWindow = CreateGuiWindow;
-	g_ANRendererFuncionsTable.DeleteGuiWindow = DeleteGuiWindow;
-	g_ANRendererFuncionsTable.BeginGuiWindow = BeginGuiWindow;
-	g_ANRendererFuncionsTable.EndGuiWindow = EndGuiWindow;
-	g_ANRendererFuncionsTable.GetGuiWindowSize = GetGuiWindowSize;
-	g_ANRendererFuncionsTable.ResizeGuiWindow = ResizeGuiWindow;
-	g_ANRendererFuncionsTable.DrawGuiWindow = DrawGuiWindow;
-
-	return true;
-}
-
-void __forceinline SetBrushColor(ID2D1SolidColorBrush* m_pColorBrush, anColor Color)
+__forceinline void SetBrushColor(ID2D1SolidColorBrush* m_pColorBrush, anColor Color)
 {
 	m_pColorBrush->SetColor(D2D1::ColorF(Color.r / 255.f, Color.g / 255.f, Color.b / 255.f, Color.a / 255.f));
 }
 
-bool Initialize(HWND hWnd, bool bVerticalSyncEnabled)
-{
-	if (!CreateD2D1Factory())
-		return false;
-
-	if (!CreateWICFactory())
-		return false;
-
-	if (!CreateDirectWriteFactory())
-		return false;
-
-	if (!CreateRenderTarget(hWnd, bVerticalSyncEnabled))
-		return false;
-
-	if (!CreateGlobalBrush(hWnd))
-		return false;
-
-	if (!CreateRendererFunctionsTable())
-		return false;
-
-	return true;
-}
-
-bool renderBackend::InitializeRenderer(ANWindowHandle WindowHandle, void* pReversed)
-{
-	if (!g_bCriticalSectionInitialized)
-	{
-		g_bCriticalSectionInitialized = true;
-		InitializeCriticalSection(&g_csInitializeRenderer);
-	}
-
-	CoInitialize(nullptr);
-
-	EnterCriticalSection(&g_csInitializeRenderer);
-
-	auto ret = Initialize((HWND)WindowHandle, (bool)pReversed);
-
-	LeaveCriticalSection(&g_csInitializeRenderer);
-
-	return ret;
-}
-
-ANRendererFuncionsTable* renderBackend::GetRendererFunctionsTable()
-{
-	return &g_ANRendererFuncionsTable;
-}
-
-typedef void* TextCacheID;
-
-struct DWriteTextCache
-{
-	const char* m_szText;
-	wchar_t* m_wszText;
-	int m_iTextLength;
-	int m_iTotalSumOfSymStr;
-	IDWriteTextFormat* m_pDWriteTextFormat;
-	IDWriteTextLayout* m_pDWriteTextLayout;
-	DWRITE_TEXT_METRICS m_dwrTextMetrics;
-};
-
-std::map<TextCacheID, DWriteTextCache> g_DWriteTextCache;
-
-bool ProcessTextCache(const char* pszText, ANFontID FontID, DWriteTextCache* pCachedTextElement)
-{
-	IDWriteTextFormat* pDWriteTextFormat = (IDWriteTextFormat*)FontID;
-
-	auto& e = g_DWriteTextCache[(void*)(pszText + (std::uintptr_t)FontID)];
-
-	auto StrLengthText = 1;
-	auto TotalSumOfSymStr = 0;
-
-	for (auto i = pszText; *i != '\0'; i++) {
-		StrLengthText++;
-		TotalSumOfSymStr += *i;
-	}
-
-	if (e.m_szText != pszText ||
-		e.m_iTextLength != StrLengthText ||
-		e.m_iTotalSumOfSymStr != TotalSumOfSymStr ||
-		e.m_pDWriteTextFormat != pDWriteTextFormat)
-	{
-		if (e.m_wszText != nullptr)
-			delete[] e.m_wszText;
-
-		if (e.m_pDWriteTextLayout)
-			e.m_pDWriteTextLayout->Release();
-
-		e.m_wszText = new wchar_t[StrLengthText]();
-
-		if (!e.m_wszText)
-			return false;
-
-		if (!MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, pszText, StrLengthText, e.m_wszText, StrLengthText))
-		{
-			delete[] e.m_wszText;
-			return false;
-		}
-
-		e.m_szText = pszText;
-		e.m_iTextLength = StrLengthText;
-		e.m_iTotalSumOfSymStr = TotalSumOfSymStr;
-		e.m_pDWriteTextFormat = pDWriteTextFormat;
-
-		if (FAILED(g_D2DInterfaces.pDWriteFactory->CreateTextLayout(e.m_wszText, StrLengthText, e.m_pDWriteTextFormat, FLT_MAX, FLT_MAX, &e.m_pDWriteTextLayout)))
-			return false;
-
-		if (FAILED(e.m_pDWriteTextLayout->GetMetrics(&e.m_dwrTextMetrics)))
-			return false;
-	}
-
-	*pCachedTextElement = e;
-
-	return true;
-}
-
-bool CreateBitmapFromMemory(ID2D1RenderTarget* pRenderTarget, IWICImagingFactory* pWICFactory, void* pSource, std::uint32_t iSourceSize, ID2D1Bitmap** pOutBitmap)
+__forceinline bool CreateBitmapFromMemory(ID2D1RenderTarget* pRenderTarget, IWICImagingFactory* pWICFactory, void* pSource, std::uint32_t iSourceSize, ID2D1Bitmap** pOutBitmap)
 {
 	IWICStream* pWICStream = nullptr;
 	IWICBitmapDecoder* pWICDecoder = nullptr;
@@ -314,9 +47,7 @@ bool CreateBitmapFromMemory(ID2D1RenderTarget* pRenderTarget, IWICImagingFactory
 	return true;
 }
 
-std::map<void*, ID2D1PathGeometry*>;
-
-bool CreateTrinagleGeometry(ID2D1Factory* pD2D1Factory, D2D1_POINT_2F pt1, D2D1_POINT_2F pt2, D2D1_POINT_2F pt3, ID2D1PathGeometry** pD2D1PathGeometry)
+__forceinline bool CreateTrinagleGeometry(ID2D1Factory* pD2D1Factory, D2D1_POINT_2F pt1, D2D1_POINT_2F pt2, D2D1_POINT_2F pt3, ID2D1PathGeometry** pD2D1PathGeometry)
 {
 	ID2D1GeometrySink* pSink = nullptr;
 
@@ -452,67 +183,217 @@ private:
 	const wchar_t* m_pwszFontPath;
 };
 
-D2D_RENDER_FUNCTION bool BeginFrame(ANWindowHandle WindowHandle)
+__forceinline bool ANRendererlatformD2D::singleton_::ProcessTextCache(const char* pszText, ANFontID FontID, DWriteTextCache* pCachedTextElement)
 {
-	auto& ri = GetWindowContextRenderInformation(WindowHandle);
+	IDWriteTextFormat* pDWriteTextFormat = (IDWriteTextFormat*)FontID;
 
-	if (!ri.m_pRenderTarget)
-		return false;
+	auto& e = ANRendererlatformD2D::singleton_::mDWriteTextCache[(void*)(pszText + (std::uintptr_t)FontID)];
 
-	ri.m_pRenderTarget->BeginDraw();
-	ri.m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+	auto StrLengthText = 1;
+	auto TotalSumOfSymStr = 0;
+
+	for (auto i = pszText; *i != '\0'; i++) {
+		StrLengthText++;
+		TotalSumOfSymStr += *i;
+	}
+
+	if (e.m_szText != pszText ||
+		e.m_iTextLength != StrLengthText ||
+		e.m_iTotalSumOfSymStr != TotalSumOfSymStr ||
+		e.m_pDWriteTextFormat != pDWriteTextFormat)
+	{
+		if (e.m_wszText != nullptr)
+			delete[] e.m_wszText;
+
+		if (e.m_pDWriteTextLayout)
+			e.m_pDWriteTextLayout->Release();
+
+		e.m_wszText = new wchar_t[StrLengthText]();
+
+		if (!e.m_wszText)
+			return false;
+
+		if (!MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, pszText, StrLengthText, e.m_wszText, StrLengthText))
+		{
+			delete[] e.m_wszText;
+			return false;
+		}
+
+		e.m_szText = pszText;
+		e.m_iTextLength = StrLengthText;
+		e.m_iTotalSumOfSymStr = TotalSumOfSymStr;
+		e.m_pDWriteTextFormat = pDWriteTextFormat;
+
+		if (FAILED(ANRendererlatformD2D::singleton_::pDWriteFactory->CreateTextLayout(e.m_wszText, StrLengthText, e.m_pDWriteTextFormat, FLT_MAX, FLT_MAX, &e.m_pDWriteTextLayout)))
+			return false;
+
+		if (FAILED(e.m_pDWriteTextLayout->GetMetrics(&e.m_dwrTextMetrics)))
+			return false;
+	}
+
+	*pCachedTextElement = e;
 
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool EndFrame(ANWindowHandle WindowHandle)
-{
-	auto& ri = GetWindowContextRenderInformation(WindowHandle);
+ANRendererlatformD2D::singleton_ ANRendererlatformD2D::m_singleton{};
 
-	if (!ri.m_pRenderTarget)
+bool ANRendererlatformD2D::singleton_::CreateD2D1Factory()
+{
+	if (this->pFactory != nullptr)
+		return true;
+
+	return SUCCEEDED(D2D1CreateFactory(D2D1_FACTORY_TYPE::D2D1_FACTORY_TYPE_MULTI_THREADED, &this->pFactory));
+}
+
+bool ANRendererlatformD2D::singleton_::CreateWICFactory()
+{
+	if (ANRendererlatformD2D::singleton_::pWICFactory != nullptr)
+		return true;
+
+	return SUCCEEDED(CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_IWICImagingFactory, (void**)&(ANRendererlatformD2D::singleton_::pWICFactory)));
+}
+
+bool ANRendererlatformD2D::singleton_::CreateDirectWriteFactory()
+{
+	if (this->pDWriteFactory != nullptr)
+		return true;
+
+	return SUCCEEDED(DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(decltype(this->pDWriteFactory)), (IUnknown**)&this->pDWriteFactory));
+}
+
+void ANRendererlatformD2D::singleton_::Initialize()
+{
+	if (!ANRendererlatformD2D::singleton_::bCriticalSectionInitialized)
+	{
+		ANRendererlatformD2D::singleton_::bCriticalSectionInitialized = true;
+		InitializeCriticalSection(&(ANRendererlatformD2D::singleton_::csInitializeRenderer));
+	}
+
+	CoInitialize(nullptr);
+}
+
+bool ANRendererlatformD2D::CreateRenderTarget(ANWindowHandle WindowHandle, bool bVerticalSyncEnabled)
+{
+	if (!ANRendererlatformD2D::m_singleton.pFactory)
 		return false;
 
-	ri.m_pRenderTarget->EndDraw();
+	D2D1_PIXEL_FORMAT pixelFormat{};
+	pixelFormat.format = DXGI_FORMAT_UNKNOWN;
+	pixelFormat.alphaMode = D2D1_ALPHA_MODE_UNKNOWN;
+
+	D2D1_RENDER_TARGET_PROPERTIES renderTargetProperties{};
+	renderTargetProperties.type = D2D1_RENDER_TARGET_TYPE_HARDWARE;
+	renderTargetProperties.pixelFormat = pixelFormat;
+	renderTargetProperties.dpiX = 0.0;
+	renderTargetProperties.dpiY = 0.0;
+	renderTargetProperties.usage = D2D1_RENDER_TARGET_USAGE_NONE;
+	renderTargetProperties.minLevel = D2D1_FEATURE_LEVEL_DEFAULT;
+
+	D2D1_HWND_RENDER_TARGET_PROPERTIES hwndRenderTargetProperties{};
+	hwndRenderTargetProperties.hwnd = (HWND)WindowHandle;
+	hwndRenderTargetProperties.pixelSize = D2D1::Size(static_cast<UINT32>(0), static_cast<UINT32>(0));
+	hwndRenderTargetProperties.presentOptions = this->m_bEnabledVerticalSync ? D2D1_PRESENT_OPTIONS_RETAIN_CONTENTS : D2D1_PRESENT_OPTIONS_IMMEDIATELY; //VERTYCAL SYNC
+
+	return SUCCEEDED(ANRendererlatformD2D::m_singleton.pFactory->CreateHwndRenderTarget(renderTargetProperties, hwndRenderTargetProperties, &this->m_pRenderTarget));
+}
+
+bool ANRendererlatformD2D::CreateGlobalBrush()
+{
+	if (!this->m_pRenderTarget)
+		return false;
+
+	return SUCCEEDED(this->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black), &this->m_pColorBrush)) &&
+		SUCCEEDED(this->m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black), &this->m_pColorBrushBlack));
+}
+
+bool ANRendererlatformD2D::Initialize(HWND hWnd, bool bVerticalSyncEnabled)
+{
+	if (!ANRendererlatformD2D::m_singleton.CreateD2D1Factory())
+	{
+		this->SetError(__FUNCTION__ " > Failed create D2D1 factory");
+		return false;
+	}
+
+	if (!ANRendererlatformD2D::m_singleton.CreateWICFactory())
+	{
+		this->SetError(__FUNCTION__ " > Failed create WIC factory");
+		return false;
+	}
+
+	if (!ANRendererlatformD2D::m_singleton.CreateDirectWriteFactory())
+	{
+		this->SetError(__FUNCTION__ " > Failed create DWrite factory");
+		return false;
+	}
+
+	if (!CreateRenderTarget(hWnd, bVerticalSyncEnabled))
+	{
+		this->SetError(__FUNCTION__ " > Failed create HwndRenderTarget factory");
+		return false;
+	}
+
+	if (!CreateGlobalBrush())
+	{
+		this->SetError(__FUNCTION__ " > Failed create Global brushes factory");
+		return false;
+	}
 
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool ClearScene(ANWindowHandle WindowHandle)
+bool ANRendererlatformD2D::InitializeRenderer(ANWindowHandle WindowHandle, void* pReversed)
 {
-	auto& ri = GetWindowContextRenderInformation(WindowHandle);
+	ANRendererlatformD2D::m_singleton.Initialize();
 
-	if (!ri.m_pRenderTarget)
-		return false;
+	EnterCriticalSection(&ANRendererlatformD2D::m_singleton.csInitializeRenderer);
 
-	ri.m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
+	auto ret = Initialize((HWND)WindowHandle, (bool)pReversed);
+
+	LeaveCriticalSection(&ANRendererlatformD2D::m_singleton.csInitializeRenderer);
+
+	return ret;
+}
+
+bool ANRendererlatformD2D::BeginFrame()
+{
+	this->m_pRenderTarget->BeginDraw();
+	this->m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool ResetScene(ANWindowHandle WindowHandle, anVec2 ScreenSize)
+bool ANRendererlatformD2D::EndFrame()
 {
-	auto& ri = GetWindowContextRenderInformation(WindowHandle);
-
-	if (!ri.m_pRenderTarget)
-		return false;
-
-	ri.m_pRenderTarget->Resize(D2D1::SizeU((int)ScreenSize.x, (int)ScreenSize.y));
+	this->m_pRenderTarget->EndDraw();
 
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool GetScreenSize(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, anVec2 * pAnvec2Out)
+bool ANRendererlatformD2D::ClearScene()
 {
-	auto& ri = GetWindowContextRenderInformation(WindowHandle);
+	this->m_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 
-	if (!pAnvec2Out || !ri.m_pRenderTarget)
+	return true;
+}
+
+bool ANRendererlatformD2D::ResetScene(anVec2 ScreenSize)
+{
+	this->m_pRenderTarget->Resize(D2D1::SizeU((int)ScreenSize.x, (int)ScreenSize.y));
+
+	return true;
+}
+
+bool ANRendererlatformD2D::GetScreenSize(ANInternalGuiWindowID GuiWindow, anVec2 * pAnvec2Out)
+{
+	if (!pAnvec2Out)
 		return false;
 
 	D2D1_SIZE_F ScreenSize;
 
 	if (GuiWindow == 0)
 	{
-		ScreenSize = ri.m_pRenderTarget->GetSize();
+		ScreenSize = this->m_pRenderTarget->GetSize();
 	}
 	else
 	{
@@ -525,16 +406,11 @@ D2D_RENDER_FUNCTION bool GetScreenSize(ANWindowHandle WindowHandle, ANInternalGu
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool CreateImageFromMemory(ANWindowHandle WindowHandle, void* pImageSrc, std::uint32_t iImageSize, ANImageID * pImageIDPtr)
+bool ANRendererlatformD2D::CreateImageFromMemory(void* pImageSrc, std::uint32_t iImageSize, ANImageID * pImageIDPtr)
 {
-	auto& ri = GetWindowContextRenderInformation(WindowHandle);
-
-	if (!ri.m_pRenderTarget)
-		return false;
-
 	ID2D1Bitmap* pD2D1Bitmap = nullptr;
 
-	if (!CreateBitmapFromMemory(ri.m_pRenderTarget, g_D2DInterfaces.m_pWICFactory, pImageSrc, iImageSize, &pD2D1Bitmap))
+	if (!CreateBitmapFromMemory(this->m_pRenderTarget, ANRendererlatformD2D::m_singleton.pWICFactory, pImageSrc, iImageSize, &pD2D1Bitmap))
 		return false;
 
 	*pImageIDPtr = (ANImageID)pD2D1Bitmap;
@@ -542,7 +418,7 @@ D2D_RENDER_FUNCTION bool CreateImageFromMemory(ANWindowHandle WindowHandle, void
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool GetImageSize(ANImageID ImageID, anVec2 * pSize)
+bool ANRendererlatformD2D::GetImageSize(ANImageID ImageID, anVec2 * pSize)
 {
 	if (!ImageID)
 		return false;
@@ -555,7 +431,7 @@ D2D_RENDER_FUNCTION bool GetImageSize(ANImageID ImageID, anVec2 * pSize)
 	return true;
 }
 
-D2D_RENDER_FUNCTION void FreeImage(ANImageID * pImageIDPtr)
+void ANRendererlatformD2D::FreeImage(ANImageID * pImageIDPtr)
 {
 	if (!*pImageIDPtr)
 		return;
@@ -564,19 +440,14 @@ D2D_RENDER_FUNCTION void FreeImage(ANImageID * pImageIDPtr)
 	*pImageIDPtr = nullptr;
 }
 
-D2D_RENDER_FUNCTION bool DrawImage(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, ANImageID pImageID, anRect Pos, float Opacity)
+bool ANRendererlatformD2D::DrawImage(ANInternalGuiWindowID GuiWindow, ANImageID pImageID, anRect Pos, float Opacity)
 {
 	if (!pImageID)
 		return false;
 
-	auto& ri = GetWindowContextRenderInformation(WindowHandle);
-
-	if (!ri.m_pRenderTarget)
-		return false;
-
 	if (GuiWindow == 0)
 	{
-		ri.m_pRenderTarget->DrawBitmap((ID2D1Bitmap*)pImageID, D2D1::RectF(Pos.first.x, Pos.first.y, Pos.second.x, Pos.second.y), Opacity);
+		this->m_pRenderTarget->DrawBitmap((ID2D1Bitmap*)pImageID, D2D1::RectF(Pos.first.x, Pos.first.y, Pos.second.x, Pos.second.y), Opacity);
 	}
 	else
 	{
@@ -586,110 +457,90 @@ D2D_RENDER_FUNCTION bool DrawImage(ANWindowHandle WindowHandle, ANInternalGuiWin
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool DrawLine(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, anVec2 From, anVec2 To, anColor Color, float LineThickness)
+bool ANRendererlatformD2D::DrawLine(ANInternalGuiWindowID GuiWindow, anVec2 From, anVec2 To, anColor Color, float LineThickness)
 {
-	auto& ri = GetWindowContextRenderInformation(WindowHandle);
-
-	if (!ri.m_pRenderTarget)
-		return false;
-
-	SetBrushColor(ri.m_pColorBrush, Color);
+	SetBrushColor(this->m_pColorBrush, Color);
 
 	if (GuiWindow == 0)
 	{
-		ri.m_pRenderTarget->DrawLine(D2D1::Point2F(From.x, From.y), D2D1::Point2F(To.x, To.y), ri.m_pColorBrush, LineThickness);
+		this->m_pRenderTarget->DrawLine(D2D1::Point2F(From.x, From.y), D2D1::Point2F(To.x, To.y), this->m_pColorBrush, LineThickness);
 	}
 	else
 	{
-		((ID2D1BitmapRenderTarget*)GuiWindow)->DrawLine(D2D1::Point2F(From.x, From.y), D2D1::Point2F(To.x, To.y), ri.m_pColorBrush, LineThickness);
+		((ID2D1BitmapRenderTarget*)GuiWindow)->DrawLine(D2D1::Point2F(From.x, From.y), D2D1::Point2F(To.x, To.y), this->m_pColorBrush, LineThickness);
 	}
 
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool DrawRectangle(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, anRect Pos, anColor Color, float LineThickness, float Rounding)
+bool ANRendererlatformD2D::DrawRectangle(ANInternalGuiWindowID GuiWindow, anRect Pos, anColor Color, float LineThickness, float Rounding)
 {
-	auto& ri = GetWindowContextRenderInformation(WindowHandle);
-
-	if (!ri.m_pRenderTarget)
-		return false;
-
-	SetBrushColor(ri.m_pColorBrush, Color);
+	SetBrushColor(this->m_pColorBrush, Color);
 
 	auto Rect = D2D1::RectF(Pos.first.x, Pos.first.y, Pos.second.x, Pos.second.y);
 
 	if (GuiWindow == 0)
 	{
 		if (Rounding > 0.f)
-			ri.m_pRenderTarget->DrawRoundedRectangle(D2D1::RoundedRect(Rect, Rounding, Rounding), ri.m_pColorBrush, LineThickness);
+			this->m_pRenderTarget->DrawRoundedRectangle(D2D1::RoundedRect(Rect, Rounding, Rounding), this->m_pColorBrush, LineThickness);
 		else
-			ri.m_pRenderTarget->DrawRectangle(Rect, ri.m_pColorBrush, LineThickness);
+			this->m_pRenderTarget->DrawRectangle(Rect, this->m_pColorBrush, LineThickness);
 	}
 	else
 	{
 		ID2D1BitmapRenderTarget* BitmapRenderTarget = (ID2D1BitmapRenderTarget*)GuiWindow;
 
 		if (Rounding > 0.f)
-			BitmapRenderTarget->DrawRoundedRectangle(D2D1::RoundedRect(Rect, Rounding, Rounding), ri.m_pColorBrush, LineThickness);
+			BitmapRenderTarget->DrawRoundedRectangle(D2D1::RoundedRect(Rect, Rounding, Rounding), this->m_pColorBrush, LineThickness);
 		else
-			BitmapRenderTarget->DrawRectangle(Rect, ri.m_pColorBrush, LineThickness);
+			BitmapRenderTarget->DrawRectangle(Rect, this->m_pColorBrush, LineThickness);
 	}
 
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool DrawFilledRectangle(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, anRect Pos, anColor Color, float Rounding)
+bool ANRendererlatformD2D::DrawFilledRectangle(ANInternalGuiWindowID GuiWindow, anRect Pos, anColor Color, float Rounding)
 {
-	auto& ri = GetWindowContextRenderInformation(WindowHandle);
-
-	if (!ri.m_pRenderTarget)
-		return false;
-
-	SetBrushColor(ri.m_pColorBrush, Color);
+	SetBrushColor(this->m_pColorBrush, Color);
 
 	auto Rect = D2D1::RectF(Pos.first.x, Pos.first.y, Pos.second.x, Pos.second.y);
 
 	if (GuiWindow == 0)
 	{
 		if (Rounding > 0.f)
-			ri.m_pRenderTarget->FillRoundedRectangle(D2D1::RoundedRect(Rect, Rounding, Rounding), ri.m_pColorBrush);
+			this->m_pRenderTarget->FillRoundedRectangle(D2D1::RoundedRect(Rect, Rounding, Rounding), this->m_pColorBrush);
 		else
-			ri.m_pRenderTarget->FillRectangle(Rect, ri.m_pColorBrush);
+			this->m_pRenderTarget->FillRectangle(Rect, this->m_pColorBrush);
 	}
 	else
 	{
 		ID2D1BitmapRenderTarget* BitmapRenderTarget = (ID2D1BitmapRenderTarget*)GuiWindow;
 
 		if (Rounding > 0.f)
-			BitmapRenderTarget->FillRoundedRectangle(D2D1::RoundedRect(Rect, Rounding, Rounding), ri.m_pColorBrush);
+			BitmapRenderTarget->FillRoundedRectangle(D2D1::RoundedRect(Rect, Rounding, Rounding), this->m_pColorBrush);
 		else
-			BitmapRenderTarget->FillRectangle(Rect, ri.m_pColorBrush);
+			BitmapRenderTarget->FillRectangle(Rect, this->m_pColorBrush);
 	}
 
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool DrawTrinagle(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color, float LineThickness)
+bool ANRendererlatformD2D::DrawTrinagle(ANInternalGuiWindowID GuiWindow, anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color, float LineThickness)
 {
-	auto& ri = GetWindowContextRenderInformation(WindowHandle);
-
-	if (!ri.m_pRenderTarget)
-		return false;
-
-	SetBrushColor(ri.m_pColorBrush, Color);
+	SetBrushColor(this->m_pColorBrush, Color);
 
 	ID2D1PathGeometry* TriGeometry = nullptr;
 
-	if (!CreateTrinagleGeometry(g_D2DInterfaces.m_pFactory, D2D1::Point2F(pt1.x, pt1.y), D2D1::Point2F(pt2.x, pt2.y), D2D1::Point2F(pt3.x, pt3.y), &TriGeometry))
+	if (!CreateTrinagleGeometry(ANRendererlatformD2D::m_singleton.pFactory, D2D1::Point2F(pt1.x, pt1.y), D2D1::Point2F(pt2.x, pt2.y), D2D1::Point2F(pt3.x, pt3.y), &TriGeometry))
 		return false;
 
 	if (GuiWindow == 0)
 	{
-		ri.m_pRenderTarget->DrawGeometry(TriGeometry, ri.m_pColorBrush, LineThickness);
+		this->m_pRenderTarget->DrawGeometry(TriGeometry, this->m_pColorBrush, LineThickness);
 	}
 	else
 	{
-		((ID2D1BitmapRenderTarget*)GuiWindow)->DrawGeometry(TriGeometry, ri.m_pColorBrush, LineThickness);
+		((ID2D1BitmapRenderTarget*)GuiWindow)->DrawGeometry(TriGeometry, this->m_pColorBrush, LineThickness);
 	}
 
 	TriGeometry->Release();
@@ -697,79 +548,64 @@ D2D_RENDER_FUNCTION bool DrawTrinagle(ANWindowHandle WindowHandle, ANInternalGui
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool DrawTrinagleFilled(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color)
+bool ANRendererlatformD2D::DrawTrinagleFilled(ANInternalGuiWindowID GuiWindow, anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color)
 {
-	auto& ri = GetWindowContextRenderInformation(WindowHandle);
-
-	if (!ri.m_pRenderTarget)
-		return false;
-
-	SetBrushColor(ri.m_pColorBrush, Color);
+	SetBrushColor(this->m_pColorBrush, Color);
 
 	ID2D1PathGeometry* TriGeometry = nullptr;
 
-	if (!CreateTrinagleGeometry(g_D2DInterfaces.m_pFactory, D2D1::Point2F(pt1.x, pt1.y), D2D1::Point2F(pt2.x, pt2.y), D2D1::Point2F(pt3.x, pt3.y), &TriGeometry))
+	if (!CreateTrinagleGeometry(ANRendererlatformD2D::m_singleton.pFactory, D2D1::Point2F(pt1.x, pt1.y), D2D1::Point2F(pt2.x, pt2.y), D2D1::Point2F(pt3.x, pt3.y), &TriGeometry))
 		return false;
 
 	if (GuiWindow == 0)
 	{
-		ri.m_pRenderTarget->FillGeometry(TriGeometry, ri.m_pColorBrush);
+		this->m_pRenderTarget->FillGeometry(TriGeometry, this->m_pColorBrush);
 	}
 	else
 	{
-		((ID2D1BitmapRenderTarget*)GuiWindow)->FillGeometry(TriGeometry, ri.m_pColorBrush);
+		((ID2D1BitmapRenderTarget*)GuiWindow)->FillGeometry(TriGeometry, this->m_pColorBrush);
 	}
 
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool DrawCircle(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, anVec2 Pos, anColor Color, float Radius, float LineThickness)
+bool ANRendererlatformD2D::DrawCircle(ANInternalGuiWindowID GuiWindow, anVec2 Pos, anColor Color, float Radius, float LineThickness)
 {
-	auto& ri = GetWindowContextRenderInformation(WindowHandle);
-
-	if (!ri.m_pRenderTarget)
-		return false;
-
-	SetBrushColor(ri.m_pColorBrush, Color);
+	SetBrushColor(this->m_pColorBrush, Color);
 
 	Radius /= 2.f;
 
 	if (GuiWindow == 0)
 	{
-		ri.m_pRenderTarget->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(Pos.x + Radius, Pos.y + Radius), Radius, Radius), ri.m_pColorBrush, LineThickness);
+		this->m_pRenderTarget->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(Pos.x + Radius, Pos.y + Radius), Radius, Radius), this->m_pColorBrush, LineThickness);
 	}
 	else
 	{
-		((ID2D1BitmapRenderTarget*)GuiWindow)->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(Pos.x + Radius, Pos.y + Radius), Radius, Radius), ri.m_pColorBrush, LineThickness);
+		((ID2D1BitmapRenderTarget*)GuiWindow)->DrawEllipse(D2D1::Ellipse(D2D1::Point2F(Pos.x + Radius, Pos.y + Radius), Radius, Radius), this->m_pColorBrush, LineThickness);
 	}
 
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool DrawFilledCircle(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, anVec2 Pos, anColor Color, float Radius)
+bool ANRendererlatformD2D::DrawFilledCircle(ANInternalGuiWindowID GuiWindow, anVec2 Pos, anColor Color, float Radius)
 {
-	auto& ri = GetWindowContextRenderInformation(WindowHandle);
-
-	if (!ri.m_pRenderTarget)
-		return false;
-
-	SetBrushColor(ri.m_pColorBrush, Color);
+	SetBrushColor(this->m_pColorBrush, Color);
 
 	Radius /= 2.f;
 
 	if (GuiWindow == 0)
 	{
-		ri.m_pRenderTarget->FillEllipse(D2D1::Ellipse(D2D1::Point2F(Pos.x + Radius, Pos.y + Radius), Radius, Radius), ri.m_pColorBrush);
+		this->m_pRenderTarget->FillEllipse(D2D1::Ellipse(D2D1::Point2F(Pos.x + Radius, Pos.y + Radius), Radius, Radius), this->m_pColorBrush);
 	}
 	else
 	{
-		((ID2D1BitmapRenderTarget*)GuiWindow)->FillEllipse(D2D1::Ellipse(D2D1::Point2F(Pos.x + Radius, Pos.y + Radius), Radius, Radius), ri.m_pColorBrush);
+		((ID2D1BitmapRenderTarget*)GuiWindow)->FillEllipse(D2D1::Ellipse(D2D1::Point2F(Pos.x + Radius, Pos.y + Radius), Radius, Radius), this->m_pColorBrush);
 	}
 
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool CreateFontFromFile(const char* pszPath, float FontSize, ANFontID * pFontIDPtr)
+bool ANRendererlatformD2D::CreateFontFromFile(const char* pszPath, float FontSize, ANFontID * pFontIDPtr)
 {
 	auto ret = false;
 
@@ -804,10 +640,10 @@ D2D_RENDER_FUNCTION bool CreateFontFromFile(const char* pszPath, float FontSize,
 	if (!pFontLoader)
 		goto failed;
 
-	if (FAILED(g_D2DInterfaces.pDWriteFactory->RegisterFontCollectionLoader(pFontLoader)))
-		goto failed;
+	if (FAILED(ANRendererlatformD2D::m_singleton.pDWriteFactory->RegisterFontCollectionLoader(pFontLoader)))
+		goto failed; 
 
-	if (FAILED(g_D2DInterfaces.pDWriteFactory->CreateCustomFontCollection(pFontLoader, pwszPath, sizeof(void*), &pFontCollection)))
+	if (FAILED(ANRendererlatformD2D::m_singleton.pDWriteFactory->CreateCustomFontCollection(pFontLoader, pwszPath, sizeof(void*), &pFontCollection)))
 		goto failed;
 
 	if (FAILED(pFontCollection->GetFontFamily(0, &pFontFamily)))
@@ -826,7 +662,7 @@ D2D_RENDER_FUNCTION bool CreateFontFromFile(const char* pszPath, float FontSize,
 	if (FAILED(pFamilyNames->GetString(0, pwszLocalName, Length)))
 		goto failed;
 
-	if (FAILED(g_D2DInterfaces.pDWriteFactory->CreateTextFormat(pwszLocalName, pFontCollection, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, FontSize, L"", &pTextFormat)))
+	if (FAILED(ANRendererlatformD2D::m_singleton.pDWriteFactory->CreateTextFormat(pwszLocalName, pFontCollection, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, FontSize, L"", &pTextFormat)))
 		goto failed;
 
 	*pFontIDPtr = pTextFormat;
@@ -844,7 +680,7 @@ failed:
 	return ret;
 }
 
-D2D_RENDER_FUNCTION void FreeFont(ANFontID * pFontIDPtr)
+void ANRendererlatformD2D::FreeFont(ANFontID * pFontIDPtr)
 {
 	if (!*pFontIDPtr)
 		return;
@@ -853,11 +689,11 @@ D2D_RENDER_FUNCTION void FreeFont(ANFontID * pFontIDPtr)
 	*pFontIDPtr = nullptr;
 }
 
-D2D_RENDER_FUNCTION bool TextCalcSize(ANWindowHandle WindowHandle, const char* pszText, ANFontID FontID, anVec2 * pTextSize)
+bool ANRendererlatformD2D::TextCalcSize(const char* pszText, ANFontID FontID, anVec2 * pTextSize)
 {
 	DWriteTextCache TextElement;
 
-	if (!ProcessTextCache(pszText, FontID, &TextElement))
+	if (!ANRendererlatformD2D::m_singleton.ProcessTextCache(pszText, FontID, &TextElement))
 		return false;
 
 	pTextSize->x = TextElement.m_dwrTextMetrics.widthIncludingTrailingWhitespace;
@@ -866,19 +702,14 @@ D2D_RENDER_FUNCTION bool TextCalcSize(ANWindowHandle WindowHandle, const char* p
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool TextDraw(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, const char* pszText, anVec2 Pos, anColor Color, ANFontID FontID, FontAppierence Appierence)
+bool ANRendererlatformD2D::TextDraw(ANInternalGuiWindowID GuiWindow, const char* pszText, anVec2 Pos, anColor Color, ANFontID FontID, FontAppierence Appierence)
 {
 	DWriteTextCache TextElement;
 
-	if (!ProcessTextCache(pszText, FontID, &TextElement))
+	if (!ANRendererlatformD2D::m_singleton.ProcessTextCache(pszText, FontID, &TextElement))
 		return false;
 
-	auto& ri = GetWindowContextRenderInformation(WindowHandle);
-
-	if (!ri.m_pRenderTarget)
-		return false;
-
-	SetBrushColor(ri.m_pColorBrush, Color);
+	SetBrushColor(this->m_pColorBrush, Color);
 
 	//(wchar_t*)TextElement.m_pDWriteTextLayout + 0x20 = Text data
 
@@ -886,36 +717,33 @@ D2D_RENDER_FUNCTION bool TextDraw(ANWindowHandle WindowHandle, ANInternalGuiWind
 	{
 		if (Appierence & FontAppierence::FONT_SHADOW)
 		{
-			ri.m_pRenderTarget->DrawTextLayout(D2D1::Point2F(Pos.x + 1.f, Pos.y + 1.f), TextElement.m_pDWriteTextLayout, ri.m_pColorBrushFontShadow);
-			ri.m_pRenderTarget->DrawTextLayout(D2D1::Point2F(Pos.x - 1.f, Pos.y - 1.f), TextElement.m_pDWriteTextLayout, ri.m_pColorBrushFontShadow);
+			this->m_pRenderTarget->DrawTextLayout(D2D1::Point2F(Pos.x + 1.f, Pos.y + 1.f), TextElement.m_pDWriteTextLayout, this->m_pColorBrushBlack);
+			this->m_pRenderTarget->DrawTextLayout(D2D1::Point2F(Pos.x - 1.f, Pos.y - 1.f), TextElement.m_pDWriteTextLayout, this->m_pColorBrushBlack);
 		}
-		ri.m_pRenderTarget->DrawTextLayout(D2D1::Point2F(Pos.x, Pos.y), TextElement.m_pDWriteTextLayout, ri.m_pColorBrush);
+
+		this->m_pRenderTarget->DrawTextLayout(D2D1::Point2F(Pos.x, Pos.y), TextElement.m_pDWriteTextLayout, this->m_pColorBrush);
 	}
 	else
 	{
 		if (Appierence & FontAppierence::FONT_SHADOW)
 		{
-			((ID2D1BitmapRenderTarget*)GuiWindow)->DrawTextLayout(D2D1::Point2F(Pos.x + 1.f, Pos.y + 1.f), TextElement.m_pDWriteTextLayout, ri.m_pColorBrushFontShadow);
-			((ID2D1BitmapRenderTarget*)GuiWindow)->DrawTextLayout(D2D1::Point2F(Pos.x - 1.f, Pos.y - 1.f), TextElement.m_pDWriteTextLayout, ri.m_pColorBrushFontShadow);
+			((ID2D1BitmapRenderTarget*)GuiWindow)->DrawTextLayout(D2D1::Point2F(Pos.x + 1.f, Pos.y + 1.f), TextElement.m_pDWriteTextLayout, this->m_pColorBrushBlack);
+			((ID2D1BitmapRenderTarget*)GuiWindow)->DrawTextLayout(D2D1::Point2F(Pos.x - 1.f, Pos.y - 1.f), TextElement.m_pDWriteTextLayout, this->m_pColorBrushBlack);
 		}
-		((ID2D1BitmapRenderTarget*)GuiWindow)->DrawTextLayout(D2D1::Point2F(Pos.x, Pos.y), TextElement.m_pDWriteTextLayout, ri.m_pColorBrush);
+
+		((ID2D1BitmapRenderTarget*)GuiWindow)->DrawTextLayout(D2D1::Point2F(Pos.x, Pos.y), TextElement.m_pDWriteTextLayout, this->m_pColorBrush);
 	}
 
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool CreateGuiWindow(ANWindowHandle WindowHandle, ANInternalGuiWindowID * pGuiWindow, anVec2 Size)
+bool ANRendererlatformD2D::CreateGuiWindow(ANInternalGuiWindowID * pGuiWindow, anVec2 Size)
 {
 	*pGuiWindow = nullptr;
 
-	auto& ri = GetWindowContextRenderInformation(WindowHandle);
-
-	if (!ri.m_pRenderTarget)
-		return false;
-
 	ID2D1BitmapRenderTarget* BitmapRenderTarget = nullptr;
 
-	if (FAILED(ri.m_pRenderTarget->CreateCompatibleRenderTarget(D2D1::SizeF(Size.x, Size.y), &BitmapRenderTarget)))
+	if (FAILED(this->m_pRenderTarget->CreateCompatibleRenderTarget(D2D1::SizeF(Size.x, Size.y), &BitmapRenderTarget)))
 		return false;
 
 	*pGuiWindow = (ANInternalGuiWindowID*)BitmapRenderTarget;
@@ -923,7 +751,7 @@ D2D_RENDER_FUNCTION bool CreateGuiWindow(ANWindowHandle WindowHandle, ANInternal
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool DeleteGuiWindow(ANInternalGuiWindowID * GuiWindow)
+bool ANRendererlatformD2D::DeleteGuiWindow(ANInternalGuiWindowID * GuiWindow)
 {
 	if (!GuiWindow)
 		return false;
@@ -934,7 +762,7 @@ D2D_RENDER_FUNCTION bool DeleteGuiWindow(ANInternalGuiWindowID * GuiWindow)
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool BeginGuiWindow(ANInternalGuiWindowID GuiWindow)
+bool ANRendererlatformD2D::BeginGuiWindow(ANInternalGuiWindowID GuiWindow)
 {
 	if (!GuiWindow)
 		return false;
@@ -948,7 +776,7 @@ D2D_RENDER_FUNCTION bool BeginGuiWindow(ANInternalGuiWindowID GuiWindow)
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool EndGuiWindow(ANInternalGuiWindowID GuiWindow)
+bool ANRendererlatformD2D::EndGuiWindow(ANInternalGuiWindowID GuiWindow)
 {
 	if (!GuiWindow)
 		return false;
@@ -960,13 +788,8 @@ D2D_RENDER_FUNCTION bool EndGuiWindow(ANInternalGuiWindowID GuiWindow)
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool GetGuiWindowSize(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, anVec2 * pWindowSize)
+bool ANRendererlatformD2D::GetGuiWindowSize(ANInternalGuiWindowID GuiWindow, anVec2 * pWindowSize)
 {
-	auto& ri = GetWindowContextRenderInformation(WindowHandle);
-
-	if (!ri.m_pRenderTarget)
-		return false;
-
 	if (!GuiWindow)
 		return false;
 
@@ -980,13 +803,8 @@ D2D_RENDER_FUNCTION bool GetGuiWindowSize(ANWindowHandle WindowHandle, ANInterna
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool ResizeGuiWindow(ANWindowHandle WindowHandle, ANInternalGuiWindowID * GuiWindow, anVec2 WindowSize)
+bool ANRendererlatformD2D::ResizeGuiWindow(ANInternalGuiWindowID * GuiWindow, anVec2 WindowSize)
 {
-	auto& ri = GetWindowContextRenderInformation(WindowHandle);
-
-	if (!ri.m_pRenderTarget)
-		return false;
-
 	if (!*GuiWindow)
 		return false;
 
@@ -994,18 +812,13 @@ D2D_RENDER_FUNCTION bool ResizeGuiWindow(ANWindowHandle WindowHandle, ANInternal
 
 	BitmapRenderTarget->Release();
 	*GuiWindow = nullptr;
-	ri.m_pRenderTarget->CreateCompatibleRenderTarget(D2D1::SizeF(WindowSize.x, WindowSize.y), (ID2D1BitmapRenderTarget**)GuiWindow);
+	this->m_pRenderTarget->CreateCompatibleRenderTarget(D2D1::SizeF(WindowSize.x, WindowSize.y), (ID2D1BitmapRenderTarget**)GuiWindow);
 
 	return true;
 }
 
-D2D_RENDER_FUNCTION bool DrawGuiWindow(ANWindowHandle WindowHandle, ANInternalGuiWindowID GuiWindow, anVec2 Pos)
+bool ANRendererlatformD2D::DrawGuiWindow(ANInternalGuiWindowID GuiWindow, anVec2 Pos)
 {
-	auto& ri = GetWindowContextRenderInformation(WindowHandle);
-
-	if (!ri.m_pRenderTarget)
-		return false;
-
 	if (!GuiWindow)
 		return false;
 
@@ -1021,7 +834,7 @@ D2D_RENDER_FUNCTION bool DrawGuiWindow(ANWindowHandle WindowHandle, ANInternalGu
 
 	auto BitmapSize = BitmapRenderTarget->GetSize();
 
-	ri.m_pRenderTarget->DrawBitmap(Bitmap, D2D1::RectF(Pos.x, Pos.y, Pos.x + BitmapSize.width, Pos.y + BitmapSize.height), 1.f);
+	this->m_pRenderTarget->DrawBitmap(Bitmap, D2D1::RectF(Pos.x, Pos.y, Pos.x + BitmapSize.width, Pos.y + BitmapSize.height), 1.f);
 
 	Bitmap->Release();
 

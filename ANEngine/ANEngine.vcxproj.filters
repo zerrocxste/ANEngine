@@ -160,6 +160,9 @@
     <Filter Include="ANEngine\Platforms\Direct2D">
       <UniqueIdentifier>{ad88a592-beef-4850-a76f-7e9d09a12764}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ANEngine\Interfaces\IANRendererBackend">
+      <UniqueIdentifier>{f0e54c73-22a1-4d07-8ab2-3756cebe0286}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ANEngine.cpp">
@@ -361,6 +364,9 @@
     </ClInclude>
     <ClInclude Include="ANengine\Platforms\Direct2D\ANDirect2DPlatform.h">
       <Filter>ANEngine\Platforms\Direct2D</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Interfaces\IANRendererBackend\IANRendererBackend.h">
+      <Filter>ANEngine\Interfaces\IANRendererBackend</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

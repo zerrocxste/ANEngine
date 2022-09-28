@@ -58,7 +58,7 @@ bool ANResourceManager::ReadFile(const char* pszPath, void*& pBuf, std::uint32_t
 
 	if (!FileStream.is_open())
 	{
-		this->SetError("%s() -> File '%s' not found", __FUNCTION__, pszPath);
+		this->SetError(__FUNCTION__ " > File '%s' not found", pszPath);
 		return false;
 	}
 
@@ -71,7 +71,7 @@ bool ANResourceManager::ReadFile(const char* pszPath, void*& pBuf, std::uint32_t
 
 	if (!pBuf)
 	{
-		this->SetError("%s() -> Memory allocation error", __FUNCTION__);
+		this->SetError(__FUNCTION__ " > Memory allocation error for '%s'", pszPath);
 		return false;
 	}
 

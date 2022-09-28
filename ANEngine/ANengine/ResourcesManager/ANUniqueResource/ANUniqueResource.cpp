@@ -47,7 +47,7 @@ bool ANUniqueResource::Free()
 {
 	if (!m_pResourceLocation)
 	{
-		this->SetError("%s() -> Resource is nullptr", __FUNCTION__);
+		this->SetError(__FUNCTION__ " > Resource is nullptr");
 		return false;
 	}
 

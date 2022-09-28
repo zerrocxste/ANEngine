@@ -134,6 +134,7 @@
       <PreprocessorDefinitions>_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -207,6 +208,7 @@
     <ClInclude Include="ANengine\Interfaces\IANError\IANError.h" />
     <ClInclude Include="ANengine\Interfaces\IANGameScene\IANGameScene.h" />
     <ClInclude Include="ANengine\Interfaces\IANLoader\IANLoader.h" />
+    <ClInclude Include="ANengine\Interfaces\IANRendererBackend\IANRendererBackend.h" />
     <ClInclude Include="ANengine\Platforms\Direct2D\ANDirect2DPlatform.h" />
     <ClInclude Include="ANengine\Platforms\Win32\ANWin32Platform.h" />
     <ClInclude Include="ANengine\ResourcesManager\ANResourceManager\ANResourceManager.h" />

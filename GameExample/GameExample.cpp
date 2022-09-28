@@ -14,21 +14,17 @@ int main()
 	bool HasWindowFrame = true;
 #endif // FULLSCREEN ==1
 
-	auto Loader = CreateEngineInstance("GameExample", Pos, Size, HasWindowFrame, false);
+	auto pLoader = ANEngine::CreateLoaderContext("GameExample", Pos, Size, HasWindowFrame, false);
 
-	if (!Loader->InitializeLoader())
+	if (!pLoader->InitializeLoader())
 	{
-		MessageBox(0, Loader->What(), "Error", MB_ICONERROR);
+		MessageBox(0, pLoader->What(), "Error", MB_ICONERROR);
 		return 1;
 	}
 
-	Loader->ConnectScene(new CTestGameScene());
+	pLoader->ConnectScene(new CTestGameScene());
 
-	if (!Loader->RunScene())
-	{
-		MessageBox(0, Loader->What(), "Error", MB_ICONERROR);
-		return 1;
-	}
+	pLoader->RunScene();
 
 	return 0;
 }

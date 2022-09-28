@@ -37,37 +37,94 @@ const char* pszWoodyRight[] = {
 	"W_mg1_0007.png" 
 };
 const char* pszWoodyDoor[] = { 
-	"W_leave_0000.png", 
-	"W_leave_0001.png", 
-	"W_leave_0002.png", 
-	"W_leave_0003.png",
-	"W_leave_0004.png", 
-	"W_leave_0005.png", 
-	"W_leave_0006.png", 
-	"W_leave_0007.png", 
-	"W_leave_0008.png", 
-	"W_leave_0009.png",
+	"door_vertical\\W_leave_0000.png", 
+	"door_vertical\\W_leave_0001.png", 
+	"door_vertical\\W_leave_0002.png", 
+	"door_vertical\\W_leave_0003.png",
+	"door_vertical\\W_leave_0004.png", 
+	"door_vertical\\W_leave_0005.png", 
+	"door_vertical\\W_leave_0006.png", 
+	"door_vertical\\W_leave_0007.png", 
+	"door_vertical\\W_leave_0008.png", 
+	"door_vertical\\W_leave_0009.png",
 };
 const char* pszWoodyDoorEnter[] = {
-	"W_enter_0015.png",
-	"W_enter_0014.png",
-	"W_enter_0013.png",
-	"W_enter_0012.png",
-	"W_enter_0011.png",
-	"W_enter_0010.png",
-	"W_enter_0009.png",
-	"W_enter_0008.png",
-	"W_enter_0007.png",
-	"W_enter_0006.png",
-	"W_enter_0005.png",
-	"W_enter_0004.png",
-	"W_enter_0003.png",
-	"W_enter_0002.png",
-	"W_enter_0001.png",
-	"W_enter_0000.png",
+	"door_vertical\\W_enter_0015.png",
+	"door_vertical\\W_enter_0014.png",
+	"door_vertical\\W_enter_0013.png",
+	"door_vertical\\W_enter_0012.png",
+	"door_vertical\\W_enter_0011.png",
+	"door_vertical\\W_enter_0010.png",
+	"door_vertical\\W_enter_0009.png",
+	"door_vertical\\W_enter_0008.png",
+	"door_vertical\\W_enter_0007.png",
+	"door_vertical\\W_enter_0006.png",
+	"door_vertical\\W_enter_0005.png",
+	"door_vertical\\W_enter_0004.png",
+	"door_vertical\\W_enter_0003.png",
+	"door_vertical\\W_enter_0002.png",
+	"door_vertical\\W_enter_0001.png",
+	"door_vertical\\W_enter_0000.png",
+};
+const char* pszWoodySideDoorLeftEnter[] = {
+	"side_door_left\\W_enter_0000.png",
+	"side_door_left\\W_enter_0001.png",
+	"side_door_left\\W_enter_0002.png",
+	"side_door_left\\W_enter_0003.png",
+	"side_door_left\\W_enter_0004.png",
+	"side_door_left\\W_enter_0005.png",
+	"side_door_left\\W_enter_0006.png",
+	"side_door_left\\W_enter_0007.png",
+	"side_door_left\\W_enter_0008.png",
+	"side_door_left\\W_enter_0009.png",
+	"side_door_left\\W_enter_0010.png",
+	"side_door_left\\W_enter_0011.png",
+	"side_door_left\\W_enter_0012.png",
+	"side_door_left\\W_enter_0013.png",
+	"side_door_left\\W_enter_0014.png",
+	"side_door_left\\W_enter_0015.png",
+	"side_door_left\\W_enter_0016.png",
+	"side_door_left\\W_enter_0017.png",
+	"side_door_left\\W_enter_0018.png",
+	"side_door_left\\W_enter_0019.png",
+	"side_door_left\\W_enter_0020.png",
+	"side_door_left\\W_enter_0021.png",
+	"side_door_left\\W_enter_0022.png",
+	"side_door_left\\W_enter_0023.png",
+	"side_door_left\\W_enter_0024.png",
+};
+const char* pszWoodySideDoorRightEnter[] = {
+	"side_door_right\\W_enter_0000.png",
+	"side_door_right\\W_enter_0001.png",
+	"side_door_right\\W_enter_0002.png",
+	"side_door_right\\W_enter_0003.png",
+	"side_door_right\\W_enter_0004.png",
+	"side_door_right\\W_enter_0005.png",
+	"side_door_right\\W_enter_0006.png",
+	"side_door_right\\W_enter_0007.png",
+	"side_door_right\\W_enter_0008.png",
+	"side_door_right\\W_enter_0009.png",
+	"side_door_right\\W_enter_0010.png",
+	"side_door_right\\W_enter_0011.png",
+	"side_door_right\\W_enter_0012.png",
+	"side_door_right\\W_enter_0013.png",
+	"side_door_right\\W_enter_0014.png",
+	"side_door_right\\W_enter_0015.png",
+	"side_door_right\\W_enter_0016.png",
+	"side_door_right\\W_enter_0017.png",
+	"side_door_right\\W_enter_0018.png",
+	"side_door_right\\W_enter_0019.png",
+	"side_door_right\\W_enter_0020.png",
+	"side_door_right\\W_enter_0021.png",
 };
 const char* pszDoorAnim[] = { 
 	"N_leave_0000.png"
+};
+const char* pszDoorAnimLeft[] = {
+	"side_door_left\\W_enter_0024.png"
+};
+const char* pszDoorAnimRight[] = {
+	"side_door_right\\W_enter_0000.png"
 };
 
 DoorEntityInteractionController::DoorEntityInteractionController() 
@@ -96,105 +153,7 @@ bool DoorEntityInteractionController::ActionHandler(IANApi* pApi,
 {
 	auto pTestLevel = (CTestLevel*)pReversedUserData;
 
-	if (!strcmp(pszEventClassID, szDoorIntercationClassID))
-	{
-		if (!pApi->GetInteractionMessagesList()->IsEventCanceledByClassID("CLASSID_EVENT_Door", pThisEntity))
-			return false;
-
-		auto& pActorEntity = *ppRemoteEntity;
-
-		IANEntity* pDestEntity = nullptr;
-
-		if (!strcmp(pszEventMessage, "EVENT_DoorTransitionHallwayKitchen"))
-			pDestEntity = pTestLevel->m_pDoorEntityKitchenHallway;
-		else if (!strcmp(pszEventMessage, "EVENT_DoorTransitionKitchenHallway"))
-			pDestEntity = pTestLevel->m_pDoorEntityHallwayKitchen;
-		else if (!strcmp(pszEventMessage, "EVENT_DoorTransitionHallwayHall"))
-			pDestEntity = pTestLevel->m_pDoorEntityHallHallway;
-		else if (!strcmp(pszEventMessage, "EVENT_DoorTransitionHallHallway"))
-			pDestEntity = pTestLevel->m_pDoorEntityHallwayHall;
-
-		if (!pDestEntity)
-			return true;
-
-		if (!bNeedCancelEvent)
-		{
-			if (pActorEntity->GetOrigin() == pThisEntity->GetOrigin() || pTestLevel->m_bNextDoor)
-			{
-				pTestLevel->m_CurrentActorInteractionDoorLeave = CTestLevel::GetUserData<CDoorEntityData>(pThisEntity)->m_DoorInteraction;
-				pTestLevel->m_CurrentActorInteractionDoorEnter = CTestLevel::GetUserData<CDoorEntityData>(pDestEntity)->m_DoorInteraction;
-
-				pTestLevel->m_LastLeaveActorIntercationDoor = pTestLevel->m_CurrentActorInteractionDoorLeave;
-				pTestLevel->m_LastEnterActorIntercationDoor = pTestLevel->m_CurrentActorInteractionDoorEnter;
-
-				pTestLevel->m_bProcessDoor = true;
-
-				pActorEntity->SetVisible(false);
-
-				pThisEntity->GetAnimCompositionController()->PlayAnimation(pTestLevel->m_WoodyDoorLeave, true);
-
-				if (!pTestLevel->m_bNextDoor)
-				{
-					if (pThisEntity->GetAnimCompositionController()->IsAnimationCycleComplete())
-					{
-						pActorEntity->SetOrigin(pDestEntity->GetOrigin());
-						pDestEntity->GetAnimCompositionController()->PlayAnimation(pTestLevel->m_WoodyDoorEnter, true);
-						pTestLevel->m_bNextDoor = true;
-					}
-				}
-
-				if (pTestLevel->m_bNextDoor && pDestEntity->GetAnimCompositionController()->IsAnimationCycleComplete())
-				{
-					ResetDoorState(pThisEntity, pDestEntity, pActorEntity);
-					pTestLevel->m_bNextDoor = false;
-					pTestLevel->m_bProcessDoor = false;
-					pTestLevel->m_LeaveDoorEntity = pTestLevel->m_EnterDoorEntity = DOOR_INTERACTIONS::DOOR_EMPTY;
-					pTestLevel->m_CurrentActorInteractionDoorLeave = pTestLevel->m_CurrentActorInteractionDoorEnter = DOOR_INTERACTIONS::DOOR_EMPTY;
-					return true;
-				}
-			}
-		}
-		else
-		{
-			auto TargetEntity = pTestLevel->m_bNextDoor ? pDestEntity : pThisEntity;
-
-			if (pTestLevel->m_bWayback && pTestLevel->m_bNextDoor)
-			{
-				pApi->GetInteractionMessagesList()->AddInteractionMessageForEntityName(
-					szDoorIntercationClassID,
-					pTestLevel->GetDoorEventTypeFromEntity(pDestEntity),
-					pDestEntity->GetEntityName(),
-					&pActorEntity,
-					pTestLevel);
-
-				pTestLevel->m_LastAnimCount = pDestEntity->GetAnimCompositionController()->GetCurrentAnimationCompositionCount();
-				pTestLevel->m_HouseRoomTarget = HOUSE_ROOM::ROOM_EMPTY;
-				pTestLevel->m_bProcessDoor = true;
-			}
-			else
-			{
-				TargetEntity->GetAnimCompositionController()->SetAnimationMode(true);
-
-				if (!TargetEntity->GetAnimCompositionController()->IsAnimationCycleComplete())
-					return false;
-
-				if (pTestLevel->m_LastLeaveActorIntercationDoor == pTestLevel->m_LeaveDoorEntity || 
-					pTestLevel->m_LastEnterActorIntercationDoor == pTestLevel->m_EnterDoorEntity)
-				{
-					pTestLevel->m_LeaveDoorEntity = pTestLevel->m_EnterDoorEntity = DOOR_INTERACTIONS::DOOR_EMPTY;
-					pTestLevel->m_LastLeaveActorIntercationDoor = pTestLevel->m_LastEnterActorIntercationDoor = DOOR_INTERACTIONS::DOOR_EMPTY;
-				}
-
-				pTestLevel->m_bProcessDoor = false;
-			}
-
-			ResetDoorState(pThisEntity, pDestEntity, pActorEntity);
-			pTestLevel->m_bNextDoor = false;
-			pTestLevel->m_bWayback = false;
-			pTestLevel->m_CurrentActorInteractionDoorLeave = pTestLevel->m_CurrentActorInteractionDoorEnter = DOOR_INTERACTIONS::DOOR_EMPTY;
-			return true;
-		}
-	}
+	
 
 	return false;
 }
@@ -202,8 +161,6 @@ bool DoorEntityInteractionController::ActionHandler(IANApi* pApi,
 CTestLevel::CTestLevel()
 {
 	this->m_WorldZoom = 0.f;
-	this->m_bProcessDoor = false;
-	this->m_bNextDoor = false;
 }
 
 CTestLevel::~CTestLevel()
@@ -219,7 +176,11 @@ void CTestLevel::OnLoadScene(IANApi* pApi)
 	pApi->CreateAnimationComposition(pszWoodyRight, 8, &this->m_WoodyCompositionRight);
 	pApi->CreateAnimationComposition(pszWoodyDoor, 10, &this->m_WoodyDoorLeave);
 	pApi->CreateAnimationComposition(pszWoodyDoorEnter, 16, &this->m_WoodyDoorEnter);
+	pApi->CreateAnimationComposition(pszWoodySideDoorLeftEnter, 25, &this->m_WoodyDoorSideLeftEnter);
+	pApi->CreateAnimationComposition(pszWoodySideDoorRightEnter, 22, &this->m_WoodyDoorSideRightEnter);
 	pApi->CreateAnimationComposition(pszDoorAnim, 1, &this->m_DoorComposition);
+	pApi->CreateAnimationComposition(pszDoorAnimLeft, 1, &this->m_DoorCompositionLeft);
+	pApi->CreateAnimationComposition(pszDoorAnimRight, 1, &this->m_DoorCompositionRight);
 
 	pApi->RegWorld(&this->m_pWorld);
 	this->m_pWorld->SetWorldSize(pApi->GetImageSize(pApi->GetAnimationCompositionFrameFromID(this->m_WorldComposition, 0)));
@@ -228,18 +189,28 @@ void CTestLevel::OnLoadScene(IANApi* pApi)
 	CreateActorEntity(pApi, "ENTITY_Woody");
 
 	CreateDoorEntity(pApi, this->m_pDoorEntityHallwayKitchen, "ENTITY_DoorEntityHallwayKitchen", anVec2(1111.f, 550.f), 
-		DOOR_TYPE::VERTICAL, HOUSE_ROOM::HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_KITCHEN, DOOR_INTERACTIONS::DOOR_KITCHEN_HALLWAY, 1);
+		DOOR_TYPE::VERTICAL, HOUSE_ROOM::HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_KITCHEN, DOOR_INTERACTIONS::DOOR_KITCHEN_HALLWAY, 1, this->m_DoorComposition);
 	CreateDoorEntity(pApi, this->m_pDoorEntityKitchenHallway, "ENTITY_DoorEntityKitchenHallway", anVec2(1095.f, 270.f), 
-		DOOR_TYPE::VERTICAL, HOUSE_ROOM::KITCHEN, DOOR_INTERACTIONS::DOOR_KITCHEN_HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_KITCHEN, 2);
+		DOOR_TYPE::VERTICAL, HOUSE_ROOM::KITCHEN, DOOR_INTERACTIONS::DOOR_KITCHEN_HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_KITCHEN, 2, this->m_DoorComposition);
 	CreateDoorEntity(pApi, this->m_pDoorEntityHallwayHall, "ENTITY_DoorEntityHallwayHall", anVec2(500.f, 550.f), 
-		DOOR_TYPE::VERTICAL, HOUSE_ROOM::HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_HALL, DOOR_INTERACTIONS::DOOR_HALL_HALLWAY, 1);
+		DOOR_TYPE::VERTICAL, HOUSE_ROOM::HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_HALL, DOOR_INTERACTIONS::DOOR_HALL_HALLWAY, 1, this->m_DoorComposition);
 	CreateDoorEntity(pApi, this->m_pDoorEntityHallHallway, "ENTITY_DoorEntityHallHallway", anVec2(500.f, 270.f), 
-		DOOR_TYPE::VERTICAL, HOUSE_ROOM::HALL, DOOR_INTERACTIONS::DOOR_HALL_HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_HALL, 2);
+		DOOR_TYPE::VERTICAL, HOUSE_ROOM::HALL, DOOR_INTERACTIONS::DOOR_HALL_HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_HALL, 2, this->m_DoorComposition);
 
-	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneHallway, anVec2(370.f, 380.f), anVec2(857.f, 248.f), HOUSE_ROOM::HALLWAY, 1);
-	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneBathroom, anVec2(84.f, 377.f), anVec2(269.f, 254.f), HOUSE_ROOM::BATHROOM, 1);
-	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneKitchen, anVec2(847.f, 98.f), anVec2(509.f, 250.f), HOUSE_ROOM::KITCHEN, 2);
-	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneHall, anVec2(123.f, 98.f), anVec2(702.f, 247.f), HOUSE_ROOM::HALL, 2);
+	CreateDoorEntity(pApi, this->m_pDoorEntityHallKitchen, "ENTITY_DoorEntityHallKitchen", anVec2(814.f, 345.f),
+		DOOR_TYPE::HORIZONTAL, HOUSE_ROOM::HALL, DOOR_INTERACTIONS::DOOR_HALL_KITCHEN, DOOR_INTERACTIONS::DOOR_KITCHEN_HALL, 2, this->m_DoorCompositionRight);
+	CreateDoorEntity(pApi, this->m_pDoorEntityKitchenHall, "ENTITY_DoorEntityKitchenHall", anVec2(862.f, 345.f),
+		DOOR_TYPE::HORIZONTAL, HOUSE_ROOM::KITCHEN, DOOR_INTERACTIONS::DOOR_KITCHEN_HALL, DOOR_INTERACTIONS::DOOR_HALL_KITCHEN, 2, this->m_DoorCompositionLeft);
+
+	CreateDoorEntity(pApi, this->m_pDoorEntityBathroomHallway, "ENTITY_DoorEntityBathroomHallway", anVec2(342.f, 628.f),
+		DOOR_TYPE::HORIZONTAL, HOUSE_ROOM::BATHROOM, DOOR_INTERACTIONS::DOOR_BATHROOM_HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_BATHROOM, 1, this->m_DoorCompositionRight);
+	CreateDoorEntity(pApi, this->m_pDoorEntityHallwayBathroom, "ENTITY_DoorEntityHallwayBathroom", anVec2(383.f, 628.f),
+		DOOR_TYPE::HORIZONTAL, HOUSE_ROOM::HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_BATHROOM, DOOR_INTERACTIONS::DOOR_BATHROOM_HALLWAY, 1, this->m_DoorCompositionLeft);
+
+	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneHallway, anVec2(798.5f, 628.f), anVec2(857.f, 248.f), HOUSE_ROOM::HALLWAY, 1);
+	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneBathroom, anVec2(218.5f, 631.f), anVec2(269.f, 254.f), HOUSE_ROOM::BATHROOM, 1);
+	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneKitchen, anVec2(1101.5f, 345.f), anVec2(509.f, 250.f), HOUSE_ROOM::KITCHEN, 2);
+	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneHall, anVec2(475.f, 345.f), anVec2(702.f, 247.f), HOUSE_ROOM::HALL, 2);
 }
 
 void CTestLevel::OnUnloadScene(IANApi* pApi)
@@ -250,6 +221,7 @@ void CTestLevel::OnUnloadScene(IANApi* pApi)
 	pApi->DeleteAnimationComposition(&this->m_WoodyDoorEnter);
 	pApi->DeleteAnimationComposition(&this->m_WoodyComposition);
 	pApi->DeleteAnimationComposition(&this->m_WoodyCompositionLeft);
+	pApi->DeleteAnimationComposition(&this->m_WoodyDoorSideLeftEnter);
 	pApi->DeleteAnimationComposition(&this->m_WoodyCompositionRight);
 	
 	pApi->UnregWorld(&this->m_pWorld);
@@ -284,6 +256,10 @@ const char* CTestLevel::GetDoorEventTypeFromEntity(IANEntity* pEntity)
 		return "EVENT_DoorTransitionHallwayHall";
 	else if (!strcmp(EntityName, "ENTITY_DoorEntityHallHallway"))
 		return "EVENT_DoorTransitionHallHallway";
+	else if (!strcmp(EntityName, "ENTITY_DoorEntityHallKitchen"))
+		return "EVENT_DoorTransitionHallKitchen";
+	else if (!strcmp(EntityName, "ENTITY_DoorEntityKitchenHall"))
+		return "EVENT_DoorTransitionKitchenHall";
 
 	return nullptr;
 }
@@ -325,17 +301,34 @@ void CTestLevel::DrawWorld(IANApi* pApi)
 void CTestLevel::DrawEntities(IANApi* pApi)
 {
 #if DEBUG_LEVEL_1 == 1
-	auto Zone = pApi->FindEntityByGroupID(szWorldEntityClassIDRoomZone);
+	auto groupZone = pApi->FindEntityByGroupID(szWorldEntityClassIDRoomZone);
 
-	for (auto& re : Zone->m_EntityGroup)
+	for (auto ent = groupZone->First(); *ent != groupZone->Last(); (*ent)++)
 	{
-		auto ScreenF = pApi->WorldToScreen(this->m_pWorld, re->GetOrigin());
-		auto ScreenS = pApi->WorldToScreen(this->m_pWorld, re->GetOrigin() + re->GetEntitySize());
-		pApi->DrawRectangle(ScreenF, ScreenS - ScreenF, anRect(re->GetOrigin(), re->GetOrigin() + re->GetEntitySize()).IsIntersected(this->m_pMainActor->GetOrigin()) ? anColor::Blue() : anColor::Red(), 3.f);
+		auto entity = ent->Get();
+
+		auto IsIntersected = entity->IsScreenPointIntersected(pApi, this->m_pWorld, pApi->GetCursorPos());
+
+		entity->DrawRectRegion(pApi, 
+			this->m_pWorld, 
+			IsIntersected ? anColor::Green() : anColor::Magenta());
 	}
 #endif
-	pApi->FindEntityByGroupID(szWorldEntityClassIDDoor)->Update(pApi).Draw(pApi, this->m_pWorld);
-	pApi->FindEntityByGroupID(szWorldEntityPlayer)->SortByYOrder().Update(pApi).Draw(pApi, this->m_pWorld);
+
+	auto groupDoors = pApi->FindEntityByGroupID(szWorldEntityClassIDDoor);
+	groupDoors->Update(pApi);
+#if DEBUG_LEVEL_1 == 1
+	groupDoors->DrawRectRegion(pApi, this->m_pWorld, anColor::Red());
+#endif
+	groupDoors->DrawFromComposition(pApi, this->m_pWorld);
+
+	auto groupEntities = pApi->FindEntityByGroupID(szWorldEntityPlayer);
+	groupEntities->SortByYOrder();
+	groupEntities->Update(pApi);
+#if DEBUG_LEVEL_1 == 1
+	groupEntities->DrawRectRegion(pApi, this->m_pWorld, anColor::Blue());
+#endif
+	groupEntities->DrawFromComposition(pApi, this->m_pWorld);
 }
 
 void CTestLevel::DrawUI(IANApi* pApi)
@@ -360,23 +353,15 @@ void CTestLevel::DrawStatistics(IANApi* pApi)
 		"ENGINE:\n"
 		"FPS: %d\n"
 		"Frametime: %f\n"
-		"Screen size: %.1f:%.1f\n"
-		"World Size: %.1f:%.1f\n"
-		"World pos: %.1f:%.1f\n"
-		"World screen size: %.1f:%.1f\n"
-		"Camera world: %.1f:%.1f\n"
-		"Camera screen: %.1f:%.1f\n"
-		"Actor world: %f:%f\n"
-		"Actor screen: %.1f:%.1f\n"
-		"Cursor screen: %.1f:%.1f\n\n"
-		"GAME DATA:\n"
-		"m_bProcessDoor: %d\n"
-		"m_bNextDoor: %d\n"
-		"m_bWayback: %d\n"
-		"m_LeaveDoorEntity: %d\n"
-		"m_EnterDoorEntity: %d\n"
-		"m_iCurrentActorFloor: %d\n"
-		"m_iTargetFloor: %d",
+		"Screen size: %.1f %.1f\n"
+		"World Size: %.1f %.1f\n"
+		"World pos: %.1f %.1f\n"
+		"World screen size: %.1f %.1f\n"
+		"Camera world: %.1f %.1f\n"
+		"Camera screen: %.1f %.1f\n"
+		"Actor world: %.1f %.1f\n"
+		"Actor screen: %.1f %.1f\n"
+		"Cursor screen: %.1f %.1f\n\n",
 		pApi->FPS,
 		pApi->Frametime,
 		ScreenSize.x, ScreenSize.y,
@@ -387,14 +372,7 @@ void CTestLevel::DrawStatistics(IANApi* pApi)
 		WorldMetrics.m_CameraScreen.x, WorldMetrics.m_CameraScreen.y,
 		this->m_pMainActor->GetOrigin().x, this->m_pMainActor->GetOrigin().y,
 		ActorScreen.x, ActorScreen.y,
-		pApi->GetCursorPos().x, pApi->GetCursorPos().y,
-		this->m_bProcessDoor,
-		this->m_bNextDoor,
-		this->m_bWayback,
-		this->m_LeaveDoorEntity,
-		this->m_EnterDoorEntity,
-		this->m_iCurrentActorFloor,
-		this->m_iTargetFloor);
+		pApi->GetCursorPos().x, pApi->GetCursorPos().y);
 
 	pApi->PushFontAppierence(FontAppierence::FONT_SHADOW);
 	pApi->TextDraw(buff, anVec2(10.f, 20.f), anColor::White());
@@ -405,182 +383,17 @@ void CTestLevel::DrawStatistics(IANApi* pApi)
 	pApi->PopFontColor();
 }
 
-bool CTestLevel::ProcessDoorInteraction(IANApi* pApi, IANEntity*& pEntity)
-{
-	if (pEntity->IsScreenPointIntersected(pApi, this->m_pWorld, pApi->GetCursorPos()) && pApi->GetCursorKeyIsReleased(CursorKey::MAIN_FIRST))
-	{
-		auto DoorEntData = CTestLevel::GetUserData<CDoorEntityData>(pEntity);
-
-		if (this->m_bProcessDoor && (this->m_LastLeaveActorIntercationDoor == DoorEntData->m_DoorInteraction || (this->m_LastEnterActorIntercationDoor == DoorEntData->m_DoorInteraction)))
-		{
-			pApi->GetInteractionMessagesList()->SendCancelInteractionMessageForClassID(szDoorIntercationClassID);
-			this->m_MovePoint = NULL;
-			this->m_bWayback = true;
-			this->m_LeaveDoorEntity = DoorEntData->m_DoorInteraction;
-			return true;
-		}
-
-		if (this->m_CurrentActorInteractionDoorLeave != DOOR_INTERACTIONS::DOOR_EMPTY && this->m_LeaveDoorEntity != DoorEntData->m_DoorInteraction)
-		{
-			pApi->GetInteractionMessagesList()->SendCancelInteractionMessageForClassID(szDoorIntercationClassID);
-
-			if (DoorEntData->m_LevelFloor != this->m_iCurrentActorFloor)
-				this->m_bWayback = true;
-		}
-
-		this->m_CurrentDoorTarget = DoorEntData->m_DoorInteraction;
-		this->m_MovePoint = pEntity->GetOrigin();
-		this->m_LeaveDoorEntity = DoorEntData->m_DoorInteraction;
-		this->m_EnterDoorEntity = DoorEntData->m_InvertedDoorInteraction;
-		this->m_iTargetFloor = DoorEntData->m_LevelFloor;
-		return true;
-	}
-
-	return false;
-}
-
 void CTestLevel::ProcessActorMove(IANApi* pApi)
 {
-	bool bOnRoom = false;
-
-	auto RoomZoneSections = pApi->FindEntityByGroupID(szWorldEntityClassIDRoomZone);
-
-	for (auto& re : RoomZoneSections->m_EntityGroup)
-	{
-		if (anRect(re->GetOrigin(), re->GetOrigin() + re->GetEntitySize()).IsIntersected(this->m_pMainActor->GetOrigin()))
-		{
-			this->m_iCurrentActorFloor = CTestLevel::GetUserData<CRoomZoneEntityData>(re)->m_LevelFloor;
-			bOnRoom = true;
-		}
-	}
-
-	if (!bOnRoom)
-		this->m_iCurrentActorFloor = -INT_MAX;
-
-	bool bOnDoor = false;
-
-	auto DoorGroup = pApi->FindEntityByGroupID(szWorldEntityClassIDDoor);
-	for (auto& de : DoorGroup->m_EntityGroup)
-	{
-		if (pApi->CalcBBox(this->m_pWorld, de->GetOrigin(), de->CalcEntitySize(pApi)).IsIntersected(pApi->GetCursorPos()))
-		{
-			bOnDoor = true;
-			break;
-		}
-	}
-
-	if (!bOnDoor && pApi->GetCursorKeyIsReleased(CursorKey::MAIN_FIRST))
-	{
-		for (auto& re : RoomZoneSections->m_EntityGroup)
-		{
-			if (anRect(
-				pApi->WorldToScreen(this->m_pWorld, re->GetOrigin()),
-				pApi->WorldToScreen(this->m_pWorld, re->GetOrigin() + re->GetEntitySize())).IsIntersected(pApi->GetCursorPos()))
-			{
-				this->m_iTargetFloor = CTestLevel::GetUserData<CRoomZoneEntityData>(re)->m_LevelFloor;
-
-				pApi->GetInteractionMessagesList()->SendCancelInteractionMessageForClassID(szDoorIntercationClassID);
-
-				if (this->m_iTargetFloor != this->m_iCurrentActorFloor)
-					this->m_bWayback = true;
-
-				if (!this->m_bProcessDoor)
-					this->m_LeaveDoorEntity = this->m_EnterDoorEntity = DOOR_INTERACTIONS::DOOR_EMPTY;
-
-				this->m_CurrentDoorTarget = DOOR_INTERACTIONS::DOOR_EMPTY;
-				this->m_HouseRoomTarget = CTestLevel::GetUserData<CRoomZoneEntityData>(re)->m_HouseRoom;
-				this->m_MovePoint = pApi->ScreenPointToWorld(this->m_pWorld, pApi->GetCursorPos());
-			}
-		}
-	}
-
-	ProcessDoorInteraction(pApi, this->m_pDoorEntityHallwayKitchen);
-	ProcessDoorInteraction(pApi, this->m_pDoorEntityKitchenHallway);
-	ProcessDoorInteraction(pApi, this->m_pDoorEntityHallwayHall);
-	ProcessDoorInteraction(pApi, this->m_pDoorEntityHallHallway);
-
-	if (this->m_MovePoint.IsValid() && !this->m_bProcessDoor)
-	{
-		auto ActorOrigin = this->m_pMainActor->GetOrigin();
-
-		auto IsDoor = this->m_CurrentDoorTarget != DOOR_INTERACTIONS::DOOR_EMPTY;
-
-		if (!IsDoor || (IsDoor && ActorOrigin.x != this->m_MovePoint.x))
-		{
-			switch (this->m_HouseRoomTarget)
-			{
-			case HOUSE_ROOM::HALLWAY:
-			case HOUSE_ROOM::BATHROOM:
-				this->m_MovePoint.y = 611.f;
-				break;
-			case HOUSE_ROOM::KITCHEN:
-			case HOUSE_ROOM::HALL:
-				this->m_MovePoint.y = 326.f;
-				break;
-			}
-		}
-
-		if (ActorOrigin.y != this->m_MovePoint.y)
-		{
-			this->m_pMainActor->MoveVertical(pApi, Step, this->m_MovePoint.y);
-		}
-		else
-		{
-			this->m_pMainActor->MoveHorizontal(pApi, Step, this->m_MovePoint.x);
-
-			IANEntity* pTargetDoorEntity = nullptr;
-			const char* szEventName = nullptr;
-
-			if (IsDoor)
-			{
-				switch (this->m_CurrentDoorTarget)
-				{
-				case DOOR_INTERACTIONS::DOOR_HALLWAY_KITCHEN:
-					szEventName = "EVENT_DoorTransitionHallwayKitchen";
-					pTargetDoorEntity = this->m_pDoorEntityHallwayKitchen;
-					break;
-				case DOOR_INTERACTIONS::DOOR_HALLWAY_HALL:
-					szEventName = "EVENT_DoorTransitionHallwayHall";
-					pTargetDoorEntity = this->m_pDoorEntityHallwayHall;
-					break;
-				case DOOR_INTERACTIONS::DOOR_KITCHEN_HALLWAY:
-					szEventName = "EVENT_DoorTransitionKitchenHallway";
-					pTargetDoorEntity = this->m_pDoorEntityKitchenHallway;
-					break;
-				case DOOR_INTERACTIONS::DOOR_HALL_HALLWAY:
-					szEventName = "EVENT_DoorTransitionHallHallway";
-					pTargetDoorEntity = this->m_pDoorEntityHallHallway;
-					break;
-				}
-
-				if (ActorOrigin.x == this->m_MovePoint.x)
-					this->m_MovePoint.y = pTargetDoorEntity->GetOrigin().y;
-			}
-
-			if (ActorOrigin == this->m_MovePoint)
-			{
-				if (IsDoor)
-				{
-					pApi->GetInteractionMessagesList()->AddInteractionMessageForEntityName(
-						szDoorIntercationClassID,
-						szEventName,
-						pTargetDoorEntity->GetEntityName(),
-						&this->m_pMainActor,
-						this);
-				}
-
-				this->m_MovePoint = NULL;
-				this->m_CurrentDoorTarget = DOOR_INTERACTIONS::DOOR_EMPTY;
-			}
-		}
-	}
+	
 }
 
 void CTestLevel::CreateActorEntity(IANApi* pApi, const char* pszActorName)
 {
 	pApi->RegEntity(&this->m_pMainActor, szWorldEntityPlayer);
 	this->m_pMainActor->SetEntityName(pszActorName);
-	this->m_pMainActor->SetOrigin(this->m_pWorld->GetMetrics().m_WorldSize * 0.5f);
+	//this->m_pMainActor->SetOrigin(this->m_pWorld->GetMetrics().m_WorldSize * 0.5f);
+	this->m_pMainActor->SetOrigin(anVec2(1167.f, 611.f)); //326.f;
 }
 
 void CTestLevel::CreateRoomZoneEntity(IANApi* pApi, IANEntity*& pEntity, anVec2 RoomPos, anVec2 RoomSize, HOUSE_ROOM HouseRoom, int iLevelFloor)
@@ -591,13 +404,23 @@ void CTestLevel::CreateRoomZoneEntity(IANApi* pApi, IANEntity*& pEntity, anVec2 
 	pEntity->SetUserDataPointer(new CRoomZoneEntityData(HouseRoom, iLevelFloor));
 }
 
-void CTestLevel::CreateDoorEntity(IANApi* pApi, IANEntity*& pEntity, const char* pszDoorName, anVec2 Origin, DOOR_TYPE DoorType, HOUSE_ROOM HouseRoom, DOOR_INTERACTIONS DoorInteraction, DOOR_INTERACTIONS InvertedDoorInteraction, int iLevelFloor)
+void CTestLevel::CreateDoorEntity(
+	IANApi* pApi, 
+	IANEntity*& pEntity, 
+	const char* pszDoorName, 
+	anVec2 Origin, 
+	DOOR_TYPE DoorType, 
+	HOUSE_ROOM HouseRoom, 
+	DOOR_INTERACTIONS DoorInteraction,
+	DOOR_INTERACTIONS InvertedDoorInteraction, 
+	int iLevelFloor, 
+	ANAnimationComposition pDoorComposition)
 {
 	pApi->RegEntity(&pEntity, szWorldEntityClassIDDoor);
 	pEntity->SetEntityName(pszDoorName);
 	pEntity->SetOrigin(Origin);
 	pEntity->SetInteractionController(new DoorEntityInteractionController);
-	pEntity->GetAnimCompositionController()->SetAnimationComposition(this->m_DoorComposition);
+	pEntity->GetAnimCompositionController()->SetAnimationComposition(pDoorComposition);
 	pEntity->GetAnimCompositionController()->SetAnimationDuration(0.1f);
 	pEntity->SetUserDataPointer(new CDoorEntityData(HouseRoom, DoorType, DoorInteraction, InvertedDoorInteraction, iLevelFloor));
 }

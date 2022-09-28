@@ -64,7 +64,7 @@ void ANEntityList::Unreg(IANEntity* ppEntity)
 	}
 }
 
-void ANEntityList::FindFromClassID(const char* pszClassID, std::vector<IANEntity*>* pEntityList)
+void ANEntityList::FindFromClassID(const char* pszClassID, std::deque<IANEntity*>* pEntityList)
 {
 	for (auto it = this->m_vEntityList.begin(); it < this->m_vEntityList.end(); it++)
 	{

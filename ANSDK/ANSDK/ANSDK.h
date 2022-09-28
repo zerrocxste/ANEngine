@@ -3,11 +3,14 @@
 #include <Windows.h>
 #include <iostream>
 #include <vector>
+#include <deque>
 
 #include "ANMath/ANVec2/ANVec2.h"
 #include "ANMath/ANVec3/ANVec3.h"
 #include "ANMath/ANRect/ANRect.h"
 #include "ANMath/ANColor/ANColor.h"
+
+typedef std::size_t anSize;
 
 struct ANWorldMetrics;
 
@@ -72,9 +75,12 @@ using fCreateEngineInstance = IANLoader * (__stdcall*)(
 	bool bHasWindowFrame,
 	bool bVerticalSync);
 
-IANLoader* CreateEngineInstance(
-	const char* pszWindowName,
-	anVec2 vWindowPosition,
-	anVec2 vWindowSize,
-	bool bHasWindowFrame,
-	bool bVerticalSync);
+namespace ANEngine
+{
+	IANLoader* CreateLoaderContext(
+		const char* pszWindowName,
+		anVec2 vWindowPosition,
+		anVec2 vWindowSize,
+		bool bHasWindowFrame,
+		bool bVerticalSync);
+}

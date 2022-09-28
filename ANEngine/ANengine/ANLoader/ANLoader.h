@@ -13,7 +13,7 @@ public:
 
 	bool InitializeLoader() override;
 	bool ConnectScene(IANGameScene* pGameScene) override;
-	bool RunScene() override;
+	void RunScene() override;
 	bool DestroyContext() override;
 
 private:

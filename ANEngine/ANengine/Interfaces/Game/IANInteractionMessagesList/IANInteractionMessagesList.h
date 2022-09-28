@@ -1,5 +1,9 @@
 #pragma once
 
+class IANInteractionMessagesList;
+class IANInteractionMessagesNode;
+struct ANUniqueInteractionMesssage;
+
 struct ANUniqueInteractionMesssage
 {
 	const char* m_pszEntityName;
@@ -11,10 +15,18 @@ struct ANUniqueInteractionMesssage
 	bool m_bNeedCancelEvent;
 };
 
+class IANInteractionMessagesNode
+{
+public:
+	virtual ANUniqueInteractionMesssage& operator*() = 0;
+	virtual IANInteractionMessagesNode& operator++(int) = 0;
+	virtual bool operator!=(const ANInterfacePointer<IANInteractionMessagesNode>& Node) = 0;
+};
+
 class IANInteractionMessagesList
 {
 public:
-	std::vector<ANUniqueInteractionMesssage> m_InteractionMessagesList;
+	using InteractionObjectNode = ANInterfacePointer<IANInteractionMessagesNode>;
 
 	virtual void AddInteractionMessage(const char* pszEventClassID, const char* pszEventMessage, IANEntity** pRemoteEntity, void* pReversedUserData) = 0;
 	virtual void AddInteractionMessageForEntityName(const char* pszEventClassID, const char* pszEventMessage, const char* pszEntityName, IANEntity** pRemoteEntity, void* pReversedUserData) = 0;
@@ -27,8 +39,13 @@ public:
 	virtual bool IsEventCanceledByEventName(const char* pszEventName, IANEntity* pExcludeForEntity = nullptr, bool bSearchForEntityClassID = false) = 0;
 	virtual bool IsEventCanceledByClassID(const char* pszEventClassID, IANEntity* pExcludeForEntity = nullptr, bool bSearchForEntityClassID = false) = 0;
 
-	virtual std::vector<ANUniqueInteractionMesssage*> GetInteractionFromEntityName(const char* pszName) = 0;
-	virtual std::vector<ANUniqueInteractionMesssage*> GetInteractionFromEntityClassID(const char* pszClassIDName) = 0;
+	virtual InteractionObjectNode First() = 0;
+	virtual InteractionObjectNode Last() = 0;
+
+	virtual anSize GetSize() = 0;
+
+	virtual ANInterfacePointer<IANInteractionMessagesList> GetInteractionFromEntityName(const char* pszName) = 0;
+	virtual ANInterfacePointer<IANInteractionMessagesList> GetInteractionFromEntityClassID(const char* pszClassIDName) = 0;
 
 	virtual void Clear() = 0;
 };

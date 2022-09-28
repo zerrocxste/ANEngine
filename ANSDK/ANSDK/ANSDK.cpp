@@ -1,6 +1,6 @@
 #include "ANSDK.h"
 
-IANLoader* CreateEngineInstance(
+IANLoader* ANEngine::CreateLoaderContext(
 	const char* pszWindowName,
 	anVec2 vWindowPosition,
 	anVec2 vWindowSize,

@@ -59,7 +59,7 @@ public:
 private:
 	ANCore* m_pCore;
 
-	ANRendererFuncionsTable* m_pANRendererFuncionsTable;
+	IANRendererBackend* m_pRendererBackend;
 
 	ANWindowHandle m_Window;
 
