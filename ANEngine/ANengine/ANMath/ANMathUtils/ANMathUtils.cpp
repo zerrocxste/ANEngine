@@ -146,16 +146,23 @@ void ANMathUtils::ClampCamera(anVec2 ScreenSize, anVec2 WorldSize, anVec2 WorldS
 		CameraWorld.y -= LinearInterpolation(0.f, -(CameraScreen.y - ScreenSize.y - -(WorldScreenSize.y)), WorldScreenSize.y, 0.f, WorldSize.y);
 }
 
-anRect ANMathUtils::CalcBBox(ANWorldMetrics WorldMetrics, anVec2 Origin, anVec2 ObjectSize)
+anRect ANMathUtils::CalcBBox(anVec2 Origin, anVec2 ObjectSize)
 {
-	auto ScreenBot = ANMathUtils::WorldToScreen(WorldMetrics.m_WorldSize, WorldMetrics.m_WorldScreenPos, WorldMetrics.m_WorldScreenSize, WorldMetrics.m_CameraWorld, Origin);
-	auto RelativeToTop = ANMathUtils::WorldToScreen(WorldMetrics.m_WorldSize, WorldMetrics.m_WorldScreenPos, WorldMetrics.m_WorldScreenSize, WorldMetrics.m_CameraWorld, Origin + ObjectSize) - ScreenBot;
+	auto f1 = Origin;
+	auto f2 = Origin + ObjectSize;
 
-	auto ret = anRect(ScreenBot - RelativeToTop, ScreenBot) + (RelativeToTop * 0.5f);
+	anVec2 cv((f2.x - f1.x) * 0.5f, f2.y - f1.y);
+	f1 -= cv; f2 -= cv;
 
-	auto HalfOfRelativeTop = RelativeToTop.y * 0.5f;
-	ret.first.y -= HalfOfRelativeTop;
-	ret.second.y -= HalfOfRelativeTop;
+	return anRect(f1, f2);
+}
 
-	return ret;
+anRect ANMathUtils::CalcScreenBBox(ANWorldMetrics WorldMetrics, anVec2 Origin, anVec2 ObjectSize)
+{
+	auto bbox = ANMathUtils::CalcBBox(Origin, ObjectSize);
+
+	return anRect(
+		ANMathUtils::WorldToScreen(WorldMetrics.m_WorldSize, WorldMetrics.m_WorldScreenPos, WorldMetrics.m_WorldScreenSize, WorldMetrics.m_CameraWorld, bbox.first),
+		ANMathUtils::WorldToScreen(WorldMetrics.m_WorldSize, WorldMetrics.m_WorldScreenPos, WorldMetrics.m_WorldScreenSize, WorldMetrics.m_CameraWorld, bbox.second)
+	);
 }

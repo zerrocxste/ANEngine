@@ -5,12 +5,12 @@ class ANEntity : public IANEntity
 	friend ANGame;
 	friend ANEntityList;
 private:
-	int m_ID;
+	int m_iID;
 	char* m_szEntityClassID;
 
-	anVec2 m_Origin;
+	anVec2 m_vecOrigin;
 
-	anVec2 m_EntitySize;
+	anVec2 m_vecEntitySize;
 	bool m_bIsOccluded;
 
 	IANInteractionController* m_pIANInteractionControllerUserCallback;
@@ -44,10 +44,15 @@ public:
 	anVec2 GetEntitySize() override;
 	anVec2 CalcEntitySize(IANApi* pApi) override;
 
+	anRect CalcBBox(IANApi* pApi) override;
+	anRect CalcScreenBBox(IANApi* pApi, IANWorld* pWorld) override;
+
 	void DrawRectRegion(IANApi* pApi, IANWorld* pWorld, anColor Color) override;
 	void DrawFromComposition(IANApi* pApi, IANWorld* pWorld) override;
 
+	bool IsWorldPointIntersected(IANApi* pApi, anVec2 WorldPoint) override;
 	bool IsScreenPointIntersected(IANApi* pApi, IANWorld* pWorld, anVec2 ScreenPoint) override;
+
 	void SetInteractionController(IANInteractionController* pIANInteractionController) override;
 
 	void SetEntityName(const char* szEntityName) override;

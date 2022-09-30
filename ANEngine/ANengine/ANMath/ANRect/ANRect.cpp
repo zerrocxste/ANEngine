@@ -242,10 +242,10 @@ anRect anRect::SwapPoints()
 
 anRect anRect::RecalcWithRelativeDistance()
 {
-	return anRect(this->first, this->GetRelativeDistanceBetweenFirstAndSecond());
+	return anRect(this->first, GetPointsDistantion());
 }
 
-anVec2 anRect::GetRelativeDistanceBetweenFirstAndSecond()
+anVec2 anRect::GetPointsDistantion()
 {
 	return this->second - this->first;
 }

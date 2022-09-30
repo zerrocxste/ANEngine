@@ -26,9 +26,13 @@ public:
 	virtual anVec2 GetEntitySize() = 0;
 	virtual anVec2 CalcEntitySize(IANApi* pApi) = 0;
 
+	virtual anRect CalcBBox(IANApi* pApi) = 0;
+	virtual anRect CalcScreenBBox(IANApi* pApi, IANWorld* pWorld) = 0;
+
 	virtual void DrawRectRegion(IANApi* pApi, IANWorld* pWorld, anColor Color) = 0;
 	virtual void DrawFromComposition(IANApi* pApi, IANWorld* pWorld) = 0;
 
+	virtual bool IsWorldPointIntersected(IANApi* pApi, anVec2 WorldPoint) = 0;
 	virtual bool IsScreenPointIntersected(IANApi* pApi, IANWorld* pWorld, anVec2 ScreenPoint) = 0;
 
 	virtual void SetInteractionController(IANInteractionController* pIANInteractionController) = 0;

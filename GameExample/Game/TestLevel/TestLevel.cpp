@@ -235,7 +235,7 @@ void CTestLevel::Entry(IANApi* pApi)
 {
 	PreFrame(pApi);
 	KeyboardMoveInput(pApi);
-	ProcessActorMove(pApi);
+	CreateMove(pApi);
 	DrawWorld(pApi);
 	DrawEntities(pApi);
 	DrawUI(pApi);
@@ -307,11 +307,15 @@ void CTestLevel::DrawEntities(IANApi* pApi)
 	{
 		auto entity = ent->Get();
 
-		auto IsIntersected = entity->IsScreenPointIntersected(pApi, this->m_pWorld, pApi->GetCursorPos());
+		auto screenBBox = entity->CalcScreenBBox(pApi, this->m_pWorld);
 
-		entity->DrawRectRegion(pApi, 
-			this->m_pWorld, 
-			IsIntersected ? anColor::Green() : anColor::Magenta());
+		screenBBox = screenBBox.RecalcWithRelativeDistance();
+
+		pApi->DrawRectangle(
+			screenBBox.first,
+			screenBBox.second,
+			entity->IsScreenPointIntersected(pApi, this->m_pWorld, pApi->GetCursorPos()) ? anColor::Green() : anColor::Magenta(),
+			5.f);
 	}
 #endif
 
@@ -379,21 +383,108 @@ void CTestLevel::DrawStatistics(IANApi* pApi)
 	pApi->PopFontAppierence();
 
 	pApi->PushFontColor(anColor::White());
-	pApi->AddSliderFloat("Map zoom", anVec2(10.f, ScreenSize.y - 70.f), anVec2(300.f, 30.f), 0.f, 10000.f, &this->m_WorldZoom);
+	pApi->AddSliderFloat("Map zoom", anVec2(10.f, ScreenSize.y - 70.f), anVec2(300.f, 30.f), -1000.f, 10000.f, &this->m_WorldZoom);
 	pApi->PopFontColor();
 }
 
-void CTestLevel::ProcessActorMove(IANApi* pApi)
+void CTestLevel::ProcessMoveActorHall(IANApi* pApi)
 {
-	
+	auto currentFloor = GetWoodyEntityData(this->m_pMainActor).m_CurrentActorFloor;
+
+	switch (currentFloor)
+	{
+	case HALLWAY:
+		this->m_pMainActor->MoveHorizontal(pApi, Step, this->m_pDoorEntityHallwayHall->GetOrigin().x);
+		break;
+	case BATHROOM:
+		this->m_pMainActor->MoveHorizontal(pApi, Step, this->m_pDoorEntityBathroomHallway->GetOrigin().x);
+		break;
+	case KITCHEN:
+		this->m_pMainActor->MoveHorizontal(pApi, Step, this->m_pDoorEntityKitchenHall->GetOrigin().x);
+		break;
+	case HALL:
+		this->m_pMainActor->MovePoint(pApi, Step, GetWoodyEntityData(this->m_pMainActor).m_vecMovePt);
+		break;
+	}
+}
+
+void CTestLevel::CreateMove(IANApi* pApi)
+{
+	auto& [currentRoom, moveTask, movePoint, targetRoom] = GetWoodyEntityData(this->m_pMainActor);
+
+	currentRoom = HOUSE_ROOM::ROOM_EMPTY;
+
+	auto groupZone = pApi->FindEntityByGroupID(szWorldEntityClassIDRoomZone);
+
+	for (auto ent = groupZone->First(); *ent != groupZone->Last(); (*ent)++)
+	{
+		auto entity = ent->Get();
+		auto& entityUserData = GetRoomEntityData(entity);
+
+		if (entity->IsWorldPointIntersected(pApi, this->m_pMainActor->GetOrigin()))
+			currentRoom = entityUserData.m_HouseRoom;
+
+		if (pApi->GetCursorKeyIsReleased(MAIN_FIRST))
+		{
+			if (!entity->IsScreenPointIntersected(pApi, this->m_pWorld, pApi->GetCursorPos()))
+				continue;
+
+			moveTask = true;
+			movePoint = pApi->ScreenPointToWorld(this->m_pWorld, pApi->GetCursorPos());
+			targetRoom = entityUserData.m_HouseRoom;
+		}
+	}
+
+	switch (currentRoom)
+	{
+	case HALLWAY:
+		printf("Room: HALLWAY\n");
+		break;
+	case BATHROOM:
+		printf("Room: BATHROOM\n");
+		break;
+	case KITCHEN:
+		printf("Room: KITCHEN\n");
+		break;
+	case HALL:
+		printf("Room: HALL\n");
+		break;
+	case ROOM_EMPTY:
+	default:
+		printf("NO ROOM\n");
+		break;
+	}
+
+	if (moveTask)
+	{
+		auto actorOrigin = this->m_pMainActor->GetOrigin();
+
+		if (actorOrigin != movePoint)
+		{
+			switch (targetRoom)
+			{
+			case HALLWAY:
+				break;
+			case BATHROOM:
+				break;
+			case KITCHEN:
+				break;
+			case HALL:
+				ProcessMoveActorHall(pApi);
+				break;
+			}
+		}
+		else
+			moveTask = false;
+	}
 }
 
 void CTestLevel::CreateActorEntity(IANApi* pApi, const char* pszActorName)
 {
 	pApi->RegEntity(&this->m_pMainActor, szWorldEntityPlayer);
 	this->m_pMainActor->SetEntityName(pszActorName);
-	//this->m_pMainActor->SetOrigin(this->m_pWorld->GetMetrics().m_WorldSize * 0.5f);
 	this->m_pMainActor->SetOrigin(anVec2(1167.f, 611.f)); //326.f;
+	this->m_pMainActor->SetUserDataPointer(new actWoodyGameData());
 }
 
 void CTestLevel::CreateRoomZoneEntity(IANApi* pApi, IANEntity*& pEntity, anVec2 RoomPos, anVec2 RoomSize, HOUSE_ROOM HouseRoom, int iLevelFloor)

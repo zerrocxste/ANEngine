@@ -2,7 +2,7 @@
 
 int ANEntity::GetEntityID()
 {
-	return this->m_ID;
+	return this->m_iID;
 }
 
 char* ANEntity::GetEntityClassID()
@@ -12,171 +12,171 @@ char* ANEntity::GetEntityClassID()
 
 void ANEntity::SetOrigin(anVec2 Origin)
 {
-	this->m_Origin = Origin;
+	this->m_vecOrigin = Origin;
 }
 
 anVec2 ANEntity::MovePoint(IANApi* pApi, float Speed, anVec2 Origin)
 {
 	anVec2 Way(Speed * pApi->Frametime);
 
-	if (this->m_Origin.x > Origin.x)
+	if (this->m_vecOrigin.x > Origin.x)
 		Way.x = -Way.x;
 
-	if (this->m_Origin.y > Origin.y)
+	if (this->m_vecOrigin.y > Origin.y)
 		Way.y = -Way.y;
 
-	auto DifferenceFromCenter = this->m_Origin - Origin;
+	auto DifferenceFromCenter = this->m_vecOrigin - Origin;
 
 	if (DifferenceFromCenter.x > 0.f ? DifferenceFromCenter.x + Way.x < 0.f : DifferenceFromCenter.x + Way.x > 0.f)
-		this->m_Origin.x = Origin.x;
+		this->m_vecOrigin.x = Origin.x;
 
 	if (DifferenceFromCenter.y > 0.f ? DifferenceFromCenter.y + Way.y < 0.f : DifferenceFromCenter.y + Way.y > 0.f)
-		this->m_Origin.y = Origin.y;
+		this->m_vecOrigin.y = Origin.y;
 
-	if (this->m_Origin.x != Origin.x)
-		this->m_Origin.x += Way.x;
+	if (this->m_vecOrigin.x != Origin.x)
+		this->m_vecOrigin.x += Way.x;
 
-	if (this->m_Origin.y != Origin.y)
-		this->m_Origin.y += Way.y;
+	if (this->m_vecOrigin.y != Origin.y)
+		this->m_vecOrigin.y += Way.y;
 
-	return this->m_Origin;
+	return this->m_vecOrigin;
 }
 
 anVec2 ANEntity::MovePointLeft(IANApi* pApi, float Speed, float XValue)
 {
-	if (this->m_Origin.x > XValue)
+	if (this->m_vecOrigin.x > XValue)
 	{
 		auto Way = Speed * pApi->Frametime;
 
-		this->m_Origin.x -= Way;
+		this->m_vecOrigin.x -= Way;
 
-		auto DifferenceFromCenter = this->m_Origin.x - XValue;
+		auto DifferenceFromCenter = this->m_vecOrigin.x - XValue;
 
 		if (DifferenceFromCenter > 0.f && DifferenceFromCenter - Way < 0.f)
-			this->m_Origin.x = XValue;
+			this->m_vecOrigin.x = XValue;
 	}
 
-	return this->m_Origin;
+	return this->m_vecOrigin;
 }
 
 anVec2 ANEntity::MovePointRight(IANApi* pApi, float Speed, float XValue)
 {
-	if (this->m_Origin.x < XValue)
+	if (this->m_vecOrigin.x < XValue)
 	{
 		auto Way = Speed * pApi->Frametime;
 
-		this->m_Origin.x += Way;
+		this->m_vecOrigin.x += Way;
 
-		auto DifferenceFromCenter = this->m_Origin.x - XValue;
+		auto DifferenceFromCenter = this->m_vecOrigin.x - XValue;
 
 		if (DifferenceFromCenter < 0.f && DifferenceFromCenter + Way > 0.f)
-			this->m_Origin.x = XValue;
+			this->m_vecOrigin.x = XValue;
 	}
 
-	return this->m_Origin;
+	return this->m_vecOrigin;
 }
 
 anVec2 ANEntity::MovePointUp(IANApi* pApi, float Speed, float YValue)
 {
-	if (this->m_Origin.y > YValue)
+	if (this->m_vecOrigin.y > YValue)
 	{
 		auto Way = Speed * pApi->Frametime;
 
-		this->m_Origin.y -= Way;
+		this->m_vecOrigin.y -= Way;
 
-		auto DifferenceFromCenter = this->m_Origin.y - YValue;
+		auto DifferenceFromCenter = this->m_vecOrigin.y - YValue;
 
 		if (DifferenceFromCenter > 0.f && DifferenceFromCenter - Way < 0.f)
-			this->m_Origin.y = YValue;
+			this->m_vecOrigin.y = YValue;
 	}
 
-	return this->m_Origin;
+	return this->m_vecOrigin;
 }
 
 anVec2 ANEntity::MovePointDown(IANApi* pApi, float Speed, float YValue)
 {
-	if (this->m_Origin.y < YValue)
+	if (this->m_vecOrigin.y < YValue)
 	{
 		auto Way = Speed * pApi->Frametime;
 
-		this->m_Origin.y += Way;
+		this->m_vecOrigin.y += Way;
 
-		auto DifferenceFromCenter = this->m_Origin.y - YValue;
+		auto DifferenceFromCenter = this->m_vecOrigin.y - YValue;
 
 		if (DifferenceFromCenter < 0.f && DifferenceFromCenter + Way > 0.f)
-			this->m_Origin.y = YValue;
+			this->m_vecOrigin.y = YValue;
 	}
 
-	return this->m_Origin;
+	return this->m_vecOrigin;
 }
 
 anVec2 ANEntity::MoveHorizontal(IANApi* pApi, float Speed, float XValue)
 {
 	auto Way = Speed * pApi->Frametime;
 
-	if (this->m_Origin.x > XValue)
+	if (this->m_vecOrigin.x > XValue)
 		Way = -Way;
 
-	auto DifferenceFromCenter = this->m_Origin.x - XValue;
+	auto DifferenceFromCenter = this->m_vecOrigin.x - XValue;
 
 	if (DifferenceFromCenter > 0.f ? DifferenceFromCenter + Way < 0.f : DifferenceFromCenter + Way > 0.f)
-		this->m_Origin.x = XValue;
+		this->m_vecOrigin.x = XValue;
 
-	if (this->m_Origin.x != XValue)
-		this->m_Origin.x += Way;
+	if (this->m_vecOrigin.x != XValue)
+		this->m_vecOrigin.x += Way;
 
-	return this->m_Origin;
+	return this->m_vecOrigin;
 }
 
 anVec2 ANEntity::MoveVertical(IANApi* pApi, float Speed, float YValue)
 {
 	auto Way = Speed * pApi->Frametime;
 
-	if (this->m_Origin.y > YValue)
+	if (this->m_vecOrigin.y > YValue)
 		Way = -Way;
 
-	auto DifferenceFromCenter = this->m_Origin - YValue;
+	auto DifferenceFromCenter = this->m_vecOrigin - YValue;
 
 	if (DifferenceFromCenter.y > 0.f ? DifferenceFromCenter.y + Way < 0.f : DifferenceFromCenter.y + Way > 0.f)
-		this->m_Origin.y = YValue;
+		this->m_vecOrigin.y = YValue;
 
-	if (this->m_Origin.y != YValue)
-		this->m_Origin.y += Way;
+	if (this->m_vecOrigin.y != YValue)
+		this->m_vecOrigin.y += Way;
 
-	return this->m_Origin;
+	return this->m_vecOrigin;
 }
 
 anVec2 ANEntity::MoveLeft(IANApi* pApi, float Speed)
 {
-	this->m_Origin.x -= Speed * pApi->Frametime;
+	this->m_vecOrigin.x -= Speed * pApi->Frametime;
 	
-	return this->m_Origin;
+	return this->m_vecOrigin;
 }
 
 anVec2 ANEntity::MoveRight(IANApi* pApi, float Speed)
 {
-	this->m_Origin.x += Speed * pApi->Frametime;
+	this->m_vecOrigin.x += Speed * pApi->Frametime;
 
-	return this->m_Origin;
+	return this->m_vecOrigin;
 }
 
 anVec2 ANEntity::MoveUp(IANApi* pApi, float Speed)
 {
-	this->m_Origin.y -= Speed * pApi->Frametime;
+	this->m_vecOrigin.y -= Speed * pApi->Frametime;
 
-	return this->m_Origin;
+	return this->m_vecOrigin;
 }
 
 anVec2 ANEntity::MoveDown(IANApi* pApi, float Speed)
 {
-	this->m_Origin.y += Speed * pApi->Frametime;
+	this->m_vecOrigin.y += Speed * pApi->Frametime;
 
-	return this->m_Origin;
+	return this->m_vecOrigin;
 }
 
 anVec2 ANEntity::GetOrigin()
 {
-	return this->m_Origin;
+	return this->m_vecOrigin;
 }
 
 void ANEntity::SetVisible(bool IsVisible)
@@ -191,43 +191,47 @@ bool ANEntity::GetVisible()
 
 void ANEntity::SetEntitySize(anVec2 EntitySize)
 {
-	this->m_EntitySize = EntitySize;
+	this->m_vecEntitySize = EntitySize;
 }
 
 anVec2 ANEntity::GetEntitySize()
 {
-	return this->m_EntitySize;
+	return this->m_vecEntitySize;
 }
 
 anVec2 ANEntity::CalcEntitySize(IANApi* pApi)
 {
-	anVec2 FrameSize = this->m_EntitySize;
+	anVec2 FrameSize = this->m_vecEntitySize;
 
 	if (!FrameSize)
 	{
-		auto AnimationCompositionFrame = this->m_pAnimCompositionController->GetCurrentAnimationCompositionFrame(pApi);
-
-		if (!AnimationCompositionFrame)
-			return false;
-
-		FrameSize = pApi->GetImageSize(AnimationCompositionFrame);
+		if (auto AnimationCompositionFrame = this->m_pAnimCompositionController->GetCurrentAnimationCompositionFrame(pApi))
+			FrameSize = pApi->GetImageSize(AnimationCompositionFrame);
 	}
 
 	return FrameSize;
 }
 
+anRect ANEntity::CalcBBox(IANApi* pApi)
+{
+	return ANMathUtils::CalcBBox(this->m_vecOrigin, CalcEntitySize(pApi));
+}
+
+anRect ANEntity::CalcScreenBBox(IANApi* pApi, IANWorld* pWorld)
+{
+	return ANMathUtils::CalcScreenBBox(pWorld->GetMetrics(), this->m_vecOrigin, CalcEntitySize(pApi));
+}
+
 void ANEntity::DrawRectRegion(IANApi* pApi, IANWorld* pWorld, anColor Color)
 {
-	auto AnimationCompositionFrame = this->m_pAnimCompositionController->GetCurrentAnimationCompositionFrame(pApi);
+	auto FrameSize = CalcEntitySize(pApi);
 
-	auto vEntitySize = !AnimationCompositionFrame ? this->m_EntitySize : pApi->GetImageSize(AnimationCompositionFrame);
-
-	if (!vEntitySize)
+	if (!FrameSize)
 		return;
 
-	auto Screen = ANMathUtils::CalcBBox(pWorld->GetMetrics(), this->m_Origin, vEntitySize);
+	auto ScreenBBox = ANMathUtils::CalcScreenBBox(pWorld->GetMetrics(), this->m_vecOrigin, FrameSize);
 
-	pApi->DrawRectangle(Screen.first, Screen.GetRelativeDistanceBetweenFirstAndSecond(), Color, 3.f);
+	pApi->DrawRectangle(ScreenBBox.first, ScreenBBox.GetPointsDistantion(), Color, 3.f);
 }
 
 void ANEntity::DrawFromComposition(IANApi* pApi, IANWorld* pWorld)
@@ -240,18 +244,23 @@ void ANEntity::DrawFromComposition(IANApi* pApi, IANWorld* pWorld)
 	if (this->m_bIsOccluded)
 		return;
 
-	auto Screen = ANMathUtils::CalcBBox(pWorld->GetMetrics(), this->m_Origin, !this->m_EntitySize ? pApi->GetImageSize(AnimationCompositionFrame) : this->m_EntitySize);
+	auto Screen = ANMathUtils::CalcScreenBBox(pWorld->GetMetrics(), this->m_vecOrigin, !this->m_vecEntitySize ? pApi->GetImageSize(AnimationCompositionFrame) : this->m_vecEntitySize);
 
 	pApi->DrawImage(
 		AnimationCompositionFrame,
 		Screen.first,
-		Screen.GetRelativeDistanceBetweenFirstAndSecond(),
+		Screen.GetPointsDistantion(),
 		1.f);
+}
+
+bool ANEntity::IsWorldPointIntersected(IANApi* pApi, anVec2 WorldPoint)
+{
+	return ANMathUtils::CalcBBox(this->m_vecOrigin, CalcEntitySize(pApi)).IsIntersected(WorldPoint);
 }
 
 bool ANEntity::IsScreenPointIntersected(IANApi* pApi, IANWorld* pWorld, anVec2 ScreenPoint)
 {
-	return ANMathUtils::CalcBBox(pWorld->GetMetrics(), this->m_Origin, CalcEntitySize(pApi)).IsIntersected(ScreenPoint);
+	return ANMathUtils::CalcScreenBBox(pWorld->GetMetrics(), this->m_vecOrigin, CalcEntitySize(pApi)).IsIntersected(ScreenPoint);
 }
 
 void ANEntity::SetInteractionController(IANInteractionController* pIANInteractionController)
@@ -287,22 +296,22 @@ IANEntity& ANEntity::Update(IANApi* pApi)
 
 			for (auto it = iml->m_InteractionMessagesList.begin(); it < iml->m_InteractionMessagesList.end(); it++)
 			{
-				auto& e = *it;
+				auto& interactionMessage = *it;
 
-				if ((e.m_pszEntityName == nullptr && e.m_pszEntityClassIDName == nullptr)
-					|| (this->m_szEntityName != nullptr && e.m_pszEntityName != nullptr && !strcmp(e.m_pszEntityName, this->m_szEntityName))
-					|| (this->m_szEntityClassID != nullptr && e.m_pszEntityClassIDName != nullptr && !strcmp(e.m_pszEntityClassIDName, this->m_szEntityClassID)))
+				if ((interactionMessage.m_pszEntityName == nullptr && interactionMessage.m_pszEntityClassIDName == nullptr)
+					|| (this->m_szEntityName != nullptr && interactionMessage.m_pszEntityName != nullptr && !strcmp(interactionMessage.m_pszEntityName, this->m_szEntityName))
+					|| (this->m_szEntityClassID != nullptr && interactionMessage.m_pszEntityClassIDName != nullptr && !strcmp(interactionMessage.m_pszEntityClassIDName, this->m_szEntityClassID)))
 				{
-					if (e.m_pRemoteEntity != nullptr && *e.m_pRemoteEntity != nullptr)
+					if (interactionMessage.m_pRemoteEntity != nullptr && *interactionMessage.m_pRemoteEntity != nullptr)
 					{
 						if (this->m_pIANInteractionControllerUserCallback->ActionHandler(
 							pApi,
-							e.m_pszEventClassID,
-							e.m_pszEventMessage,
+							interactionMessage.m_pszEventClassID,
+							interactionMessage.m_pszEventMessage,
 							this,
-							e.m_pRemoteEntity,
-							e.m_pReversedUserData,
-							e.m_bNeedCancelEvent))
+							interactionMessage.m_pRemoteEntity,
+							interactionMessage.m_pReversedUserData,
+							interactionMessage.m_bNeedCancelEvent))
 						{
 							it = iml->m_InteractionMessagesList.erase(it);
 

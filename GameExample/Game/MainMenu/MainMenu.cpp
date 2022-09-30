@@ -85,7 +85,7 @@ void CTestGameScene::Entry(IANApi* pApi)
 	pApi->TextDraw("TEST", anVec2(40.f, 320.f), anColor::Red());
 
 	static bool bVar = false;
-	pApi->AddCheckbox(u8"Тест", anVec2(30.f, 130.f), anVec2(30.f, 30.f), &bVar, this->m_pTestCheckboxSkin);
+	pApi->AddCheckbox((const char*)u8"Тест", anVec2(30.f, 130.f), anVec2(30.f, 30.f), &bVar, this->m_pTestCheckboxSkin);
 
 	static int iVar = 24;
 	pApi->AddSliderInt("Test slider", anVec2(30.f, 180.f), anVec2(250.f, 30.f), 10, 68, &iVar);

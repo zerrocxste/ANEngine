@@ -51,7 +51,7 @@ public:
 	anRect SwapPoints();
 
 	anRect RecalcWithRelativeDistance();
-	anVec2 GetRelativeDistanceBetweenFirstAndSecond();
+	anVec2 GetPointsDistantion();
 
 	void Clear();
 

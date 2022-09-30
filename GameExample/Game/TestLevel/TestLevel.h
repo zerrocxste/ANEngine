@@ -23,7 +23,7 @@ public:
 	void ResetDoorState(IANEntity* pThisEntity, IANEntity* pDestEntity, IANEntity* pActorEntity);
 };
 
-enum HOUSE_ROOM
+enum HOUSE_ROOM : std::uint8_t
 {
 	ROOM_EMPTY,
 	HALLWAY,
@@ -32,13 +32,13 @@ enum HOUSE_ROOM
 	HALL
 };
 
-enum DOOR_TYPE
+enum DOOR_TYPE : std::uint8_t
 {
 	VERTICAL,
 	HORIZONTAL
 };
 
-enum DOOR_INTERACTIONS
+enum DOOR_INTERACTIONS : std::uint8_t
 {
 	DOOR_EMPTY,
 
@@ -100,10 +100,22 @@ public:
 	void OnUnloadScene(IANApi* pApi) override;
 	void Entry(IANApi* pApi) override;
 
-	template <class T> static T* GetUserData(IANEntity* pEntity)
+	struct actWoodyGameData
 	{
-		return (T*)pEntity->GetUserDataPointer();
-	}
+		actWoodyGameData() : 
+			m_CurrentActorFloor(HOUSE_ROOM::ROOM_EMPTY),
+			m_ActiveMoveTask(false), 
+			m_vecMovePt(anVec2()), 
+			m_TargetMoveRoom(HOUSE_ROOM::ROOM_EMPTY) {};
+
+		HOUSE_ROOM m_CurrentActorFloor;
+		bool m_ActiveMoveTask;
+		anVec2 m_vecMovePt;
+		HOUSE_ROOM m_TargetMoveRoom;
+	};
+
+	static actWoodyGameData& GetWoodyEntityData(IANEntity* pEntity) { return *(actWoodyGameData*)pEntity->GetUserDataPointer(); }
+	static CRoomZoneEntityData& GetRoomEntityData(IANEntity* pEntity) { return *(CRoomZoneEntityData*)pEntity->GetUserDataPointer(); }
 private:
 	float m_WorldZoom;
 
@@ -154,10 +166,11 @@ private:
 		int iLevelFloor, 
 		ANAnimationComposition pDoorComposition);
 
-	void ProcessActorMove(IANApi* pApi);
+	void ProcessMoveActorHall(IANApi* pApi);
 
 	void PreFrame(IANApi* pApi);
 	void KeyboardMoveInput(IANApi* pApi);
+	void CreateMove(IANApi* pApi);
 	void DrawWorld(IANApi* pApi);
 	void DrawEntities(IANApi* pApi);
 	void DrawUI(IANApi* pApi);

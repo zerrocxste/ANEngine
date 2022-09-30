@@ -28,5 +28,6 @@ namespace ANMathUtils
 	anVec2 ScreenPointToWorld(anVec2 CameraScreen, anVec2 WorldScreenSize, anVec2 WorldSize, anVec2 ScreenPos);
 	void ApplyZoom(anVec2& From, anVec2& To, float Zoom);
 	void ClampCamera(anVec2 ScreenSize, anVec2 WorldSize, anVec2 WorldScreenPos, anVec2 WorldScreenSize, anVec2& CameraWorld);
-	anRect CalcBBox(ANWorldMetrics WorldMetrics, anVec2 Origin, anVec2 ObjectSize);
+	anRect CalcBBox(anVec2 Origin, anVec2 ObjectSize);
+	anRect CalcScreenBBox(ANWorldMetrics WorldMetrics, anVec2 Origin, anVec2 ObjectSize);
 }
