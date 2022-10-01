@@ -1,5 +1,28 @@
 #pragma once
 
+const float SPEED_FRAME = -1.f;
+
+enum ANDirectionMoveFlags : int //REQUIRED AND IMPORTANT
+{
+	MOVE_NO = 0,
+	MOVE_UP = 1 << 0,
+	MOVE_DOWN = 1 << 1,
+	MOVE_LEFT = 1 << 2,
+	MOVE_RIGHT = 1 << 3
+};
+
+static ANDirectionMoveFlags& operator|=(ANDirectionMoveFlags& _this, const ANDirectionMoveFlags v)
+{
+	*(int*)&_this |= v;
+	return _this;
+}
+
+struct ANEntityMoveInfo
+{
+	ANDirectionMoveFlags m_EntityDirectionFlags;
+	float m_flSpeed;
+};
+
 class IANEntity
 {
 public:
@@ -19,6 +42,8 @@ public:
 	virtual anVec2 MoveUp(IANApi* pApi, float Speed) = 0;
 	virtual anVec2 MoveDown(IANApi* pApi, float Speed) = 0;
 	virtual anVec2 GetOrigin() = 0;
+
+	virtual ANEntityMoveInfo GetMoveInfo() = 0;
 
 	virtual void SetVisible(bool IsVisible) = 0;
 	virtual bool GetVisible() = 0;

@@ -16,6 +16,26 @@ const char* pszWoody[] = {
 	"w_ms2_0005.png", 
 	"w_ms2_0006.png" 
 };
+const char* pszWoodyUp[] = {
+	"walk_up\\W_mg0_0000.png",
+	"walk_up\\W_mg0_0001.png",
+	"walk_up\\W_mg0_0002.png",
+	"walk_up\\W_mg0_0003.png",
+	"walk_up\\W_mg0_0004.png",
+	"walk_up\\W_mg0_0005.png",
+	"walk_up\\W_mg0_0006.png",
+	"walk_up\\W_mg0_0007.png"
+};
+const char* pszWoodyDown[] = {
+	"walk_down\\W_mg2_0000.png",
+	"walk_down\\W_mg2_0001.png",
+	"walk_down\\W_mg2_0002.png",
+	"walk_down\\W_mg2_0003.png",
+	"walk_down\\W_mg2_0004.png",
+	"walk_down\\W_mg2_0005.png",
+	"walk_down\\W_mg2_0006.png",
+	"walk_down\\W_mg2_0007.png"
+};
 const char* pszWoodyLeft[] = { 
 	"W_mg3_0000.png", 
 	"W_mg3_0001.png", 
@@ -172,6 +192,8 @@ void CTestLevel::OnLoadScene(IANApi* pApi)
 {
 	pApi->CreateAnimationComposition(pszWorld, 1, &this->m_WorldComposition);
 	pApi->CreateAnimationComposition(pszWoody, 3, &this->m_WoodyComposition);
+	pApi->CreateAnimationComposition(pszWoodyUp, 8, &this->m_WoodyCompositionUp);
+	pApi->CreateAnimationComposition(pszWoodyDown, 8, &this->m_WoodyCompositionDown);
 	pApi->CreateAnimationComposition(pszWoodyLeft, 8, &this->m_WoodyCompositionLeft);
 	pApi->CreateAnimationComposition(pszWoodyRight, 8, &this->m_WoodyCompositionRight);
 	pApi->CreateAnimationComposition(pszWoodyDoor, 10, &this->m_WoodyDoorLeave);
@@ -189,28 +211,28 @@ void CTestLevel::OnLoadScene(IANApi* pApi)
 	CreateActorEntity(pApi, "ENTITY_Woody");
 
 	CreateDoorEntity(pApi, this->m_pDoorEntityHallwayKitchen, "ENTITY_DoorEntityHallwayKitchen", anVec2(1111.f, 550.f), 
-		DOOR_TYPE::VERTICAL, HOUSE_ROOM::HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_KITCHEN, DOOR_INTERACTIONS::DOOR_KITCHEN_HALLWAY, 1, this->m_DoorComposition);
+		DOOR_TYPE::VERTICAL, HOUSE_ROOM::HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_KITCHEN, DOOR_INTERACTIONS::DOOR_KITCHEN_HALLWAY, HOUSE_FLOOR::FIRST, this->m_DoorComposition);
 	CreateDoorEntity(pApi, this->m_pDoorEntityKitchenHallway, "ENTITY_DoorEntityKitchenHallway", anVec2(1095.f, 270.f), 
-		DOOR_TYPE::VERTICAL, HOUSE_ROOM::KITCHEN, DOOR_INTERACTIONS::DOOR_KITCHEN_HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_KITCHEN, 2, this->m_DoorComposition);
+		DOOR_TYPE::VERTICAL, HOUSE_ROOM::KITCHEN, DOOR_INTERACTIONS::DOOR_KITCHEN_HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_KITCHEN, HOUSE_FLOOR::SECOND, this->m_DoorComposition);
 	CreateDoorEntity(pApi, this->m_pDoorEntityHallwayHall, "ENTITY_DoorEntityHallwayHall", anVec2(500.f, 550.f), 
-		DOOR_TYPE::VERTICAL, HOUSE_ROOM::HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_HALL, DOOR_INTERACTIONS::DOOR_HALL_HALLWAY, 1, this->m_DoorComposition);
+		DOOR_TYPE::VERTICAL, HOUSE_ROOM::HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_HALL, DOOR_INTERACTIONS::DOOR_HALL_HALLWAY, HOUSE_FLOOR::FIRST, this->m_DoorComposition);
 	CreateDoorEntity(pApi, this->m_pDoorEntityHallHallway, "ENTITY_DoorEntityHallHallway", anVec2(500.f, 270.f), 
-		DOOR_TYPE::VERTICAL, HOUSE_ROOM::HALL, DOOR_INTERACTIONS::DOOR_HALL_HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_HALL, 2, this->m_DoorComposition);
+		DOOR_TYPE::VERTICAL, HOUSE_ROOM::HALL, DOOR_INTERACTIONS::DOOR_HALL_HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_HALL, HOUSE_FLOOR::SECOND, this->m_DoorComposition);
 
 	CreateDoorEntity(pApi, this->m_pDoorEntityHallKitchen, "ENTITY_DoorEntityHallKitchen", anVec2(814.f, 345.f),
-		DOOR_TYPE::HORIZONTAL, HOUSE_ROOM::HALL, DOOR_INTERACTIONS::DOOR_HALL_KITCHEN, DOOR_INTERACTIONS::DOOR_KITCHEN_HALL, 2, this->m_DoorCompositionRight);
+		DOOR_TYPE::HORIZONTAL, HOUSE_ROOM::HALL, DOOR_INTERACTIONS::DOOR_HALL_KITCHEN, DOOR_INTERACTIONS::DOOR_KITCHEN_HALL, HOUSE_FLOOR::SECOND, this->m_DoorCompositionRight);
 	CreateDoorEntity(pApi, this->m_pDoorEntityKitchenHall, "ENTITY_DoorEntityKitchenHall", anVec2(862.f, 345.f),
-		DOOR_TYPE::HORIZONTAL, HOUSE_ROOM::KITCHEN, DOOR_INTERACTIONS::DOOR_KITCHEN_HALL, DOOR_INTERACTIONS::DOOR_HALL_KITCHEN, 2, this->m_DoorCompositionLeft);
+		DOOR_TYPE::HORIZONTAL, HOUSE_ROOM::KITCHEN, DOOR_INTERACTIONS::DOOR_KITCHEN_HALL, DOOR_INTERACTIONS::DOOR_HALL_KITCHEN, HOUSE_FLOOR::SECOND, this->m_DoorCompositionLeft);
 
-	CreateDoorEntity(pApi, this->m_pDoorEntityBathroomHallway, "ENTITY_DoorEntityBathroomHallway", anVec2(342.f, 628.f),
-		DOOR_TYPE::HORIZONTAL, HOUSE_ROOM::BATHROOM, DOOR_INTERACTIONS::DOOR_BATHROOM_HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_BATHROOM, 1, this->m_DoorCompositionRight);
-	CreateDoorEntity(pApi, this->m_pDoorEntityHallwayBathroom, "ENTITY_DoorEntityHallwayBathroom", anVec2(383.f, 628.f),
-		DOOR_TYPE::HORIZONTAL, HOUSE_ROOM::HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_BATHROOM, DOOR_INTERACTIONS::DOOR_BATHROOM_HALLWAY, 1, this->m_DoorCompositionLeft);
+	CreateDoorEntity(pApi, this->m_pDoorEntityBathroomHallway, "ENTITY_DoorEntityBathroomHallway", anVec2(342.f, 622.f),
+		DOOR_TYPE::HORIZONTAL, HOUSE_ROOM::BATHROOM, DOOR_INTERACTIONS::DOOR_BATHROOM_HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_BATHROOM, HOUSE_FLOOR::FIRST, this->m_DoorCompositionRight);
+	CreateDoorEntity(pApi, this->m_pDoorEntityHallwayBathroom, "ENTITY_DoorEntityHallwayBathroom", anVec2(383.f, 622.f),
+		DOOR_TYPE::HORIZONTAL, HOUSE_ROOM::HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_BATHROOM, DOOR_INTERACTIONS::DOOR_BATHROOM_HALLWAY, HOUSE_FLOOR::FIRST, this->m_DoorCompositionLeft);
 
-	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneHallway, anVec2(798.5f, 628.f), anVec2(857.f, 248.f), HOUSE_ROOM::HALLWAY, 1);
-	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneBathroom, anVec2(218.5f, 631.f), anVec2(269.f, 254.f), HOUSE_ROOM::BATHROOM, 1);
-	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneKitchen, anVec2(1101.5f, 345.f), anVec2(509.f, 250.f), HOUSE_ROOM::KITCHEN, 2);
-	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneHall, anVec2(475.f, 345.f), anVec2(702.f, 247.f), HOUSE_ROOM::HALL, 2);
+	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneHallway, anVec2(798.5f, 628.f), anVec2(857.f, 248.f), HOUSE_ROOM::HALLWAY, HOUSE_FLOOR::FIRST);
+	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneBathroom, anVec2(218.5f, 631.f), anVec2(269.f, 254.f), HOUSE_ROOM::BATHROOM, HOUSE_FLOOR::FIRST);
+	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneKitchen, anVec2(1101.5f, 345.f), anVec2(509.f, 250.f), HOUSE_ROOM::KITCHEN, HOUSE_FLOOR::SECOND);
+	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneHall, anVec2(475.f, 345.f), anVec2(702.f, 247.f), HOUSE_ROOM::HALL, HOUSE_FLOOR::SECOND);
 }
 
 void CTestLevel::OnUnloadScene(IANApi* pApi)
@@ -279,14 +301,12 @@ void CTestLevel::KeyboardMoveInput(IANApi* pApi)
 	if (pApi->GetKeyIsDowned('A'))
 	{
 		this->m_pMainActor->MoveLeft(pApi, Step);
-		this->m_pMainActor->GetAnimCompositionController()->SetAnimationComposition(this->m_WoodyCompositionLeft);
-		this->m_pMainActor->GetAnimCompositionController()->SetAnimationDuration(0.1f);
+		SetAnimationMoveLeft(this->m_pMainActor);
 	}
 	if (pApi->GetKeyIsDowned('D'))
 	{
 		this->m_pMainActor->MoveRight(pApi, Step);
-		this->m_pMainActor->GetAnimCompositionController()->SetAnimationComposition(this->m_WoodyCompositionRight);
-		this->m_pMainActor->GetAnimCompositionController()->SetAnimationDuration(0.1f);
+		SetAnimationMoveRight(this->m_pMainActor);
 	}
 }
 
@@ -387,32 +407,212 @@ void CTestLevel::DrawStatistics(IANApi* pApi)
 	pApi->PopFontColor();
 }
 
-void CTestLevel::ProcessMoveActorHall(IANApi* pApi)
+void CTestLevel::SetAnimationMoveUp(IANEntity* pActor)
 {
-	auto currentFloor = GetWoodyEntityData(this->m_pMainActor).m_CurrentActorFloor;
+	pActor->GetAnimCompositionController()->SetAnimationComposition(this->m_WoodyCompositionUp);
+	pActor->GetAnimCompositionController()->SetAnimationDuration(0.08f);
+}
 
-	switch (currentFloor)
+void CTestLevel::SetAnimationMoveDown(IANEntity* pActor)
+{
+	pActor->GetAnimCompositionController()->SetAnimationComposition(this->m_WoodyCompositionDown);
+	pActor->GetAnimCompositionController()->SetAnimationDuration(0.08f);
+}
+
+void CTestLevel::SetAnimationMoveLeft(IANEntity* pActor)
+{
+	pActor->GetAnimCompositionController()->SetAnimationComposition(this->m_WoodyCompositionLeft);
+	pActor->GetAnimCompositionController()->SetAnimationDuration(0.08f);
+}
+
+void CTestLevel::SetAnimationMoveRight(IANEntity* pActor)
+{
+	pActor->GetAnimCompositionController()->SetAnimationComposition(this->m_WoodyCompositionRight);
+	pActor->GetAnimCompositionController()->SetAnimationDuration(0.08f);
+}
+
+float CTestLevel::GetFloor(HOUSE_FLOOR Floor)
+{
+	float ret = FLT_MAX;
+
+	if (Floor == HOUSE_FLOOR::FLOOR_UNK)
+		Floor = GetWoodyEntityData(this->m_pMainActor).m_CurrentFloor;
+
+	switch (Floor)
+	{
+	case HOUSE_FLOOR::FIRST:
+		ret = 615.f;
+		break;
+	case HOUSE_FLOOR::SECOND:
+		ret = 326.f;
+		break;
+	}
+
+	return ret;
+}
+
+float CTestLevel::GetFloorFromRoom(HOUSE_ROOM Room)
+{
+	auto ret = 0.f;
+
+	switch (Room)
 	{
 	case HALLWAY:
-		this->m_pMainActor->MoveHorizontal(pApi, Step, this->m_pDoorEntityHallwayHall->GetOrigin().x);
+		ret = GetFloor(HOUSE_FLOOR::FIRST);
 		break;
 	case BATHROOM:
-		this->m_pMainActor->MoveHorizontal(pApi, Step, this->m_pDoorEntityBathroomHallway->GetOrigin().x);
+		ret = GetFloor(HOUSE_FLOOR::FIRST);
 		break;
 	case KITCHEN:
-		this->m_pMainActor->MoveHorizontal(pApi, Step, this->m_pDoorEntityKitchenHall->GetOrigin().x);
+		ret = GetFloor(HOUSE_FLOOR::SECOND);
 		break;
 	case HALL:
-		this->m_pMainActor->MovePoint(pApi, Step, GetWoodyEntityData(this->m_pMainActor).m_vecMovePt);
+		ret = GetFloor(HOUSE_FLOOR::SECOND);
+		break;
+	}
+
+	return ret;
+}
+
+void CTestLevel::ConstructWay(IANApi* pApi, IANEntity* pActor, IANEntity* pTargetDoorEntity, IANEntity* pNextDoorTargetEntity)
+{
+	float flFloorPosition = GetFloor();
+
+	auto vecActorPosition = pActor->GetOrigin();
+	auto vecDoorPosition = pTargetDoorEntity->GetOrigin();
+
+	auto isOnDoorstep = vecActorPosition.x == vecDoorPosition.x;
+
+	if (!isOnDoorstep)
+		auto vecMove = pActor->MoveVertical(pApi, Step, flFloorPosition);
+
+	if (vecActorPosition.y != flFloorPosition && !isOnDoorstep)
+		return;
+
+	vecActorPosition = pActor->MoveHorizontal(pApi, Step, vecDoorPosition.x);
+
+	if (vecActorPosition.x != vecDoorPosition.x)
+		return;
+
+	auto isDoorHorizontal = GetDoorEntityData(pTargetDoorEntity).m_DoorType == DOOR_TYPE::HORIZONTAL;
+
+	if (!isDoorHorizontal)
+		vecActorPosition = pActor->MoveVertical(pApi, Step, vecDoorPosition.y);
+
+	if (vecActorPosition.y != vecDoorPosition.y && !isDoorHorizontal)
+		return;
+
+	auto vecDestOrigin = pNextDoorTargetEntity->GetOrigin();
+
+	if (isDoorHorizontal)
+		vecDestOrigin.y = GetFloor(GetDoorEntityData(pNextDoorTargetEntity).m_LevelFloor);
+
+	pActor->SetOrigin(vecDestOrigin);
+}
+
+void CTestLevel::ProcessCurrentRoomMove(IANApi* pApi)
+{
+	auto woodyOrigin = this->m_pMainActor->GetOrigin();
+	auto& woodyData = GetWoodyEntityData(this->m_pMainActor);
+
+	auto vecTarget = woodyData.m_vecMovePt;
+	vecTarget.y = GetFloor(woodyData.m_CurrentFloor);
+
+	woodyOrigin = this->m_pMainActor->MoveVertical(pApi, Step, vecTarget.y);
+
+	if (woodyOrigin.y != vecTarget.y)
+		return;
+
+	woodyOrigin = this->m_pMainActor->MoveHorizontal(pApi, Step, vecTarget.x);
+
+	if (woodyOrigin.x != vecTarget.x)
+		return;
+
+	woodyData.m_ActiveMoveTask = false;
+}
+
+void CTestLevel::ProcessMoveActorHallway(IANApi* pApi)
+{
+	switch (GetWoodyEntityData(this->m_pMainActor).m_CurrentActorRoom)
+	{
+	case HALLWAY:
+		ProcessCurrentRoomMove(pApi);
+		break;
+	case BATHROOM:
+		ConstructWay(pApi, this->m_pMainActor, this->m_pDoorEntityBathroomHallway, this->m_pDoorEntityHallwayBathroom);
+		break;
+	case KITCHEN:
+		ConstructWay(pApi, this->m_pMainActor, this->m_pDoorEntityKitchenHallway, this->m_pDoorEntityHallwayKitchen);
+		break;
+	case HALL:
+		ConstructWay(pApi, this->m_pMainActor, this->m_pDoorEntityHallHallway, this->m_pDoorEntityHallwayHall);
+		break;
+	}
+}
+
+void CTestLevel::ProcessMoveActorBathroom(IANApi* pApi)
+{
+	switch (GetWoodyEntityData(this->m_pMainActor).m_CurrentActorRoom)
+	{
+	case HALLWAY:
+		ConstructWay(pApi, this->m_pMainActor, this->m_pDoorEntityHallwayBathroom, this->m_pDoorEntityBathroomHallway);
+		break;
+	case BATHROOM:
+		ProcessCurrentRoomMove(pApi);
+		break;
+	case KITCHEN:
+		ConstructWay(pApi, this->m_pMainActor, this->m_pDoorEntityKitchenHallway, this->m_pDoorEntityHallwayKitchen);
+		break;
+	case HALL:
+		ConstructWay(pApi, this->m_pMainActor, this->m_pDoorEntityHallHallway, this->m_pDoorEntityHallwayHall);
+		break;
+	}
+}
+
+void CTestLevel::ProcessMoveActorKitchen(IANApi* pApi)
+{
+	switch (GetWoodyEntityData(this->m_pMainActor).m_CurrentActorRoom)
+	{
+	case HALLWAY:
+		ConstructWay(pApi, this->m_pMainActor, this->m_pDoorEntityHallwayKitchen, this->m_pDoorEntityKitchenHallway);
+		break;
+	case BATHROOM:
+		ConstructWay(pApi, this->m_pMainActor, this->m_pDoorEntityBathroomHallway, this->m_pDoorEntityHallwayBathroom);
+		break;
+	case KITCHEN:
+		ProcessCurrentRoomMove(pApi);
+		break;
+	case HALL:
+		ConstructWay(pApi, this->m_pMainActor, this->m_pDoorEntityHallKitchen, this->m_pDoorEntityKitchenHall);
+		break;
+	}
+}
+
+void CTestLevel::ProcessMoveActorHall(IANApi* pApi)
+{
+	switch (GetWoodyEntityData(this->m_pMainActor).m_CurrentActorRoom)
+	{
+	case HALLWAY:
+		ConstructWay(pApi, this->m_pMainActor, this->m_pDoorEntityHallwayHall, this->m_pDoorEntityHallHallway);
+		break;
+	case BATHROOM:
+		ConstructWay(pApi, this->m_pMainActor, this->m_pDoorEntityBathroomHallway, this->m_pDoorEntityHallwayBathroom);
+		break;
+	case KITCHEN:
+		ConstructWay(pApi, this->m_pMainActor, this->m_pDoorEntityKitchenHall, this->m_pDoorEntityHallKitchen);
+		break;
+	case HALL:
+		ProcessCurrentRoomMove(pApi);
 		break;
 	}
 }
 
 void CTestLevel::CreateMove(IANApi* pApi)
 {
-	auto& [currentRoom, moveTask, movePoint, targetRoom] = GetWoodyEntityData(this->m_pMainActor);
+	auto& [currentRoom, moveTask, movePoint, targetRoom, currentFloor] = GetWoodyEntityData(this->m_pMainActor);
 
 	currentRoom = HOUSE_ROOM::ROOM_EMPTY;
+	currentFloor = HOUSE_FLOOR::FLOOR_UNK;
 
 	auto groupZone = pApi->FindEntityByGroupID(szWorldEntityClassIDRoomZone);
 
@@ -422,7 +622,10 @@ void CTestLevel::CreateMove(IANApi* pApi)
 		auto& entityUserData = GetRoomEntityData(entity);
 
 		if (entity->IsWorldPointIntersected(pApi, this->m_pMainActor->GetOrigin()))
+		{
 			currentRoom = entityUserData.m_HouseRoom;
+			currentFloor = entityUserData.m_LevelFloor;
+		}
 
 		if (pApi->GetCursorKeyIsReleased(MAIN_FIRST))
 		{
@@ -435,26 +638,6 @@ void CTestLevel::CreateMove(IANApi* pApi)
 		}
 	}
 
-	switch (currentRoom)
-	{
-	case HALLWAY:
-		printf("Room: HALLWAY\n");
-		break;
-	case BATHROOM:
-		printf("Room: BATHROOM\n");
-		break;
-	case KITCHEN:
-		printf("Room: KITCHEN\n");
-		break;
-	case HALL:
-		printf("Room: HALL\n");
-		break;
-	case ROOM_EMPTY:
-	default:
-		printf("NO ROOM\n");
-		break;
-	}
-
 	if (moveTask)
 	{
 		auto actorOrigin = this->m_pMainActor->GetOrigin();
@@ -464,10 +647,13 @@ void CTestLevel::CreateMove(IANApi* pApi)
 			switch (targetRoom)
 			{
 			case HALLWAY:
+				ProcessMoveActorHallway(pApi);
 				break;
 			case BATHROOM:
+				ProcessMoveActorBathroom(pApi);
 				break;
 			case KITCHEN:
+				ProcessMoveActorKitchen(pApi);
 				break;
 			case HALL:
 				ProcessMoveActorHall(pApi);
@@ -477,22 +663,36 @@ void CTestLevel::CreateMove(IANApi* pApi)
 		else
 			moveTask = false;
 	}
+
+	auto [dirFlags, speed] = this->m_pMainActor->GetMoveInfo();
+
+	if (dirFlags & ANDirectionMoveFlags::MOVE_UP)
+		SetAnimationMoveUp(this->m_pMainActor);
+
+	if (dirFlags & ANDirectionMoveFlags::MOVE_DOWN)
+		SetAnimationMoveDown(this->m_pMainActor);
+
+	if (dirFlags & ANDirectionMoveFlags::MOVE_LEFT)
+		SetAnimationMoveLeft(this->m_pMainActor);
+
+	if (dirFlags & ANDirectionMoveFlags::MOVE_RIGHT)
+		SetAnimationMoveRight(this->m_pMainActor);
 }
 
 void CTestLevel::CreateActorEntity(IANApi* pApi, const char* pszActorName)
 {
 	pApi->RegEntity(&this->m_pMainActor, szWorldEntityPlayer);
 	this->m_pMainActor->SetEntityName(pszActorName);
-	this->m_pMainActor->SetOrigin(anVec2(1167.f, 611.f)); //326.f;
-	this->m_pMainActor->SetUserDataPointer(new actWoodyGameData());
+	this->m_pMainActor->SetOrigin(anVec2(1167.f, 615.f)); //326.f;
+	this->m_pMainActor->SetUserDataPointer(new ActorWoodyGameData());
 }
 
-void CTestLevel::CreateRoomZoneEntity(IANApi* pApi, IANEntity*& pEntity, anVec2 RoomPos, anVec2 RoomSize, HOUSE_ROOM HouseRoom, int iLevelFloor)
+void CTestLevel::CreateRoomZoneEntity(IANApi* pApi, IANEntity*& pEntity, anVec2 RoomPos, anVec2 RoomSize, HOUSE_ROOM HouseRoom, HOUSE_FLOOR LevelFloor)
 {
 	pApi->RegEntity(&pEntity, szWorldEntityClassIDRoomZone);
 	pEntity->SetOrigin(RoomPos);
 	pEntity->SetEntitySize(RoomSize);
-	pEntity->SetUserDataPointer(new CRoomZoneEntityData(HouseRoom, iLevelFloor));
+	pEntity->SetUserDataPointer(new CRoomZoneEntityData(HouseRoom, LevelFloor));
 }
 
 void CTestLevel::CreateDoorEntity(
@@ -504,7 +704,7 @@ void CTestLevel::CreateDoorEntity(
 	HOUSE_ROOM HouseRoom, 
 	DOOR_INTERACTIONS DoorInteraction,
 	DOOR_INTERACTIONS InvertedDoorInteraction, 
-	int iLevelFloor, 
+	HOUSE_FLOOR LevelFloor,
 	ANAnimationComposition pDoorComposition)
 {
 	pApi->RegEntity(&pEntity, szWorldEntityClassIDDoor);
@@ -513,5 +713,5 @@ void CTestLevel::CreateDoorEntity(
 	pEntity->SetInteractionController(new DoorEntityInteractionController);
 	pEntity->GetAnimCompositionController()->SetAnimationComposition(pDoorComposition);
 	pEntity->GetAnimCompositionController()->SetAnimationDuration(0.1f);
-	pEntity->SetUserDataPointer(new CDoorEntityData(HouseRoom, DoorType, DoorInteraction, InvertedDoorInteraction, iLevelFloor));
+	pEntity->SetUserDataPointer(new CDoorEntityData(HouseRoom, DoorType, DoorInteraction, InvertedDoorInteraction, LevelFloor));
 }

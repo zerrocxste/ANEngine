@@ -23,6 +23,13 @@ public:
 	void ResetDoorState(IANEntity* pThisEntity, IANEntity* pDestEntity, IANEntity* pActorEntity);
 };
 
+enum class HOUSE_FLOOR : std::uint8_t
+{
+	FLOOR_UNK = -1,
+	FIRST,
+	SECOND
+};
+
 enum HOUSE_ROOM : std::uint8_t
 {
 	ROOM_EMPTY,
@@ -59,11 +66,11 @@ class CRoomZoneEntityData
 public:
 	CRoomZoneEntityData(
 		HOUSE_ROOM HouseRoom,
-		int LevelFloor) :
+		HOUSE_FLOOR LevelFloor) :
 		m_HouseRoom(HouseRoom),
 		m_LevelFloor(LevelFloor) { }
 
-	int m_LevelFloor;
+	HOUSE_FLOOR m_LevelFloor;
 	HOUSE_ROOM m_HouseRoom;
 };
 
@@ -75,7 +82,7 @@ public:
 		DOOR_TYPE DoorType,
 		DOOR_INTERACTIONS DoorInteraction,
 		DOOR_INTERACTIONS InvertedDoorInteraction,
-		int LevelFloor) :
+		HOUSE_FLOOR LevelFloor) :
 		m_HouseRoom(HouseRoom),
 		m_DoorType(DoorType),
 		m_DoorInteraction(DoorInteraction), 
@@ -86,7 +93,23 @@ public:
 	DOOR_TYPE m_DoorType;
 	DOOR_INTERACTIONS m_DoorInteraction;
 	DOOR_INTERACTIONS m_InvertedDoorInteraction;
-	int m_LevelFloor;
+	HOUSE_FLOOR m_LevelFloor;
+};
+
+struct ActorWoodyGameData
+{
+	ActorWoodyGameData() :
+		m_CurrentActorRoom(HOUSE_ROOM::ROOM_EMPTY),
+		m_ActiveMoveTask(false),
+		m_vecMovePt(anVec2()),
+		m_TargetMoveRoom(HOUSE_ROOM::ROOM_EMPTY),
+		m_CurrentFloor(HOUSE_FLOOR::FLOOR_UNK) {};
+
+	HOUSE_ROOM m_CurrentActorRoom;
+	bool m_ActiveMoveTask;
+	anVec2 m_vecMovePt;
+	HOUSE_ROOM m_TargetMoveRoom;
+	HOUSE_FLOOR m_CurrentFloor;
 };
 
 class CTestLevel : public IANGameScene
@@ -100,22 +123,9 @@ public:
 	void OnUnloadScene(IANApi* pApi) override;
 	void Entry(IANApi* pApi) override;
 
-	struct actWoodyGameData
-	{
-		actWoodyGameData() : 
-			m_CurrentActorFloor(HOUSE_ROOM::ROOM_EMPTY),
-			m_ActiveMoveTask(false), 
-			m_vecMovePt(anVec2()), 
-			m_TargetMoveRoom(HOUSE_ROOM::ROOM_EMPTY) {};
-
-		HOUSE_ROOM m_CurrentActorFloor;
-		bool m_ActiveMoveTask;
-		anVec2 m_vecMovePt;
-		HOUSE_ROOM m_TargetMoveRoom;
-	};
-
-	static actWoodyGameData& GetWoodyEntityData(IANEntity* pEntity) { return *(actWoodyGameData*)pEntity->GetUserDataPointer(); }
+	static ActorWoodyGameData& GetWoodyEntityData(IANEntity* pEntity) { return *(ActorWoodyGameData*)pEntity->GetUserDataPointer(); }
 	static CRoomZoneEntityData& GetRoomEntityData(IANEntity* pEntity) { return *(CRoomZoneEntityData*)pEntity->GetUserDataPointer(); }
+	static CDoorEntityData& GetDoorEntityData(IANEntity* pEntity) { return *(CDoorEntityData*)pEntity->GetUserDataPointer(); }
 private:
 	float m_WorldZoom;
 
@@ -124,6 +134,8 @@ private:
 
 	IANEntity* m_pMainActor;
 	ANAnimationComposition m_WoodyComposition;
+	ANAnimationComposition m_WoodyCompositionUp;
+	ANAnimationComposition m_WoodyCompositionDown;
 	ANAnimationComposition m_WoodyCompositionLeft;
 	ANAnimationComposition m_WoodyCompositionRight;
 	ANAnimationComposition m_WoodyDoorLeave;
@@ -153,7 +165,7 @@ private:
 	const char* GetDoorEventTypeFromEntity(IANEntity* pEntity);
 
 	void CreateActorEntity(IANApi* pApi, const char* pszActorName);
-	void CreateRoomZoneEntity(IANApi* pApi, IANEntity*& pEntity, anVec2 RoomPos, anVec2 RoomSize, HOUSE_ROOM HouseRoom, int iLevelFloor);
+	void CreateRoomZoneEntity(IANApi* pApi, IANEntity*& pEntity, anVec2 RoomPos, anVec2 RoomSize, HOUSE_ROOM HouseRoom, HOUSE_FLOOR LevelFloor);
 	void CreateDoorEntity(
 		IANApi* pApi, 
 		IANEntity*& pEntity, 
@@ -163,9 +175,16 @@ private:
 		HOUSE_ROOM HouseRoom, 
 		DOOR_INTERACTIONS DoorInteraction, 
 		DOOR_INTERACTIONS InvertedDoorInteraction, 
-		int iLevelFloor, 
+		HOUSE_FLOOR LevelFloor,
 		ANAnimationComposition pDoorComposition);
 
+	void ConstructWay(IANApi* pApi, IANEntity* pActor, IANEntity* pTargetDoorEntity, IANEntity* pNextDoorTargetEntity);
+
+	void ProcessCurrentRoomMove(IANApi* pApi);
+
+	void ProcessMoveActorHallway(IANApi* pApi);
+	void ProcessMoveActorBathroom(IANApi* pApi);
+	void ProcessMoveActorKitchen(IANApi* pApi);
 	void ProcessMoveActorHall(IANApi* pApi);
 
 	void PreFrame(IANApi* pApi);
@@ -175,4 +194,12 @@ private:
 	void DrawEntities(IANApi* pApi);
 	void DrawUI(IANApi* pApi);
 	void DrawStatistics(IANApi* pApi);
+
+	void SetAnimationMoveUp(IANEntity* pActor);
+	void SetAnimationMoveDown(IANEntity* pActor);
+	void SetAnimationMoveLeft(IANEntity* pActor);
+	void SetAnimationMoveRight(IANEntity* pActor);
+
+	float GetFloor(HOUSE_FLOOR Floor = HOUSE_FLOOR::FLOOR_UNK);
+	float GetFloorFromRoom(HOUSE_ROOM Room);
 };

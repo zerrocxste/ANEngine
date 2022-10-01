@@ -6,20 +6,16 @@ class ANEntity : public IANEntity
 	friend ANEntityList;
 private:
 	int m_iID;
+	char* m_szEntityName;
 	char* m_szEntityClassID;
-
 	anVec2 m_vecOrigin;
-
 	anVec2 m_vecEntitySize;
 	bool m_bIsOccluded;
-
 	IANInteractionController* m_pIANInteractionControllerUserCallback;
-
-	char* m_szEntityName;
-
 	IANAnimationCompositionController* m_pAnimCompositionController;
-
 	void* m_pUserData;
+	ANEntityMoveInfo m_MoveInfo;
+
 public:
 	int GetEntityID() override;
 	char* GetEntityClassID() override;
@@ -37,6 +33,8 @@ public:
 	anVec2 MoveUp(IANApi* pApi, float Speed) override;
 	anVec2 MoveDown(IANApi* pApi, float Speed) override;
 	anVec2 GetOrigin() override;
+
+	ANEntityMoveInfo GetMoveInfo() override;
 
 	void SetVisible(bool IsVisible) override;
 	bool GetVisible() override;
