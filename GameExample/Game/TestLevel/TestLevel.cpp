@@ -137,6 +137,49 @@ const char* pszWoodySideDoorRightEnter[] = {
 	"side_door_right\\W_enter_0020.png",
 	"side_door_right\\W_enter_0021.png",
 };
+const char* pszRottweiler[] = {
+	"rottweiler\\stand\\N_ms2_0000.png",
+};
+const char* pszRottweilerUp[] = {
+	"rottweiler\\move_up\\N_mg0_0000.png",
+	"rottweiler\\move_up\\N_mg0_0001.png",
+	"rottweiler\\move_up\\N_mg0_0002.png",
+	"rottweiler\\move_up\\N_mg0_0003.png",
+	"rottweiler\\move_up\\N_mg0_0004.png",
+	"rottweiler\\move_up\\N_mg0_0005.png",
+	"rottweiler\\move_up\\N_mg0_0006.png",
+	"rottweiler\\move_up\\N_mg0_0007.png",
+};
+const char* pszRottweilerDown[] = {
+	"rottweiler\\move_up\\N_mg2_0000.png",
+	"rottweiler\\move_up\\N_mg2_0001.png",
+	"rottweiler\\move_up\\N_mg2_0002.png",
+	"rottweiler\\move_up\\N_mg2_0003.png",
+	"rottweiler\\move_up\\N_mg2_0004.png",
+	"rottweiler\\move_up\\N_mg2_0005.png",
+	"rottweiler\\move_up\\N_mg2_0006.png",
+	"rottweiler\\move_up\\N_mg2_0007.png",
+};
+const char* pszRottweilerLeft[] = {
+	"rottweiler\\move_left\\N_mg3_0000.png",
+	"rottweiler\\move_left\\N_mg3_0001.png",
+	"rottweiler\\move_left\\N_mg3_0002.png",
+	"rottweiler\\move_left\\N_mg3_0003.png",
+	"rottweiler\\move_left\\N_mg3_0004.png",
+	"rottweiler\\move_left\\N_mg3_0005.png",
+	"rottweiler\\move_left\\N_mg3_0006.png",
+	"rottweiler\\move_left\\N_mg3_0007.png",
+};
+const char* pszRottweilerRight[] = {
+	"rottweiler\\move_right\\N_mg1_0000.png",
+	"rottweiler\\move_right\\N_mg1_0001.png",
+	"rottweiler\\move_right\\N_mg1_0002.png",
+	"rottweiler\\move_right\\N_mg1_0003.png",
+	"rottweiler\\move_right\\N_mg1_0004.png",
+	"rottweiler\\move_right\\N_mg1_0005.png",
+	"rottweiler\\move_right\\N_mg1_0006.png",
+	"rottweiler\\move_right\\N_mg1_0007.png",
+};
 const char* pszDoorAnim[] = { 
 	"N_leave_0000.png"
 };
@@ -203,6 +246,11 @@ void CTestLevel::OnLoadScene(IANApi* pApi)
 	pApi->CreateAnimationComposition(pszDoorAnim, 1, &this->m_DoorComposition);
 	pApi->CreateAnimationComposition(pszDoorAnimLeft, 1, &this->m_DoorCompositionLeft);
 	pApi->CreateAnimationComposition(pszDoorAnimRight, 1, &this->m_DoorCompositionRight);
+	pApi->CreateAnimationComposition(pszRottweiler, 1, &this->m_RottweilerComposition);
+	pApi->CreateAnimationComposition(pszRottweilerUp, 8, &this->m_RottweilerCompositionUp);
+	pApi->CreateAnimationComposition(pszRottweilerDown, 8, &this->m_RottweilerCompositionDown);
+	pApi->CreateAnimationComposition(pszRottweilerLeft, 8, &this->m_RottweilerCompositionLeft);
+	pApi->CreateAnimationComposition(pszRottweilerRight, 8, &this->m_RottweilerCompositionRight);
 
 	pApi->RegWorld(&this->m_pWorld);
 	this->m_pWorld->SetWorldSize(pApi->GetImageSize(pApi->GetAnimationCompositionFrameFromID(this->m_WorldComposition, 0)));
@@ -210,13 +258,16 @@ void CTestLevel::OnLoadScene(IANApi* pApi)
 
 	CreateActorEntity(pApi, "ENTITY_Woody");
 
+	pApi->RegEntity(&this->m_pRottweiler, szWorldEntityPlayer);
+	this->m_pRottweiler->SetOrigin(anVec2(503.f, 326.f));
+
 	CreateDoorEntity(pApi, this->m_pDoorEntityHallwayKitchen, "ENTITY_DoorEntityHallwayKitchen", anVec2(1111.f, 550.f), 
 		DOOR_TYPE::VERTICAL, HOUSE_ROOM::HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_KITCHEN, DOOR_INTERACTIONS::DOOR_KITCHEN_HALLWAY, HOUSE_FLOOR::FIRST, this->m_DoorComposition);
 	CreateDoorEntity(pApi, this->m_pDoorEntityKitchenHallway, "ENTITY_DoorEntityKitchenHallway", anVec2(1095.f, 270.f), 
 		DOOR_TYPE::VERTICAL, HOUSE_ROOM::KITCHEN, DOOR_INTERACTIONS::DOOR_KITCHEN_HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_KITCHEN, HOUSE_FLOOR::SECOND, this->m_DoorComposition);
 	CreateDoorEntity(pApi, this->m_pDoorEntityHallwayHall, "ENTITY_DoorEntityHallwayHall", anVec2(500.f, 550.f), 
 		DOOR_TYPE::VERTICAL, HOUSE_ROOM::HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_HALL, DOOR_INTERACTIONS::DOOR_HALL_HALLWAY, HOUSE_FLOOR::FIRST, this->m_DoorComposition);
-	CreateDoorEntity(pApi, this->m_pDoorEntityHallHallway, "ENTITY_DoorEntityHallHallway", anVec2(500.f, 270.f), 
+	CreateDoorEntity(pApi, this->m_pDoorEntityHallHallway, "ENTITY_DoorEntityHallHallway", anVec2(490.f, 270.f), 
 		DOOR_TYPE::VERTICAL, HOUSE_ROOM::HALL, DOOR_INTERACTIONS::DOOR_HALL_HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_HALL, HOUSE_FLOOR::SECOND, this->m_DoorComposition);
 
 	CreateDoorEntity(pApi, this->m_pDoorEntityHallKitchen, "ENTITY_DoorEntityHallKitchen", anVec2(814.f, 345.f),
@@ -290,6 +341,9 @@ void CTestLevel::PreFrame(IANApi* pApi)
 {
 	this->m_pMainActor->GetAnimCompositionController()->SetAnimationComposition(this->m_WoodyComposition);
 	this->m_pMainActor->GetAnimCompositionController()->SetAnimationDuration(0.3f);
+
+	this->m_pRottweiler->GetAnimCompositionController()->SetAnimationComposition(this->m_RottweilerComposition);
+	this->m_pRottweiler->GetAnimCompositionController()->SetAnimationDuration(0.3f);
 }
 
 void CTestLevel::KeyboardMoveInput(IANApi* pApi)

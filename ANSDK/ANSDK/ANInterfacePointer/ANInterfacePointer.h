@@ -5,7 +5,7 @@ class ANImpPtr
 {
 public:
 	ANImpPtr();
-
+	T* operator->();
 	T* m_Pointer;
 private:
 };
@@ -16,6 +16,12 @@ ANImpPtr<T>::ANImpPtr()
 	this->m_Pointer = new T();
 }
 
+template<class T>
+T* ANImpPtr<T>::operator->()
+{
+	return this->m_Pointer;
+}
+
 template <class T>
 class ANInterfacePointer
 {
@@ -24,9 +30,6 @@ public:
 
 	ANInterfacePointer();
 	~ANInterfacePointer();
-
-	template <class O>
-	ANInterfacePointer(O* o);
 
 	template <class O>
 	ANInterfacePointer(ANImpPtr<O>& o);
@@ -55,13 +58,6 @@ template <class T>
 ANInterfacePointer<T>::~ANInterfacePointer()
 {
 	release();
-}
-
-template<class T>
-template<class O>
-ANInterfacePointer<T>::ANInterfacePointer(O* o)
-{
-	this->m_Pointer = o;
 }
 
 template <class T>

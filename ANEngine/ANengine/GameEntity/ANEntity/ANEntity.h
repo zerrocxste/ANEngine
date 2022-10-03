@@ -14,6 +14,7 @@ private:
 	IANInteractionController* m_pIANInteractionControllerUserCallback;
 	IANAnimationCompositionController* m_pAnimCompositionController;
 	void* m_pUserData;
+	fOnReleaseUserData m_pfOnReleaseUserData;
 	ANEntityMoveInfo m_MoveInfo;
 
 public:
@@ -59,5 +60,8 @@ public:
 	IANEntity& Update(IANApi* pApi) override;
 
 	void SetUserDataPointer(void* pUserData) override;
+	void SetOnReleaseUserData(fOnReleaseUserData pfOnReleaseUserData) override;
 	void* GetUserDataPointer() override;
+
+	void CallOnReleaseUserData(void* _this);
 };

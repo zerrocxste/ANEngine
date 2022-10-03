@@ -59,6 +59,8 @@ void ANEntityList::Unreg(IANEntity* ppEntity)
 
 	if (pEntity->m_pUserData != nullptr)
 	{
+		pEntity->CallOnReleaseUserData(pEntity->m_pUserData);
+
 		delete pEntity->m_pUserData;
 		pEntity->m_pUserData = nullptr;
 	}

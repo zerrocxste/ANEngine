@@ -146,6 +146,13 @@ private:
 	ANAnimationComposition m_DoorCompositionLeft;
 	ANAnimationComposition m_DoorCompositionRight;
 
+	IANEntity* m_pRottweiler;
+	ANAnimationComposition m_RottweilerComposition;
+	ANAnimationComposition m_RottweilerCompositionUp;
+	ANAnimationComposition m_RottweilerCompositionDown;
+	ANAnimationComposition m_RottweilerCompositionLeft;
+	ANAnimationComposition m_RottweilerCompositionRight;
+
 	IANEntity* m_pEntityDoorZoneHallway;
 	IANEntity* m_pEntityDoorZoneBathroom;
 	IANEntity* m_pEntityDoorZoneKitchen;

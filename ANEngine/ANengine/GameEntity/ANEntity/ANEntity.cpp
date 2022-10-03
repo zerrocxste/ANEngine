@@ -387,7 +387,20 @@ void ANEntity::SetUserDataPointer(void* pUserData)
 	this->m_pUserData = pUserData;
 }
 
+void ANEntity::SetOnReleaseUserData(fOnReleaseUserData pfOnReleaseUserData)
+{
+	this->m_pfOnReleaseUserData = pfOnReleaseUserData;
+}
+
 void* ANEntity::GetUserDataPointer()
 {
 	return this->m_pUserData;
+}
+
+void ANEntity::CallOnReleaseUserData(void* _this)
+{
+	if (!this->m_pfOnReleaseUserData)
+		return;
+
+	this->m_pfOnReleaseUserData(_this);
 }

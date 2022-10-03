@@ -23,9 +23,11 @@ int ANAnimationCompositionController::GetNeedUpdateAnimationCounter(IANApi* pApi
 
 	this->m_lflCurrentRenderTime = pApi->TotalRenderTime;
 
+	auto bIsNewAnimationDuration = this->m_flAnimationDuration != this->m_flNewAnimationDuration;
+
 	this->m_flAnimationDuration = this->m_flNewAnimationDuration;
 
-	if (this->m_flAnimationTime <= 0.f || this->m_flAnimationDuration != this->m_flNewAnimationDuration)
+	if (this->m_flAnimationTime <= 0.f || bIsNewAnimationDuration)
 		this->m_flAnimationTime = this->m_flAnimationDuration;
 
 	this->m_flAnimationTime -= pApi->Frametime;
@@ -82,7 +84,7 @@ ANImageID ANAnimationCompositionController::GetCurrentAnimationCompositionFrame(
 		this->m_iCountOfIterationsPlayingComposition--;
 
 	if (PrevAnimNotSame || CounterIsOut)
-		this->m_iCurrentAnimationCompositionFrameCount = this->m_bIsPlayInversed ? MaxFramesOnComposition - 1 : 0;
+		this->m_iCurrentAnimationCompositionFrameCount = this->m_bIsPlayInversed ? (MaxFramesOnComposition - 1) : 0;
 
 	auto AnimationCompositionFrame = (ANImageID)((ANAnimationComposition)((std::uintptr_t)ViewedComposition + sizeof(int)))[this->m_iCurrentAnimationCompositionFrameCount];
 

@@ -26,6 +26,8 @@ struct ANEntityMoveInfo
 class IANEntity
 {
 public:
+	using fOnReleaseUserData = void(__fastcall*)(void* _this);
+
 	virtual int GetEntityID() = 0;
 	virtual char* GetEntityClassID() = 0;
 
@@ -70,5 +72,6 @@ public:
 	virtual IANEntity& Update(IANApi* pApi) = 0;
 
 	virtual void SetUserDataPointer(void* pUserData) = 0;
+	virtual void SetOnReleaseUserData(fOnReleaseUserData pfOnReleaseUserData) = 0;
 	virtual void* GetUserDataPointer() = 0;
 };
