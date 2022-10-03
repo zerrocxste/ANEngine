@@ -52,7 +52,7 @@ CTestGameScene::~CTestGameScene()
 void CTestGameScene::OnLoadScene(IANApi* pApi)
 {
 	pApi->CreateFontFromFile("StolzLight.ttf", 25.f, &this->m_fontStolzLight);
-	pApi->CreateImage("Krolik.png", &this->m_imgImageKrolik);
+	pApi->CreateImage("Krolik.png", &this->m_imgImageKrolik, true);
 	pApi->RegGuiWindow(&this->m_AnotherWindow, anVec2(300.f, 200.f));
 
 	m_pTestCheckboxSkin = (IANCheckboxSkin*)new CTestCheckboxSkin(this->m_imgImageKrolik, this->m_imgImageKrolik);
@@ -61,8 +61,9 @@ void CTestGameScene::OnLoadScene(IANApi* pApi)
 
 void CTestGameScene::OnUnloadScene(IANApi* pApi)
 {
+	pApi->ClearAndDeleteLinkedImages();
+	pApi->ClearAndDeleteLinkedAnimationCompositions();
 	pApi->FreeFont(&this->m_fontStolzLight);
-	pApi->FreeImage(&this->m_imgImageKrolik);
 	pApi->UnregGuiWindow(&this->m_AnotherWindow);
 
 	delete m_pTestCheckboxSkin;

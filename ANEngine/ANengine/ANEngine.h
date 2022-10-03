@@ -29,6 +29,7 @@ typedef ANPlatformWin32 ANPlatform;
 #endif // _WIN32
 
 class ANGui;
+class ANGameResourcesData;
 class ANEntity;
 class ANEntityList;
 class ANEntityGroup;
@@ -82,6 +83,7 @@ class IANInteractionMessagesList;
 #include "ANRenderer/ANRenderer.h"
 #include "ANInput/ANInput.h"
 #include "ANWorld/ANWorld.h"
+#include "ANGameResourcesData/ANGameResourcesData.h"
 #include "GameEntity/ANEntityList/ANEntityList.h"
 #include "GameEntity/ANInteractionMessagesList/ANInteractionMessagesList.h"
 #include "GameEntity/ANEntity/ANEntity.h"

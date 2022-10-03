@@ -2,6 +2,8 @@
 
 #define NDEBUG
 
+#define AN_ARRSIZE(arr) (sizeof(arr) / sizeof(arr[0]))
+
 #include <Windows.h>
 #include <iostream>
 #include <vector>

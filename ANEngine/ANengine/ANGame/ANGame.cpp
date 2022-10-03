@@ -2,15 +2,18 @@
 
 ANGame::ANGame(ANCore* pCore) :
 	m_pCore(pCore),
+	m_pNewGameScene(nullptr),
 	m_pCurrentScene(nullptr),
 	m_bNeedLeaveGame(false)
 {
+	this->m_pGameResourcesData = ANMemory::GetInstance()->Allocate<ANGameResourcesData>(this->m_pCore);
 	this->m_pEntityList = ANMemory::GetInstance()->Allocate<ANEntityList>();
 	this->m_pInteractionMessagesList = ANMemory::GetInstance()->Allocate<ANInteractionMessagesList>();
 }
 
 ANGame::~ANGame()
 {
+	ANMemory::GetInstance()->Delete(this->m_pGameResourcesData);
 	ANMemory::GetInstance()->Delete(this->m_pEntityList);
 	ANMemory::GetInstance()->Delete(this->m_pInteractionMessagesList);
 }
@@ -47,9 +50,19 @@ bool ANGame::RunScene()
 	if (!this->m_pCurrentScene)
 	{
 		auto r = this->m_pCore->GetRenderer();
-		anVec2 Size;
-		r->TextCalcSize("NO_SCENE", &Size);
-		r->TextDraw("NO_SCENE", ANMathUtils::CalcPosToCenter(r->GetScreenSize(), Size), anColor::Red());
+
+		anVec2 vecSizeNoScene, vecHelperMsg;
+		auto pszNoSceneMsg = "NO SCENE\n";
+		auto pszHelperMsg = "NEED CONNECT SCENE IN LOADER CTX\n";
+
+		r->TextCalcSize(pszNoSceneMsg, &vecSizeNoScene);
+		r->TextDraw(pszNoSceneMsg, ANMathUtils::CalcPosToCenter(r->GetScreenSize(), vecSizeNoScene), anColor::Red());
+
+		r->TextCalcSize(pszHelperMsg, &vecHelperMsg);
+		auto vecPosHelperMsg = ANMathUtils::CalcPosToCenter(r->GetScreenSize(), vecHelperMsg);
+		vecPosHelperMsg.y += vecSizeNoScene.y;
+		r->TextDraw(pszHelperMsg, vecPosHelperMsg, anColor::Red());
+
 		return true;
 	}
 
@@ -88,7 +101,6 @@ void ANGame::UnregWorld(IANWorld** ppWorld)
 		return;
 
 	ANMemory::GetInstance()->Delete(((ANWorld*)pWorld)->m_pIANAnimationCompositionController);
-
 	ANMemory::GetInstance()->Delete(pWorld);
 
 	pWorld = nullptr;
@@ -97,7 +109,6 @@ void ANGame::UnregWorld(IANWorld** ppWorld)
 void ANGame::RegEntity(IANEntity** ppEntity, const char* pszEntityClassID)
 {
 	GetEntityList()->Reg(ppEntity, pszEntityClassID);
-
 	GetEntityList()->Add(*ppEntity);
 }
 
@@ -109,10 +120,14 @@ void ANGame::UnregEntity(IANEntity** ppEntity)
 		return;
 
 	GetEntityList()->Unreg(pIEntity);
-
 	GetEntityList()->Remove(pIEntity);
 
 	pIEntity = nullptr;
+}
+
+ANGameResourcesData* ANGame::GetGameResourcesData()
+{
+	return this->m_pGameResourcesData;
 }
 
 ANEntityList* ANGame::GetEntityList()

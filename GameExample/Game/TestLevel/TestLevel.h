@@ -123,11 +123,14 @@ public:
 	void OnUnloadScene(IANApi* pApi) override;
 	void Entry(IANApi* pApi) override;
 
-	static ActorWoodyGameData& GetWoodyEntityData(IANEntity* pEntity) { return *(ActorWoodyGameData*)pEntity->GetUserDataPointer(); }
-	static CRoomZoneEntityData& GetRoomEntityData(IANEntity* pEntity) { return *(CRoomZoneEntityData*)pEntity->GetUserDataPointer(); }
-	static CDoorEntityData& GetDoorEntityData(IANEntity* pEntity) { return *(CDoorEntityData*)pEntity->GetUserDataPointer(); }
+	static auto inline GetUserDataPtr(IANEntity* pEntity) { assert(pEntity == nullptr); auto ret = pEntity->GetUserDataPointer(); assert(ret == nullptr); return ret; }
+	static ActorWoodyGameData& GetWoodyEntityData(IANEntity* pEntity) {  return *(ActorWoodyGameData*)GetUserDataPtr(pEntity); }
+	static CRoomZoneEntityData& GetRoomEntityData(IANEntity* pEntity) {  return *(CRoomZoneEntityData*)GetUserDataPtr(pEntity); }
+	static CDoorEntityData& GetDoorEntityData(IANEntity* pEntity) {  return *(CDoorEntityData*)GetUserDataPtr(pEntity); }
 private:
-	float m_WorldZoom;
+	bool m_bSceneCreated;
+
+	float m_flWorldZoom;
 
 	IANWorld* m_pWorld;
 	ANAnimationComposition m_WorldComposition;
@@ -153,6 +156,8 @@ private:
 	ANAnimationComposition m_RottweilerCompositionLeft;
 	ANAnimationComposition m_RottweilerCompositionRight;
 
+	ANAnimationComposition m_TVScreenComposition;
+
 	IANEntity* m_pEntityDoorZoneHallway;
 	IANEntity* m_pEntityDoorZoneBathroom;
 	IANEntity* m_pEntityDoorZoneKitchen;
@@ -171,7 +176,10 @@ private:
 
 	const char* GetDoorEventTypeFromEntity(IANEntity* pEntity);
 
+	void CreateAnimationCompositions(IANApi* pApi);
+	void CreateWorld(IANApi* pApi);
 	void CreateActorEntity(IANApi* pApi, const char* pszActorName);
+	void CreateRottweilerEntity(IANApi* pApi, const char* pszActorName);
 	void CreateRoomZoneEntity(IANApi* pApi, IANEntity*& pEntity, anVec2 RoomPos, anVec2 RoomSize, HOUSE_ROOM HouseRoom, HOUSE_FLOOR LevelFloor);
 	void CreateDoorEntity(
 		IANApi* pApi, 
@@ -184,6 +192,7 @@ private:
 		DOOR_INTERACTIONS InvertedDoorInteraction, 
 		HOUSE_FLOOR LevelFloor,
 		ANAnimationComposition pDoorComposition);
+	void CreateStaticEntity(IANApi* pApi, IANEntity** ppEntity, ANAnimationComposition DefaultAnimationComposition, anVec2 vecPosition, anVec2 vecSize = anVec2());
 
 	void ConstructWay(IANApi* pApi, IANEntity* pActor, IANEntity* pTargetDoorEntity, IANEntity* pNextDoorTargetEntity);
 
@@ -207,6 +216,7 @@ private:
 	void SetAnimationMoveLeft(IANEntity* pActor);
 	void SetAnimationMoveRight(IANEntity* pActor);
 
-	float GetFloor(HOUSE_FLOOR Floor = HOUSE_FLOOR::FLOOR_UNK);
+	float GetFloor(HOUSE_FLOOR Floor);
+	float GetFloor(IANEntity* pEntity);
 	float GetFloorFromRoom(HOUSE_ROOM Room);
 };

@@ -9,133 +9,133 @@ auto szWorldEntityClassIDDoor = "CLASSID_WorldEntity_Door";
 auto szDoorIntercationClassID = "CLASSID_EVENT_Door";
 
 const char* pszWorld[] = { 
-	"house15.bmp" 
+	"home\\house01.png" 
 };
 const char* pszWoody[] = { 
-	"w_ms2_0004.png", 
-	"w_ms2_0005.png", 
-	"w_ms2_0006.png" 
+	"woody\\stand\\w_ms2_0004.png", 
+	"woody\\stand\\w_ms2_0005.png", 
+	"woody\\stand\\w_ms2_0006.png" 
 };
 const char* pszWoodyUp[] = {
-	"walk_up\\W_mg0_0000.png",
-	"walk_up\\W_mg0_0001.png",
-	"walk_up\\W_mg0_0002.png",
-	"walk_up\\W_mg0_0003.png",
-	"walk_up\\W_mg0_0004.png",
-	"walk_up\\W_mg0_0005.png",
-	"walk_up\\W_mg0_0006.png",
-	"walk_up\\W_mg0_0007.png"
+	"woody\\move_up\\W_mg0_0000.png",
+	"woody\\move_up\\W_mg0_0001.png",
+	"woody\\move_up\\W_mg0_0002.png",
+	"woody\\move_up\\W_mg0_0003.png",
+	"woody\\move_up\\W_mg0_0004.png",
+	"woody\\move_up\\W_mg0_0005.png",
+	"woody\\move_up\\W_mg0_0006.png",
+	"woody\\move_up\\W_mg0_0007.png"
 };
 const char* pszWoodyDown[] = {
-	"walk_down\\W_mg2_0000.png",
-	"walk_down\\W_mg2_0001.png",
-	"walk_down\\W_mg2_0002.png",
-	"walk_down\\W_mg2_0003.png",
-	"walk_down\\W_mg2_0004.png",
-	"walk_down\\W_mg2_0005.png",
-	"walk_down\\W_mg2_0006.png",
-	"walk_down\\W_mg2_0007.png"
+	"woody\\move_down\\W_mg2_0000.png",
+	"woody\\move_down\\W_mg2_0001.png",
+	"woody\\move_down\\W_mg2_0002.png",
+	"woody\\move_down\\W_mg2_0003.png",
+	"woody\\move_down\\W_mg2_0004.png",
+	"woody\\move_down\\W_mg2_0005.png",
+	"woody\\move_down\\W_mg2_0006.png",
+	"woody\\move_down\\W_mg2_0007.png"
 };
 const char* pszWoodyLeft[] = { 
-	"W_mg3_0000.png", 
-	"W_mg3_0001.png", 
-	"W_mg3_0002.png", 
-	"W_mg3_0003.png", 
-	"W_mg3_0004.png", 
-	"W_mg3_0005.png", 
-	"W_mg3_0006.png", 
-	"W_mg3_0007.png" 
+	"woody\\move_left\\W_mg3_0000.png", 
+	"woody\\move_left\\W_mg3_0001.png", 
+	"woody\\move_left\\W_mg3_0002.png", 
+	"woody\\move_left\\W_mg3_0003.png", 
+	"woody\\move_left\\W_mg3_0004.png", 
+	"woody\\move_left\\W_mg3_0005.png", 
+	"woody\\move_left\\W_mg3_0006.png", 
+	"woody\\move_left\\W_mg3_0007.png" 
 };
 const char* pszWoodyRight[] = { 
-	"W_mg1_0000.png", 
-	"W_mg1_0001.png", 
-	"W_mg1_0002.png", 
-	"W_mg1_0003.png", 
-	"W_mg1_0004.png", 
-	"W_mg1_0005.png", 
-	"W_mg1_0006.png", 
-	"W_mg1_0007.png" 
+	"woody\\move_right\\W_mg1_0000.png", 
+	"woody\\move_right\\W_mg1_0001.png", 
+	"woody\\move_right\\W_mg1_0002.png", 
+	"woody\\move_right\\W_mg1_0003.png", 
+	"woody\\move_right\\W_mg1_0004.png", 
+	"woody\\move_right\\W_mg1_0005.png", 
+	"woody\\move_right\\W_mg1_0006.png", 
+	"woody\\move_right\\W_mg1_0007.png" 
 };
 const char* pszWoodyDoor[] = { 
-	"door_vertical\\W_leave_0000.png", 
-	"door_vertical\\W_leave_0001.png", 
-	"door_vertical\\W_leave_0002.png", 
-	"door_vertical\\W_leave_0003.png",
-	"door_vertical\\W_leave_0004.png", 
-	"door_vertical\\W_leave_0005.png", 
-	"door_vertical\\W_leave_0006.png", 
-	"door_vertical\\W_leave_0007.png", 
-	"door_vertical\\W_leave_0008.png", 
-	"door_vertical\\W_leave_0009.png",
+	"woody\\door_vertical\\W_leave_0000.png", 
+	"woody\\door_vertical\\W_leave_0001.png", 
+	"woody\\door_vertical\\W_leave_0002.png", 
+	"woody\\door_vertical\\W_leave_0003.png",
+	"woody\\door_vertical\\W_leave_0004.png", 
+	"woody\\door_vertical\\W_leave_0005.png", 
+	"woody\\door_vertical\\W_leave_0006.png", 
+	"woody\\door_vertical\\W_leave_0007.png", 
+	"woody\\door_vertical\\W_leave_0008.png", 
+	"woody\\door_vertical\\W_leave_0009.png",
 };
 const char* pszWoodyDoorEnter[] = {
-	"door_vertical\\W_enter_0015.png",
-	"door_vertical\\W_enter_0014.png",
-	"door_vertical\\W_enter_0013.png",
-	"door_vertical\\W_enter_0012.png",
-	"door_vertical\\W_enter_0011.png",
-	"door_vertical\\W_enter_0010.png",
-	"door_vertical\\W_enter_0009.png",
-	"door_vertical\\W_enter_0008.png",
-	"door_vertical\\W_enter_0007.png",
-	"door_vertical\\W_enter_0006.png",
-	"door_vertical\\W_enter_0005.png",
-	"door_vertical\\W_enter_0004.png",
-	"door_vertical\\W_enter_0003.png",
-	"door_vertical\\W_enter_0002.png",
-	"door_vertical\\W_enter_0001.png",
-	"door_vertical\\W_enter_0000.png",
+	"woody\\door_vertical\\W_enter_0015.png",
+	"woody\\door_vertical\\W_enter_0014.png",
+	"woody\\door_vertical\\W_enter_0013.png",
+	"woody\\door_vertical\\W_enter_0012.png",
+	"woody\\door_vertical\\W_enter_0011.png",
+	"woody\\door_vertical\\W_enter_0010.png",
+	"woody\\door_vertical\\W_enter_0009.png",
+	"woody\\door_vertical\\W_enter_0008.png",
+	"woody\\door_vertical\\W_enter_0007.png",
+	"woody\\door_vertical\\W_enter_0006.png",
+	"woody\\door_vertical\\W_enter_0005.png",
+	"woody\\door_vertical\\W_enter_0004.png",
+	"woody\\door_vertical\\W_enter_0003.png",
+	"woody\\door_vertical\\W_enter_0002.png",
+	"woody\\door_vertical\\W_enter_0001.png",
+	"door\\stand\\W_enter_0000.png",
 };
 const char* pszWoodySideDoorLeftEnter[] = {
-	"side_door_left\\W_enter_0000.png",
-	"side_door_left\\W_enter_0001.png",
-	"side_door_left\\W_enter_0002.png",
-	"side_door_left\\W_enter_0003.png",
-	"side_door_left\\W_enter_0004.png",
-	"side_door_left\\W_enter_0005.png",
-	"side_door_left\\W_enter_0006.png",
-	"side_door_left\\W_enter_0007.png",
-	"side_door_left\\W_enter_0008.png",
-	"side_door_left\\W_enter_0009.png",
-	"side_door_left\\W_enter_0010.png",
-	"side_door_left\\W_enter_0011.png",
-	"side_door_left\\W_enter_0012.png",
-	"side_door_left\\W_enter_0013.png",
-	"side_door_left\\W_enter_0014.png",
-	"side_door_left\\W_enter_0015.png",
-	"side_door_left\\W_enter_0016.png",
-	"side_door_left\\W_enter_0017.png",
-	"side_door_left\\W_enter_0018.png",
-	"side_door_left\\W_enter_0019.png",
-	"side_door_left\\W_enter_0020.png",
-	"side_door_left\\W_enter_0021.png",
-	"side_door_left\\W_enter_0022.png",
-	"side_door_left\\W_enter_0023.png",
-	"side_door_left\\W_enter_0024.png",
+	"door\\stand\\W_enter_0000.png",
+	"woody\\side_door_left\\W_enter_0001.png",
+	"woody\\side_door_left\\W_enter_0002.png",
+	"woody\\side_door_left\\W_enter_0003.png",
+	"woody\\side_door_left\\W_enter_0004.png",
+	"woody\\side_door_left\\W_enter_0005.png",
+	"woody\\side_door_left\\W_enter_0006.png",
+	"woody\\side_door_left\\W_enter_0007.png",
+	"woody\\side_door_left\\W_enter_0008.png",
+	"woody\\side_door_left\\W_enter_0009.png",
+	"woody\\side_door_left\\W_enter_0010.png",
+	"woody\\side_door_left\\W_enter_0011.png",
+	"woody\\side_door_left\\W_enter_0012.png",
+	"woody\\side_door_left\\W_enter_0013.png",
+	"woody\\side_door_left\\W_enter_0014.png",
+	"woody\\side_door_left\\W_enter_0015.png",
+	"woody\\side_door_left\\W_enter_0016.png",
+	"woody\\side_door_left\\W_enter_0017.png",
+	"woody\\side_door_left\\W_enter_0018.png",
+	"woody\\side_door_left\\W_enter_0019.png",
+	"woody\\side_door_left\\W_enter_0020.png",
+	"woody\\side_door_left\\W_enter_0021.png",
+	"woody\\side_door_left\\W_enter_0022.png",
+	"woody\\side_door_left\\W_enter_0023.png",
+	"door\\stand\\W_enter_0024.png",
 };
 const char* pszWoodySideDoorRightEnter[] = {
-	"side_door_right\\W_enter_0000.png",
-	"side_door_right\\W_enter_0001.png",
-	"side_door_right\\W_enter_0002.png",
-	"side_door_right\\W_enter_0003.png",
-	"side_door_right\\W_enter_0004.png",
-	"side_door_right\\W_enter_0005.png",
-	"side_door_right\\W_enter_0006.png",
-	"side_door_right\\W_enter_0007.png",
-	"side_door_right\\W_enter_0008.png",
-	"side_door_right\\W_enter_0009.png",
-	"side_door_right\\W_enter_0010.png",
-	"side_door_right\\W_enter_0011.png",
-	"side_door_right\\W_enter_0012.png",
-	"side_door_right\\W_enter_0013.png",
-	"side_door_right\\W_enter_0014.png",
-	"side_door_right\\W_enter_0015.png",
-	"side_door_right\\W_enter_0016.png",
-	"side_door_right\\W_enter_0017.png",
-	"side_door_right\\W_enter_0018.png",
-	"side_door_right\\W_enter_0019.png",
-	"side_door_right\\W_enter_0020.png",
-	"side_door_right\\W_enter_0021.png",
+	"door\\stand\\W_enter_0000.png",
+	"woody\\side_door_right\\W_enter_0001.png",
+	"woody\\side_door_right\\W_enter_0002.png",
+	"woody\\side_door_right\\W_enter_0003.png",
+	"woody\\side_door_right\\W_enter_0004.png",
+	"woody\\side_door_right\\W_enter_0005.png",
+	"woody\\side_door_right\\W_enter_0006.png",
+	"woody\\side_door_right\\W_enter_0007.png",
+	"woody\\side_door_right\\W_enter_0008.png",
+	"woody\\side_door_right\\W_enter_0009.png",
+	"woody\\side_door_right\\W_enter_0010.png",
+	"woody\\side_door_right\\W_enter_0011.png",
+	"woody\\side_door_right\\W_enter_0012.png",
+	"woody\\side_door_right\\W_enter_0013.png",
+	"woody\\side_door_right\\W_enter_0014.png",
+	"woody\\side_door_right\\W_enter_0015.png",
+	"woody\\side_door_right\\W_enter_0016.png",
+	"woody\\side_door_right\\W_enter_0017.png",
+	"woody\\side_door_right\\W_enter_0018.png",
+	"woody\\side_door_right\\W_enter_0019.png",
+	"woody\\side_door_right\\W_enter_0020.png",
+	"woody\\side_door_right\\W_enter_0021.png",
 };
 const char* pszRottweiler[] = {
 	"rottweiler\\stand\\N_ms2_0000.png",
@@ -181,13 +181,23 @@ const char* pszRottweilerRight[] = {
 	"rottweiler\\move_right\\N_mg1_0007.png",
 };
 const char* pszDoorAnim[] = { 
-	"N_leave_0000.png"
+	"door\\stand\\N_leave_0000.png"
 };
 const char* pszDoorAnimLeft[] = {
-	"side_door_left\\W_enter_0024.png"
+	"door\\stand\\W_enter_0024.png"
 };
 const char* pszDoorAnimRight[] = {
-	"side_door_right\\W_enter_0000.png"
+	"door\\stand\\W_enter_0000.png"
+};
+const char* pszTVScreen[] = {
+	"world_static_item\\tv\\tv_ms_0004b.png",
+	"world_static_item\\tv\\tv_ms_0004a.png",
+	"world_static_item\\tv\\tv_ms_0003b.png",
+	"world_static_item\\tv\\tv_ms_0003a.png",
+	"world_static_item\\tv\\tv_ms_0002b.png",
+	"world_static_item\\tv\\tv_ms_0002a.png",
+	"world_static_item\\tv\\tv_ms_0001b.png",
+	"world_static_item\\tv\\tv_ms_0001a.png"
 };
 
 DoorEntityInteractionController::DoorEntityInteractionController() 
@@ -223,43 +233,23 @@ bool DoorEntityInteractionController::ActionHandler(IANApi* pApi,
 
 CTestLevel::CTestLevel()
 {
-	this->m_WorldZoom = 0.f;
+	this->m_bSceneCreated = false;
+	this->m_flWorldZoom = 0.f;
 }
 
 CTestLevel::~CTestLevel()
 {
-
+	
 }
 
 void CTestLevel::OnLoadScene(IANApi* pApi)
 {
-	pApi->CreateAnimationComposition(pszWorld, 1, &this->m_WorldComposition);
-	pApi->CreateAnimationComposition(pszWoody, 3, &this->m_WoodyComposition);
-	pApi->CreateAnimationComposition(pszWoodyUp, 8, &this->m_WoodyCompositionUp);
-	pApi->CreateAnimationComposition(pszWoodyDown, 8, &this->m_WoodyCompositionDown);
-	pApi->CreateAnimationComposition(pszWoodyLeft, 8, &this->m_WoodyCompositionLeft);
-	pApi->CreateAnimationComposition(pszWoodyRight, 8, &this->m_WoodyCompositionRight);
-	pApi->CreateAnimationComposition(pszWoodyDoor, 10, &this->m_WoodyDoorLeave);
-	pApi->CreateAnimationComposition(pszWoodyDoorEnter, 16, &this->m_WoodyDoorEnter);
-	pApi->CreateAnimationComposition(pszWoodySideDoorLeftEnter, 25, &this->m_WoodyDoorSideLeftEnter);
-	pApi->CreateAnimationComposition(pszWoodySideDoorRightEnter, 22, &this->m_WoodyDoorSideRightEnter);
-	pApi->CreateAnimationComposition(pszDoorAnim, 1, &this->m_DoorComposition);
-	pApi->CreateAnimationComposition(pszDoorAnimLeft, 1, &this->m_DoorCompositionLeft);
-	pApi->CreateAnimationComposition(pszDoorAnimRight, 1, &this->m_DoorCompositionRight);
-	pApi->CreateAnimationComposition(pszRottweiler, 1, &this->m_RottweilerComposition);
-	pApi->CreateAnimationComposition(pszRottweilerUp, 8, &this->m_RottweilerCompositionUp);
-	pApi->CreateAnimationComposition(pszRottweilerDown, 8, &this->m_RottweilerCompositionDown);
-	pApi->CreateAnimationComposition(pszRottweilerLeft, 8, &this->m_RottweilerCompositionLeft);
-	pApi->CreateAnimationComposition(pszRottweilerRight, 8, &this->m_RottweilerCompositionRight);
+	CreateAnimationCompositions(pApi);
 
-	pApi->RegWorld(&this->m_pWorld);
-	this->m_pWorld->SetWorldSize(pApi->GetImageSize(pApi->GetAnimationCompositionFrameFromID(this->m_WorldComposition, 0)));
-	this->m_pWorld->GetAnimCompositionController()->SetAnimationComposition(this->m_WorldComposition);
+	CreateWorld(pApi);
 
 	CreateActorEntity(pApi, "ENTITY_Woody");
-
-	pApi->RegEntity(&this->m_pRottweiler, szWorldEntityPlayer);
-	this->m_pRottweiler->SetOrigin(anVec2(503.f, 326.f));
+	CreateRottweilerEntity(pApi, "ENTITY_Rottweiler");
 
 	CreateDoorEntity(pApi, this->m_pDoorEntityHallwayKitchen, "ENTITY_DoorEntityHallwayKitchen", anVec2(1111.f, 550.f), 
 		DOOR_TYPE::VERTICAL, HOUSE_ROOM::HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_KITCHEN, DOOR_INTERACTIONS::DOOR_KITCHEN_HALLWAY, HOUSE_FLOOR::FIRST, this->m_DoorComposition);
@@ -280,28 +270,24 @@ void CTestLevel::OnLoadScene(IANApi* pApi)
 	CreateDoorEntity(pApi, this->m_pDoorEntityHallwayBathroom, "ENTITY_DoorEntityHallwayBathroom", anVec2(383.f, 622.f),
 		DOOR_TYPE::HORIZONTAL, HOUSE_ROOM::HALLWAY, DOOR_INTERACTIONS::DOOR_HALLWAY_BATHROOM, DOOR_INTERACTIONS::DOOR_BATHROOM_HALLWAY, HOUSE_FLOOR::FIRST, this->m_DoorCompositionLeft);
 
-	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneHallway, anVec2(798.5f, 628.f), anVec2(857.f, 248.f), HOUSE_ROOM::HALLWAY, HOUSE_FLOOR::FIRST);
-	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneBathroom, anVec2(218.5f, 631.f), anVec2(269.f, 254.f), HOUSE_ROOM::BATHROOM, HOUSE_FLOOR::FIRST);
-	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneKitchen, anVec2(1101.5f, 345.f), anVec2(509.f, 250.f), HOUSE_ROOM::KITCHEN, HOUSE_FLOOR::SECOND);
-	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneHall, anVec2(475.f, 345.f), anVec2(702.f, 247.f), HOUSE_ROOM::HALL, HOUSE_FLOOR::SECOND);
+	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneHallway, anVec2(798.5f, 638.f), anVec2(857.f, 261.f), HOUSE_ROOM::HALLWAY, HOUSE_FLOOR::FIRST);
+	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneBathroom, anVec2(218.5f, 638.f), anVec2(269.f, 261.f), HOUSE_ROOM::BATHROOM, HOUSE_FLOOR::FIRST);
+	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneKitchen, anVec2(1101.5f, 350.f), anVec2(509.f, 255.f), HOUSE_ROOM::KITCHEN, HOUSE_FLOOR::SECOND);
+	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneHall, anVec2(475.f, 350.f), anVec2(702.f, 255.f), HOUSE_ROOM::HALL, HOUSE_FLOOR::SECOND);
+
+	this->m_bSceneCreated = true;
 }
 
 void CTestLevel::OnUnloadScene(IANApi* pApi)
 {
-	pApi->DeleteAnimationComposition(&this->m_WorldComposition);
-	pApi->DeleteAnimationComposition(&this->m_DoorComposition);
-	pApi->DeleteAnimationComposition(&this->m_WoodyDoorLeave);
-	pApi->DeleteAnimationComposition(&this->m_WoodyDoorEnter);
-	pApi->DeleteAnimationComposition(&this->m_WoodyComposition);
-	pApi->DeleteAnimationComposition(&this->m_WoodyCompositionLeft);
-	pApi->DeleteAnimationComposition(&this->m_WoodyDoorSideLeftEnter);
-	pApi->DeleteAnimationComposition(&this->m_WoodyCompositionRight);
-	
+	pApi->ClearAndDeleteLinkedImages();
+	pApi->ClearAndDeleteLinkedAnimationCompositions();
 	pApi->UnregWorld(&this->m_pWorld);
-
 	pApi->UnregAndDeleteAllEntity();
-
 	pApi->GetInteractionMessagesList()->Clear();
+
+	if (this)
+		delete this;
 }
 
 void CTestLevel::Entry(IANApi* pApi)
@@ -353,21 +339,15 @@ void CTestLevel::KeyboardMoveInput(IANApi* pApi)
 	if (pApi->GetKeyIsDowned('S'))
 		this->m_pMainActor->MoveDown(pApi, Step);
 	if (pApi->GetKeyIsDowned('A'))
-	{
 		this->m_pMainActor->MoveLeft(pApi, Step);
-		SetAnimationMoveLeft(this->m_pMainActor);
-	}
 	if (pApi->GetKeyIsDowned('D'))
-	{
 		this->m_pMainActor->MoveRight(pApi, Step);
-		SetAnimationMoveRight(this->m_pMainActor);
-	}
 }
 
 void CTestLevel::DrawWorld(IANApi* pApi)
 {
-	this->m_pWorld->SetZoom(this->m_WorldZoom);
-	this->m_pWorld->SetCameraToEntity(this->m_pMainActor);
+	this->m_pWorld->SetZoom(this->m_flWorldZoom);
+	//this->m_pWorld->SetCameraToEntity(this->m_pMainActor);
 	this->m_pWorld->Update(pApi);
 	this->m_pWorld->Draw(pApi);
 }
@@ -413,7 +393,8 @@ void CTestLevel::DrawUI(IANApi* pApi)
 {
 	auto ScreenSize = pApi->GetScreenSize();
 
-	if (pApi->AddButton("Go to menu", anVec2(ScreenSize.x - 130.f - 5.f, ScreenSize.y - 50.f - 5.f), anVec2(130.f, 50.f)))
+	const auto flPadding = 8.f;
+	if (pApi->AddButton("Go to menu", anVec2(ScreenSize.x - 130.f - flPadding, flPadding), anVec2(130.f, 50.f)))
 		pApi->ConnectToScene(new CTestGameScene());
 }
 
@@ -453,11 +434,11 @@ void CTestLevel::DrawStatistics(IANApi* pApi)
 		pApi->GetCursorPos().x, pApi->GetCursorPos().y);
 
 	pApi->PushFontAppierence(FontAppierence::FONT_SHADOW);
-	pApi->TextDraw(buff, anVec2(10.f, 20.f), anColor::White());
+	pApi->TextDraw(buff, anVec2(10.f, 90.f), anColor::White());
 	pApi->PopFontAppierence();
 
 	pApi->PushFontColor(anColor::White());
-	pApi->AddSliderFloat("Map zoom", anVec2(10.f, ScreenSize.y - 70.f), anVec2(300.f, 30.f), -1000.f, 10000.f, &this->m_WorldZoom);
+	pApi->AddSliderFloat("Map zoom", anVec2(10.f, 10.f), anVec2(300.f, 30.f), -1000.f, 10000.f, &this->m_flWorldZoom);
 	pApi->PopFontColor();
 }
 
@@ -489,16 +470,38 @@ float CTestLevel::GetFloor(HOUSE_FLOOR Floor)
 {
 	float ret = FLT_MAX;
 
-	if (Floor == HOUSE_FLOOR::FLOOR_UNK)
-		Floor = GetWoodyEntityData(this->m_pMainActor).m_CurrentFloor;
-
 	switch (Floor)
 	{
 	case HOUSE_FLOOR::FIRST:
-		ret = 615.f;
+		ret = 627.f;
 		break;
 	case HOUSE_FLOOR::SECOND:
-		ret = 326.f;
+		ret = 348.f;
+		break;
+	}
+
+	return ret;
+}
+
+float CTestLevel::GetFloor(IANEntity* pEntity)
+{
+	float ret = FLT_MAX;
+
+	if (!pEntity)
+		return ret;
+
+	auto pExtraData = GetWoodyEntityData(this->m_pMainActor);
+
+	if (!&pExtraData)
+		return ret;
+
+	switch (pExtraData.m_CurrentFloor)
+	{
+	case HOUSE_FLOOR::FIRST:
+		ret = 627.f;
+		break;
+	case HOUSE_FLOOR::SECOND:
+		ret = 348.f;
 		break;
 	}
 
@@ -530,7 +533,7 @@ float CTestLevel::GetFloorFromRoom(HOUSE_ROOM Room)
 
 void CTestLevel::ConstructWay(IANApi* pApi, IANEntity* pActor, IANEntity* pTargetDoorEntity, IANEntity* pNextDoorTargetEntity)
 {
-	float flFloorPosition = GetFloor();
+	float flFloorPosition = GetFloor(pActor);
 
 	auto vecActorPosition = pActor->GetOrigin();
 	auto vecDoorPosition = pTargetDoorEntity->GetOrigin();
@@ -559,7 +562,7 @@ void CTestLevel::ConstructWay(IANApi* pApi, IANEntity* pActor, IANEntity* pTarge
 	auto vecDestOrigin = pNextDoorTargetEntity->GetOrigin();
 
 	if (isDoorHorizontal)
-		vecDestOrigin.y = GetFloor(GetDoorEntityData(pNextDoorTargetEntity).m_LevelFloor);
+		vecDestOrigin.y = GetFloor(pNextDoorTargetEntity);
 
 	pActor->SetOrigin(vecDestOrigin);
 }
@@ -733,12 +736,47 @@ void CTestLevel::CreateMove(IANApi* pApi)
 		SetAnimationMoveRight(this->m_pMainActor);
 }
 
+void CTestLevel::CreateAnimationCompositions(IANApi* pApi)
+{
+	pApi->CreateAnimationComposition(pszWorld, AN_ARRSIZE(pszWorld), &this->m_WorldComposition, true);
+	pApi->CreateAnimationComposition(pszWoody, AN_ARRSIZE(pszWoody), &this->m_WoodyComposition, true);
+	pApi->CreateAnimationComposition(pszWoodyUp, AN_ARRSIZE(pszWoodyUp), &this->m_WoodyCompositionUp, true);
+	pApi->CreateAnimationComposition(pszWoodyDown, AN_ARRSIZE(pszWoodyDown), &this->m_WoodyCompositionDown, true);
+	pApi->CreateAnimationComposition(pszWoodyLeft, AN_ARRSIZE(pszWoodyLeft), &this->m_WoodyCompositionLeft, true);
+	pApi->CreateAnimationComposition(pszWoodyRight, AN_ARRSIZE(pszWoodyRight), &this->m_WoodyCompositionRight, true);
+	pApi->CreateAnimationComposition(pszWoodyDoor, AN_ARRSIZE(pszWoodyDoor), &this->m_WoodyDoorLeave, true);
+	pApi->CreateAnimationComposition(pszWoodyDoorEnter, AN_ARRSIZE(pszWoodyDoorEnter), &this->m_WoodyDoorEnter, true);
+	pApi->CreateAnimationComposition(pszWoodySideDoorLeftEnter, AN_ARRSIZE(pszWoodySideDoorLeftEnter), &this->m_WoodyDoorSideLeftEnter, true);
+	pApi->CreateAnimationComposition(pszWoodySideDoorRightEnter, AN_ARRSIZE(pszWoodySideDoorRightEnter), &this->m_WoodyDoorSideRightEnter, true);
+	pApi->CreateAnimationComposition(pszDoorAnim, AN_ARRSIZE(pszDoorAnim), &this->m_DoorComposition, true);
+	pApi->CreateAnimationComposition(pszDoorAnimLeft, AN_ARRSIZE(pszDoorAnimLeft), &this->m_DoorCompositionLeft, true);
+	pApi->CreateAnimationComposition(pszDoorAnimRight, AN_ARRSIZE(pszDoorAnimRight), &this->m_DoorCompositionRight, true);
+	pApi->CreateAnimationComposition(pszRottweiler, AN_ARRSIZE(pszRottweiler), &this->m_RottweilerComposition, true);
+	pApi->CreateAnimationComposition(pszRottweilerUp, AN_ARRSIZE(pszRottweilerUp), &this->m_RottweilerCompositionUp, true);
+	pApi->CreateAnimationComposition(pszRottweilerDown, AN_ARRSIZE(pszRottweilerDown), &this->m_RottweilerCompositionDown, true);
+	pApi->CreateAnimationComposition(pszRottweilerLeft, AN_ARRSIZE(pszRottweilerLeft), &this->m_RottweilerCompositionLeft, true);
+	pApi->CreateAnimationComposition(pszTVScreen, AN_ARRSIZE(pszTVScreen), &this->m_TVScreenComposition, true);
+}
+
+void CTestLevel::CreateWorld(IANApi* pApi)
+{
+	pApi->RegWorld(&this->m_pWorld);
+	this->m_pWorld->SetWorldSize(pApi->GetImageSize(pApi->GetAnimationCompositionFrameFromID(this->m_WorldComposition, 0)));
+	this->m_pWorld->GetAnimCompositionController()->SetAnimationComposition(this->m_WorldComposition);
+}
+
 void CTestLevel::CreateActorEntity(IANApi* pApi, const char* pszActorName)
 {
 	pApi->RegEntity(&this->m_pMainActor, szWorldEntityPlayer);
 	this->m_pMainActor->SetEntityName(pszActorName);
-	this->m_pMainActor->SetOrigin(anVec2(1167.f, 615.f)); //326.f;
+	this->m_pMainActor->SetOrigin(anVec2(1167.f, GetFloor(HOUSE_FLOOR::FIRST))); //326.f;
 	this->m_pMainActor->SetUserDataPointer(new ActorWoodyGameData());
+}
+
+void CTestLevel::CreateRottweilerEntity(IANApi* pApi, const char* pszActorName)
+{
+	pApi->RegEntity(&this->m_pRottweiler, szWorldEntityPlayer);
+	this->m_pRottweiler->SetOrigin(anVec2(503.f, GetFloor(HOUSE_FLOOR::SECOND)));
 }
 
 void CTestLevel::CreateRoomZoneEntity(IANApi* pApi, IANEntity*& pEntity, anVec2 RoomPos, anVec2 RoomSize, HOUSE_ROOM HouseRoom, HOUSE_FLOOR LevelFloor)
@@ -768,4 +806,9 @@ void CTestLevel::CreateDoorEntity(
 	pEntity->GetAnimCompositionController()->SetAnimationComposition(pDoorComposition);
 	pEntity->GetAnimCompositionController()->SetAnimationDuration(0.1f);
 	pEntity->SetUserDataPointer(new CDoorEntityData(HouseRoom, DoorType, DoorInteraction, InvertedDoorInteraction, LevelFloor));
+}
+
+void CTestLevel::CreateStaticEntity(IANApi* pApi, IANEntity** ppEntity, ANAnimationComposition DefaultAnimationComposition, anVec2 vecPosition, anVec2 vecSize)
+{
+
 }

@@ -31,7 +31,7 @@ void ANWorld::Update(IANApi* pApi)
 {
 	auto wm = &this->m_WorldMetrics;
 
-	auto ScreenSize = pApi->GetScreenSize();
+	auto vecScreenSize = pApi->GetScreenSize();
 
 	if (this->m_bNeedUpdateCamera)
 	{
@@ -39,10 +39,10 @@ void ANWorld::Update(IANApi* pApi)
 		wm->m_CameraWorld = this->m_NewCameraWorld;
 	}
 
-	wm->m_WorldScreenSize = ANMathUtils::CalcSizeAtImageAspectRatio(ScreenSize, wm->m_WorldSize);
-	wm->m_WorldScreenPos = ANMathUtils::CalcPosToCenter(ScreenSize, wm->m_WorldScreenSize);
+	wm->m_WorldScreenSize = ANMathUtils::CalcSizeAtImageAspectRatio(vecScreenSize, wm->m_WorldSize);
+	wm->m_WorldScreenPos = ANMathUtils::CalcPosToCenter(vecScreenSize, wm->m_WorldScreenSize);
 
-	ANMathUtils::CorrectSizeToOutRect(ScreenSize, wm->m_WorldScreenPos, wm->m_WorldScreenSize);
+	ANMathUtils::CorrectSizeToOutRect(vecScreenSize, wm->m_WorldScreenPos, wm->m_WorldScreenSize);
 
 	ANMathUtils::ApplyZoom(wm->m_WorldScreenPos, wm->m_WorldScreenSize, this->m_WorldMetrics.m_flMapZoom);
 

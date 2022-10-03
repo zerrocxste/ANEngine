@@ -22,9 +22,9 @@ public:
 
 	anVec2 GetScreenSize() override;
 
-	bool CreateImage(const char* pszPath, ANImageID* pImageID) override;
+	bool CreateImage(const char* pszPath, ANImageID* pImageID, bool bLinkToDataList) override;
 	anVec2 GetImageSize(ANImageID ImageID) override;
-	void FreeImage(ANImageID* pImageIDPtr) override;
+	void FreeImage(ANImageID* pImageID) override;
 	bool DrawImage(ANImageID pImageID, anVec2 Pos, anVec2 Size, float Opacity) override;
 	bool DrawLine(anVec2 From, anVec2 To, anColor Color, float LineThickness = 1.f) override;
 	bool DrawRectangle(anVec2 Pos, anVec2 Size, anColor Color, float LineThickness = 1.f, float Rounding = 0.f, bool Filled = false) override;
@@ -62,10 +62,13 @@ public:
 
 	IANInteractionMessagesList* GetInteractionMessagesList() override;
 
-	bool CreateAnimationComposition(const char** pszAnimationLabelsArr, int iAnimationLabelsArrSize, ANAnimationComposition* pAnimationComposition) override;
+	bool CreateAnimationComposition(const char** pszAnimationLabelsArr, int iAnimationLabelsArrSize, ANAnimationComposition* pAnimationComposition, bool bLinkToDataList) override;
 	void DeleteAnimationComposition(ANAnimationComposition* pAnimationComposition) override;
 	int GetAnimationCompositionSize(ANAnimationComposition AnimationComposition) override;
 	ANImageID GetAnimationCompositionFrameFromID(ANAnimationComposition AnimationComposition, int ID) override;
+
+	void ClearAndDeleteLinkedImages();
+	void ClearAndDeleteLinkedAnimationCompositions();
 
 	bool RegGuiWindow(ANGuiWindowID* pGuiWindowID, anVec2 Size) override;
 	bool UnregGuiWindow(ANGuiWindowID* pGuiWindowID) override;

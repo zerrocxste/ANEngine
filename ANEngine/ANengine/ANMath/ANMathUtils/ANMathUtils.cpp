@@ -148,13 +148,13 @@ void ANMathUtils::ClampCamera(anVec2 ScreenSize, anVec2 WorldSize, anVec2 WorldS
 
 anRect ANMathUtils::CalcBBox(anVec2 Origin, anVec2 ObjectSize)
 {
-	auto f1 = Origin;
-	auto f2 = Origin + ObjectSize;
+	auto v1 = Origin;
+	auto v2 = Origin + ObjectSize;
 
-	anVec2 cv((f2.x - f1.x) * 0.5f, f2.y - f1.y);
-	f1 -= cv; f2 -= cv;
+	anVec2 cv((v2.x - v1.x) * 0.5f, v2.y - v1.y);
+	v1 -= cv; v2 -= cv;
 
-	return anRect(f1, f2);
+	return anRect(v1, v2);
 }
 
 anRect ANMathUtils::CalcScreenBBox(ANWorldMetrics WorldMetrics, anVec2 Origin, anVec2 ObjectSize)

@@ -147,6 +147,7 @@
     <ClCompile Include="ANEngine.cpp" />
     <ClCompile Include="ANengine\ANApi\ANApi.cpp" />
     <ClCompile Include="ANengine\ANCore\ANCore.cpp" />
+    <ClCompile Include="ANengine\ANGameResourcesData\ANGameResourcesData.cpp" />
     <ClCompile Include="ANengine\ANGame\ANGame.cpp" />
     <ClCompile Include="ANengine\ANInput\ANInput.cpp" />
     <ClCompile Include="ANengine\ANLoader\ANLoader.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="ANengine\ANApi\ANApi.h" />
     <ClInclude Include="ANengine\ANCore\ANCore.h" />
     <ClInclude Include="ANengine\ANEngine.h" />
+    <ClInclude Include="ANengine\ANGameResourcesData\ANGameResourcesData.h" />
     <ClInclude Include="ANengine\ANGame\ANGame.h" />
     <ClInclude Include="ANengine\ANInput\ANInput.h" />
     <ClInclude Include="ANengine\ANInterfacePointer\ANInterfacePointer.h" />

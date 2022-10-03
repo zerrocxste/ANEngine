@@ -27,7 +27,7 @@ public:
 	virtual anVec2 GetScreenSize() = 0;
 
 	//DRAWING
-	virtual bool CreateImage(const char* pszPath, ANImageID* pImageID) = 0;
+	virtual bool CreateImage(const char* pszPath, ANImageID* pImageID, bool bLinkToDataList = false) = 0;
 	virtual anVec2 GetImageSize(ANImageID ImageID) = 0;
 	virtual void FreeImage(ANImageID* pImageID) = 0;
 	virtual bool DrawImage(ANImageID ImageID, anVec2 Pos, anVec2 Size, float Opacity) = 0;
@@ -70,10 +70,14 @@ public:
 	virtual IANInteractionMessagesList* GetInteractionMessagesList() = 0;
 
 	//DRAWING HELPERS
-	virtual bool CreateAnimationComposition(const char** pszAnimationLabelsArr, int iAnimationLabelsArrSize, ANAnimationComposition* pAnimationComposition) = 0;
+	virtual bool CreateAnimationComposition(const char** pszAnimationLabelsArr, int iAnimationLabelsArrSize, ANAnimationComposition* pAnimationComposition, bool bLinkToDataList = false) = 0;
 	virtual void DeleteAnimationComposition(ANAnimationComposition* pAnimationComposition) = 0;
 	virtual int GetAnimationCompositionSize(ANAnimationComposition AnimationComposition) = 0;
 	virtual ANImageID GetAnimationCompositionFrameFromID(ANAnimationComposition AnimationComposition, int ID) = 0;
+
+	//DRAWING / DRAWING HELPERS STUFF
+	virtual void ClearAndDeleteLinkedImages() = 0;
+	virtual void ClearAndDeleteLinkedAnimationCompositions() = 0;
 
 	//GUI WINDOW
 	virtual bool RegGuiWindow(ANGuiWindowID* pGuiWindowID, anVec2 Size) = 0;

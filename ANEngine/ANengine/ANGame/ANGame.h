@@ -16,6 +16,7 @@ public:
 	void RegEntity(IANEntity** ppEntity, const char* pszEntityClassID);
 	void UnregEntity(IANEntity** ppEntity);
 
+	ANGameResourcesData* GetGameResourcesData();
 	ANEntityList* GetEntityList();
 	ANInteractionMessagesList* GetInteractionList();
 private:
@@ -24,6 +25,7 @@ private:
 	void DisconnectScene();
 	bool m_bNeedLeaveGame;
 
+	ANGameResourcesData* m_pGameResourcesData;
 	ANEntityList* m_pEntityList;
 	ANInteractionMessagesList* m_pInteractionMessagesList;
 

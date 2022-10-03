@@ -72,14 +72,9 @@ anVec2 ANApi::GetScreenSize()
 	return this->m_pCore->GetRenderer()->GetScreenSize();
 }
 
-bool ANApi::CreateImage(const char* pszPath, ANImageID* pImageID)
+bool ANApi::CreateImage(const char* pszPath, ANImageID* pImageID, bool bLinkToDataList)
 {
-	ANUniqueResource ImageResource;
-
-	if (!this->m_pCore->GetResourceManager()->ReadBinFile(pszPath, &ImageResource))
-		return false;
-
-	return this->m_pCore->GetRenderer()->CreateImageFromResource(&ImageResource, pImageID);
+	return this->m_pCore->GetGame()->GetGameResourcesData()->CreateImage(pszPath, pImageID, bLinkToDataList);
 }
 
 anVec2 ANApi::GetImageSize(ANImageID ImageID)
@@ -89,9 +84,9 @@ anVec2 ANApi::GetImageSize(ANImageID ImageID)
 	return Size;
 }
 
-void ANApi::FreeImage(ANImageID* pImageIDPtr)
+void ANApi::FreeImage(ANImageID* pImageID)
 {
-	this->m_pCore->GetRenderer()->FreeImage(pImageIDPtr);
+	this->m_pCore->GetGame()->GetGameResourcesData()->DeleteImage(pImageID);
 }
 
 bool ANApi::DrawImage(ANImageID pImageID, anVec2 Pos, anVec2 Size, float Opacity)
@@ -223,7 +218,7 @@ void ANApi::UnregAndDeleteAllEntity()
 ANInterfacePointer<IANEntityGroup> ANApi::FindEntityByGroupID(const char* pszGroupID)
 {
 	auto pEntityGroup = ANImpPtr<ANEntityGroup>();
-	this->m_pCore->GetGame()->GetEntityList()->FindFromClassID(pszGroupID, &pEntityGroup.m_Pointer->m_EntityGroup);
+	this->m_pCore->GetGame()->GetEntityList()->FindFromClassID(pszGroupID, &pEntityGroup->m_EntityGroup);
 	return pEntityGroup;
 }
 
@@ -237,46 +232,14 @@ IANInteractionMessagesList* ANApi::GetInteractionMessagesList()
 	return this->m_pCore->GetGame()->GetInteractionList();
 }
 
-bool ANApi::CreateAnimationComposition(const char** pszAnimationLabelsArr, int iAnimationLabelsArrSize, ANAnimationComposition* pAnimationComposition)
+bool ANApi::CreateAnimationComposition(const char** pszAnimationLabelsArr, int iAnimationLabelsArrSize, ANAnimationComposition* pAnimationComposition, bool bLinkToDataList)
 {
-	if (iAnimationLabelsArrSize == 0)
-		return false;
-
-	*pAnimationComposition = (ANAnimationComposition)ANMemory::GetInstance()->ResourceAllocate(sizeof(int) + (sizeof(ANAnimationComposition) * iAnimationLabelsArrSize));
-
-	if (!*pAnimationComposition)
-		return false;
-
-	*(int*)*pAnimationComposition = iAnimationLabelsArrSize;
-
-	auto AnimationComposition = (ANAnimationComposition**)((std::uintptr_t)*pAnimationComposition + sizeof(int));
-
-	for (auto i = 0; i < iAnimationLabelsArrSize; i++)
-	{
-		ANImageID Image = 0;
-
-		ANUniqueResource ImageResource;
-
-		if (!this->m_pCore->GetResourceManager()->ReadBinFile(pszAnimationLabelsArr[i], &ImageResource))
-			return false;
-
-		if (!this->m_pCore->GetRenderer()->CreateImageFromResource(&ImageResource, &Image))
-			return false;
-
-		AnimationComposition[i] = (ANAnimationComposition*)Image;
-	}
-
-	return true;
+	return this->m_pCore->GetGame()->GetGameResourcesData()->CreateAnimationComposition(pszAnimationLabelsArr, iAnimationLabelsArrSize, pAnimationComposition, bLinkToDataList);
 }
 
 void ANApi::DeleteAnimationComposition(ANAnimationComposition* pAnimationComposition)
 {
-	auto AnimationComposition = (ANAnimationComposition**)((std::uintptr_t)*pAnimationComposition + sizeof(int));
-
-	for (auto i = 0; i < *(int*)*pAnimationComposition; i++)
-		this->m_pCore->GetRenderer()->FreeImage((ANImageID*)((std::uintptr_t)AnimationComposition + (sizeof(ANAnimationComposition) * i)));
-		
-	ANMemory::GetInstance()->FreeResource(*pAnimationComposition);
+	this->m_pCore->GetGame()->GetGameResourcesData()->DeleteAnimationComposition(pAnimationComposition);
 }
 
 int ANApi::GetAnimationCompositionSize(ANAnimationComposition AnimationComposition)
@@ -287,6 +250,16 @@ int ANApi::GetAnimationCompositionSize(ANAnimationComposition AnimationCompositi
 ANImageID ANApi::GetAnimationCompositionFrameFromID(ANAnimationComposition AnimationComposition, int ID)
 {
 	return *(ANImageID*)(((std::uintptr_t)AnimationComposition + sizeof(int)) + (sizeof(ANAnimationComposition) * ID));
+}
+
+void ANApi::ClearAndDeleteLinkedImages()
+{
+	this->m_pCore->GetGame()->GetGameResourcesData()->ClearImageData();
+}
+
+void ANApi::ClearAndDeleteLinkedAnimationCompositions()
+{
+	this->m_pCore->GetGame()->GetGameResourcesData()->ClearAnimationCompositionData();
 }
 
 bool ANApi::RegGuiWindow(ANGuiWindowID* pGuiWindowID, anVec2 Size)

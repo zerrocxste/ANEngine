@@ -163,6 +163,9 @@
     <Filter Include="ANEngine\Interfaces\IANRendererBackend">
       <UniqueIdentifier>{f0e54c73-22a1-4d07-8ab2-3756cebe0286}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ANEngine\ANGameResourcesData">
+      <UniqueIdentifier>{a1edf733-7a9f-4d27-95d2-462c4ba13f1e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ANEngine.cpp">
@@ -245,6 +248,9 @@
     </ClCompile>
     <ClCompile Include="ANengine\Platforms\Direct2D\ANDirect2DPlatform.cpp">
       <Filter>ANEngine\Platforms\Direct2D</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\ANGameResourcesData\ANGameResourcesData.cpp">
+      <Filter>ANEngine\ANGameResourcesData</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -367,6 +373,9 @@
     </ClInclude>
     <ClInclude Include="ANengine\Interfaces\IANRendererBackend\IANRendererBackend.h">
       <Filter>ANEngine\Interfaces\IANRendererBackend</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\ANGameResourcesData\ANGameResourcesData.h">
+      <Filter>ANEngine\ANGameResourcesData</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

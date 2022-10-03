@@ -17,6 +17,12 @@ void ANEntity::SetOrigin(anVec2 Origin)
 	auto vecCurrentOrigin = this->m_vecOrigin;
 
 	this->m_vecOrigin = Origin;
+
+	if (vecCurrentOrigin.x != this->m_vecOrigin.x)
+		this->m_MoveInfo.m_EntityDirectionFlags |= this->m_vecOrigin.x < vecCurrentOrigin.x ? ANDirectionMoveFlags::MOVE_LEFT : ANDirectionMoveFlags::MOVE_RIGHT;
+
+	if (vecCurrentOrigin.y != this->m_vecOrigin.y)
+		this->m_MoveInfo.m_EntityDirectionFlags |= this->m_vecOrigin.y < vecCurrentOrigin.y ? ANDirectionMoveFlags::MOVE_UP : ANDirectionMoveFlags::MOVE_DOWN;
 }
 
 anVec2 ANEntity::MovePoint(IANApi* pApi, float Speed, anVec2 Origin)
