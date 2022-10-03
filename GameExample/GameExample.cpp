@@ -22,7 +22,7 @@ int main()
 		return 1;
 	}
 
-	pLoader->ConnectScene(new CTestGameScene());
+	pLoader->ConnectScene(new CTestLevel());
 
 	pLoader->RunScene();
 

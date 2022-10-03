@@ -88,6 +88,7 @@ T& ANInterfacePointer<T>::operator*()
 template<class T>
 ANInterfacePointer<T>& ANInterfacePointer<T>::operator=(const ANInterfacePointer<T>& o)
 {
+	release();
 	this->m_Pointer = o.m_Pointer;
 	o.m_Pointer = nullptr;
 	return *this;
@@ -97,6 +98,7 @@ template<class T>
 template<class O>
 ANInterfacePointer<T>& ANInterfacePointer<T>::operator=(const ANInterfacePointer<O>& o)
 {
+	release();
 	this->m_Pointer = o.m_Pointer;
 	o.m_Pointer = nullptr;
 	return *this;

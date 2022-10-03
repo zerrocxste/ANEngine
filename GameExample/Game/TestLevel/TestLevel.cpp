@@ -3,6 +3,7 @@
 float Step = 250.f;
 
 auto szWorldEntityPlayer = "CLASSID_WorldEntity_Player";
+auto szWorldEntityStatic = "CLASSID_WorldEntityStatic";
 auto szWorldEntityClassIDRoomZone = "CLASSID_WorldEntity_RoomZone";
 auto szWorldEntityClassIDDoor = "CLASSID_WorldEntity_Door";
 
@@ -170,6 +171,22 @@ const char* pszRottweilerLeft[] = {
 	"rottweiler\\move_left\\N_mg3_0006.png",
 	"rottweiler\\move_left\\N_mg3_0007.png",
 };
+const char* pszRottweilerSeatRemote[] = {
+	"rottweiler\\seat_remote\\N_sit_remo_0000.png",
+	"rottweiler\\seat_remote\\N_sit_remo_0001.png",
+	"rottweiler\\seat_remote\\N_sit_remo_0002.png",
+	"rottweiler\\seat_remote\\N_sit_remo_0003.png",
+	"rottweiler\\seat_remote\\N_sit_remo_0004.png",
+	"rottweiler\\seat_remote\\N_sit_remo_0005.png",
+	"rottweiler\\seat_remote\\N_sit_remo_0006.png",
+	"rottweiler\\seat_remote\\N_sit_remo_0007.png",
+	"rottweiler\\seat_remote\\N_sit_remo_0008.png",
+	"rottweiler\\seat_remote\\N_sit_remo_0009.png",
+	"rottweiler\\seat_remote\\N_sit_remo_0010.png",
+	"rottweiler\\seat_remote\\N_sit_remo_0011.png",
+	"rottweiler\\seat_remote\\N_sit_remo_0012.png",
+	"rottweiler\\seat_remote\\N_sit_remo_0013.png",
+};
 const char* pszRottweilerRight[] = {
 	"rottweiler\\move_right\\N_mg1_0000.png",
 	"rottweiler\\move_right\\N_mg1_0001.png",
@@ -275,6 +292,8 @@ void CTestLevel::OnLoadScene(IANApi* pApi)
 	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneKitchen, anVec2(1101.5f, 350.f), anVec2(509.f, 255.f), HOUSE_ROOM::KITCHEN, HOUSE_FLOOR::SECOND);
 	CreateRoomZoneEntity(pApi, this->m_pEntityDoorZoneHall, anVec2(475.f, 350.f), anVec2(702.f, 255.f), HOUSE_ROOM::HALL, HOUSE_FLOOR::SECOND);
 
+	CreateStaticEntity(pApi, &this->m_pTVScreen, this->m_TVScreenComposition, 0.2f, anVec2(212.f, 282.5f));
+
 	this->m_bSceneCreated = true;
 }
 
@@ -354,6 +373,21 @@ void CTestLevel::DrawWorld(IANApi* pApi)
 
 void CTestLevel::DrawEntities(IANApi* pApi)
 {
+	if (pApi->GetKeyIsDowned('V'))
+	{
+		this->m_pRottweiler->GetAnimCompositionController()->SetAnimationComposition(this->m_RottweilerSeatRemote);
+		this->m_pRottweiler->GetAnimCompositionController()->SetAnimationDuration(0.1f);
+
+		static auto bIsSuccess = false;
+
+		if (this->m_pRottweiler->GetAnimCompositionController()->IsAnimationCycleComplete())
+		{
+			printf("YES\n");
+			bIsSuccess = !bIsSuccess;
+			this->m_pRottweiler->GetAnimCompositionController()->SetAnimationMode(bIsSuccess);
+		}
+	}
+
 #if DEBUG_LEVEL_1 == 1
 	auto groupZone = pApi->FindEntityByGroupID(szWorldEntityClassIDRoomZone);
 
@@ -379,6 +413,10 @@ void CTestLevel::DrawEntities(IANApi* pApi)
 	groupDoors->DrawRectRegion(pApi, this->m_pWorld, anColor::Red());
 #endif
 	groupDoors->DrawFromComposition(pApi, this->m_pWorld);
+
+	auto groupStaticEntites = pApi->FindEntityByGroupID(szWorldEntityStatic);
+	groupStaticEntites->Update(pApi);
+	groupStaticEntites->DrawFromComposition(pApi, this->m_pWorld);
 
 	auto groupEntities = pApi->FindEntityByGroupID(szWorldEntityPlayer);
 	groupEntities->SortByYOrder();
@@ -755,6 +793,7 @@ void CTestLevel::CreateAnimationCompositions(IANApi* pApi)
 	pApi->CreateAnimationComposition(pszRottweilerUp, AN_ARRSIZE(pszRottweilerUp), &this->m_RottweilerCompositionUp, true);
 	pApi->CreateAnimationComposition(pszRottweilerDown, AN_ARRSIZE(pszRottweilerDown), &this->m_RottweilerCompositionDown, true);
 	pApi->CreateAnimationComposition(pszRottweilerLeft, AN_ARRSIZE(pszRottweilerLeft), &this->m_RottweilerCompositionLeft, true);
+	pApi->CreateAnimationComposition(pszRottweilerSeatRemote, AN_ARRSIZE(pszRottweilerSeatRemote), &this->m_RottweilerSeatRemote, true);
 	pApi->CreateAnimationComposition(pszTVScreen, AN_ARRSIZE(pszTVScreen), &this->m_TVScreenComposition, true);
 }
 
@@ -808,7 +847,10 @@ void CTestLevel::CreateDoorEntity(
 	pEntity->SetUserDataPointer(new CDoorEntityData(HouseRoom, DoorType, DoorInteraction, InvertedDoorInteraction, LevelFloor));
 }
 
-void CTestLevel::CreateStaticEntity(IANApi* pApi, IANEntity** ppEntity, ANAnimationComposition DefaultAnimationComposition, anVec2 vecPosition, anVec2 vecSize)
+void CTestLevel::CreateStaticEntity(IANApi* pApi, IANEntity** ppEntity, ANAnimationComposition DefaultAnimationComposition, float flAnimationDuration, anVec2 vecPosition, anVec2 vecSize)
 {
-
+	pApi->RegEntity(ppEntity, szWorldEntityStatic);
+	this->m_pTVScreen->SetOrigin(vecPosition);
+	this->m_pTVScreen->GetAnimCompositionController()->SetAnimationComposition(DefaultAnimationComposition);
+	this->m_pTVScreen->GetAnimCompositionController()->SetAnimationDuration(flAnimationDuration);
 }

@@ -53,6 +53,9 @@ void ANEntityList::Unreg(IANEntity* ppEntity)
 	if (pEntity->m_szEntityName)
 		delete[] pEntity->m_szEntityName;
 
+	if (pEntity->m_pIANInteractionControllerUserCallback)
+		delete pEntity->m_pIANInteractionControllerUserCallback;
+
 	ANMemory::GetInstance()->Delete(pEntity->m_pAnimCompositionController);
 
 	ANMemory::GetInstance()->Delete(pEntity);

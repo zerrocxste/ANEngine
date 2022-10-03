@@ -3,6 +3,8 @@
 class IANEntityGroupData
 {
 public:
+	virtual ~IANEntityGroupData() = default;
+
 	virtual IANEntity* Get() = 0;
 	virtual IANEntityGroupData& operator=(const IANEntityGroupData& other) = 0;
 	virtual IANEntityGroupData& operator++(int) = 0;
@@ -13,6 +15,8 @@ public:
 class IANEntityGroup
 {
 public:
+	virtual ~IANEntityGroup() = default;
+
 	virtual ANInterfacePointer<IANEntityGroupData> First() = 0;
 	virtual ANInterfacePointer<IANEntityGroupData> Last() = 0;
 

@@ -18,6 +18,8 @@ struct ANUniqueInteractionMesssage
 class IANInteractionMessagesNode
 {
 public:
+	virtual ~IANInteractionMessagesNode() = default;
+
 	virtual ANUniqueInteractionMesssage& operator*() = 0;
 	virtual IANInteractionMessagesNode& operator++(int) = 0;
 	virtual bool operator!=(const ANInterfacePointer<IANInteractionMessagesNode>& Node) = 0;
@@ -27,6 +29,8 @@ class IANInteractionMessagesList
 {
 public:
 	using InteractionObjectNode = ANInterfacePointer<IANInteractionMessagesNode>;
+
+	virtual ~IANInteractionMessagesList() = default;
 
 	virtual void AddInteractionMessage(const char* pszEventClassID, const char* pszEventMessage, IANEntity** pRemoteEntity, void* pReversedUserData) = 0;
 	virtual void AddInteractionMessageForEntityName(const char* pszEventClassID, const char* pszEventMessage, const char* pszEntityName, IANEntity** pRemoteEntity, void* pReversedUserData) = 0;

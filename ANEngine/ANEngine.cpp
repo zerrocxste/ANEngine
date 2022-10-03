@@ -1,6 +1,6 @@
 ﻿#include "ANengine/ANEngine.h"
 
-constexpr auto MODULE_DESC = "AlterNative engine (ANEngine) Engine module. Timestamp: " __DATE__;
+constexpr auto MODULE_DESC = "ANEngine module. Timestamp: " __DATE__;
 
 extern "C" __declspec(dllexport) IANLoader * __stdcall CreateEngineInstance(
 	const char* pszWindowName,

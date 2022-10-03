@@ -155,7 +155,9 @@ private:
 	ANAnimationComposition m_RottweilerCompositionDown;
 	ANAnimationComposition m_RottweilerCompositionLeft;
 	ANAnimationComposition m_RottweilerCompositionRight;
+	ANAnimationComposition m_RottweilerSeatRemote;
 
+	IANEntity* m_pTVScreen;
 	ANAnimationComposition m_TVScreenComposition;
 
 	IANEntity* m_pEntityDoorZoneHallway;
@@ -192,7 +194,7 @@ private:
 		DOOR_INTERACTIONS InvertedDoorInteraction, 
 		HOUSE_FLOOR LevelFloor,
 		ANAnimationComposition pDoorComposition);
-	void CreateStaticEntity(IANApi* pApi, IANEntity** ppEntity, ANAnimationComposition DefaultAnimationComposition, anVec2 vecPosition, anVec2 vecSize = anVec2());
+	void CreateStaticEntity(IANApi* pApi, IANEntity** ppEntity, ANAnimationComposition DefaultAnimationComposition, float flAnimationDuration, anVec2 vecPosition, anVec2 vecSize = anVec2());
 
 	void ConstructWay(IANApi* pApi, IANEntity* pActor, IANEntity* pTargetDoorEntity, IANEntity* pNextDoorTargetEntity);
 

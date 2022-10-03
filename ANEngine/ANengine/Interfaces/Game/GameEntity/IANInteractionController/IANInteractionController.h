@@ -3,6 +3,8 @@
 class IANInteractionController
 {
 public:
+	virtual ~IANInteractionController() = default;
+
 	virtual bool ActionHandler(IANApi* pApi,
 		const char* pszEventClassID,
 		const char* pszEventMessage,

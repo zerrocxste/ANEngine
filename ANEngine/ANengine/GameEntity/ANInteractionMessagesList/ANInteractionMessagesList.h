@@ -5,7 +5,7 @@ class ANInteractionMessagesList;
 class ANInteractionMessagesNode : public IANInteractionMessagesNode
 {
 	friend ANInteractionMessagesList;
-
+public:
 	std::deque<ANUniqueInteractionMesssage>::iterator iter;
 
 	ANUniqueInteractionMesssage& operator*() override;
