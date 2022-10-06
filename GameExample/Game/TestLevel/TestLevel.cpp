@@ -382,7 +382,6 @@ void CTestLevel::DrawEntities(IANApi* pApi)
 
 		if (this->m_pRottweiler->GetAnimCompositionController()->IsAnimationCycleComplete())
 		{
-			printf("YES\n");
 			bIsSuccess = !bIsSuccess;
 			this->m_pRottweiler->GetAnimCompositionController()->SetAnimationMode(bIsSuccess);
 		}

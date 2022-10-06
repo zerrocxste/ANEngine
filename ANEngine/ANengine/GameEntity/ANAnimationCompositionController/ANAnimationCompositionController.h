@@ -21,6 +21,8 @@ private:
 	int m_iCountOfIterationsPlayingComposition;
 	int m_iMaxFramesOfCompositionInIteration;
 
+	int m_iCurrentCompositionMaxFrame;
+
 	float m_flAnimationTime;
 
 	bool m_bIsPlayInversed;
