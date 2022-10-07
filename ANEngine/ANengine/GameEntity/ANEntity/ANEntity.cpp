@@ -338,6 +338,16 @@ IANAnimationCompositionController* ANEntity::GetAnimCompositionController()
 	return this->m_pAnimCompositionController;
 }
 
+void ANEntity::AddDefaultAnimationComposition(IANApi* pApi, ANAnimationComposition AnimationComposition, float flAnimationDuration)
+{
+	pApi->AddDefaultAnimationComposition(this, AnimationComposition, flAnimationDuration);
+}
+
+void ANEntity::DeleteDefaultAnimationComposition(IANApi* pApi)
+{
+	pApi->DeleteDefaultAnimationComposition(this);
+}
+
 IANEntity& ANEntity::Update(IANApi* pApi)
 {
 	this->m_MoveInfo.m_EntityDirectionFlags = ANDirectionMoveFlags::MOVE_NO;

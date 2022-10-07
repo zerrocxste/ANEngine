@@ -12,6 +12,11 @@ ANApi::~ANApi()
 
 }
 
+const char* ANApi::GetVersion()
+{
+	return this->m_pCore->GetVersion();
+}
+
 void ANApi::LeaveApp()
 {
 	this->m_pCore->GetGame()->LeaveGame();
@@ -24,22 +29,50 @@ bool ANApi::ConnectToScene(IANGameScene* pGameScene)
 
 bool ANApi::GetCursorKeyIsDowned(int k)
 {
-	return this->m_pCore->GetInput()->IsCursorKeyDowned(k);
+	auto Input = this->m_pCore->GetInput();
+
+	auto ret = Input->IsCursorKeyDowned(k);
+
+	if (!ret)
+		this->SetError(Input->What());
+
+	return ret;
 }
 
 bool ANApi::GetCursorKeyIsClicked(int k)
 {
-	return this->m_pCore->GetInput()->IsCursorKeyClicked(k);
+	auto Input = this->m_pCore->GetInput();
+
+	auto ret = Input->IsCursorKeyClicked(k);
+
+	if (!ret)
+		this->SetError(Input->What());
+
+	return ret;
 }
 
 bool ANApi::GetCursorKeyIsReleased(int k)
 {
-	return this->m_pCore->GetInput()->IsCursorKeyReleased(k);
+	auto Input = this->m_pCore->GetInput();
+
+	auto ret = Input->IsCursorKeyReleased(k);
+
+	if (!ret)
+		this->SetError(Input->What());
+
+	return ret;
 }
 
 float ANApi::GetCursorKeyDownTime(int k)
 {
-	return this->m_pCore->GetInput()->GetCursorKeyDownTime(k);
+	auto Input = this->m_pCore->GetInput();
+
+	auto ret = Input->GetCursorKeyDownTime(k);
+
+	if (!ret)
+		this->SetError(Input->What());
+
+	return ret;
 }
 
 anVec2 ANApi::GetCursorPos()
@@ -49,22 +82,50 @@ anVec2 ANApi::GetCursorPos()
 
 bool ANApi::GetKeyIsDowned(int k)
 {
-	return this->m_pCore->GetInput()->IsKeyDowned(k);
+	auto Input = this->m_pCore->GetInput();
+
+	auto ret = Input->IsKeyDowned(k);
+
+	if (!ret)
+		this->SetError(Input->What());
+
+	return ret;
 }
 
 bool ANApi::GetKeyIsClicked(int k)
 {
-	return this->m_pCore->GetInput()->IsKeyClicked(k);
+	auto Input = this->m_pCore->GetInput();
+
+	auto ret = Input->IsKeyClicked(k);
+
+	if (!ret)
+		this->SetError(Input->What());
+
+	return ret;
 }
 
 bool ANApi::GetKeyIsReleased(int k)
 {
-	return this->m_pCore->GetInput()->IsKeyReleased(k);
+	auto Input = this->m_pCore->GetInput();
+
+	auto ret = Input->IsKeyReleased(k);
+
+	if (!ret)
+		this->SetError(Input->What());
+
+	return ret;
 }
 
 float ANApi::GetKeyDownTime(int k)
 {
-	return this->m_pCore->GetInput()->GetKeyDownTime(k);
+	auto Input = this->m_pCore->GetInput();
+
+	auto ret = Input->GetKeyDownTime(k);
+
+	if (!ret)
+		this->SetError(Input->What());
+
+	return ret;
 }
 
 anVec2 ANApi::GetScreenSize()
@@ -74,7 +135,14 @@ anVec2 ANApi::GetScreenSize()
 
 bool ANApi::CreateImage(const char* pszPath, ANImageID* pImageID, bool bLinkToDataList)
 {
-	return this->m_pCore->GetGame()->GetGameResourcesData()->CreateImage(pszPath, pImageID, bLinkToDataList);
+	auto ResourceData = this->m_pCore->GetGame()->GetGameResourcesData();
+
+	auto ret = ResourceData->CreateImage(pszPath, pImageID, bLinkToDataList);
+
+	if (!ret)
+		this->SetError(ResourceData->What());
+
+	return ret;
 }
 
 anVec2 ANApi::GetImageSize(ANImageID ImageID)
@@ -160,15 +228,27 @@ void ANApi::PopFontAppierence()
 
 bool ANApi::TextDraw(const char* pszText, anVec2 Pos, anColor Color)
 {
-	return this->m_pCore->GetRenderer()->TextDraw(pszText, Pos, Color);
+	auto Renderer = this->m_pCore->GetRenderer();
+
+	auto ret = Renderer->TextDraw(pszText, Pos, Color);
+
+	if (!ret)
+		this->SetError(Renderer->What());
+
+	return ret;
 }
 
 anVec2 ANApi::TextCalcSize(const char* pszText)
 {
+	auto Renderer = this->m_pCore->GetRenderer();
+
 	anVec2 Size;
 
-	if (!this->m_pCore->GetRenderer()->TextCalcSize(pszText, &Size))
+	if (!Renderer->TextCalcSize(pszText, &Size))
+	{
+		this->SetError(Renderer->What());
 		return anVec2();
+	}
 
 	return Size;
 }
@@ -232,9 +312,31 @@ IANInteractionMessagesList* ANApi::GetInteractionMessagesList()
 	return this->m_pCore->GetGame()->GetInteractionList();
 }
 
+void ANApi::AddDefaultAnimationComposition(IANEntity* pEntity, ANAnimationComposition AnimationComposition, float flAnimationDuration)
+{
+	this->m_pCore->GetGame()->AddDefaultAnimationComposition(pEntity, AnimationComposition, flAnimationDuration);
+}
+
+void ANApi::DeleteDefaultAnimationComposition(IANEntity* pEntity)
+{
+	this->m_pCore->GetGame()->DeleteDefaultAnimationComposition(pEntity);
+}
+
+void ANApi::ClearDefaultAnimationComposition()
+{
+	this->m_pCore->GetGame()->ClearDefaultAnimationComposition();
+}
+
 bool ANApi::CreateAnimationComposition(const char** pszAnimationLabelsArr, int iAnimationLabelsArrSize, ANAnimationComposition* pAnimationComposition, bool bLinkToDataList)
 {
-	return this->m_pCore->GetGame()->GetGameResourcesData()->CreateAnimationComposition(pszAnimationLabelsArr, iAnimationLabelsArrSize, pAnimationComposition, bLinkToDataList);
+	auto ResourceData = this->m_pCore->GetGame()->GetGameResourcesData();
+
+	auto ret = ResourceData->CreateAnimationComposition(pszAnimationLabelsArr, iAnimationLabelsArrSize, pAnimationComposition, bLinkToDataList);
+
+	if (!ret)
+		this->SetError(ResourceData->What());
+
+	return ret;
 }
 
 void ANApi::DeleteAnimationComposition(ANAnimationComposition* pAnimationComposition)

@@ -21,7 +21,7 @@ void ANInput::SetCursorKey(int k, bool State)
 
 bool ANInput::IsCursorKeyDowned(int k)
 {
-	if (!IsInArrayRange(k, ARRSIZE(this->m_kiCursorKeyMap)))
+	if (!CheckArrayRange(k))
 		return false;
 
 	return this->m_kiCursorKeyMap[k].m_bIsDowned;
@@ -29,7 +29,7 @@ bool ANInput::IsCursorKeyDowned(int k)
 
 bool ANInput::IsCursorKeyClicked(int k)
 {
-	if (!IsInArrayRange(k, ARRSIZE(this->m_kiCursorKeyMap)))
+	if (!CheckArrayRange(k))
 		return false;
 
 	return this->m_kiCursorKeyMap[k].m_bIsClicked;
@@ -37,15 +37,15 @@ bool ANInput::IsCursorKeyClicked(int k)
 
 bool ANInput::IsCursorKeyReleased(int k)
 {
-	if (!IsInArrayRange(k, ARRSIZE(this->m_kiCursorKeyMap)))
+	if (!CheckArrayRange(k))
 		return false;
 
 	return this->m_kiCursorKeyMap[k].m_bIsReleased;
 }
 
-bool ANInput::GetCursorKeyDownTime(int k)
+float ANInput::GetCursorKeyDownTime(int k)
 {
-	if (!IsInArrayRange(k, ARRSIZE(this->m_kiCursorKeyMap)))
+	if (!CheckArrayRange(k))
 		return false;
 
 	return this->m_kiCursorKeyMap[k].m_flDownTime;
@@ -64,14 +64,17 @@ anVec2 ANInput::GetCursorPos()
 void ANInput::SetStateKey(int k, bool State)
 {
 	if (!IsInArrayRange(k, ARRSIZE(this->m_kiKeyMap)))
+	{
+		this->SetError("Bad cursor key, not equal array range");
 		return;
+	}
 
 	this->m_kiKeyMap[k].m_bIsDowned = State;
 }
 
 bool ANInput::IsKeyDowned(int k)
 {
-	if (!IsInArrayRange(k, ARRSIZE(this->m_kiKeyMap)))
+	if (!CheckArrayRange(k))
 		return false;
 
 	return this->m_kiKeyMap[k].m_bIsDowned;
@@ -79,7 +82,7 @@ bool ANInput::IsKeyDowned(int k)
 
 bool ANInput::IsKeyClicked(int k)
 {
-	if (!IsInArrayRange(k, ARRSIZE(this->m_kiKeyMap)))
+	if (!CheckArrayRange(k))
 		return false;
 
 	return this->m_kiKeyMap[k].m_bIsClicked;
@@ -87,7 +90,7 @@ bool ANInput::IsKeyClicked(int k)
 
 bool ANInput::IsKeyReleased(int k)
 {
-	if (!IsInArrayRange(k, ARRSIZE(this->m_kiKeyMap)))
+	if (!CheckArrayRange(k))
 		return false;
 
 	return this->m_kiKeyMap[k].m_bIsReleased;
@@ -95,7 +98,7 @@ bool ANInput::IsKeyReleased(int k)
 
 float ANInput::GetKeyDownTime(int k)
 {
-	if (!IsInArrayRange(k, ARRSIZE(this->m_kiKeyMap)))
+	if (!CheckArrayRange(k))
 		return false;
 
 	return this->m_kiKeyMap[k].m_flDownTime;
@@ -157,6 +160,17 @@ void ANInput::UpdateKeyMap(KeyInformation* pkiKeyMap, bool NeedDisable)
 		km.m_flDownTime += this->m_pCore->GetPerfomance()->GetFrameTime();
 	else
 		km.m_flDownTime = 0.f;
+}
+
+bool ANInput::CheckArrayRange(int k)
+{
+	if (!IsInArrayRange(k, ARRSIZE(this->m_kiKeyMap)))
+	{
+		this->SetError(__FUNCTION__ ": Bad key, not equal array range");
+		return false;
+	}
+
+	return true;
 }
 
 inline bool ANInput::IsInArrayRange(int k, int MaxArrSize)

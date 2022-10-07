@@ -7,6 +7,7 @@ public:
 	ANApi(ANCore* pCore);
 	~ANApi();
 
+	const char* GetVersion() override;
 	void LeaveApp() override;
 	bool ConnectToScene(IANGameScene* pGameScene) override;
 
@@ -61,6 +62,10 @@ public:
 	IANEntity* GetEntityByName(const char* pszEntName) override;
 
 	IANInteractionMessagesList* GetInteractionMessagesList() override;
+
+	void AddDefaultAnimationComposition(IANEntity* pEntity, ANAnimationComposition AnimationComposition, float flAnimationDuration) override;
+	void DeleteDefaultAnimationComposition(IANEntity* pEntity) override;
+	void ClearDefaultAnimationComposition() override;
 
 	bool CreateAnimationComposition(const char** pszAnimationLabelsArr, int iAnimationLabelsArrSize, ANAnimationComposition* pAnimationComposition, bool bLinkToDataList) override;
 	void DeleteAnimationComposition(ANAnimationComposition* pAnimationComposition) override;

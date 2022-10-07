@@ -311,7 +311,6 @@ void CTestLevel::OnUnloadScene(IANApi* pApi)
 
 void CTestLevel::Entry(IANApi* pApi)
 {
-	PreFrame(pApi);
 	KeyboardMoveInput(pApi);
 	CreateMove(pApi);
 	DrawWorld(pApi);
@@ -340,15 +339,6 @@ const char* CTestLevel::GetDoorEventTypeFromEntity(IANEntity* pEntity)
 		return "EVENT_DoorTransitionKitchenHall";
 
 	return nullptr;
-}
-
-void CTestLevel::PreFrame(IANApi* pApi)
-{
-	this->m_pMainActor->GetAnimCompositionController()->SetAnimationComposition(this->m_WoodyComposition);
-	this->m_pMainActor->GetAnimCompositionController()->SetAnimationDuration(0.3f);
-
-	this->m_pRottweiler->GetAnimCompositionController()->SetAnimationComposition(this->m_RottweilerComposition);
-	this->m_pRottweiler->GetAnimCompositionController()->SetAnimationDuration(0.3f);
 }
 
 void CTestLevel::KeyboardMoveInput(IANApi* pApi)
@@ -384,6 +374,7 @@ void CTestLevel::DrawEntities(IANApi* pApi)
 		{
 			bIsSuccess = !bIsSuccess;
 			this->m_pRottweiler->GetAnimCompositionController()->SetAnimationMode(bIsSuccess);
+			//printf("SWITCH\n");
 		}
 	}
 
@@ -809,12 +800,14 @@ void CTestLevel::CreateActorEntity(IANApi* pApi, const char* pszActorName)
 	this->m_pMainActor->SetEntityName(pszActorName);
 	this->m_pMainActor->SetOrigin(anVec2(1167.f, GetFloor(HOUSE_FLOOR::FIRST))); //326.f;
 	this->m_pMainActor->SetUserDataPointer(new ActorWoodyGameData());
+	this->m_pMainActor->AddDefaultAnimationComposition(pApi, this->m_WoodyComposition, 0.3f);
 }
 
 void CTestLevel::CreateRottweilerEntity(IANApi* pApi, const char* pszActorName)
 {
 	pApi->RegEntity(&this->m_pRottweiler, szWorldEntityPlayer);
 	this->m_pRottweiler->SetOrigin(anVec2(503.f, GetFloor(HOUSE_FLOOR::SECOND)));
+	this->m_pRottweiler->AddDefaultAnimationComposition(pApi, this->m_RottweilerComposition, 0.3f);
 }
 
 void CTestLevel::CreateRoomZoneEntity(IANApi* pApi, IANEntity*& pEntity, anVec2 RoomPos, anVec2 RoomSize, HOUSE_ROOM HouseRoom, HOUSE_FLOOR LevelFloor)
@@ -849,7 +842,8 @@ void CTestLevel::CreateDoorEntity(
 void CTestLevel::CreateStaticEntity(IANApi* pApi, IANEntity** ppEntity, ANAnimationComposition DefaultAnimationComposition, float flAnimationDuration, anVec2 vecPosition, anVec2 vecSize)
 {
 	pApi->RegEntity(ppEntity, szWorldEntityStatic);
-	this->m_pTVScreen->SetOrigin(vecPosition);
-	this->m_pTVScreen->GetAnimCompositionController()->SetAnimationComposition(DefaultAnimationComposition);
-	this->m_pTVScreen->GetAnimCompositionController()->SetAnimationDuration(flAnimationDuration);
+	auto& pEntity = *ppEntity;
+	pEntity->SetOrigin(vecPosition);
+	pEntity->GetAnimCompositionController()->SetAnimationComposition(DefaultAnimationComposition);
+	pEntity->GetAnimCompositionController()->SetAnimationDuration(flAnimationDuration);
 }

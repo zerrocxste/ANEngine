@@ -16,7 +16,7 @@ private:
 	void* m_pUserData;
 	fOnReleaseUserData m_pfOnReleaseUserData;
 	ANEntityMoveInfo m_MoveInfo;
-
+	
 public:
 	int GetEntityID() override;
 	char* GetEntityClassID() override;
@@ -56,7 +56,11 @@ public:
 
 	void SetEntityName(const char* szEntityName) override;
 	char* GetEntityName() override;
+
 	IANAnimationCompositionController* GetAnimCompositionController() override;
+	void AddDefaultAnimationComposition(IANApi* pApi, ANAnimationComposition AnimationComposition, float flAnimationDuration) override;
+	void DeleteDefaultAnimationComposition(IANApi* pApi) override;
+
 	IANEntity& Update(IANApi* pApi) override;
 
 	void SetUserDataPointer(void* pUserData) override;

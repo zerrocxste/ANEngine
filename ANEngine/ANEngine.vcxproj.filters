@@ -142,14 +142,8 @@
     <Filter Include="ANEngine\Interfaces\Game\GameEntity\IANInteractionController">
       <UniqueIdentifier>{753041a8-ea31-4e17-8045-3b398c7a1488}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ANEngine\Interfaces\Game\IANInteractionMessagesList">
-      <UniqueIdentifier>{d5b912cf-5d90-4b21-8655-596ea4c911f5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ANEngine\Interfaces\Game\IANWorld">
       <UniqueIdentifier>{536191d5-1832-4f99-a088-3badac8b7fe9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ANEngine\GameEntity\ANInteractionMessagesList">
-      <UniqueIdentifier>{9149e909-02c5-45c9-9cd1-c8d630f9a95a}</UniqueIdentifier>
     </Filter>
     <Filter Include="ANEngine\Platforms">
       <UniqueIdentifier>{2c009e78-cc6d-44ae-afaf-6c2990dc948e}</UniqueIdentifier>
@@ -165,6 +159,12 @@
     </Filter>
     <Filter Include="ANEngine\ANGameResourcesData">
       <UniqueIdentifier>{a1edf733-7a9f-4d27-95d2-462c4ba13f1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\Interfaces\Game\IANInteractionMessagesList">
+      <UniqueIdentifier>{3f2be2c3-502a-4c6c-ae82-fa6f849ad9e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ANEngine\GameEntity\ANInteractionMessagesList">
+      <UniqueIdentifier>{a44ed695-bf2f-47e9-adb4-096c7d70b0cd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -240,9 +240,6 @@
     <ClCompile Include="ANengine\GameEntity\ANAnimationCompositionController\ANAnimationCompositionController.cpp">
       <Filter>ANEngine\GameEntity\ANAnimationCompositionController</Filter>
     </ClCompile>
-    <ClCompile Include="ANengine\GameEntity\ANInteractionMessagesList\ANInteractionMessagesList.cpp">
-      <Filter>ANEngine\GameEntity\ANInteractionMessagesList</Filter>
-    </ClCompile>
     <ClCompile Include="ANengine\Platforms\Win32\ANWin32Platform.cpp">
       <Filter>ANEngine\Platforms\Win32</Filter>
     </ClCompile>
@@ -251,6 +248,9 @@
     </ClCompile>
     <ClCompile Include="ANengine\ANGameResourcesData\ANGameResourcesData.cpp">
       <Filter>ANEngine\ANGameResourcesData</Filter>
+    </ClCompile>
+    <ClCompile Include="ANengine\GameEntity\ANInteractionMessagesList\ANInteractionMessagesList.cpp">
+      <Filter>ANEngine\GameEntity\ANInteractionMessagesList</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -356,14 +356,8 @@
     <ClInclude Include="ANengine\Interfaces\Game\GameEntity\IANInteractionController\IANInteractionController.h">
       <Filter>ANEngine\Interfaces\Game\GameEntity\IANInteractionController</Filter>
     </ClInclude>
-    <ClInclude Include="ANengine\Interfaces\Game\IANInteractionMessagesList\IANInteractionMessagesList.h">
-      <Filter>ANEngine\Interfaces\Game\IANInteractionMessagesList</Filter>
-    </ClInclude>
     <ClInclude Include="ANengine\Interfaces\Game\IANWorld\IANWorld.h">
       <Filter>ANEngine\Interfaces\Game\IANWorld</Filter>
-    </ClInclude>
-    <ClInclude Include="ANengine\GameEntity\ANInteractionMessagesList\ANInteractionMessagesList.h">
-      <Filter>ANEngine\GameEntity\ANInteractionMessagesList</Filter>
     </ClInclude>
     <ClInclude Include="ANengine\Platforms\Win32\ANWin32Platform.h">
       <Filter>ANEngine\Platforms\Win32</Filter>
@@ -376,6 +370,12 @@
     </ClInclude>
     <ClInclude Include="ANengine\ANGameResourcesData\ANGameResourcesData.h">
       <Filter>ANEngine\ANGameResourcesData</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\Interfaces\Game\IANInteractionMessagesList\IANInteractionMessagesList.h">
+      <Filter>ANEngine\Interfaces\Game\IANInteractionMessagesList</Filter>
+    </ClInclude>
+    <ClInclude Include="ANengine\GameEntity\ANInteractionMessagesList\ANInteractionMessagesList.h">
+      <Filter>ANEngine\GameEntity\ANInteractionMessagesList</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

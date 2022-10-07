@@ -98,29 +98,34 @@ bool ANCore::Initialize()
 
 bool ANCore::Run()
 {
-	auto plt = this->GetPlatform();
-	auto r = this->GetRenderer();
-	auto g = this->GetGame();
-	auto i = this->GetInput();
-	auto p = this->GetPerfomance();
+	auto Platform = this->GetPlatform();
+	auto Renderer = this->GetRenderer();
+	auto Game = this->GetGame();
+	auto Input = this->GetInput();
+	auto Perfomance = this->GetPerfomance();
 
-	plt->WindowShow();
+	Platform->WindowShow();
 
-	while (!plt->ProcessWindow())
+	while (!Platform->ProcessWindow())
 	{
-		p->Update();
+		Perfomance->Update();
 
-		r->BeginFrame();
+		Renderer->BeginFrame();
 
-		r->ClearScene();
+		Renderer->ClearScene();
 
-		i->Update();
+		Input->Update();
 
-		if (!g->RunScene())
+		if (!Game->RunScene())
 			break;
 
-		r->EndFrame();
+		Renderer->EndFrame();
 	}
 
 	return true;
+}
+
+const char* ANCore::GetVersion()
+{
+	return VERSION;
 }

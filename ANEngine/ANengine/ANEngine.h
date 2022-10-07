@@ -1,5 +1,7 @@
 #pragma once
 
+constexpr auto VERSION = "1.b";
+
 #define BACKEND_DIRECT2D
 
 #include <Windows.h>

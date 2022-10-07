@@ -610,7 +610,10 @@ bool ANRendererlatformD2D::CreateFontFromFile(const char* pszPath, float FontSiz
 	auto ret = false;
 
 	if (_access(pszPath, 0) == -1)
+	{
+		this->SetError(__FUNCTION__": File not found");
 		return ret;
+	}	
 
 	IDWriteFontCollection* pFontCollection = nullptr;
 	IDWriteFontFamily* pFontFamily = nullptr;
@@ -622,10 +625,14 @@ bool ANRendererlatformD2D::CreateFontFromFile(const char* pszPath, float FontSiz
 	wchar_t* pwszPath = new wchar_t[StrLengthText]();
 
 	if (!pwszPath)
+	{
+		this->SetError(__FUNCTION__ ": String convert memory allocate error");
 		return false;
+	}
 
 	if (!MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, pszPath, StrLengthText, pwszPath, StrLengthText))
 	{
+		this->SetError(__FUNCTION__ ": String convert error");
 		delete[] pwszPath;
 		return false;
 	}
@@ -638,32 +645,56 @@ bool ANRendererlatformD2D::CreateFontFromFile(const char* pszPath, float FontSiz
 	*pFontIDPtr = nullptr;
 
 	if (!pFontLoader)
+	{
+		this->SetError(__FUNCTION__ ": Font loader memory allocate error");
 		goto failed;
+	}
 
 	if (FAILED(ANRendererlatformD2D::m_singleton.pDWriteFactory->RegisterFontCollectionLoader(pFontLoader)))
-		goto failed; 
+	{
+		this->SetError(__FUNCTION__ ": Register font loader error");
+		goto failed;
+	}
 
 	if (FAILED(ANRendererlatformD2D::m_singleton.pDWriteFactory->CreateCustomFontCollection(pFontLoader, pwszPath, sizeof(void*), &pFontCollection)))
+	{
+		this->SetError(__FUNCTION__ ": Create font loader error");
 		goto failed;
+	}
 
 	if (FAILED(pFontCollection->GetFontFamily(0, &pFontFamily)))
+	{
+		this->SetError(__FUNCTION__ ": Font family read error");
 		goto failed;
+	}
 
 	if (FAILED(pFontFamily->GetFamilyNames(&pFamilyNames)))
+	{
+		this->SetError(__FUNCTION__ ": Font family names read error");
 		goto failed;
+	}
 
 	if (FAILED(pFamilyNames->GetStringLength(0, &Length)))
+	{
+		this->SetError(__FUNCTION__ ": Font family names string length read error");
 		goto failed;
+	}
 
 	Length++;
 
 	pwszLocalName = new wchar_t[Length];
 
 	if (FAILED(pFamilyNames->GetString(0, pwszLocalName, Length)))
+	{
+		this->SetError(__FUNCTION__ ": Font family names string read error");
 		goto failed;
+	}
 
 	if (FAILED(ANRendererlatformD2D::m_singleton.pDWriteFactory->CreateTextFormat(pwszLocalName, pFontCollection, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, FontSize, L"", &pTextFormat)))
+	{
+		this->SetError(__FUNCTION__ ": Create text format error");
 		goto failed;
+	}
 
 	*pFontIDPtr = pTextFormat;
 
@@ -694,7 +725,10 @@ bool ANRendererlatformD2D::TextCalcSize(const char* pszText, ANFontID FontID, an
 	DWriteTextCache TextElement;
 
 	if (!ANRendererlatformD2D::m_singleton.ProcessTextCache(pszText, FontID, &TextElement))
+	{
+		this->SetError(__FUNCTION__ ": Process text cache error");
 		return false;
+	}
 
 	pTextSize->x = TextElement.m_dwrTextMetrics.widthIncludingTrailingWhitespace;
 	pTextSize->y = TextElement.m_dwrTextMetrics.height;
@@ -707,7 +741,10 @@ bool ANRendererlatformD2D::TextDraw(ANInternalGuiWindowID GuiWindow, const char*
 	DWriteTextCache TextElement;
 
 	if (!ANRendererlatformD2D::m_singleton.ProcessTextCache(pszText, FontID, &TextElement))
+	{
+		this->SetError(__FUNCTION__ ": Process text cache error");
 		return false;
+	}
 
 	SetBrushColor(this->m_pColorBrush, Color);
 
@@ -744,7 +781,10 @@ bool ANRendererlatformD2D::CreateGuiWindow(ANInternalGuiWindowID * pGuiWindow, a
 	ID2D1BitmapRenderTarget* BitmapRenderTarget = nullptr;
 
 	if (FAILED(this->m_pRenderTarget->CreateCompatibleRenderTarget(D2D1::SizeF(Size.x, Size.y), &BitmapRenderTarget)))
+	{
+		this->SetError(__FUNCTION__ ": Create gui window error");
 		return false;
+	}
 
 	*pGuiWindow = (ANInternalGuiWindowID*)BitmapRenderTarget;
 

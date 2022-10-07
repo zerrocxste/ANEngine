@@ -18,7 +18,7 @@ struct KeyInformation
 	float m_flDownTime;
 };
 
-class ANInput
+class ANInput : public IANError
 {
 public:
 	ANInput(ANCore* pCore);
@@ -29,7 +29,7 @@ public:
 	bool IsCursorKeyDowned(int k);
 	bool IsCursorKeyClicked(int k);
 	bool IsCursorKeyReleased(int k);
-	bool GetCursorKeyDownTime(int k);
+	float GetCursorKeyDownTime(int k);
 
 	void SetCursorPos(anVec2 CursorPos);
 	anVec2 GetCursorPos();
@@ -58,6 +58,8 @@ private:
 	anVec2 m_CorrectWindowStartPos;
 
 	void UpdateKeyMap(KeyInformation* pkiKeyMap, bool NeedDisable = false);
+
+	bool CheckArrayRange(int k);
 
 	static inline bool IsInArrayRange(int k, int MaxArrSize);
 };

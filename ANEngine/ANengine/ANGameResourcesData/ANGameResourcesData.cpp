@@ -18,6 +18,9 @@ bool ANGameResourcesData::CreateAnimationComposition(const char** pszAnimationLa
 
 	*(int*)*pAnimationComposition = iAnimationLabelsArrSize;
 
+	auto ResourceManager = this->m_pCore->GetResourceManager();
+	auto Renderer = this->m_pCore->GetRenderer();
+
 	auto AnimationComposition = (ANAnimationComposition**)((std::uintptr_t)*pAnimationComposition + sizeof(int));
 
 	for (auto i = 0; i < iAnimationLabelsArrSize; i++)
@@ -26,11 +29,17 @@ bool ANGameResourcesData::CreateAnimationComposition(const char** pszAnimationLa
 
 		ANUniqueResource ImageResource;
 
-		if (!this->m_pCore->GetResourceManager()->ReadBinFile(pszAnimationLabelsArr[i], &ImageResource))
+		if (!ResourceManager->ReadBinFile(pszAnimationLabelsArr[i], &ImageResource))
+		{
+			this->SetError(ResourceManager->What());
 			return false;
+		}
 
-		if (!this->m_pCore->GetRenderer()->CreateImageFromResource(&ImageResource, &Image))
+		if (!Renderer->CreateImageFromResource(&ImageResource, &Image))
+		{
+			this->SetError(Renderer->What());
 			return false;
+		}
 
 		AnimationComposition[i] = (ANAnimationComposition*)Image;
 	}
@@ -75,17 +84,27 @@ void ANGameResourcesData::ClearAnimationCompositionData()
 
 bool ANGameResourcesData::CreateImage(const char* pszPath, ANImageID* pImageID, bool bLinkToDataList)
 {
+	auto ResourceManager = this->m_pCore->GetResourceManager();
+
 	ANUniqueResource ImageResource;
 
-	if (!this->m_pCore->GetResourceManager()->ReadBinFile(pszPath, &ImageResource))
+	if (!ResourceManager->ReadBinFile(pszPath, &ImageResource))
+	{
+		this->SetError(ResourceManager->What());
 		return false;
+	}
 
-	auto ret = this->m_pCore->GetRenderer()->CreateImageFromResource(&ImageResource, pImageID);
+	auto Renderer = this->m_pCore->GetRenderer();
 
-	if (bLinkToDataList && ret)
-		this->m_vImageResourceData.push_back(pImageID);
+	auto ret = Renderer->CreateImageFromResource(&ImageResource, pImageID);
 
-	return ret;
+	if (!ret)
+	{
+		this->SetError(Renderer->What());
+		return false;
+	}
+
+	return true;
 }
 
 void ANGameResourcesData::DeleteImage(ANImageID* pImageID)

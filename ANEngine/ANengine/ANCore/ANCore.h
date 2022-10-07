@@ -22,6 +22,8 @@ public:
 
 	bool Initialize();
 	bool Run();
+
+	const char* GetVersion();
 private:
 	ANComponents m_EngineComponents;
 

@@ -205,7 +205,6 @@ private:
 	void ProcessMoveActorKitchen(IANApi* pApi);
 	void ProcessMoveActorHall(IANApi* pApi);
 
-	void PreFrame(IANApi* pApi);
 	void KeyboardMoveInput(IANApi* pApi);
 	void CreateMove(IANApi* pApi);
 	void DrawWorld(IANApi* pApi);

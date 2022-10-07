@@ -94,15 +94,17 @@ ANImageID ANAnimationCompositionController::GetCurrentAnimationCompositionFrame(
 
 	auto NextFrameIncFrameCount = GetNeedUpdateAnimationCounter(pApi);
 
-	if (this->m_bIsPlayInversed)
-		NextFrameIncFrameCount = -NextFrameIncFrameCount;
+	while (NextFrameIncFrameCount)
+	{
+		auto IsOverflowed = this->m_bIsPlayInversed ? this->m_iCurrentAnimationCompositionFrameCount < 0 : this->m_iCurrentAnimationCompositionFrameCount >= this->m_iCurrentCompositionMaxFrame;
 
-	this->m_iCurrentAnimationCompositionFrameCount += NextFrameIncFrameCount; //TODO: Perepolnenie chisla v nevernoe dlya granici nomera, 
-	//while (NextFrameIncFrameCount)
-	//{
-	//		this->m_iCurrentAnimationCompositionFrameCount += this->m_iCurrentAnimationCompositionFrameCount > FRAME_BORDER ? -1 : 1;
-	//		NextFrameIncFrameCount--;
-	//}
+		if (!IsOverflowed)
+			this->m_iCurrentAnimationCompositionFrameCount += this->m_bIsPlayInversed ? -1 : 1;
+		else
+			this->m_iCurrentAnimationCompositionFrameCount = this->m_bIsPlayInversed ? (this->m_iCurrentCompositionMaxFrame - 1) : 0;
+
+		NextFrameIncFrameCount--;
+	}
 
 	if (IsPlayingComposition && this->m_iCountOfIterationsPlayingComposition <= 0)
 		StopRunningAnimation();

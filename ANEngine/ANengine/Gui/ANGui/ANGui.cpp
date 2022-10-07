@@ -14,16 +14,23 @@ ANGui::~ANGui()
 
 bool ANGui::WindowCreate(ANGuiWindowID* pGuiWindow, anVec2 Size)
 {
+	auto Renderer = this->m_pCore->GetRenderer();
+
 	*pGuiWindow = 0;
 
 	auto gw = ANMemory::GetInstance()->Allocate<ANGuiWindow>(Size);
 
-	auto ret = this->m_pCore->GetRenderer()->CreateGuiWindow(&gw->m_InternalGuiWindowID, Size);
+	auto ret = Renderer->CreateGuiWindow(&gw->m_InternalGuiWindowID, Size);
 
-	if (ret)
-		*pGuiWindow = (ANGuiWindowID*)gw;
+	if (!ret)
+	{
+		this->SetError(Renderer->What());
+		return false;
+	}
 
-	return ret;
+	*pGuiWindow = (ANGuiWindowID*)gw;
+
+	return true;
 }
 
 bool ANGui::WindowDelete(ANGuiWindowID* pGuiWindow)

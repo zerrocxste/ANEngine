@@ -1,6 +1,6 @@
 #pragma once
 
-class IANApi
+class IANApi : public IANError
 {
 public:
 	//FRAME | RUNTIME STATISTICS
@@ -9,6 +9,7 @@ public:
 	double TotalRenderTime;
 
 	//MAIN
+	virtual const char* GetVersion() = 0;
 	virtual void LeaveApp() = 0;
 	virtual bool ConnectToScene(IANGameScene* pGameScene) = 0;
 
@@ -68,6 +69,10 @@ public:
 	virtual IANEntity* GetEntityByName(const char* pszEntName) = 0;
 
 	virtual IANInteractionMessagesList* GetInteractionMessagesList() = 0;
+
+	virtual void AddDefaultAnimationComposition(IANEntity* pEntity, ANAnimationComposition AnimationComposition, float flAnimationDuration) = 0;
+	virtual void DeleteDefaultAnimationComposition(IANEntity* pEntity) = 0;
+	virtual void ClearDefaultAnimationComposition() = 0;
 
 	//DRAWING HELPERS
 	virtual bool CreateAnimationComposition(const char** pszAnimationLabelsArr, int iAnimationLabelsArrSize, ANAnimationComposition* pAnimationComposition, bool bLinkToDataList = false) = 0;

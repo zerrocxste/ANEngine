@@ -192,7 +192,7 @@ ANInterfacePointer<IANInteractionMessagesList> ANInteractionMessagesList::GetInt
 		{
 			if (im.m_pszEntityName && !strcmp(im.m_pszEntityName, pszName))
 			{
-				pipInteractionMessagesList.m_Pointer->m_InteractionMessagesList.push_back(im);
+				pipInteractionMessagesList->m_InteractionMessagesList.push_back(im);
 			}
 
 			return false;
@@ -209,7 +209,7 @@ ANInterfacePointer<IANInteractionMessagesList> ANInteractionMessagesList::GetInt
 		{
 			if (im.m_pszEntityName && !strcmp(im.m_pszEntityClassIDName, pszClassIDName))
 			{
-				pipInteractionMessagesList.m_Pointer->m_InteractionMessagesList.push_back(im);
+				pipInteractionMessagesList->m_InteractionMessagesList.push_back(im);
 			}
 
 			return false;

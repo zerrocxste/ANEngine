@@ -19,7 +19,7 @@ void* ANMemory::ResourceAllocate(std::size_t Size)
 	if (!ret)
 	{
 		this->SetError(__FUNCTION__ " > Error allocate memory for: %p", Size);
-		return nullptr;
+		throw;
 	}
 
 	std::memset(ret, 0, Size);

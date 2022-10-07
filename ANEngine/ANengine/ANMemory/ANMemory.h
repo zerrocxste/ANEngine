@@ -13,7 +13,16 @@ public:
 	template<class T, class... A> T* Allocate(A&&... Arg)
 	{
 		this->m_WorkingSetAllocatedMemory += sizeof(T);
-		return new T(Arg...);
+
+		auto ret = new (std::nothrow) T(Arg...);
+
+		if (!ret)
+		{
+			this->SetError(__FUNCTION__ ": Memory allocate error");
+			throw;
+		}
+
+		return ret;
 	}
 
 	template<class T> void Delete(T* P)

@@ -66,6 +66,14 @@ bool ANGame::RunScene()
 		return true;
 	}
 
+	for (auto& data : this->m_EveryFrameTask.m_vDefaultAnimationCompositionData)
+	{
+		auto pAnimationCompositionController = data.m_pEntity->GetAnimCompositionController();
+
+		pAnimationCompositionController->SetAnimationComposition(data.m_AnimationComposition);
+		pAnimationCompositionController->SetAnimationDuration(data.m_flAnimationDuration);
+	}
+
 	this->m_pCurrentScene->Entry(this->m_pCore->GetApi());
 
 	if (this->m_pNewGameScene != nullptr)
@@ -89,7 +97,6 @@ void ANGame::LeaveGame()
 void ANGame::RegWorld(IANWorld** ppWorld)
 {
 	auto& pWorld = (*ppWorld) = ANMemory::GetInstance()->Allocate<ANWorld>();
-
 	((ANWorld*)pWorld)->m_pIANAnimationCompositionController = ANMemory::GetInstance()->Allocate<ANAnimationCompositionController>();
 }
 
@@ -123,6 +130,43 @@ void ANGame::UnregEntity(IANEntity** ppEntity)
 	GetEntityList()->Remove(pIEntity);
 
 	pIEntity = nullptr;
+}
+
+void ANGame::AddDefaultAnimationComposition(IANEntity* pEntity, ANAnimationComposition AnimationComposition, float flAnimationDuration)
+{
+	DeleteDefaultAnimationComposition(pEntity);
+
+	auto& DefaultAnimationCompositionData = this->m_EveryFrameTask.m_vDefaultAnimationCompositionData;
+
+	ANDefaultAnimationCompositionData data{};
+	data.m_pEntity = pEntity;
+	data.m_AnimationComposition = AnimationComposition;
+	data.m_flAnimationDuration = flAnimationDuration;
+
+	DefaultAnimationCompositionData.push_back(data);
+}
+
+void ANGame::DeleteDefaultAnimationComposition(IANEntity* pEntity)
+{
+	auto& DefaultAnimationCompositionData = this->m_EveryFrameTask.m_vDefaultAnimationCompositionData;
+
+	for (auto it = DefaultAnimationCompositionData.begin(); it < DefaultAnimationCompositionData.end(); it++)
+	{
+		auto& data = *it;
+
+		if (data.m_pEntity != pEntity)
+			continue;
+
+		it = DefaultAnimationCompositionData.erase(it);
+
+		if (it == DefaultAnimationCompositionData.end())
+			break;
+	}
+}
+
+void ANGame::ClearDefaultAnimationComposition()
+{
+	this->m_EveryFrameTask.m_vDefaultAnimationCompositionData.clear();
 }
 
 ANGameResourcesData* ANGame::GetGameResourcesData()

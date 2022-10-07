@@ -164,6 +164,7 @@
     <ClInclude Include="ANSDK\IANError\IANError.h" />
     <ClInclude Include="ANSDK\IANGameScene\IANGameScene.h" />
     <ClInclude Include="ANSDK\IANLoader\IANLoader.h" />
+    <ClInclude Include="ANSDK\IANTaskList\IANTaskList.h" />
     <ClInclude Include="ANSDK\IANWorld\IANWorld.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

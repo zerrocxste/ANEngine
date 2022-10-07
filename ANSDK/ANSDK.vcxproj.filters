@@ -67,8 +67,11 @@
     <Filter Include="ANSDK\GameEntity\IANInteractionController">
       <UniqueIdentifier>{90d0504a-b843-445d-b577-49276a99b2f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ANSDK\IANTaskList">
+      <UniqueIdentifier>{57a3235c-611b-41e8-87c8-8b636449d22f}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ANSDK\GameEntity\IANInteractionMessagesList">
-      <UniqueIdentifier>{63a19950-fc55-437c-9079-6e7a5cb42827}</UniqueIdentifier>
+      <UniqueIdentifier>{d58116b9-94bd-4c04-a4cc-390031f7f377}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +142,9 @@
     </ClInclude>
     <ClInclude Include="ANSDK\GameEntity\IANInteractionController\IANInteractionController.h">
       <Filter>ANSDK\GameEntity\IANInteractionController</Filter>
+    </ClInclude>
+    <ClInclude Include="ANSDK\IANTaskList\IANTaskList.h">
+      <Filter>ANSDK\IANTaskList</Filter>
     </ClInclude>
     <ClInclude Include="ANSDK\GameEntity\IANInteractionMessagesList\IANInteractionMessagesList.h">
       <Filter>ANSDK\GameEntity\IANInteractionMessagesList</Filter>

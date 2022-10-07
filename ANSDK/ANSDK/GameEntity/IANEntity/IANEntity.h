@@ -68,6 +68,8 @@ public:
 	virtual char* GetEntityName() = 0;
 
 	virtual IANAnimationCompositionController* GetAnimCompositionController() = 0;
+	virtual void AddDefaultAnimationComposition(IANApi* pApi, ANAnimationComposition AnimationComposition, float flAnimationDuration) = 0;
+	virtual void DeleteDefaultAnimationComposition(IANApi* pApi) = 0;
 
 	virtual IANEntity& Update(IANApi* pApi) = 0;
 

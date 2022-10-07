@@ -182,7 +182,14 @@ bool ANRenderer::DrawFilledCircle(anVec2 Pos, anColor Color, float Radius)
 
 bool ANRenderer::CreateFontFromFile(const char* pszPath, float FontSize, ANFontID* pFontIDPtr)
 {
-	return this->m_pRendererBackend->CreateFontFromFile(pszPath, FontSize, pFontIDPtr);
+	auto BackendRenderer = this->m_pRendererBackend;
+	
+	auto ret = BackendRenderer->CreateFontFromFile(pszPath, FontSize, pFontIDPtr);
+
+	if (!ret)
+		this->SetError(BackendRenderer->What());
+
+	return ret;
 }
 
 void ANRenderer::FreeFont(ANFontID* pFontIDPtr)
@@ -192,17 +199,38 @@ void ANRenderer::FreeFont(ANFontID* pFontIDPtr)
 
 bool ANRenderer::TextCalcSize(const char* pszText, anVec2* pTextSize)
 {
-	return this->m_pRendererBackend->TextCalcSize(pszText, GetFont(), pTextSize);
+	auto RendererBackend = this->m_pRendererBackend;
+
+	auto ret = RendererBackend->TextCalcSize(pszText, GetFont(), pTextSize);
+
+	if (!ret)
+		this->SetError(RendererBackend->What());
+
+	return ret;
 }
 
 bool ANRenderer::TextDraw(const char* pszText, anVec2 Pos, anColor Color)
 {
-	return this->m_pRendererBackend->TextDraw(this->m_CurrentWindowID, pszText, Pos, Color, GetFont(), this->m_FontAppierence);
+	auto BackendRenderer = this->m_pRendererBackend;
+
+	auto ret = BackendRenderer->TextDraw(this->m_CurrentWindowID, pszText, Pos, Color, GetFont(), this->m_FontAppierence);
+
+	if (!ret)
+		this->SetError(BackendRenderer->What());
+
+	return ret;
 }
 
 bool ANRenderer::CreateGuiWindow(ANInternalGuiWindowID* pGuiWindow, anVec2 Size)
 {
-	return this->m_pRendererBackend->CreateGuiWindow(pGuiWindow, Size);
+	auto RendererBackend = this->m_pRendererBackend;
+
+	auto ret = RendererBackend->CreateGuiWindow(pGuiWindow, Size);
+
+	if (!ret)
+		this->SetError(RendererBackend->What());
+
+	return ret;
 }
 
 bool ANRenderer::DeleteGuiWindow(ANInternalGuiWindowID* pGuiWindow)
