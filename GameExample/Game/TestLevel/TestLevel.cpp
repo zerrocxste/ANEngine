@@ -265,7 +265,7 @@ void CTestLevel::OnLoadScene(IANApi* pApi)
 
 	CreateWorld(pApi);
 
-	CreateActorEntity(pApi, "ENTITY_Woody");
+	CreateActorEntity(pApi, &this->m_pMainActor, "ENTITY_Woody");
 	CreateRottweilerEntity(pApi, "ENTITY_Rottweiler");
 
 	CreateDoorEntity(pApi, this->m_pDoorEntityHallwayKitchen, "ENTITY_DoorEntityHallwayKitchen", anVec2(1111.f, 550.f), 
@@ -304,6 +304,7 @@ void CTestLevel::OnUnloadScene(IANApi* pApi)
 	pApi->UnregWorld(&this->m_pWorld);
 	pApi->UnregAndDeleteAllEntity();
 	pApi->GetInteractionMessagesList()->Clear();
+	pApi->ClearDefaultAnimationComposition();
 
 	if (this)
 		delete this;
@@ -794,13 +795,14 @@ void CTestLevel::CreateWorld(IANApi* pApi)
 	this->m_pWorld->GetAnimCompositionController()->SetAnimationComposition(this->m_WorldComposition);
 }
 
-void CTestLevel::CreateActorEntity(IANApi* pApi, const char* pszActorName)
+void CTestLevel::CreateActorEntity(IANApi* pApi, IANEntity** ppEntity, const char* pszActorName)
 {
-	pApi->RegEntity(&this->m_pMainActor, szWorldEntityPlayer);
-	this->m_pMainActor->SetEntityName(pszActorName);
-	this->m_pMainActor->SetOrigin(anVec2(1167.f, GetFloor(HOUSE_FLOOR::FIRST))); //326.f;
-	this->m_pMainActor->SetUserDataPointer(new ActorWoodyGameData());
-	this->m_pMainActor->AddDefaultAnimationComposition(pApi, this->m_WoodyComposition, 0.3f);
+	pApi->RegEntity(ppEntity, szWorldEntityPlayer);
+	auto& pEntity = *ppEntity;
+	pEntity->SetEntityName(pszActorName);
+	pEntity->SetOrigin(anVec2(1167.f, GetFloor(HOUSE_FLOOR::FIRST))); //326.f;
+	pEntity->SetUserDataPointer(new ActorWoodyGameData());
+	pEntity->AddDefaultAnimationComposition(pApi, this->m_WoodyComposition, 0.3f);
 }
 
 void CTestLevel::CreateRottweilerEntity(IANApi* pApi, const char* pszActorName)

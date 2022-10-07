@@ -180,7 +180,7 @@ private:
 
 	void CreateAnimationCompositions(IANApi* pApi);
 	void CreateWorld(IANApi* pApi);
-	void CreateActorEntity(IANApi* pApi, const char* pszActorName);
+	void CreateActorEntity(IANApi* pApi, IANEntity** ppEntity, const char* pszActorName);
 	void CreateRottweilerEntity(IANApi* pApi, const char* pszActorName);
 	void CreateRoomZoneEntity(IANApi* pApi, IANEntity*& pEntity, anVec2 RoomPos, anVec2 RoomSize, HOUSE_ROOM HouseRoom, HOUSE_FLOOR LevelFloor);
 	void CreateDoorEntity(
