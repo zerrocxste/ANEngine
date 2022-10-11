@@ -171,21 +171,25 @@ const char* pszRottweilerLeft[] = {
 	"rottweiler\\move_left\\N_mg3_0006.png",
 	"rottweiler\\move_left\\N_mg3_0007.png",
 };
-const char* pszRottweilerSeatRemote[] = {
-	"rottweiler\\seat_remote\\N_sit_remo_0000.png",
-	"rottweiler\\seat_remote\\N_sit_remo_0001.png",
-	"rottweiler\\seat_remote\\N_sit_remo_0002.png",
-	"rottweiler\\seat_remote\\N_sit_remo_0003.png",
-	"rottweiler\\seat_remote\\N_sit_remo_0004.png",
-	"rottweiler\\seat_remote\\N_sit_remo_0005.png",
-	"rottweiler\\seat_remote\\N_sit_remo_0006.png",
-	"rottweiler\\seat_remote\\N_sit_remo_0007.png",
-	"rottweiler\\seat_remote\\N_sit_remo_0008.png",
-	"rottweiler\\seat_remote\\N_sit_remo_0009.png",
-	"rottweiler\\seat_remote\\N_sit_remo_0010.png",
-	"rottweiler\\seat_remote\\N_sit_remo_0011.png",
-	"rottweiler\\seat_remote\\N_sit_remo_0012.png",
-	"rottweiler\\seat_remote\\N_sit_remo_0013.png",
+const char* pszRottweilerSit[] = {
+	"rottweiler\\sit_remote\\N_sit_0001.png",
+	"rottweiler\\sit_remote\\N_sit_0002.png"
+};
+const char* pszRottweilerSitRemote[] = {
+	"rottweiler\\sit_remote\\N_sit_remo_0000.png",
+	"rottweiler\\sit_remote\\N_sit_remo_0001.png",
+	"rottweiler\\sit_remote\\N_sit_remo_0002.png",
+	"rottweiler\\sit_remote\\N_sit_remo_0003.png",
+	"rottweiler\\sit_remote\\N_sit_remo_0004.png",
+	"rottweiler\\sit_remote\\N_sit_remo_0005.png",
+	"rottweiler\\sit_remote\\N_sit_remo_0006.png",
+	"rottweiler\\sit_remote\\N_sit_remo_0007.png",
+	"rottweiler\\sit_remote\\N_sit_remo_0008.png",
+	"rottweiler\\sit_remote\\N_sit_remo_0009.png",
+	"rottweiler\\sit_remote\\N_sit_remo_0010.png",
+	"rottweiler\\sit_remote\\N_sit_remo_0011.png",
+	"rottweiler\\sit_remote\\N_sit_remo_0012.png",
+	"rottweiler\\sit_remote\\N_sit_remo_0013.png",
 };
 const char* pszRottweilerRight[] = {
 	"rottweiler\\move_right\\N_mg1_0000.png",
@@ -299,9 +303,10 @@ void CTestLevel::OnLoadScene(IANApi* pApi)
 
 void CTestLevel::OnUnloadScene(IANApi* pApi)
 {
+	pApi->UnregWorld(&this->m_pWorld);
+
 	pApi->ClearAndDeleteLinkedImages();
 	pApi->ClearAndDeleteLinkedAnimationCompositions();
-	pApi->UnregWorld(&this->m_pWorld);
 	pApi->UnregAndDeleteAllEntity();
 	pApi->GetInteractionMessagesList()->Clear();
 	pApi->ClearDefaultAnimationComposition();
@@ -357,16 +362,18 @@ void CTestLevel::KeyboardMoveInput(IANApi* pApi)
 void CTestLevel::DrawWorld(IANApi* pApi)
 {
 	this->m_pWorld->SetZoom(this->m_flWorldZoom);
-	//this->m_pWorld->SetCameraToEntity(this->m_pMainActor);
+	this->m_pWorld->SetCameraToEntity(this->m_pMainActor);
 	this->m_pWorld->Update(pApi);
 	this->m_pWorld->Draw(pApi);
 }
 
 void CTestLevel::DrawEntities(IANApi* pApi)
 {
-	if (pApi->GetKeyIsDowned('V'))
+	static bool pult_active = false;
+
+	if (pult_active)
 	{
-		this->m_pRottweiler->GetAnimCompositionController()->SetAnimationComposition(this->m_RottweilerSeatRemote);
+		this->m_pRottweiler->GetAnimCompositionController()->SetAnimationComposition(this->m_RottweilerSitRemote);
 		this->m_pRottweiler->GetAnimCompositionController()->SetAnimationDuration(0.1f);
 
 		static auto bIsSuccess = false;
@@ -375,7 +382,29 @@ void CTestLevel::DrawEntities(IANApi* pApi)
 		{
 			bIsSuccess = !bIsSuccess;
 			this->m_pRottweiler->GetAnimCompositionController()->SetAnimationMode(bIsSuccess);
-			//printf("SWITCH\n");
+
+			if (!bIsSuccess)
+				pult_active = false;
+		}
+	}
+	else
+	{
+		static int rottweiler_counter = 0;
+
+		this->m_pRottweiler->GetAnimCompositionController()->SetAnimationComposition(this->m_RottweilerSit);
+		this->m_pRottweiler->GetAnimCompositionController()->SetAnimationDuration(0.215f);
+
+		//printf("%d\n", this->m_pRottweiler->GetAnimCompositionController()->GetCurrentAnimationCompositionCount());
+
+		if (this->m_pRottweiler->GetAnimCompositionController()->IsAnimationCycleComplete())
+		{
+			rottweiler_counter++;
+
+			if (rottweiler_counter >= 2)
+			{
+				rottweiler_counter = 0;
+				pult_active = true;
+			}
 		}
 	}
 
@@ -784,7 +813,13 @@ void CTestLevel::CreateAnimationCompositions(IANApi* pApi)
 	pApi->CreateAnimationComposition(pszRottweilerUp, AN_ARRSIZE(pszRottweilerUp), &this->m_RottweilerCompositionUp, true);
 	pApi->CreateAnimationComposition(pszRottweilerDown, AN_ARRSIZE(pszRottweilerDown), &this->m_RottweilerCompositionDown, true);
 	pApi->CreateAnimationComposition(pszRottweilerLeft, AN_ARRSIZE(pszRottweilerLeft), &this->m_RottweilerCompositionLeft, true);
-	pApi->CreateAnimationComposition(pszRottweilerSeatRemote, AN_ARRSIZE(pszRottweilerSeatRemote), &this->m_RottweilerSeatRemote, true);
+	pApi->CreateAnimationComposition(pszRottweilerSit, AN_ARRSIZE(pszRottweilerSit), &this->m_RottweilerSit, true);
+	printf("%p %p | %d\n", this->m_RottweilerSit, ((std::uintptr_t)this->m_RottweilerSit) + 4, pApi->GetAnimationCompositionSize(this->m_RottweilerSit));
+	system("pause");
+	pApi->InsertAnimationFrameTo(this->m_RottweilerSit, 0, &this->m_RottweilerSit);
+	printf("%p %p | %d\n", this->m_RottweilerSit, ((std::uintptr_t)this->m_RottweilerSit) + 4, pApi->GetAnimationCompositionSize(this->m_RottweilerSit));
+	system("pause");
+	pApi->CreateAnimationComposition(pszRottweilerSitRemote, AN_ARRSIZE(pszRottweilerSitRemote), &this->m_RottweilerSitRemote, true);
 	pApi->CreateAnimationComposition(pszTVScreen, AN_ARRSIZE(pszTVScreen), &this->m_TVScreenComposition, true);
 }
 

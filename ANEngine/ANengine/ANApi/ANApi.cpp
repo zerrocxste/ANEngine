@@ -339,19 +339,24 @@ bool ANApi::CreateAnimationComposition(const char** pszAnimationLabelsArr, int i
 	return ret;
 }
 
+void ANApi::InsertAnimationFrameTo(ANAnimationComposition AnimationCompositionSource, int iAnimationFrameIdxSource, ANAnimationComposition* pAnimationCompositionDest, int iAnimationFrameDest)
+{
+	this->m_pCore->GetGame()->GetGameResourcesData()->InsertAnimationFrameTo(AnimationCompositionSource, iAnimationFrameIdxSource, pAnimationCompositionDest, iAnimationFrameDest);
+}
+
 void ANApi::DeleteAnimationComposition(ANAnimationComposition* pAnimationComposition)
 {
 	this->m_pCore->GetGame()->GetGameResourcesData()->DeleteAnimationComposition(pAnimationComposition);
 }
 
-int ANApi::GetAnimationCompositionSize(ANAnimationComposition AnimationComposition)
+anFramesLength ANApi::GetAnimationCompositionSize(ANAnimationComposition AnimationComposition)
 {
-	return *(int*)AnimationComposition;
+	return *(anFramesLength*)AnimationComposition;
 }
 
 ANImageID ANApi::GetAnimationCompositionFrameFromID(ANAnimationComposition AnimationComposition, int ID)
 {
-	return *(ANImageID*)(((std::uintptr_t)AnimationComposition + sizeof(int)) + (sizeof(ANAnimationComposition) * ID));
+	return ((ANAnimationComposition)((std::uintptr_t)AnimationComposition + sizeof(anFramesLength)))[ID].m_Frame;
 }
 
 void ANApi::ClearAndDeleteLinkedImages()

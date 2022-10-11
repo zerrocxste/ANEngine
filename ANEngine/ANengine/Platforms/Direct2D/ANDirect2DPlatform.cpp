@@ -431,13 +431,12 @@ bool ANRendererlatformD2D::GetImageSize(ANImageID ImageID, anVec2 * pSize)
 	return true;
 }
 
-void ANRendererlatformD2D::FreeImage(ANImageID * pImageIDPtr)
+void ANRendererlatformD2D::FreeImage(ANImageID ImageID)
 {
-	if (!*pImageIDPtr)
+	if (!ImageID)
 		return;
 
-	((ID2D1Bitmap*)(*pImageIDPtr))->Release();
-	*pImageIDPtr = nullptr;
+	((ID2D1Bitmap*)(ImageID))->Release();
 }
 
 bool ANRendererlatformD2D::DrawImage(ANInternalGuiWindowID GuiWindow, ANImageID pImageID, anRect Pos, float Opacity)

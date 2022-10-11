@@ -27,6 +27,9 @@ typedef void* ANGuiWindowID;
 typedef __int64 ANPerfomanceTick;
 typedef void** ANAnimationComposition;
 
+using anFramesLength = short;
+constexpr auto FRAMES_DATA_BYTE_LENGTH = sizeof(anFramesLength);
+
 class IANApi;
 class IANGameScene;
 class IANWorld;

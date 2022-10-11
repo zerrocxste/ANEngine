@@ -21,7 +21,7 @@ private:
 	int m_iCountOfIterationsPlayingComposition;
 	int m_iMaxFramesOfCompositionInIteration;
 
-	int m_iCurrentCompositionMaxFrame;
+	anFramesLength m_iCurrentCompositionMaxFrame;
 
 	float m_flAnimationTime;
 

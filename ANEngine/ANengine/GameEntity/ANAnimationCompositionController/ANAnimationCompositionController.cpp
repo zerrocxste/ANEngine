@@ -74,7 +74,7 @@ ANImageID ANAnimationCompositionController::GetCurrentAnimationCompositionFrame(
 		return ANImageID(0);
 	}
 
-	this->m_iCurrentCompositionMaxFrame = *(int*)ViewedComposition;
+	this->m_iCurrentCompositionMaxFrame = *(anFramesLength*)ViewedComposition;
 
 	auto PrevAnimNotSame = this->m_PrevAnimationComposition != ViewedComposition;
 	auto CounterIsOut = this->m_bIsPlayInversed ? this->m_iCurrentAnimationCompositionFrameCount < 0 : this->m_iCurrentAnimationCompositionFrameCount >= this->m_iCurrentCompositionMaxFrame;
@@ -88,7 +88,7 @@ ANImageID ANAnimationCompositionController::GetCurrentAnimationCompositionFrame(
 	if (PrevAnimNotSame || CounterIsOut)
 		this->m_iCurrentAnimationCompositionFrameCount = this->m_bIsPlayInversed ? (this->m_iCurrentCompositionMaxFrame - 1) : 0;
 
-	auto AnimationCompositionFrame = (ANImageID)((ANAnimationComposition)((std::uintptr_t)ViewedComposition + sizeof(int)))[this->m_iCurrentAnimationCompositionFrameCount];
+	auto AnimationCompositionFrame = ((ANAnimationComposition)((std::uintptr_t)ViewedComposition + sizeof(anFramesLength)))[this->m_iCurrentAnimationCompositionFrameCount].m_Frame;
 
 	this->m_PrevAnimationComposition = ViewedComposition;
 
@@ -99,7 +99,10 @@ ANImageID ANAnimationCompositionController::GetCurrentAnimationCompositionFrame(
 		auto IsOverflowed = this->m_bIsPlayInversed ? this->m_iCurrentAnimationCompositionFrameCount < 0 : this->m_iCurrentAnimationCompositionFrameCount >= this->m_iCurrentCompositionMaxFrame;
 
 		if (!IsOverflowed)
+		{
+			this->m_bAnimationCycleOnThisFrameIsComplete = true;
 			this->m_iCurrentAnimationCompositionFrameCount += this->m_bIsPlayInversed ? -1 : 1;
+		}
 		else
 			this->m_iCurrentAnimationCompositionFrameCount = this->m_bIsPlayInversed ? (this->m_iCurrentCompositionMaxFrame - 1) : 0;
 

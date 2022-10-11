@@ -155,7 +155,8 @@ private:
 	ANAnimationComposition m_RottweilerCompositionDown;
 	ANAnimationComposition m_RottweilerCompositionLeft;
 	ANAnimationComposition m_RottweilerCompositionRight;
-	ANAnimationComposition m_RottweilerSeatRemote;
+	ANAnimationComposition m_RottweilerSit;
+	ANAnimationComposition m_RottweilerSitRemote;
 
 	IANEntity* m_pTVScreen;
 	ANAnimationComposition m_TVScreenComposition;

@@ -20,7 +20,7 @@ typedef void* ANFontID;
 typedef void* ANInternalGuiWindowID;
 typedef void* ANGuiWindowID;
 typedef __int64 ANPerfomanceTick;
-typedef void** ANAnimationComposition;
+//typedef void** ANAnimationComposition;
 
 enum RGBA;
 
@@ -43,3 +43,14 @@ struct ANComponents
 	ANPerfomance* m_ANPerfomance;
 	ANPlatform* m_pANPlatform;
 };
+
+typedef struct 
+{
+	bool m_bIsUnique;
+	ANImageID m_Frame;
+} ANCompositionFrame, *pANCompositionFrame;
+
+typedef pANCompositionFrame ANAnimationComposition;
+
+using anFramesLength = short;
+constexpr auto FRAMES_DATA_BYTE_LENGTH = sizeof(anFramesLength);

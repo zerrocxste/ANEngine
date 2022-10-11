@@ -120,9 +120,9 @@ bool ANRenderer::GetImageSize(ANImageID ImageID, anVec2* pSize)
 	return this->m_pRendererBackend->GetImageSize(ImageID, pSize);
 }
 
-void ANRenderer::FreeImage(ANImageID* pImageIDPtr)
+void ANRenderer::FreeImage(ANImageID ImageID)
 {
-	this->m_pRendererBackend->FreeImage(pImageIDPtr);
+	this->m_pRendererBackend->FreeImage(ImageID);
 }
 
 bool ANRenderer::DrawImage(ANImageID pImageID, anRect Pos, float Opacity)

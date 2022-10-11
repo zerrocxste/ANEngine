@@ -12,7 +12,7 @@ public:
 	virtual bool GetScreenSize(ANInternalGuiWindowID GuiWindow, anVec2* pAnvec2Out) = 0;
 	virtual bool CreateImageFromMemory(void* pImageSrc, std::uint32_t iImageSize, ANImageID* pImageIDPtr) = 0;
 	virtual bool GetImageSize(ANImageID ImageID, anVec2* pSize) = 0;
-	virtual void FreeImage(ANImageID* pImageIDPtr) = 0;
+	virtual void FreeImage(ANImageID ImageID) = 0;
 	virtual bool DrawImage(ANInternalGuiWindowID GuiWindow, ANImageID pImageID, anRect Pos, float Opacity) = 0;
 	virtual bool DrawLine(ANInternalGuiWindowID GuiWindow, anVec2 From, anVec2 To, anColor Color, float LineThickness) = 0;
 	virtual bool DrawRectangle(ANInternalGuiWindowID GuiWindow, anRect Pos, anColor Color, float LineThickness, float Rounding) = 0;

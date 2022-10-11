@@ -27,7 +27,7 @@ public:
 	bool CreateImageFromMemory(void* pImageSrc, std::uint32_t iImageSize, ANImageID* pImageIDPtr);
 	bool CreateImageFromResource(ANUniqueResource* pResource, ANImageID* pImageIDPtr);
 	bool GetImageSize(ANImageID ImageID, anVec2* pSize);
-	void FreeImage(ANImageID* pImageIDPtr);
+	void FreeImage(ANImageID ImageID);
 	bool DrawImage(ANImageID pImageID, anRect Pos, float Opacity = 1.f);
 	bool DrawRectangle(anRect Pos, anColor Color, float LineThickness = 1.f, float Rounding = 0.f);
 	bool DrawFilledRectangle(anRect Pos, anColor Color, float Rounding = 0.f);
