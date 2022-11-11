@@ -1,9 +1,7 @@
 #include "../ANEngine.h"
 
 ANPerfomance::ANPerfomance() :
-	m_FpsSecondTimer(0),
-	m_iCurrentFpsCounter(0),
-	m_iFpsCounter(0),
+	m_flFpsCounter(0),
 	m_BeginFrameTick(0),
 	m_EndFrameTick(0),
 	m_PrevFrameTick(0),
@@ -31,9 +29,9 @@ ANPerfomanceTick ANPerfomance::GetPrevFrameTick()
 	return this->m_PrevFrameTick;
 }
 
-int ANPerfomance::GetFramePerSecond()
+float ANPerfomance::GetFramePerSecond()
 {
-	return this->m_iFpsCounter;
+	return this->m_flFpsCounter;
 }
 
 float ANPerfomance::GetFrameTime()
@@ -55,7 +53,7 @@ void ANPerfomance::Update()
 {
 	ANPlatform::GetPerfomanceTick(this->m_BeginFrameTick);
 
-	this->m_MaxFpsFrameTime = (float)(this->m_BeginFrameTick - this->m_EndFrameTick) / 10000000.f;
+	this->m_MaxFpsFrameTime = ((double)(this->m_BeginFrameTick - this->m_EndFrameTick) / 10000000.);
 
 	if (this->m_EndFrameTick != 0)
 		this->m_TotalRenderTime += this->m_MaxFpsFrameTime;
@@ -63,15 +61,5 @@ void ANPerfomance::Update()
 	this->m_PrevFrameTick = this->m_EndFrameTick;
 	this->m_EndFrameTick = this->m_BeginFrameTick;
 
-	this->m_iCurrentFpsCounter++;
-
-	if ((this->m_EndFrameTick - this->m_FpsSecondTimer) / 10000 >= 1000)
-	{
-		this->m_iFpsCounter = this->m_iCurrentFpsCounter;
-		this->m_FpsSecondTimer = 0;
-		this->m_iCurrentFpsCounter = 0;
-	}
-
-	if (!this->m_FpsSecondTimer)
-		this->m_FpsSecondTimer = this->m_BeginFrameTick;
+	this->m_flFpsCounter = (float)(((1.0 - this->m_MaxFpsFrameTime) / this->m_MaxFpsFrameTime) + 1.5);
 }

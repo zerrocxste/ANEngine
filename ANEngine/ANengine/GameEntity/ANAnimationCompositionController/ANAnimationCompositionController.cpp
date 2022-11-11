@@ -7,9 +7,23 @@ void ANAnimationCompositionController::SetAnimationDuration(float flDuration)
 
 void ANAnimationCompositionController::SetAnimationMode(bool bReversePlay)
 {
-	this->m_bIsPlayInversed = bReversePlay;
+	if (!this->m_bIsPlayInversed)
+	{
+		if (!this->m_iCurrentAnimationCompositionFrameCount)
+			this->m_iCurrentAnimationCompositionFrameCount = this->m_iCurrentCompositionMaxFrame - 1;
+	}
+	else
+	{
+		if (this->m_iCurrentAnimationCompositionFrameCount >= (this->m_iCurrentCompositionMaxFrame - 1))
+			this->m_iCurrentAnimationCompositionFrameCount = 0;
+	}
 
-	this->m_iCurrentAnimationCompositionFrameCount = this->m_bIsPlayInversed ? (this->m_iCurrentCompositionMaxFrame - 1) : 0;
+	this->m_bIsPlayInversed = bReversePlay;
+}
+
+bool ANAnimationCompositionController::GetAnimationModePlayIsReversed()
+{
+	return this->m_bIsPlayInversed;
 }
 
 int ANAnimationCompositionController::GetNeedUpdateAnimationCounter(IANApi* pApi)
@@ -58,39 +72,36 @@ void ANAnimationCompositionController::SetAnimationComposition(ANAnimationCompos
 
 ANImageID ANAnimationCompositionController::GetCurrentAnimationCompositionFrame(IANApi* pApi)
 {
-	bool IsPlayingComposition = false;
-
-	auto ViewedComposition = this->m_CurrentAnimationComposition;
-
-	if (this->m_PlayingAnimationComposition != 0 && this->m_iCountOfIterationsPlayingComposition > 0)
-	{
-		ViewedComposition = this->m_PlayingAnimationComposition;
-		IsPlayingComposition = true;
-	}
-
-	if (!ViewedComposition)
-	{
-		this->m_PrevAnimationComposition = ANAnimationComposition(0);
+	if (!AnimationCompositionThink())
 		return ANImageID(0);
-	}
 
-	this->m_iCurrentCompositionMaxFrame = *(anFramesLength*)ViewedComposition;
-
-	auto PrevAnimNotSame = this->m_PrevAnimationComposition != ViewedComposition;
-	auto CounterIsOut = this->m_bIsPlayInversed ? this->m_iCurrentAnimationCompositionFrameCount < 0 : this->m_iCurrentAnimationCompositionFrameCount >= this->m_iCurrentCompositionMaxFrame;
+	auto CounterIsOut = IsAnimationCounterOut();
 
 	if (this->m_lflCurrentRenderTime == pApi->TotalRenderTime)
-		this->m_bAnimationCycleOnThisFrameIsComplete = CounterIsOut && !PrevAnimNotSame;
+		this->m_bAnimationCycleOnThisFrameIsComplete = CounterIsOut && !this->m_bPrevAnimNotSame;
 
-	if (IsPlayingComposition && (CounterIsOut || (this->m_iMaxFramesOfCompositionInIteration > 0 && this->m_iCurrentAnimationCompositionFrameCount >= this->m_iMaxFramesOfCompositionInIteration)))
+	if (this->m_bIsCurrentlyPlayComposition && (CounterIsOut || (this->m_iMaxFramesOfCompositionInIteration > 0 && this->m_iCurrentAnimationCompositionFrameCount >= this->m_iMaxFramesOfCompositionInIteration)))
 		this->m_iCountOfIterationsPlayingComposition--;
 
-	if (PrevAnimNotSame || CounterIsOut)
+	ANCompositionFrame AnimationCompositionFrame{};
+
+	if (this->m_iCurrentCompositionMaxFrame > 0)
+	{
+		auto clamped = this->m_iCurrentAnimationCompositionFrameCount;
+
+		if (clamped < 0)
+			clamped = 0;
+
+		if (clamped >= this->m_iCurrentCompositionMaxFrame)
+			clamped = this->m_iCurrentCompositionMaxFrame - 1;
+
+		AnimationCompositionFrame = ((ANAnimationComposition)((std::uintptr_t)this->m_ViewedComposition + sizeof(anFramesLength)))[clamped];
+	}
+		
+	if (this->m_bPrevAnimNotSame || CounterIsOut)
+	{
 		this->m_iCurrentAnimationCompositionFrameCount = this->m_bIsPlayInversed ? (this->m_iCurrentCompositionMaxFrame - 1) : 0;
-
-	auto AnimationCompositionFrame = ((ANAnimationComposition)((std::uintptr_t)ViewedComposition + sizeof(anFramesLength)))[this->m_iCurrentAnimationCompositionFrameCount].m_Frame;
-
-	this->m_PrevAnimationComposition = ViewedComposition;
+	}
 
 	auto NextFrameIncFrameCount = GetNeedUpdateAnimationCounter(pApi);
 
@@ -109,12 +120,15 @@ ANImageID ANAnimationCompositionController::GetCurrentAnimationCompositionFrame(
 		NextFrameIncFrameCount--;
 	}
 
-	if (IsPlayingComposition && this->m_iCountOfIterationsPlayingComposition <= 0)
+	if (IsAnimationCounterOut())
+		this->m_bAnimationCycleOnThisFrameIsComplete = true;
+
+	if (this->m_bIsCurrentlyPlayComposition && this->m_iCountOfIterationsPlayingComposition <= 0)
 		StopRunningAnimation();
 
 	this->m_bNewAnimationCompositionProcessed = true;
 	
-	return AnimationCompositionFrame;
+	return AnimationCompositionFrame.m_Frame;
 }
 
 int ANAnimationCompositionController::GetCurrentAnimationCompositionCount()
@@ -156,4 +170,36 @@ void ANAnimationCompositionController::UnlockPlayingAnimationState()
 bool ANAnimationCompositionController::IsAnimationCycleComplete()
 {
 	return this->m_bAnimationCycleOnThisFrameIsComplete && this->m_bNewAnimationCompositionProcessed;
+}
+
+bool ANAnimationCompositionController::IsAnimationCounterOut()
+{
+	return !this->m_bIgnoreAnimationBorder && (this->m_bIsPlayInversed ? this->m_iCurrentAnimationCompositionFrameCount < 0 : this->m_iCurrentAnimationCompositionFrameCount >= this->m_iCurrentCompositionMaxFrame);
+}
+
+bool ANAnimationCompositionController::AnimationCompositionThink()
+{
+	this->m_bIsCurrentlyPlayComposition = false;
+	this->m_PrevAnimationComposition = this->m_ViewedComposition;
+
+	auto ViewedComposition = this->m_CurrentAnimationComposition;
+
+	if (this->m_PlayingAnimationComposition != 0 && this->m_iCountOfIterationsPlayingComposition > 0)
+	{
+		ViewedComposition = this->m_PlayingAnimationComposition;
+		this->m_bIsCurrentlyPlayComposition = true;
+	}
+
+	if (!ViewedComposition)
+	{
+		this->m_ViewedComposition = this->m_PrevAnimationComposition = ANAnimationComposition(0);
+		this->m_iCurrentCompositionMaxFrame = 0;
+		return false;
+	}
+
+	this->m_ViewedComposition = ViewedComposition;
+	this->m_iCurrentCompositionMaxFrame = *(anFramesLength*)ViewedComposition;
+	this->m_bPrevAnimNotSame = this->m_PrevAnimationComposition != this->m_ViewedComposition;
+
+	return true;
 }

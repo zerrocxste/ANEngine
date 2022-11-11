@@ -3,7 +3,7 @@
 class IANRendererBackend : public IANError
 {
 public:
-	virtual bool InitializeRenderer(ANWindowHandle WindowHandle, void* pReversed) = 0;
+	virtual bool InitializeRenderer(ANWindowHandle WindowHandle, bool bEnableVerticalSync, void* pReversed) = 0;
 
 	virtual bool BeginFrame() = 0;
 	virtual bool EndFrame() = 0;

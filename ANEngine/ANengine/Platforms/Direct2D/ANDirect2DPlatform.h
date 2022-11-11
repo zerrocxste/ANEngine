@@ -58,7 +58,7 @@ private:
 	bool CreateRenderTarget(ANWindowHandle WindowHandle, bool bVerticalSyncEnabled);
 	bool CreateGlobalBrush();
 public:
-	virtual bool InitializeRenderer(ANWindowHandle WindowHandle, void* pReversed);
+	virtual bool InitializeRenderer(ANWindowHandle WindowHandle, bool bEnableVerticalSync, void* pReversed);
 
 	virtual bool BeginFrame();
 	virtual bool EndFrame();

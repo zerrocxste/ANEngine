@@ -11,7 +11,8 @@ public:
 	ANGameResourcesData(ANCore* pCore);
 
 	bool CreateAnimationComposition(const char** pszAnimationLabelsArr, int iAnimationLabelsArrSize, ANAnimationComposition* pAnimationComposition, bool bLinkToDataList);
-	void InsertAnimationFrameTo(ANAnimationComposition AnimationCompositionSource, int iAnimationFrameIdxSource, ANAnimationComposition* pAnimationCompositionDest, int iAnimationFrameDest);
+	void CreateCopyAnimationComposition(ANAnimationComposition AnimationCompositionSource, ANAnimationComposition* pAnimationCompositionDest, bool bLinkToData);
+	bool InsertAnimationFrameTo(ANAnimationComposition AnimationCompositionSource, int iAnimationFrameIdxSource, ANAnimationComposition* pAnimationCompositionDest, int iAnimationFrameDest);
 	void DeleteAnimationComposition(ANAnimationComposition* pAnimationComposition);
 	void ClearAnimationComposition(ANAnimationComposition AnimationComposition);
 	void ClearAnimationCompositionData();

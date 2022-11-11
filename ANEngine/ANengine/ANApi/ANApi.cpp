@@ -3,7 +3,7 @@
 ANApi::ANApi(ANCore* pCore) : 
 	m_pCore(pCore)
 {
-	this->FPS = 0;
+	this->FPS = 0.f;
 	this->Frametime = 0.;
 }
 
@@ -339,9 +339,21 @@ bool ANApi::CreateAnimationComposition(const char** pszAnimationLabelsArr, int i
 	return ret;
 }
 
-void ANApi::InsertAnimationFrameTo(ANAnimationComposition AnimationCompositionSource, int iAnimationFrameIdxSource, ANAnimationComposition* pAnimationCompositionDest, int iAnimationFrameDest)
+void ANApi::CreateCopyAnimationComposition(ANAnimationComposition AnimationCompositionSource, ANAnimationComposition* pAnimationCompositionDest, bool bLinkToData)
 {
-	this->m_pCore->GetGame()->GetGameResourcesData()->InsertAnimationFrameTo(AnimationCompositionSource, iAnimationFrameIdxSource, pAnimationCompositionDest, iAnimationFrameDest);
+	this->m_pCore->GetGame()->GetGameResourcesData()->CreateCopyAnimationComposition(AnimationCompositionSource, pAnimationCompositionDest, bLinkToData);
+}
+
+bool ANApi::InsertAnimationFrameTo(ANAnimationComposition AnimationCompositionSource, int iAnimationFrameIdxSource, ANAnimationComposition* pAnimationCompositionDest, int iAnimationFrameDest)
+{
+	auto ResourceData = this->m_pCore->GetGame()->GetGameResourcesData();
+
+	auto ret = ResourceData->InsertAnimationFrameTo(AnimationCompositionSource, iAnimationFrameIdxSource, pAnimationCompositionDest, iAnimationFrameDest);
+
+	if (!ret)
+		this->SetError(ResourceData->What());
+
+	return ret;
 }
 
 void ANApi::DeleteAnimationComposition(ANAnimationComposition* pAnimationComposition)

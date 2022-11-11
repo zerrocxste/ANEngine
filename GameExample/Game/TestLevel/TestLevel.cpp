@@ -371,17 +371,19 @@ void CTestLevel::DrawEntities(IANApi* pApi)
 {
 	static bool pult_active = false;
 
+	auto RottweilerCompositionController = this->m_pRottweiler->GetAnimCompositionController();
+
 	if (pult_active)
 	{
-		this->m_pRottweiler->GetAnimCompositionController()->SetAnimationComposition(this->m_RottweilerSitRemote);
-		this->m_pRottweiler->GetAnimCompositionController()->SetAnimationDuration(0.1f);
+		RottweilerCompositionController->SetAnimationComposition(this->m_RottweilerSitRemote);
+		RottweilerCompositionController->SetAnimationDuration(0.0675f);
 
 		static auto bIsSuccess = false;
 
-		if (this->m_pRottweiler->GetAnimCompositionController()->IsAnimationCycleComplete())
+		if (RottweilerCompositionController->IsAnimationCycleComplete())
 		{
 			bIsSuccess = !bIsSuccess;
-			this->m_pRottweiler->GetAnimCompositionController()->SetAnimationMode(bIsSuccess);
+			RottweilerCompositionController->SetAnimationMode(bIsSuccess);
 
 			if (!bIsSuccess)
 				pult_active = false;
@@ -389,29 +391,17 @@ void CTestLevel::DrawEntities(IANApi* pApi)
 	}
 	else
 	{
-		static int rottweiler_counter = 0;
+		RottweilerCompositionController->SetAnimationComposition(this->m_RottweilerSit);
+		RottweilerCompositionController->SetAnimationDuration(0.215f);
 
-		this->m_pRottweiler->GetAnimCompositionController()->SetAnimationComposition(this->m_RottweilerSit);
-		this->m_pRottweiler->GetAnimCompositionController()->SetAnimationDuration(0.215f);
-
-		//printf("%d\n", this->m_pRottweiler->GetAnimCompositionController()->GetCurrentAnimationCompositionCount());
-
-		if (this->m_pRottweiler->GetAnimCompositionController()->IsAnimationCycleComplete())
-		{
-			rottweiler_counter++;
-
-			if (rottweiler_counter >= 2)
-			{
-				rottweiler_counter = 0;
-				pult_active = true;
-			}
-		}
+		if (RottweilerCompositionController->IsAnimationCycleComplete())
+			pult_active = true;
 	}
 
 #if DEBUG_LEVEL_1 == 1
 	auto groupZone = pApi->FindEntityByGroupID(szWorldEntityClassIDRoomZone);
 
-	for (auto ent = groupZone->First(); *ent != groupZone->Last(); (*ent)++)
+	for (auto ent = groupZone->First(); ent != groupZone->Last(); ent++)
 	{
 		auto entity = ent->Get();
 
@@ -468,7 +458,7 @@ void CTestLevel::DrawStatistics(IANApi* pApi)
 	char buff[1024] = { 0 };
 	sprintf_s(buff,
 		"ENGINE:\n"
-		"FPS: %d\n"
+		"FPS: %.1f\n"
 		"Frametime: %f\n"
 		"Screen size: %.1f %.1f\n"
 		"World Size: %.1f %.1f\n"
@@ -813,12 +803,13 @@ void CTestLevel::CreateAnimationCompositions(IANApi* pApi)
 	pApi->CreateAnimationComposition(pszRottweilerUp, AN_ARRSIZE(pszRottweilerUp), &this->m_RottweilerCompositionUp, true);
 	pApi->CreateAnimationComposition(pszRottweilerDown, AN_ARRSIZE(pszRottweilerDown), &this->m_RottweilerCompositionDown, true);
 	pApi->CreateAnimationComposition(pszRottweilerLeft, AN_ARRSIZE(pszRottweilerLeft), &this->m_RottweilerCompositionLeft, true);
-	pApi->CreateAnimationComposition(pszRottweilerSit, AN_ARRSIZE(pszRottweilerSit), &this->m_RottweilerSit, true);
-	printf("%p %p | %d\n", this->m_RottweilerSit, ((std::uintptr_t)this->m_RottweilerSit) + 4, pApi->GetAnimationCompositionSize(this->m_RottweilerSit));
-	system("pause");
-	pApi->InsertAnimationFrameTo(this->m_RottweilerSit, 0, &this->m_RottweilerSit);
-	printf("%p %p | %d\n", this->m_RottweilerSit, ((std::uintptr_t)this->m_RottweilerSit) + 4, pApi->GetAnimationCompositionSize(this->m_RottweilerSit));
-	system("pause");
+	{
+		pApi->CreateAnimationComposition(pszRottweilerSit, AN_ARRSIZE(pszRottweilerSit), &this->m_RottweilerSit, true);
+		pApi->InsertAnimationFrameTo(this->m_RottweilerSit, 0, &this->m_RottweilerSit, 3);
+		pApi->InsertAnimationFrameTo(this->m_RottweilerSit, 1, &this->m_RottweilerSit, 4);
+		for (auto i = 0; i < 10; i++)
+			pApi->InsertAnimationFrameTo(this->m_RottweilerSit, 0, &this->m_RottweilerSit);
+	}
 	pApi->CreateAnimationComposition(pszRottweilerSitRemote, AN_ARRSIZE(pszRottweilerSitRemote), &this->m_RottweilerSitRemote, true);
 	pApi->CreateAnimationComposition(pszTVScreen, AN_ARRSIZE(pszTVScreen), &this->m_TVScreenComposition, true);
 }
@@ -843,7 +834,7 @@ void CTestLevel::CreateActorEntity(IANApi* pApi, IANEntity** ppEntity, const cha
 void CTestLevel::CreateRottweilerEntity(IANApi* pApi, const char* pszActorName)
 {
 	pApi->RegEntity(&this->m_pRottweiler, szWorldEntityPlayer);
-	this->m_pRottweiler->SetOrigin(anVec2(503.f, GetFloor(HOUSE_FLOOR::SECOND)));
+	this->m_pRottweiler->SetOrigin(anVec2(403.f, GetFloor(HOUSE_FLOOR::SECOND)));
 	this->m_pRottweiler->AddDefaultAnimationComposition(pApi, this->m_RottweilerComposition, 0.3f);
 }
 

@@ -309,6 +309,8 @@ bool ANRendererlatformD2D::CreateGlobalBrush()
 
 bool ANRendererlatformD2D::Initialize(HWND hWnd, bool bVerticalSyncEnabled)
 {
+	this->m_bEnabledVerticalSync = bVerticalSyncEnabled;
+
 	if (!ANRendererlatformD2D::m_singleton.CreateD2D1Factory())
 	{
 		this->SetError(__FUNCTION__ " > Failed create D2D1 factory");
@@ -342,13 +344,13 @@ bool ANRendererlatformD2D::Initialize(HWND hWnd, bool bVerticalSyncEnabled)
 	return true;
 }
 
-bool ANRendererlatformD2D::InitializeRenderer(ANWindowHandle WindowHandle, void* pReversed)
+bool ANRendererlatformD2D::InitializeRenderer(ANWindowHandle WindowHandle, bool bEnableVerticalSync, void* pReversed)
 {
 	ANRendererlatformD2D::m_singleton.Initialize();
 
 	EnterCriticalSection(&ANRendererlatformD2D::m_singleton.csInitializeRenderer);
 
-	auto ret = Initialize((HWND)WindowHandle, (bool)pReversed);
+	auto ret = Initialize((HWND)WindowHandle, bEnableVerticalSync);
 
 	LeaveCriticalSection(&ANRendererlatformD2D::m_singleton.csInitializeRenderer);
 

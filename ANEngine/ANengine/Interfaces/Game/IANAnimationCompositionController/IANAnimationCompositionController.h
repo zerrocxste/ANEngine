@@ -5,6 +5,7 @@ class IANAnimationCompositionController
 public:
 	virtual void SetAnimationDuration(float flDuration) = 0;
 	virtual void SetAnimationMode(bool bReversePlay) = 0;
+	virtual bool GetAnimationModePlayIsReversed() = 0;
 	virtual int GetNeedUpdateAnimationCounter(IANApi* pApi) = 0;
 	virtual void SetAnimationComposition(ANAnimationComposition AnimationComposition, bool bClearNextAnimationCycleComplete = false) = 0;
 	virtual ANImageID GetCurrentAnimationCompositionFrame(IANApi* pApi) = 0;

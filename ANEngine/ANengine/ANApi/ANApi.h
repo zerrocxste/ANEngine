@@ -68,7 +68,8 @@ public:
 	void ClearDefaultAnimationComposition() override;
 
 	bool CreateAnimationComposition(const char** pszAnimationLabelsArr, int iAnimationLabelsArrSize, ANAnimationComposition* pAnimationComposition, bool bLinkToDataList) override;
-	void InsertAnimationFrameTo(ANAnimationComposition AnimationCompositionSource, int iAnimationFrameIdxSource, ANAnimationComposition* pAnimationCompositionDest, int iAnimationFrameDest = -1) override;
+	void CreateCopyAnimationComposition(ANAnimationComposition AnimationCompositionSource, ANAnimationComposition* pAnimationCompositionDest, bool bLinkToData) /*override*/;
+	bool InsertAnimationFrameTo(ANAnimationComposition AnimationCompositionSource, int iAnimationFrameIdxSource, ANAnimationComposition* pAnimationCompositionDest, int iAnimationFrameDest = -1) override;
 	void DeleteAnimationComposition(ANAnimationComposition* pAnimationComposition) override;
 	anFramesLength GetAnimationCompositionSize(ANAnimationComposition AnimationComposition) override;
 	ANImageID GetAnimationCompositionFrameFromID(ANAnimationComposition AnimationComposition, int ID) override;

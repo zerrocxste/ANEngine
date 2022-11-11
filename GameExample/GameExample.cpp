@@ -14,7 +14,7 @@ int main()
 	bool HasWindowFrame = true;
 #endif // FULLSCREEN ==1
 
-	auto pLoader = ANEngine::CreateLoaderContext("GameExample", Pos, Size, HasWindowFrame, false);
+	auto pLoader = ANEngine::CreateLoaderContext("GameExample", Pos, Size, HasWindowFrame, true);
 
 	if (!pLoader->InitializeLoader())
 	{

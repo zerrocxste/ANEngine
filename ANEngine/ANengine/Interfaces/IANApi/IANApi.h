@@ -4,7 +4,7 @@ class IANApi : public IANError
 {
 public:
 	//FRAME | RUNTIME STATISTICS
-	int FPS;
+	float FPS;
 	float Frametime;
 	double TotalRenderTime;
 
@@ -76,7 +76,7 @@ public:
 
 	//DRAWING HELPERS
 	virtual bool CreateAnimationComposition(const char** pszAnimationLabelsArr, int iAnimationLabelsArrSize, ANAnimationComposition* pAnimationComposition, bool bLinkToDataList = false) = 0;
-	virtual void InsertAnimationFrameTo(ANAnimationComposition AnimationCompositionSource, int iAnimationFrameSource, ANAnimationComposition* pAnimationCompositionDest, int iAnimationFrameDest = -1) = 0;
+	virtual bool InsertAnimationFrameTo(ANAnimationComposition AnimationCompositionSource, int iAnimationFrameSource, ANAnimationComposition* pAnimationCompositionDest, int iAnimationFrameDest = -1) = 0;
 	virtual void DeleteAnimationComposition(ANAnimationComposition* pAnimationComposition) = 0;
 	virtual anFramesLength GetAnimationCompositionSize(ANAnimationComposition AnimationComposition) = 0;
 	virtual ANImageID GetAnimationCompositionFrameFromID(ANAnimationComposition AnimationComposition, int ID) = 0;

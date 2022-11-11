@@ -62,14 +62,12 @@ bool ANGame::RunScene()
 		auto vecPosHelperMsg = ANMathUtils::CalcPosToCenter(r->GetScreenSize(), vecHelperMsg);
 		vecPosHelperMsg.y += vecSizeNoScene.y;
 		r->TextDraw(pszHelperMsg, vecPosHelperMsg, anColor::Red());
-
 		return true;
 	}
 
 	for (auto& data : this->m_EveryFrameTask.m_vDefaultAnimationCompositionData)
 	{
 		auto pAnimationCompositionController = data.m_pEntity->GetAnimCompositionController();
-
 		pAnimationCompositionController->SetAnimationComposition(data.m_AnimationComposition);
 		pAnimationCompositionController->SetAnimationDuration(data.m_flAnimationDuration);
 	}

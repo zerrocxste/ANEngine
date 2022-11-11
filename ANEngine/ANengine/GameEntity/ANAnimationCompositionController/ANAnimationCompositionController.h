@@ -5,6 +5,7 @@ class ANAnimationCompositionController : public IANAnimationCompositionControlle
 private:
 	bool m_bAnimationCycleOnThisFrameIsComplete;
 
+	bool m_bPrevAnimNotSame;
 	bool m_bNewAnimationCompositionProcessed;
 
 	float m_flNewAnimationDuration;
@@ -12,25 +13,29 @@ private:
 
 	ANAnimationComposition m_CurrentAnimationComposition;
 	ANAnimationComposition m_PrevAnimationComposition;
+	ANAnimationComposition m_ViewedComposition;
+	int m_iCurrentCompositionMaxFrame;
 
 	int m_iCurrentAnimationCompositionFrameCount;
 
 	//IANAnimationCompositionController::PlayAnimation
+	bool m_bIsCurrentlyPlayComposition;
 	bool m_bLockStatePlayingComposition;
 	ANAnimationComposition m_PlayingAnimationComposition;
 	int m_iCountOfIterationsPlayingComposition;
 	int m_iMaxFramesOfCompositionInIteration;
-
-	anFramesLength m_iCurrentCompositionMaxFrame;
 
 	float m_flAnimationTime;
 
 	bool m_bIsPlayInversed;
 
 	double m_lflCurrentRenderTime;
+
+	bool m_bIgnoreAnimationBorder;
 public:
 	void SetAnimationDuration(float flDuration) override;
 	void SetAnimationMode(bool bReversePlay) override;
+	bool GetAnimationModePlayIsReversed() override;
 	int GetNeedUpdateAnimationCounter(IANApi* pApi) override;
 	void SetAnimationComposition(ANAnimationComposition AnimationComposition, bool bClearNextAnimationCycleComplete) override;
 	ANImageID GetCurrentAnimationCompositionFrame(IANApi* pApi) override;
@@ -40,4 +45,7 @@ public:
 	void StopRunningAnimation() override;
 	void UnlockPlayingAnimationState() override;
 	bool IsAnimationCycleComplete() override;
+
+	bool IsAnimationCounterOut();
+	bool AnimationCompositionThink();
 };

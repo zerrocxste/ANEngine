@@ -13,7 +13,7 @@ private:
 template <class T>
 ANImpPtr<T>::ANImpPtr()
 {
-	this->m_Pointer = new T();
+	this->m_Pointer = new (std::nothrow) T();
 }
 
 template<class T>
@@ -44,6 +44,12 @@ public:
 	template<class O>
 	ANInterfacePointer<T>& operator=(const ANInterfacePointer<O>& o);
 
+	//DELEGATE != OPERATOR
+	bool operator!=(const ANInterfacePointer<T>& o);
+
+	//DELEGATE ++ OPERATOR
+	T& operator++(int);
+
 	void release();
 private:
 };
@@ -51,7 +57,7 @@ private:
 template <class T>
 ANInterfacePointer<T>::ANInterfacePointer()
 {
-	this->m_Pointer = new T();
+	this->m_Pointer = new (std::nothrow) T();
 }
 
 template <class T>
@@ -102,6 +108,18 @@ ANInterfacePointer<T>& ANInterfacePointer<T>::operator=(const ANInterfacePointer
 	this->m_Pointer = o.m_Pointer;
 	o.m_Pointer = nullptr;
 	return *this;
+}
+
+template<class T>
+bool ANInterfacePointer<T>::operator!=(const ANInterfacePointer<T>& o)
+{
+	return *this->m_Pointer != o;
+}
+
+template<class T>
+T& ANInterfacePointer<T>::operator++(int)
+{
+	return (*this->m_Pointer)++;
 }
 
 template<class T>

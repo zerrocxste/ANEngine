@@ -112,6 +112,11 @@ struct ActorWoodyGameData
 	HOUSE_FLOOR m_CurrentFloor;
 };
 
+struct ActorRottweilerGameData
+{
+	bool m_bPultAction;
+};
+
 class CTestLevel : public IANGameScene
 {
 	friend DoorEntityInteractionController;

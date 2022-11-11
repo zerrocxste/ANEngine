@@ -80,7 +80,7 @@ void CTestGameScene::Entry(IANApi* pApi)
 	pApi->DrawImage(this->m_imgImageKrolik, anVec2(), ScreenSize, 0.5f);
 
 	char buff[256] = { 0 };
-	sprintf_s(buff, "FPS: %d\nFrametime: %lf\nScreenSize: %.0f:%.0f", pApi->FPS, pApi->Frametime, ScreenSize.x, ScreenSize.y);
+	sprintf_s(buff, "FPS: %.1f\nFrametime: %lf\nScreenSize: %.0f:%.0f", pApi->FPS, pApi->Frametime, ScreenSize.x, ScreenSize.y);
 	pApi->TextDraw(buff, anVec2(5.f, 5.f), anColor::White());
 
 	pApi->TextDraw("TEST", anVec2(40.f, 320.f), anColor::Red());

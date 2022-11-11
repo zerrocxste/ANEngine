@@ -58,8 +58,6 @@ void ANEntityList::Unreg(IANEntity* ppEntity)
 
 	ANMemory::GetInstance()->Delete(pEntity->m_pAnimCompositionController);
 
-	ANMemory::GetInstance()->Delete(pEntity);
-
 	if (pEntity->m_pUserData != nullptr)
 	{
 		pEntity->CallOnReleaseUserData(pEntity->m_pUserData);
@@ -67,6 +65,8 @@ void ANEntityList::Unreg(IANEntity* ppEntity)
 		delete pEntity->m_pUserData;
 		pEntity->m_pUserData = nullptr;
 	}
+
+	ANMemory::GetInstance()->Delete(pEntity);
 }
 
 void ANEntityList::FindFromClassID(const char* pszClassID, std::deque<IANEntity*>* pEntityList)

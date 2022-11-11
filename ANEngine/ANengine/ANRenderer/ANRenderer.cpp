@@ -38,7 +38,7 @@ bool ANRenderer::CreateBackendRender()
 	this->m_pRendererBackend = ANMemory::GetInstance()->Allocate<ANRendererlatformD2D>();
 #endif // BACKEND_DIRECT2D
 
-	if (!this->m_pRendererBackend->InitializeRenderer(this->m_Window, nullptr))
+	if (!this->m_pRendererBackend->InitializeRenderer(this->m_Window, this->m_bEnableVerticalSync, nullptr))
 	{
 		this->SetError(__FUNCTION__ " > Error initialize render\n%s", this->m_pRendererBackend->What());
 		return false;

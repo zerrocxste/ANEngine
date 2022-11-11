@@ -8,9 +8,6 @@ ANGameResourcesData::ANGameResourcesData(ANCore* pCore) :
 
 bool ANGameResourcesData::CreateAnimationComposition(const char** pszAnimationLabelsArr, int iAnimationLabelsArrSize, ANAnimationComposition* pAnimationComposition, bool bLinkToDataList)
 {
-	if (iAnimationLabelsArrSize == 0)
-		return false;
-
 	*pAnimationComposition = (ANAnimationComposition)ANMemory::GetInstance()->ResourceAllocate(sizeof(anFramesLength) + (sizeof(ANCompositionFrame) * iAnimationLabelsArrSize));
 
 	*(anFramesLength*)*pAnimationComposition = iAnimationLabelsArrSize;
@@ -20,25 +17,33 @@ bool ANGameResourcesData::CreateAnimationComposition(const char** pszAnimationLa
 
 	auto AnimationComposition = (ANAnimationComposition)((std::uintptr_t)*pAnimationComposition + sizeof(anFramesLength));
 
-	for (auto i = 0; i < iAnimationLabelsArrSize; i++)
+	if (pszAnimationLabelsArr != nullptr)
 	{
-		ANImageID Image = 0;
-
-		ANUniqueResource ImageResource;
-
-		if (!ResourceManager->ReadBinFile(pszAnimationLabelsArr[i], &ImageResource))
+		for (auto i = 0; i < iAnimationLabelsArrSize; i++)
 		{
-			this->SetError(ResourceManager->What());
-			return false;
-		}
+			auto pFilePath = pszAnimationLabelsArr[i];
 
-		if (!Renderer->CreateImageFromResource(&ImageResource, &Image))
-		{
-			this->SetError(Renderer->What());
-			return false;
-		}
+			if (!pFilePath)
+				continue;
 
-		AnimationComposition[i] = ANCompositionFrame{ true, Image };
+			ANImageID Image = 0;
+
+			ANUniqueResource ImageResource;
+
+			if (!ResourceManager->ReadBinFile(pFilePath, &ImageResource))
+			{
+				this->SetError(ResourceManager->What());
+				return false;
+			}
+
+			if (!Renderer->CreateImageFromResource(&ImageResource, &Image))
+			{
+				this->SetError(Renderer->What());
+				continue;
+			}
+
+			AnimationComposition[i] = ANCompositionFrame{ true, Image };
+		}
 	}
 
 	if (bLinkToDataList)
@@ -47,24 +52,54 @@ bool ANGameResourcesData::CreateAnimationComposition(const char** pszAnimationLa
 	return true;
 }
 
-void ANGameResourcesData::InsertAnimationFrameTo(ANAnimationComposition AnimationCompositionSource, int iAnimationFrameIdxSource, ANAnimationComposition* pAnimationCompositionDest, int iAnimationFrameDest)
+void ANGameResourcesData::CreateCopyAnimationComposition(ANAnimationComposition AnimationCompositionSource, ANAnimationComposition* pAnimationCompositionDest, bool bLinkToData)
 {
+	auto iSourceAnimationCompositionSize = *(anFramesLength*)AnimationCompositionSource;
+
+	if (iSourceAnimationCompositionSize <= 0)
+		return;
+
+	auto iSourceAnimationCompositionByteLength = sizeof(anFramesLength) + (iSourceAnimationCompositionSize * sizeof(ANCompositionFrame));
+
+	*pAnimationCompositionDest = (ANAnimationComposition)ANMemory::GetInstance()->ResourceAllocate(iSourceAnimationCompositionByteLength);
+
+	auto pBeginSourceCompositionFrames = (ANAnimationComposition)((std::uintptr_t)AnimationCompositionSource + sizeof(anFramesLength));
+	auto pBeginDestCompositionFrames = (ANAnimationComposition)((std::uintptr_t)*pAnimationCompositionDest + sizeof(anFramesLength));
+
+	for (auto i = 0; i < iSourceAnimationCompositionSize; i++)
+	{
+		auto& AnimationFrame = pBeginSourceCompositionFrames[i];
+		pBeginDestCompositionFrames[i] = ANCompositionFrame{ false, AnimationFrame.m_Frame };
+	}
+
+	if (bLinkToData)
+		this->m_vAnimationCompositionData.push_back(*pAnimationCompositionDest);
+}
+
+bool ANGameResourcesData::InsertAnimationFrameTo(ANAnimationComposition AnimationCompositionSource, int iAnimationFrameIdxSource, ANAnimationComposition* pAnimationCompositionDest, int iAnimationFrameDest)
+{
+	if (!AnimationCompositionSource)
+	{
+		this->SetError(__FUNCTION__ ": Bad source animation composition");
+		return false;
+	}
+
 	auto iSourceCompositionMaxFrames = *(anFramesLength*)AnimationCompositionSource;
 
 	if (iAnimationFrameIdxSource >= iSourceCompositionMaxFrames)
 	{
 		this->SetError(__FUNCTION__ ": Invalid source index. Max source animation composition size: %d, index: %d", iSourceCompositionMaxFrames, iAnimationFrameIdxSource);
-		return;
+		return false;
 	}
 
 	auto iDestCompositionMaxFrames = *(anFramesLength*)(*pAnimationCompositionDest);
 
 	if (iAnimationFrameDest != -1)
 	{
-		if (iAnimationFrameDest > iDestCompositionMaxFrames)
+		if (iAnimationFrameDest > (iDestCompositionMaxFrames + 1))
 		{
-			this->SetError(__FUNCTION__ ": Invalid dest index. Max dest animation composition size: %d, index: %d", iDestCompositionMaxFrames, iAnimationFrameDest);
-			return;
+			this->SetError(__FUNCTION__ ": Invalid dest index. Max dest animation composition size: %d, index: %d", iDestCompositionMaxFrames + 1, iAnimationFrameDest);
+			return false;
 		}
 	}
 
@@ -86,7 +121,7 @@ void ANGameResourcesData::InsertAnimationFrameTo(ANAnimationComposition Animatio
 
 	ANMemory::GetInstance()->FreeResource(*pAnimationCompositionDest);
 
-	if (iAnimationFrameDest == -1)
+	if (iAnimationFrameDest == -1 || iAnimationFrameDest == (iDestCompositionMaxFrames + 1)) //to end list
 	{
 		((ANAnimationComposition)(((std::uintptr_t)pNewAnimationComposition) + sizeof(anFramesLength)))[iDestCompositionMaxFrames] = ANCompositionFrame{ false, pFrame.m_Frame };
 	}
@@ -102,6 +137,8 @@ void ANGameResourcesData::InsertAnimationFrameTo(ANAnimationComposition Animatio
 	*pAnimationCompositionDest = pNewAnimationComposition;
 
 	this->m_vAnimationCompositionData.push_back(*pAnimationCompositionDest);
+
+	return true;
 }
 
 void ANGameResourcesData::DeleteAnimationComposition(ANAnimationComposition* pAnimationComposition)
@@ -123,10 +160,15 @@ void ANGameResourcesData::ClearAnimationComposition(ANAnimationComposition Anima
 
 	for (auto i = 0; i < iLengthComposition; i++)
 	{
-		if (!AnimationCompositionData[i].m_bIsUnique)
+		auto& FrameData = AnimationCompositionData[i];
+
+		if (!FrameData.m_bIsUnique)
 			continue;
 
-		this->m_pCore->GetRenderer()->FreeImage(AnimationCompositionData[i].m_Frame);
+		if (!FrameData.m_Frame)
+			continue;
+
+		this->m_pCore->GetRenderer()->FreeImage(FrameData.m_Frame);
 	}
 
 	ANMemory::GetInstance()->FreeResource(AnimationComposition);
