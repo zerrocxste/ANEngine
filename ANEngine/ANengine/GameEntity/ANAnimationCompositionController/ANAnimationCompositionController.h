@@ -11,6 +11,7 @@ private:
 	float m_flNewAnimationDuration;
 	float m_flAnimationDuration;
 
+	ANAnimationComposition m_StackAnimationComposition;
 	ANAnimationComposition m_CurrentAnimationComposition;
 	ANAnimationComposition m_PrevAnimationComposition;
 	ANAnimationComposition m_ViewedComposition;
@@ -31,21 +32,33 @@ private:
 
 	double m_lflCurrentRenderTime;
 
-	bool m_bIgnoreAnimationBorder;
+	double m_lflLastAnimationChangeTime;
+	bool m_bIgnoreNextAnimationChangeTimer;
+
+	int m_iRepeatingSameAnimation;
+
+	bool m_bPrintfEnabled;
 public:
 	void SetAnimationDuration(float flDuration) override;
 	void SetAnimationMode(bool bReversePlay) override;
 	bool GetAnimationModePlayIsReversed() override;
 	int GetNeedUpdateAnimationCounter(IANApi* pApi) override;
-	void SetAnimationComposition(ANAnimationComposition AnimationComposition, bool bClearNextAnimationCycleComplete) override;
+	void SetAnimationComposition(IANApi* pApi, ANAnimationComposition AnimationComposition, bool bClearNextAnimationCycleComplete) override;
 	ANImageID GetCurrentAnimationCompositionFrame(IANApi* pApi) override;
 	int GetCurrentAnimationCompositionCount() override;
 	void SetCurrentAnimationCompositionCount(int Count) override;
-	void PlayAnimation(ANAnimationComposition AnimationComposition, bool bLockState, int iCountOfIterations, int iMaxFramesOfCompositionInIteration) override;
+	void PlayAnimation(IANApi* pApi, ANAnimationComposition AnimationComposition, bool bLockState, int iCountOfIterations, int iMaxFramesOfCompositionInIteration) override;
 	void StopRunningAnimation() override;
 	void UnlockPlayingAnimationState() override;
 	bool IsAnimationCycleComplete() override;
+	void IgnoreNextAnimationChangeTimer() override;
+	ANPerfomanceTick GetTimeSinceAnimationChanged(IANApi* pApi) override;
+	int GetCounterRepeatingSameAnimation() override;
+	void PushAnimationComposition() override;
+	void PopAnimationComposition() override;
+	void ActivatePrintf(bool activate) override;
 
 	bool IsAnimationCounterOut();
 	bool AnimationCompositionThink();
+	void UpdateAnimationChangeTimer(IANApi* pApi, bool bSameComposition);
 };

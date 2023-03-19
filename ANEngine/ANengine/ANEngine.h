@@ -5,14 +5,17 @@ constexpr auto VERSION = "1.b";
 #define BACKEND_DIRECT2D
 
 #include <Windows.h>
+#include <assert.h>
+#include <direct.h>
+
+#include <intrin.h>
+
 #include <iostream>
 #include <vector>
 #include <deque>
 #include <map>
 #include <string>
-#include <assert.h>
 #include <fstream>
-#include <direct.h>
 #include <thread>
 #include <mutex>
 

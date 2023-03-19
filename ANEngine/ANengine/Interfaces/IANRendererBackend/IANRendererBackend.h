@@ -21,6 +21,7 @@ public:
 	virtual bool DrawTrinagle(ANInternalGuiWindowID GuiWindow, anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color, float LineThickness) = 0;
 	virtual bool DrawTrinagleFilled(ANInternalGuiWindowID GuiWindow, anVec2 pt1, anVec2 pt2, anVec2 pt3, anColor Color) = 0;
 	virtual bool DrawFilledCircle(ANInternalGuiWindowID GuiWindow, anVec2 Pos, anColor Color, float Radius) = 0;
+	virtual bool CreateDefaultFont(ANFontID* pFontID) = 0;
 	virtual bool CreateFontFromFile(const char* pszPath, float FontSize, ANFontID* pFontIDPtr) = 0;
 	virtual void FreeFont(ANFontID* pFontIDPtr) = 0;
 	virtual bool TextCalcSize(const char* pszText, ANFontID FontID, anVec2* pTextSize) = 0;

@@ -56,10 +56,15 @@ void ANPerfomance::Update()
 	this->m_MaxFpsFrameTime = ((double)(this->m_BeginFrameTick - this->m_EndFrameTick) / 10000000.);
 
 	if (this->m_EndFrameTick != 0)
+	{
 		this->m_TotalRenderTime += this->m_MaxFpsFrameTime;
-
+		this->m_flFpsCounter = (float)((1.0 / this->m_MaxFpsFrameTime));
+	}
+	else 
+	{
+		this->m_flFpsCounter = FLT_MAX;
+	}
+		
 	this->m_PrevFrameTick = this->m_EndFrameTick;
 	this->m_EndFrameTick = this->m_BeginFrameTick;
-
-	this->m_flFpsCounter = (float)(((1.0 - this->m_MaxFpsFrameTime) / this->m_MaxFpsFrameTime) + 1.5);
 }

@@ -463,8 +463,12 @@ anRect ANApi::CalcScreenBBox(IANWorld* pWorld, anVec2 Origin, anVec2 ObjectSize)
 void ANApi::Update()
 {
 	auto p = this->m_pCore->GetPerfomance();
-
 	this->FPS = p->GetFramePerSecond();
 	this->Frametime = p->GetFrameTime();
 	this->TotalRenderTime = p->GetTotalRenderTime();
+
+	auto MemoryManager = ANMemory::GetInstance();
+	this->WorkingSetAllocatedMemory = MemoryManager->GetWorkingSetAllocatedMemory();
+	this->ResourceAllocatedMemory = MemoryManager->GetResourceAllocatedMemory();
+	this->TotalAllocatedMemory = MemoryManager->GetTotalAllocatedMemory();
 }

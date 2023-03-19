@@ -162,6 +162,7 @@ private:
 	ANAnimationComposition m_RottweilerCompositionRight;
 	ANAnimationComposition m_RottweilerSit;
 	ANAnimationComposition m_RottweilerSitRemote;
+	ANAnimationComposition m_RottweilerSitdown;
 
 	IANEntity* m_pTVScreen;
 	ANAnimationComposition m_TVScreenComposition;
@@ -218,10 +219,10 @@ private:
 	void DrawUI(IANApi* pApi);
 	void DrawStatistics(IANApi* pApi);
 
-	void SetAnimationMoveUp(IANEntity* pActor);
-	void SetAnimationMoveDown(IANEntity* pActor);
-	void SetAnimationMoveLeft(IANEntity* pActor);
-	void SetAnimationMoveRight(IANEntity* pActor);
+	void SetAnimationMoveUp(IANApi* pApi, IANEntity* pActor);
+	void SetAnimationMoveDown(IANApi* pApi, IANEntity* pActor);
+	void SetAnimationMoveLeft(IANApi* pApi, IANEntity* pActor);
+	void SetAnimationMoveRight(IANApi* pApi, IANEntity* pActor);
 
 	float GetFloor(HOUSE_FLOOR Floor);
 	float GetFloor(IANEntity* pEntity);

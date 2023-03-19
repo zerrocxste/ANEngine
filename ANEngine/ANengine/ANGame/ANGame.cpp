@@ -53,7 +53,7 @@ bool ANGame::RunScene()
 
 		anVec2 vecSizeNoScene, vecHelperMsg;
 		auto pszNoSceneMsg = "NO SCENE\n";
-		auto pszHelperMsg = "NEED CONNECT SCENE IN LOADER CTX\n";
+		auto pszHelperMsg = "NEED CONNECT SCENE IN LOADER CONTEXT\n";
 
 		r->TextCalcSize(pszNoSceneMsg, &vecSizeNoScene);
 		r->TextDraw(pszNoSceneMsg, ANMathUtils::CalcPosToCenter(r->GetScreenSize(), vecSizeNoScene), anColor::Red());
@@ -68,7 +68,11 @@ bool ANGame::RunScene()
 	for (auto& data : this->m_EveryFrameTask.m_vDefaultAnimationCompositionData)
 	{
 		auto pAnimationCompositionController = data.m_pEntity->GetAnimCompositionController();
-		pAnimationCompositionController->SetAnimationComposition(data.m_AnimationComposition);
+
+		pAnimationCompositionController->PushAnimationComposition();
+		pAnimationCompositionController->IgnoreNextAnimationChangeTimer();
+
+		pAnimationCompositionController->SetAnimationComposition(this->m_pCore->GetApi(), data.m_AnimationComposition);
 		pAnimationCompositionController->SetAnimationDuration(data.m_flAnimationDuration);
 	}
 
@@ -94,7 +98,7 @@ void ANGame::LeaveGame()
 
 void ANGame::RegWorld(IANWorld** ppWorld)
 {
-	auto& pWorld = (*ppWorld) = ANMemory::GetInstance()->Allocate<ANWorld>();
+	auto& pWorld = *ppWorld = ANMemory::GetInstance()->Allocate<ANWorld>();
 	((ANWorld*)pWorld)->m_pIANAnimationCompositionController = ANMemory::GetInstance()->Allocate<ANAnimationCompositionController>();
 }
 

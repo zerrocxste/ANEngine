@@ -23,10 +23,7 @@ double ANMathUtils::LinearInterpolation(double t_start, double floating_t, doubl
 
 anVec2 ANMathUtils::CalcDegDifferentBetweenParties(anVec2 SourceSize)
 {
-	return anVec2(
-		LinearInterpolation(0.f, SourceSize.x, SourceSize.y, 0.f, 1.f),
-		LinearInterpolation(0.f, SourceSize.y, SourceSize.x, 0.f, 1.f)
-	);
+	return anVec2(SourceSize.x / SourceSize.y, SourceSize.y / SourceSize.x);
 }
 
 anVec2 ANMathUtils::CalcSizeAtImageAspectRatio(anVec2 OutRectSize, anVec2 SourceSize)
@@ -118,7 +115,8 @@ anVec2 ANMathUtils::WorldToScreen(anVec2 WorldSize, anVec2 WorldScreenPos, anVec
 
 anVec2 ANMathUtils::ScreenPointToWorld(anVec2 CameraScreen, anVec2 WorldScreenSize, anVec2 WorldSize, anVec2 ScreenPos)
 {
-	return anVec2(
+	return anVec2
+	(
 		LinearInterpolation(0.f, ScreenPos.x + -CameraScreen.x, WorldScreenSize.x, 0.f, WorldSize.x),
 		LinearInterpolation(0.f, ScreenPos.y + -CameraScreen.y, WorldScreenSize.y, 0.f, WorldSize.y)
 	);

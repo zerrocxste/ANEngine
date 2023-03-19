@@ -7,6 +7,9 @@ public:
 	float FPS;
 	float Frametime;
 	double TotalRenderTime;
+	std::size_t WorkingSetAllocatedMemory;
+	std::size_t ResourceAllocatedMemory;
+	std::size_t TotalAllocatedMemory;
 
 	//MAIN
 	virtual const char* GetVersion() = 0;

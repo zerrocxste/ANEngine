@@ -606,6 +606,19 @@ bool ANRendererlatformD2D::DrawFilledCircle(ANInternalGuiWindowID GuiWindow, anV
 	return true;
 }
 
+bool ANRendererlatformD2D::CreateDefaultFont(ANFontID* pFontID)
+{
+	const char* pszDefaultFont = "C:\\Windows\\Fonts\\Arial.ttf";
+
+	if (!CreateFontFromFile(pszDefaultFont, 18.f, pFontID))
+	{
+		this->SetError(__FUNCTION__ " -> Error load default font '%s'", pszDefaultFont);
+		return false;
+	}
+
+	return true;
+}
+
 bool ANRendererlatformD2D::CreateFontFromFile(const char* pszPath, float FontSize, ANFontID * pFontIDPtr)
 {
 	auto ret = false;

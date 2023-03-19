@@ -49,11 +49,11 @@ bool ANRenderer::CreateBackendRender()
 
 bool ANRenderer::CreateDefaultFont()
 {
-	const char* pszDefaultFont = "C:\\Windows\\Fonts\\Arial.ttf";
+	auto pBackendRenderer = this->m_pRendererBackend;
 
-	if (!CreateFontFromFile(pszDefaultFont, 20.f, &this->m_FontIDDefault))
+	if (!pBackendRenderer->CreateDefaultFont(&this->m_FontIDDefault))
 	{
-		this->SetError(__FUNCTION__ " -> Error load default font '%s'", pszDefaultFont);
+		this->SetError(pBackendRenderer->What());
 		return false;
 	}
 

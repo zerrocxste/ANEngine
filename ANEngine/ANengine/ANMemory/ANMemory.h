@@ -12,15 +12,15 @@ public:
 
 	template<class T, class... A> T* Allocate(A&&... Arg)
 	{
-		this->m_WorkingSetAllocatedMemory += sizeof(T);
-
 		auto ret = new (std::nothrow) T(Arg...);
 
 		if (!ret)
 		{
-			this->SetError(__FUNCTION__ ": Memory allocate error");
-			throw;
+			assert("Memory allocate error");
+			__debugbreak();
 		}
+
+		this->m_WorkingSetAllocatedMemory += sizeof(T);
 
 		return ret;
 	}
@@ -36,6 +36,7 @@ public:
 	std::size_t GetResourceAllocatedMemory();
 
 	static ANMemory* GetInstance();
+
 private:
 	std::size_t m_WorkingSetAllocatedMemory;
 	std::size_t m_ResourceAllocatedMemory;

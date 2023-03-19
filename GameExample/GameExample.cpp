@@ -22,9 +22,13 @@ int main()
 		return 1;
 	}
 
-	pLoader->ConnectScene(new CTestLevel());
-
-	pLoader->RunScene();
+	if (pLoader->ConnectScene(new CTestLevel()))
+		pLoader->RunScene();
+	else
+	{
+		MessageBox(0, "Scene not connected", "Fatal error", MB_OK);
+		return 1;
+	}
 
 	return 0;
 }

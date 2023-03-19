@@ -171,10 +171,6 @@ const char* pszRottweilerLeft[] = {
 	"rottweiler\\move_left\\N_mg3_0006.png",
 	"rottweiler\\move_left\\N_mg3_0007.png",
 };
-const char* pszRottweilerSit[] = {
-	"rottweiler\\sit_remote\\N_sit_0001.png",
-	"rottweiler\\sit_remote\\N_sit_0002.png"
-};
 const char* pszRottweilerSitRemote[] = {
 	"rottweiler\\sit_remote\\N_sit_remo_0000.png",
 	"rottweiler\\sit_remote\\N_sit_remo_0001.png",
@@ -190,6 +186,18 @@ const char* pszRottweilerSitRemote[] = {
 	"rottweiler\\sit_remote\\N_sit_remo_0011.png",
 	"rottweiler\\sit_remote\\N_sit_remo_0012.png",
 	"rottweiler\\sit_remote\\N_sit_remo_0013.png",
+};
+const char* pszRottweilerSitdown[] = {
+	"rottweiler\\sitdown\\N_sitdown_0000.png",
+	"rottweiler\\sitdown\\N_sitdown_0001.png",
+	"rottweiler\\sitdown\\N_sitdown_0002.png",
+	"rottweiler\\sitdown\\N_sitdown_0003.png",
+	"rottweiler\\sitdown\\N_sitdown_0004.png",
+	"rottweiler\\sitdown\\N_sitdown_0005.png",
+};
+const char* pszRottweilerSit[] = {
+	"rottweiler\\sit_remote\\N_sit_0001.png",
+	"rottweiler\\sit_remote\\N_sit_0002.png"
 };
 const char* pszRottweilerRight[] = {
 	"rottweiler\\move_right\\N_mg1_0000.png",
@@ -369,34 +377,71 @@ void CTestLevel::DrawWorld(IANApi* pApi)
 
 void CTestLevel::DrawEntities(IANApi* pApi)
 {
-	static bool pult_active = false;
-
 	auto RottweilerCompositionController = this->m_pRottweiler->GetAnimCompositionController();
 
-	if (pult_active)
+	//static bool pult_active = false;
+	//if (pult_active)
+	//{
+	//	//printf("FIRST\n");
+
+	//	RottweilerCompositionController->SetAnimationComposition(pApi, this->m_RottweilerSitRemote);
+	//	RottweilerCompositionController->SetAnimationDuration(0.0675f);
+
+	//	static auto bIsSuccess = false;
+
+	//	if (RottweilerCompositionController->IsAnimationCycleComplete())
+	//	{
+	//		bIsSuccess = !bIsSuccess;
+	//		RottweilerCompositionController->SetAnimationMode(bIsSuccess);
+
+	//		if (!bIsSuccess)
+	//			pult_active = false;
+	//	}
+	//}
+	//else
+	//{
+	//	//printf("SECOND\n");
+
+	//	RottweilerCompositionController->SetAnimationComposition(pApi, this->m_RottweilerSit);
+	//	RottweilerCompositionController->SetAnimationDuration(0.215f);
+
+	//	if (RottweilerCompositionController->IsAnimationCycleComplete())
+	//		pult_active = true;
+	//}
+
+	static bool sit_inverse = false;
+	static bool set_sit = false;
+
+	if (set_sit)
 	{
-		RottweilerCompositionController->SetAnimationComposition(this->m_RottweilerSitRemote);
-		RottweilerCompositionController->SetAnimationDuration(0.0675f);
-
-		static auto bIsSuccess = false;
-
 		if (RottweilerCompositionController->IsAnimationCycleComplete())
-		{
-			bIsSuccess = !bIsSuccess;
-			RottweilerCompositionController->SetAnimationMode(bIsSuccess);
+			sit_inverse = !sit_inverse;
 
-			if (!bIsSuccess)
-				pult_active = false;
-		}
+		RottweilerCompositionController->SetAnimationMode(sit_inverse);
+		RottweilerCompositionController->SetAnimationDuration(0.0675f);
+		RottweilerCompositionController->SetAnimationComposition(pApi, this->m_RottweilerSitdown);
+
+		printf("%d %d\n", sit_inverse, RottweilerCompositionController->GetCounterRepeatingSameAnimation());
+
+		/*if (!sit_inverse && RottweilerCompositionController->GetCounterRepeatingSameAnimation() > 0)
+		{
+			printf("Set sit false\n");
+			set_sit = false;
+		}		*/
 	}
 	else
 	{
-		RottweilerCompositionController->SetAnimationComposition(this->m_RottweilerSit);
-		RottweilerCompositionController->SetAnimationDuration(0.215f);
-
-		if (RottweilerCompositionController->IsAnimationCycleComplete())
-			pult_active = true;
+		if (RottweilerCompositionController->GetTimeSinceAnimationChanged(pApi) >= 1.)
+		{
+			printf("SET SIT TRUE\n");
+			set_sit = true;
+		}
 	}
+
+	/*RottweilerCompositionController->SetAnimationComposition(pApi, this->m_RottweilerSitdown);
+	RottweilerCompositionController->SetAnimationDuration(0.215f);
+
+	printf("%d\n", RottweilerCompositionController->GetCounterRepeatingSameAnimation());*/
 
 #if DEBUG_LEVEL_1 == 1
 	auto groupZone = pApi->FindEntityByGroupID(szWorldEntityClassIDRoomZone);
@@ -405,10 +450,7 @@ void CTestLevel::DrawEntities(IANApi* pApi)
 	{
 		auto entity = ent->Get();
 
-		auto screenBBox = entity->CalcScreenBBox(pApi, this->m_pWorld);
-
-		screenBBox = screenBBox.RecalcWithRelativeDistance();
-
+		auto screenBBox = entity->CalcScreenBBox(pApi, this->m_pWorld).RecalcWithRelativeDistance();
 		pApi->DrawRectangle(
 			screenBBox.first,
 			screenBBox.second,
@@ -458,8 +500,13 @@ void CTestLevel::DrawStatistics(IANApi* pApi)
 	char buff[1024] = { 0 };
 	sprintf_s(buff,
 		"ENGINE:\n"
+		"Working set allocated memory: %d\n"
+		"Resource allocated memory: %d\n"
+		"Total allocated memory: %d\n"
+		"Total render time: %lf\n"
 		"FPS: %.1f\n"
 		"Frametime: %f\n"
+		"\nGAME SCENE STATE: \n"
 		"Screen size: %.1f %.1f\n"
 		"World Size: %.1f %.1f\n"
 		"World pos: %.1f %.1f\n"
@@ -469,6 +516,10 @@ void CTestLevel::DrawStatistics(IANApi* pApi)
 		"Actor world: %.1f %.1f\n"
 		"Actor screen: %.1f %.1f\n"
 		"Cursor screen: %.1f %.1f\n\n",
+		pApi->WorkingSetAllocatedMemory,
+		pApi->ResourceAllocatedMemory, 
+		pApi->TotalAllocatedMemory,
+		pApi->TotalRenderTime,
 		pApi->FPS,
 		pApi->Frametime,
 		ScreenSize.x, ScreenSize.y,
@@ -490,27 +541,27 @@ void CTestLevel::DrawStatistics(IANApi* pApi)
 	pApi->PopFontColor();
 }
 
-void CTestLevel::SetAnimationMoveUp(IANEntity* pActor)
+void CTestLevel::SetAnimationMoveUp(IANApi* pApi, IANEntity* pActor)
 {
-	pActor->GetAnimCompositionController()->SetAnimationComposition(this->m_WoodyCompositionUp);
+	pActor->GetAnimCompositionController()->SetAnimationComposition(pApi, this->m_WoodyCompositionUp);
 	pActor->GetAnimCompositionController()->SetAnimationDuration(0.08f);
 }
 
-void CTestLevel::SetAnimationMoveDown(IANEntity* pActor)
+void CTestLevel::SetAnimationMoveDown(IANApi* pApi, IANEntity* pActor)
 {
-	pActor->GetAnimCompositionController()->SetAnimationComposition(this->m_WoodyCompositionDown);
+	pActor->GetAnimCompositionController()->SetAnimationComposition(pApi, this->m_WoodyCompositionDown);
 	pActor->GetAnimCompositionController()->SetAnimationDuration(0.08f);
 }
 
-void CTestLevel::SetAnimationMoveLeft(IANEntity* pActor)
+void CTestLevel::SetAnimationMoveLeft(IANApi* pApi, IANEntity* pActor)
 {
-	pActor->GetAnimCompositionController()->SetAnimationComposition(this->m_WoodyCompositionLeft);
+	pActor->GetAnimCompositionController()->SetAnimationComposition(pApi, this->m_WoodyCompositionLeft);
 	pActor->GetAnimCompositionController()->SetAnimationDuration(0.08f);
 }
 
-void CTestLevel::SetAnimationMoveRight(IANEntity* pActor)
+void CTestLevel::SetAnimationMoveRight(IANApi* pApi, IANEntity* pActor)
 {
-	pActor->GetAnimCompositionController()->SetAnimationComposition(this->m_WoodyCompositionRight);
+	pActor->GetAnimCompositionController()->SetAnimationComposition(pApi, this->m_WoodyCompositionRight);
 	pActor->GetAnimCompositionController()->SetAnimationDuration(0.08f);
 }
 
@@ -772,16 +823,16 @@ void CTestLevel::CreateMove(IANApi* pApi)
 	auto [dirFlags, speed] = this->m_pMainActor->GetMoveInfo();
 
 	if (dirFlags & ANDirectionMoveFlags::MOVE_UP)
-		SetAnimationMoveUp(this->m_pMainActor);
+		SetAnimationMoveUp(pApi, this->m_pMainActor);
 
 	if (dirFlags & ANDirectionMoveFlags::MOVE_DOWN)
-		SetAnimationMoveDown(this->m_pMainActor);
+		SetAnimationMoveDown(pApi, this->m_pMainActor);
 
 	if (dirFlags & ANDirectionMoveFlags::MOVE_LEFT)
-		SetAnimationMoveLeft(this->m_pMainActor);
+		SetAnimationMoveLeft(pApi, this->m_pMainActor);
 
 	if (dirFlags & ANDirectionMoveFlags::MOVE_RIGHT)
-		SetAnimationMoveRight(this->m_pMainActor);
+		SetAnimationMoveRight(pApi, this->m_pMainActor);
 }
 
 void CTestLevel::CreateAnimationCompositions(IANApi* pApi)
@@ -812,13 +863,14 @@ void CTestLevel::CreateAnimationCompositions(IANApi* pApi)
 	}
 	pApi->CreateAnimationComposition(pszRottweilerSitRemote, AN_ARRSIZE(pszRottweilerSitRemote), &this->m_RottweilerSitRemote, true);
 	pApi->CreateAnimationComposition(pszTVScreen, AN_ARRSIZE(pszTVScreen), &this->m_TVScreenComposition, true);
+	pApi->CreateAnimationComposition(pszRottweilerSitdown, AN_ARRSIZE(pszRottweilerSitdown), &this->m_RottweilerSitdown, true);
 }
 
 void CTestLevel::CreateWorld(IANApi* pApi)
 {
 	pApi->RegWorld(&this->m_pWorld);
 	this->m_pWorld->SetWorldSize(pApi->GetImageSize(pApi->GetAnimationCompositionFrameFromID(this->m_WorldComposition, 0)));
-	this->m_pWorld->GetAnimCompositionController()->SetAnimationComposition(this->m_WorldComposition);
+	this->m_pWorld->GetAnimCompositionController()->SetAnimationComposition(pApi, this->m_WorldComposition);
 }
 
 void CTestLevel::CreateActorEntity(IANApi* pApi, IANEntity** ppEntity, const char* pszActorName)
@@ -834,8 +886,11 @@ void CTestLevel::CreateActorEntity(IANApi* pApi, IANEntity** ppEntity, const cha
 void CTestLevel::CreateRottweilerEntity(IANApi* pApi, const char* pszActorName)
 {
 	pApi->RegEntity(&this->m_pRottweiler, szWorldEntityPlayer);
-	this->m_pRottweiler->SetOrigin(anVec2(403.f, GetFloor(HOUSE_FLOOR::SECOND)));
+	this->m_pRottweiler->SetOrigin(anVec2(510.f, GetFloor(HOUSE_FLOOR::SECOND)));
 	this->m_pRottweiler->AddDefaultAnimationComposition(pApi, this->m_RottweilerComposition, 0.3f);
+	/*printf("%p\n", this->m_RottweilerComposition);
+	MessageBox(0, "dsa", "ds", MB_OK);*/
+	//this->m_pRottweiler->GetAnimCompositionController()->ActivatePrintf(true);
 }
 
 void CTestLevel::CreateRoomZoneEntity(IANApi* pApi, IANEntity*& pEntity, anVec2 RoomPos, anVec2 RoomSize, HOUSE_ROOM HouseRoom, HOUSE_FLOOR LevelFloor)
@@ -862,7 +917,7 @@ void CTestLevel::CreateDoorEntity(
 	pEntity->SetEntityName(pszDoorName);
 	pEntity->SetOrigin(Origin);
 	pEntity->SetInteractionController(new DoorEntityInteractionController);
-	pEntity->GetAnimCompositionController()->SetAnimationComposition(pDoorComposition);
+	pEntity->GetAnimCompositionController()->SetAnimationComposition(pApi, pDoorComposition);
 	pEntity->GetAnimCompositionController()->SetAnimationDuration(0.1f);
 	pEntity->SetUserDataPointer(new CDoorEntityData(HouseRoom, DoorType, DoorInteraction, InvertedDoorInteraction, LevelFloor));
 }
@@ -872,6 +927,6 @@ void CTestLevel::CreateStaticEntity(IANApi* pApi, IANEntity** ppEntity, ANAnimat
 	pApi->RegEntity(ppEntity, szWorldEntityStatic);
 	auto& pEntity = *ppEntity;
 	pEntity->SetOrigin(vecPosition);
-	pEntity->GetAnimCompositionController()->SetAnimationComposition(DefaultAnimationComposition);
+	pEntity->GetAnimCompositionController()->SetAnimationComposition(pApi, DefaultAnimationComposition);
 	pEntity->GetAnimCompositionController()->SetAnimationDuration(flAnimationDuration);
 }

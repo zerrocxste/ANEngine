@@ -26,108 +26,88 @@ template <class T>
 class ANInterfacePointer
 {
 public:
-	mutable T* m_Pointer;
+	T* m_Pointer;
 
-	ANInterfacePointer();
-	~ANInterfacePointer();
+	ANInterfacePointer()
+	{
+		this->m_Pointer = new (std::nothrow) T();
+	}
+
+	~ANInterfacePointer()
+	{
+		release();
+	}
 
 	template <class O>
-	ANInterfacePointer(ANImpPtr<O>& o);
+	ANInterfacePointer(ANImpPtr<O>& o)
+	{
+		this->m_Pointer = o.m_Pointer;
+	}
 
-	T* get();
+	T* get()
+	{
+		return this->m_Pointer;
+	}
 
-	T* operator->();
-	T& operator*();
+	T* operator->()
+	{
+		return this->m_Pointer;
+	}
 
-	ANInterfacePointer<T>& operator=(const ANInterfacePointer<T>& o);
+	T& operator*()
+	{
+		return *this->m_Pointer;
+	}
+
+	ANInterfacePointer<T>& operator=(const ANInterfacePointer<T>& o)
+	{
+		this->m_Pointer = o.m_Pointer;
+		return *this;
+	}
+
+	ANInterfacePointer<T>& operator=(ANInterfacePointer<T>& o)
+	{
+		release();
+		this->m_Pointer = o.m_Pointer;
+		o.m_Pointer = nullptr;
+		return *this;
+	}
 
 	template<class O>
-	ANInterfacePointer<T>& operator=(const ANInterfacePointer<O>& o);
+	ANInterfacePointer<T>& operator=(const ANInterfacePointer<O>& o)
+	{
+		this->m_Pointer = o.m_Pointer;
+		return *this;
+	}
+
+	template<class O>
+	ANInterfacePointer<T>& operator=(ANInterfacePointer<O>& o)
+	{
+		release();
+		this->m_Pointer = o.m_Pointer;
+		o.m_Pointer = nullptr;
+		return *this;
+	}
 
 	//DELEGATE != OPERATOR
-	bool operator!=(const ANInterfacePointer<T>& o);
+	bool operator!=(const ANInterfacePointer<T>& o)
+	{
+		return *this->m_Pointer != o;
+	}
 
 	//DELEGATE ++ OPERATOR
-	T& operator++(int);
+	T& operator++(int)
+	{
+		return (*this->m_Pointer)++;
+	}
 
-	void release();
+	void release()
+	{
+		if (this->m_Pointer != nullptr)
+		{
+			delete this->m_Pointer;
+			this->m_Pointer = nullptr;
+		}
+	}
 private:
 };
-
-template <class T>
-ANInterfacePointer<T>::ANInterfacePointer()
-{
-	this->m_Pointer = new (std::nothrow) T();
-}
-
-template <class T>
-ANInterfacePointer<T>::~ANInterfacePointer()
-{
-	release();
-}
-
-template <class T>
-template <class O>
-ANInterfacePointer<T>::ANInterfacePointer(ANImpPtr<O>& o)
-{
-	this->m_Pointer = o.m_Pointer;
-}
-
-template <class T>
-T* ANInterfacePointer<T>::get()
-{
-	return this->m_Pointer;
-}
-
-template<class T>
-T* ANInterfacePointer<T>::operator->()
-{
-	return this->m_Pointer;
-}
-
-template<class T>
-T& ANInterfacePointer<T>::operator*()
-{
-	return *this->m_Pointer;
-}
-
-template<class T>
-ANInterfacePointer<T>& ANInterfacePointer<T>::operator=(const ANInterfacePointer<T>& o)
-{
-	release();
-	this->m_Pointer = o.m_Pointer;
-	o.m_Pointer = nullptr;
-	return *this;
-}
-
-template<class T>
-template<class O>
-ANInterfacePointer<T>& ANInterfacePointer<T>::operator=(const ANInterfacePointer<O>& o)
-{
-	release();
-	this->m_Pointer = o.m_Pointer;
-	o.m_Pointer = nullptr;
-	return *this;
-}
-
-template<class T>
-bool ANInterfacePointer<T>::operator!=(const ANInterfacePointer<T>& o)
-{
-	return *this->m_Pointer != o;
-}
-
-template<class T>
-T& ANInterfacePointer<T>::operator++(int)
-{
-	return (*this->m_Pointer)++;
-}
-
-template<class T>
-void ANInterfacePointer<T>::release()
-{
-	if (this->m_Pointer != nullptr)
-	{
-		delete this->m_Pointer;
-		this->m_Pointer = nullptr;
-	}
-}
